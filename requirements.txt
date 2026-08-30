@@ -1,0 +1,7 @@
+# runtime dependencies
+numpy
+pymoo
+matplotlib
+pandas
+# dev dependencies
+pytest
