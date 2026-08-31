@@ -44,6 +44,24 @@ r-07 | closed in a3-b, its premise removed rather than mitigated. as raised in a
     half-width form its second coordinate is exactly zero and not a cancellation
     residue
 
+    note added in a5, beside r-07 because it is about the route r-07 was about.
+    a4-b and a3-b measured opposite magnitude-sweep behaviour for the endpoint
+    route, on different grids. a4-b, section 1.6, found the spurious count at no
+    tolerance moving 7, 8, 2, 3 and 12 for phi_ls as the centre offset grew over
+    the 61 x 61 grid. a3-b, on the 41 x 41 grid its test uses, found the endpoint
+    route wrong at offset 0, phi_ls 711 against 706 and phi_cw 447 against 441,
+    and then in exact agreement with the centre-radius route at 1e3, 1e6 and 1e9.
+    the explanation a3-b offered, that the low bits the endpoint route corrupts
+    fall off the end of the shifted centre, predicts more tie shattering at large
+    offset and not less: a4-b measured the width error growing as eps|c|, to
+    1.144e-07 at |c| = 1e9 with all 3721 width values wrong, so the corruption is
+    larger at 1e9 and not smaller, and the agreement observed there is not what
+    the explanation predicts. this is unresolved and it is deliberately not
+    investigated. it does not matter, because the endpoint route is not used: p1
+    and both tier 1 problems declare centre_radius and compute no endpoint, and
+    p0's endpoints are the paper's own and are exact. the discrepancy is recorded
+    so that a later session does not read either measurement as a law
+
 r-01 | closed in a4. as raised in a0 this said the source papers were not under
     version control: .gitignore line 1 is "*.txt", so git mv failed and the two
     files were moved with plain mv. a0-b committed both papers and added the

@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-43.
+highest number in use: v-46.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -335,3 +335,42 @@ v-43 | an interval's endpoint pair and its centre-half-width pair are related by
     tests/test_phi_transforms.py::test_the_centre_radius_route_is_phi_composed_with_the_endpoint_map
     and ::test_the_composite_determinant_is_twice_the_paper_determinant
     | a3-b | 2026-08-31
+
+v-44 | zdt1 is test function T_1 of [2]: f_1(x_1) = x_1, g(x_2,...,x_m) =
+    1 + 9 . (sum_{i=2}^{m} x_i) / (m - 1), h(f_1, g) = 1 - sqrt(f_1 / g), with
+    f_2 = g h from the scheme of equation (6) on the same page, m = 30 variables,
+    x_i in [0, 1], and the Pareto-optimal front formed with g(x) = 1. note that
+    [2] writes m for the number of decision variables, which is this project's
+    n_vars, and not for the number of objectives | [2] zitzler, deb and thiele,
+    evolutionary computation 8(2) (2000) 173-195,
+    papers/zitzler_deb_thiele_2000_comparison.pdf | section 4, definition 4,
+    equation (7), printed page 177, read from the rendered page: the paper's
+    formulas are set in bitmap math fonts and text extraction drops them | a5 |
+    2026-08-31
+
+v-45 | dtlz2 is test problem DTLZ2 of [3]: f_1 = (1 + g(x_M)) cos(x_1 pi/2) ...
+    cos(x_M-1 pi/2), f_2 = (1 + g(x_M)) cos(x_1 pi/2) ... sin(x_M-1 pi/2), down to
+    f_M = (1 + g(x_M)) sin(x_1 pi/2), with g(x_M) = sum_{x_i in x_M} (x_i - 0.5)^2
+    and 0 <= x_i <= 1 for i = 1, ..., n. the paper states k = |x_M| = 10 for this
+    problem and n = M + k - 1, so M = 3 gives n = 12 and x_M = x_3 ... x_12. the
+    Pareto-optimal solutions are x_i* = 0.5 for x_i in x_M, and there the
+    objective values satisfy sum_{m=1}^{M} (f_m*)^2 = 1. the sine of the last
+    objective is a sine of x_1 and the sine of f_2 is a sine of x_M-1 | [3] deb,
+    thiele, laumanns and zitzler, congress on evolutionary computation 2002, ieee,
+    papers/deb_thiele_laumanns_zitzler_2002_scalable.pdf | section vii.b,
+    equation (9), pdf page 4 | a5 | 2026-08-31
+
+v-46 | the nesting of the phi_lu and phi_ls efficient sets is exact in real
+    arithmetic and not in doubles. phi_ls's image is (c - r, 2r) and phi_lu's is
+    (c - r, c + r) with c + r = (c - r) + 2r, so anything dominated under phi_ls
+    is dominated under phi_lu by the same point and the non-dominated sets nest
+    the other way, phi_lu inside phi_ls. measured on a5's constructed samples the
+    containment is 1.000 at all four levels on zdt1 and at eps = 0.05, 0.10 and
+    0.25 on dtlz2, and 0.999361 on dtlz2 at eps = 0.50, one point of 1565. that
+    point sits at x_1 = 1, where dtlz2's first centre is (1 + g) cos(pi/2) =
+    6.1e-17 against a half-width of 0.5, so c - r absorbs a difference between two
+    points that c + r keeps. it is a cancellation inside phi's own first
+    coordinate, not the round trip of r-07, and no representation a problem can
+    declare removes it | project diagnostic, not a paper | asserted as a band in
+    tests/test_problems_tier1.py::test_the_separation_sets_overlap_without_coinciding
+    | a5 | 2026-08-31

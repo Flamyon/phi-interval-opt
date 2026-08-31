@@ -7,11 +7,11 @@ research chat.
 this file holds current state and open items only. everything settled lives
 elsewhere:
 
-    docs/verified.md    every verified fact, v-01 to v-42
+    docs/verified.md    every verified fact, v-01 to v-46
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-43, p-06, s-10, r-10, d-02.
+    highest numbers in use: v-46, p-06, s-10, r-11, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -19,18 +19,21 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      a, formulation
-    current subpart:    a3-b, awaiting review (a0, a0-b, a1, a1-b, a2, a3, a4
-                        and a4-b also awaiting review)
+    current subpart:    a5, awaiting review (a0, a0-b, a1, a1-b, a2, a3, a3-b,
+                        a4 and a4-b also awaiting review)
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
                         docs/verified.md, docs/answered.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
+                        papers/zitzler_deb_thiele_2000_comparison.pdf
+                        papers/deb_thiele_laumanns_zitzler_2002_scalable.pdf
                         src/interval_math.py, src/phi_transforms.py,
-                        src/problems_tier0.py
+                        src/problems_tier0.py, src/problems_tier1.py
                         tests/conftest.py, tests/test_interval_math.py,
-                        tests/test_phi_transforms.py, tests/test_problems_tier0.py
+                        tests/test_phi_transforms.py, tests/test_problems_tier0.py,
+                        tests/test_problems_tier1.py
                         requirements.txt, versions pinned to the venv
 
 ## 2. subpart status
@@ -43,7 +46,7 @@ phase a, formulation
     a2  interval_math.py                    awaiting review
     a3  phi_transforms.py                   awaiting review
     a4  problems_tier0.py                   awaiting review
-    a5  problems_tier1.py                   not started
+    a5  problems_tier1.py                   awaiting review
 
 phase b, ground truth
     b1  phi-efficient sets, derivation      not started
@@ -141,7 +144,9 @@ p-03 | does an interval-space analogue of proposition 5.1 appear outside [1],
 
 p-04 | does any construction in [7] or [8] drive the interval width from the
     decision vector rather than by a constant band? | a5 | open, needs the two
-    papers themselves
+    papers themselves, which are not in papers/. a5 ran without them: tier 1's
+    widths are a1 part 4's and are cited there, so nothing in the module waits on
+    this, and the row survives as a citation question for the memoria
 
 p-05 | under which numbered definition does [10] state the gh-difference? | b1 |
     narrowed in a3, content settled by v-39; the paper is still wanted for the
@@ -307,6 +312,22 @@ r-09 | a1's width driver rule was derived from two benchmarks and one tier 0
     mitigation: treat it as a working rule and not a result, and run the full a1
     diagnostic including the slice check on every new problem before use.
 
+r-11 | the phi_lu inside phi_ls nesting is a theorem in real arithmetic and
+    fails by rounding in doubles, c + r and (c - r) + 2r not being the same
+    double. a5 measured one violation, dtlz2 at eps = 0.50, one point of 1565,
+    where the centre (1 + g) cos(x_1 pi/2) is 6.1e-17 against a half-width of 0.5.
+    cost: d2's delta-coverage and any cross-evaluation of phi_lu against phi_ls
+    will show a handful of points on the wrong side of a containment that is
+    exact, and a table reporting them as a finding would be reporting arithmetic.
+    trigger: e1 or e2 producing the phi_lu against phi_ls decision-space metrics,
+    which is r-06's trigger as well.
+    mitigation: v-46 states the exact result and the measured size of the
+    artefact, and a5's test asserts the containment as a band and not as an
+    equality; d2 reports the pair as a check on r-06 with the artefact named.
+    this is not r-07: no endpoint is built and no round trip is performed, the
+    cancellation is inside phi's own first coordinate c - r, and no representation
+    a problem can declare removes it.
+
 r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
     docs/answered.md with the reasoning that retired them.
 
@@ -363,3 +384,16 @@ format:
     reproduced without it. 55 tests pass. d-02 closed, r-07 retired, s-06 narrowed
     to a presentation question, v-43 added | a5, which builds tier 1 in centre and
     half-width form
+2026-08-31 | a5 | src/problems_tier1.py, tests/test_problems_tier1.py,
+    papers/ two benchmark pdfs, docs/verified.md, docs/answered.md, PROGRESS.md |
+    zdt1 and dtlz2 built in centre and half-width form from a1 part 4's widths,
+    both declaring centre_radius and forming no endpoint, the crisp half-width
+    exactly zero. the crisp objectives taken from [2] equation (7) and [3]
+    equation (9), read in this session, v-44 and v-45. the separation sample is
+    constructed from each benchmark's published crisp Pareto set rather than
+    sampled, per r-08, and neither benchmark saturates: the three phi are
+    distinct at all four levels with the non-dominated fraction between 0.03 and
+    0.93. the phi_lu inside phi_ls nesting was found to fail by one point of 1565
+    through rounding, v-46 and r-11. 22 tests, 115 in the suite. the a4-b against
+    a3-b magnitude-sweep discrepancy recorded beside r-07 and not investigated |
+    b1, which now has both tiers to derive against
