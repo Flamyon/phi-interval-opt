@@ -1,0 +1,485 @@
+L18. Técnicas de Optimización Intervalar basadas
+         en Inteligencia Computacional
+        Aantonio Beato Moreno, Rafaela Osuna Gómez
+
+
+
+               PI3 julio-septiembre 2026
+
+
+
+
+                                                     1 / 23
+                           Planteamiento del problema
+
+
+
+Contenido
+
+
+1   Planteamiento del problema
+
+
+2   Resultados sobre gH-diferenciabilidad
+
+
+3   Avances en inteligencia computacional
+
+
+4   Línea de investigación propuesta
+
+
+5   Posibles líneas de investigación futuras
+
+
+
+
+                                                        2 / 23
+                        Planteamiento del problema
+
+
+
+Motivación
+
+
+    En muchos problemas reales los parámetros o los valores de la función
+    objetivo no se conocen con exactitud:
+      ▶ errores de medición,
+      ▶ variabilidad de parámetros,
+      ▶ información incompleta o imprecisa.
+
+
+    La optimización intervalar sustituye los valores reales por intervalos que
+    contienen el valor real desconocido.
+    Problema central: en R existe un orden total; en el espacio de intervalos, no
+    existe un orden natural único.
+
+Pregunta clave
+¿Cómo se deﬁne la aritmética con intervalos? ¿Qué signiﬁca que una solución sea
+mejor que otra cuando los objetivos son intervalos?
+
+
+
+
+                                                                                 3 / 23
+                         Planteamiento del problema
+
+
+
+El problema de comparar intervalos
+
+
+                                                B = [3, 7.5]
+
+                         A = [1.5, 5]
+
+
+
+                                                                           R
+       0      1      2         3           4          5   6    7   8   9
+
+
+
+    A y B se solapan: no se cumple A ≤ B ni B ≤ A en el sentido usual.
+    Distintos criterios (extremos, centro, radio, anchura) dan lugar a distintas
+    relaciones de preferencia.
+    La elección de la relación de orden condiciona qué soluciones se consideran
+    óptimas.
+    Es necesario una deﬁnición de operaciones como la diferencia con
+    propiedades adecuadas.
+
+                                                                                   4 / 23
+                          Planteamiento del problema
+
+
+
+Deﬁniciones previas
+
+Consideremos el espacio I(R) de todos los intervalos cerrados y acotados de
+números reales, es decir, I(R) = {[a, a] / a, a ∈ R y a ≤ a}.
+
+Dados A, B ∈ I(R) and λ ∈ R, las operaciones aritméticas de intervalos en la
+Aritmética de Intervalos Estándar (en adelante SIA) se deﬁnen por
+
+                                                              
+                                                              [λa, λa]   if λ ≥ 0
+ A + B = [a, a] + b, b = a + b, a + b ,                λA =                            . (1)
+                                                                  [λa, λa]   if λ < 0,
+
+Para obtener la diferencia entre intervalos se usará la diferencia generalizada de
+Hukahara introducida en la literatura por Markov 1974 y Stefanini (2008):
+                            
+                               (a) A = B + C             if µ(B) ≤ µ(A)
+         A ⊖gH B = C ⇔                                                            (2)
+                               (b) B = A + (−1)C if µ(B) > µ(A),
+
+
+donde µ(A) representa la longitud del intervalo A = [a, a], i.e., µ(A) = a − a.
+
+                                                                                          5 / 23
+                          Planteamiento del problema
+
+
+
+Deﬁniciones previas
+
+
+Dado n ∈ N, una aplicación F : S ⊆ Rn → I(R) tal que F (x ) = [f (x ), f (x )] se
+llama función con valores intervalares de varias variables, donde f , f : S → R son
+funciones con valores reales, tales que f (x ) ≤ f (x ), para todo x ∈ S, y f y f son
+sus funciones de puntos ﬁnales.
+
+Si n = 1, entonces F se llama función de variable real con valores intervalares.
+
+
+
+
+                                                                                    6 / 23
+                       Planteamiento del problema
+
+
+
+Fundamentos teóricos recientes
+
+    Relaciones de orden vía automorﬁsmos. Se deﬁne una familia de
+    relaciones de preferencia ⪯φ en I(R)m a partir de automorﬁsmos φ del plano,
+    uniﬁcando muchos órdenes previos como casos particulares [1].
+    Diferenciabilidad generalizada de Hukuhara (gH). Permite deﬁnir
+    derivadas y condiciones de optimalidad para funciones con valores
+    intervalares, incluso sobre variedades de Riemann [2, 3].
+    Métodos de tipo Newton y cuasi-Newton para problemas multiobjetivo
+    intervalares, con análisis de convergencia [5, 6].
+    Optimización cuasidiferenciable en problemas multiobjetivo con valores
+    intervalares, condiciones KKT generalizadas [4].
+
+
+
+
+                                                                             7 / 23
+                          Planteamiento del problema
+
+
+
+Deﬁniciones previas
+
+ Usaremos la siguiente deﬁnición de función gH-diferenciable, introducida en
+⌈1⌉ Osuna-Gómez, R; da Costa, T.M.; Chalco-Cano, Y., Hernández-Jiménez, B.
+     Quasilinear aproximation for interval-valued functions via generalized
+     Hukuhara diﬀerentiability. Comp. Appl. Math. vol 41, 149, (2022).
+     https://doi.org/10.1016/j.fss.2024.109066
+
+Deﬁnición (ver ⌈1⌉)
+Dado 0 = (0, . . . , 0) ∈ Rn y S ⊆ Rn un conjunto abierto y no vacío, sea
+F : S → I(R) un función con valores intervalares. Decimos que F es gH
+-diferenciable en x ∗ ∈ S si existe una función cuasilineal con valores intervalares
+Tx ∗ : Rn → I(R) y una función con valores intervalares P : B(0, ϵ) ⊆ Rn → I(R)
+con lim P(v ) = [0, 0] tal que
+    v →0
+
+                 (F (x ∗ + v ) ⊖gH F (x ∗ )) ⊖gH Tx ∗ (v ) = ||v ||P(v ),          (3)
+
+para todo v ∈ B(0, ϵ) := {x ∈ Rn : ∥x ∥ < ϵ} con (x ∗ + v ) ∈ S, y en este caso,
+Tx ∗ (v ) se llama gH−derivada de F en x ∗ . Si F es gH−diferenciable en todo
+x ∈ S, entonces se dice que F es gH−diferenciable.
+                                                                                       8 / 23
+                     Resultados sobre gH-diferenciabilidad
+
+
+
+Contenido
+
+
+1   Planteamiento del problema
+
+
+2   Resultados sobre gH-diferenciabilidad
+
+
+3   Avances en inteligencia computacional
+
+
+4   Línea de investigación propuesta
+
+
+5   Posibles líneas de investigación futuras
+
+
+
+
+                                                             9 / 23
+                       Resultados sobre gH-diferenciabilidad
+
+
+
+gH-diferenciabilidad
+
+En ⌈1⌉ se deriva una condición necesaria y suﬁciente de gH-diferenciabilidad para
+una función de varias variables con valores intervalares:
+
+Teorema ( ver ⌈1⌉)
+Dado 0 = (0, . . . , 0) ∈ Rn y S ⊆ Rn un conjunto abierto y no vacío, sea
+F : S → I(R) una función con valores intervalares. Entonces F es gH
+-diferenciable en x ∗ ∈ S si y solo si
+
+                     (F (x ∗ + v ) ⊖gH F (x ∗ )) ⊖gH Tx ∗ (v )
+                 lim                                           = [0, 0],         (4)
+                v →0                  ∥v ∥
+
+donde Tx ∗ : Rn → I(R) es una función cuasilineal con valores intervalares que
+satisface (3).
+
+
+
+
+                                                                                 10 / 23
+                        Resultados sobre gH-diferenciabilidad
+
+
+
+gH-diferenciabilidad
+
+Observación
+Siguiendo el teorema 4.2 en ⌈1⌉, si F : S ⊆ Rn → I(R) es gH diferenciable en
+                                 ∗          ∗
+x ∗ ∈ S, existen n intervalos Ax1 , ..., Axn ∈ I(R) tales que
+                        X
+                         n                     X
+                                               n                 X
+                                                                 n                X
+                                                                                  n              
+          Tx ∗ (v ) =           vi aˆi −              vi a˜i ,         vi aˆi +         vi a˜i       ∀v ∈ Rn
+                         i=1                   i=1               i=1              i=1
+
+              ai +a¯i                      x∗        a¯i −ai                 x∗
+donde aˆi =      2 , es el punto medio de Ai y a˜i =     2 , es el radio de Ai .
+
+Notación: Dado x ∗ , denotaremos por ax ∗ = (a1 , . . . , an ) y por āx ∗ = (a¯1 , . . . , a¯n ).
+
+
+
+
+                                                                                                               11 / 23
+                    Resultados sobre gH-diferenciabilidad
+
+
+
+gH-diferenciabilidad
+
+Deﬁnición
+Dado un conjunto abierto y no vacío S ⊆ Rn , x ∗ ∈ S y u ∈ Rn , sea F : S → I(R)
+una función con valores intervalares. La gH−derivada direccional de F en x ∗ en la
+dirección de u se deﬁne como
+                                                F (x ∗ + tu) ⊖gH F (x ∗ )
+                      Du F (x ∗ ) = lim                                   .
+                                            t→0             t
+
+Teorema
+Dado un conjunto abierto y no vacío S ⊆ Rn , sea F : S → I(R) una función con
+valores intervalares. Si F es gH -diferenciable en x ∗ ∈ S, entonces existe la
+gH−derivada direccional de F en x ∗ en la dirección de u para todo u ∈ Rn , y
+
+                                         Du F (x ∗ ) = Tx ∗ (u)
+
+
+
+                                                                               12 / 23
+                     Avances en inteligencia computacional
+
+
+
+Contenido
+
+
+1   Planteamiento del problema
+
+
+2   Resultados sobre gH-diferenciabilidad
+
+
+3   Avances en inteligencia computacional
+
+
+4   Línea de investigación propuesta
+
+
+5   Posibles líneas de investigación futuras
+
+
+
+
+                                                             13 / 23
+                   Avances en inteligencia computacional
+
+
+
+Avances en inteligencia computacional
+
+Aparte del estudio inicial de las Relaciones de orden vía automorﬁsmos y el uso
+bajo condiciones de optimalidad en el caso diferenciable, un enfoque para resolver
+estos problemas de optimización es el uso técnicas de inteligencia emocional.
+    Algoritmos evolutivos intervalares para problemas multiobjetivos
+    (IMaOPs): esquemas de dominancia adaptados a intervalos, ajuste dinámico
+    de la relación de preferencia durante la búsqueda [8].
+    Algoritmos basados en búsqueda aleatoria.
+    Formulaciones multiobjetivo clásicas a partir de extremos, centro y
+    anchura del intervalo, permitiendo aplicar NSGA-II, PSO multiobjetivo,
+    etc. [9].
+
+Observación
+La literatura reciente conecta cada vez más la teoría de órdenes intervalares
+con metaheurísticas multiobjetivo: esta línea de investigación se sitúa
+exactamente en esa intersección.
+
+
+                                                                                14 / 23
+                   Avances en inteligencia computacional
+
+
+
+Avances en inteligencia computacional
+
+    Algoritmos evolutivos intervalares para muchos objetivos (IMaOPs):
+    esquemas de dominancia adaptados a intervalos, ajuste dinámico de la
+    relación de preferencia durante la búsqueda [8].
+    Algoritmos basados en búsqueda aleatoria.
+    Formulaciones multiobjetivo clásicas a partir de extremos, centro y
+    anchura del intervalo, permitiendo aplicar NSGA-II, PSO multiobjetivo,
+    etc. [9], [8].
+
+Observación
+La literatura reciente conecta cada vez más la teoría de órdenes intervalares
+con metaheurísticas multiobjetivo: esta línea de investigación se sitúa
+exactamente en esa intersección.
+
+
+
+
+                                                                                15 / 23
+                        Línea de investigación propuesta
+
+
+
+Contenido
+
+
+1   Planteamiento del problema
+
+
+2   Resultados sobre gH-diferenciabilidad
+
+
+3   Avances en inteligencia computacional
+
+
+4   Línea de investigación propuesta
+
+
+5   Posibles líneas de investigación futuras
+
+
+
+
+                                                           16 / 23
+                     Línea de investigación propuesta
+
+
+
+Doble enfoque de la propuesta
+
+
+Enfoque teórico                                         Enfoque computacional
+    Revisión del marco de relaciones                       Búsqueda aleatoria (random
+    ⪯φ .                                                   search) como referencia base.
+    Transformación de problemas                            Algoritmos evolutivos
+    intervalares en multiobjetivo real                     multiobjetivo (tipo NSGA-II).
+    (extremos, centro-radio, anchura).                     Inteligencia de enjambre (PSO
+    Estudio de condiciones de                              multiobjetivo).
+    φ-eﬁciencia.
+
+Meta: comparar cómo cambian las soluciones aproximadas al variar φ, sin buscar
+     un algoritmo nuevo, sino comprender la interacción orden–algoritmo.
+
+
+
+
+                                                                                           17 / 23
+                  Línea de investigación propuesta
+
+
+
+Metodología propuesta
+
+                               1. Formular el problema
+                                 intervalar (o difuso)
+
+
+                               2. Fijar automorﬁsmo φ
+                                      (orden ⪯φ )
+
+
+                           3. Transformar en problema
+                                multiobjetivo real
+
+
+                           4. Resolver con búsqueda
+                        aleatoria / evolutivo / enjambre
+
+
+                              5. Analizar el frente
+                          obtenido y su sensibilidad a φ
+
+                                                           18 / 23
+                      Línea de investigación propuesta
+
+
+
+Ejemplos y benchmarks previstos
+
+    Problemas sencillos de una o dos variables, con imprecisión artiﬁcial en los
+    coeﬁcientes o en la función objetivo.
+    Adaptación intervalar de benchmarks multiobjetivo clásicos (familias ZDT,
+    DTLZ), introduciendo incertidumbre acotada ±ε en los objetivos.
+    Implementación reproducible en Python (p. ej. numpy, DEAP/pymoo),
+    comparando distintos φ sobre el mismo problema base.
+
+
+
+
+                                                                                   19 / 23
+                     Posibles líneas de investigación futuras
+
+
+
+Contenido
+
+
+1   Planteamiento del problema
+
+
+2   Resultados sobre gH-diferenciabilidad
+
+
+3   Avances en inteligencia computacional
+
+
+4   Línea de investigación propuesta
+
+
+5   Posibles líneas de investigación futuras
+
+
+
+
+                                                                20 / 23
+                  Posibles líneas de investigación futuras
+
+
+
+Extensiones futuras diseño en ingeniería bajo incertidumbre 
+aplicacion a optimización robusta de carteras
+
+
+
+
+                                                                             21 / 23
+                        Posibles líneas de investigación futuras
