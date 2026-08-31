@@ -19,13 +19,14 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      b, ground truth
-    current subpart:    b1, not started. phase a is complete: a0, a0-b, a1, a1-b,
-                        a2, a3, a3-b, a4, a4-b, a5 and a-close are all done and
-                        docs/phase_a_summary.md is the close-out document
+    current subpart:    b1, awaiting review. phase a is complete: a0, a0-b, a1,
+                        a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all done
+                        and docs/phase_a_summary.md is the close-out document
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
                         docs/a_close_containment.md, docs/phase_a_summary.md,
+                        docs/b1_phi_efficient_sets.md,
                         docs/verified.md, docs/answered.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
@@ -51,9 +52,8 @@ phase a, formulation. complete, tagged phase-a-complete.
     a5  problems_tier1.py                   done
 
 phase b, ground truth
-    b1  phi-efficient sets, derivation      not started, and is the current
-                                            subpart
-    b2  reference_fronts.py                 not started
+    b1  phi-efficient sets, derivation      awaiting review
+    b2  reference_fronts.py                 not started, and is the next subpart
 
 phase c, solvers
     c1  random_search.py                    not started
@@ -154,9 +154,14 @@ p-04 | does any construction in [7] or [8] drive the interval width from the
     summaries in literature/ and not against the papers, which is a weaker
     citation and has to be visible as one
 
-p-05 | under which numbered definition does [10] state the gh-difference? | b1 |
-    narrowed in a3, content settled by v-39; the paper is still wanted for the
-    number and for the midpoint-radius criterion CONTEXT.md section 6 gives b1
+p-05 | under which numbered definition does [10] state the gh-difference, and
+    under which theorem number the midpoint-radius regularity criterion? | b1,
+    then b2 | open and now realised. b1 needed the criterion and had to cite it as
+    "theorem 34" from literature/gH-differentiability calculus for interval
+    analysis.md with the number unverified, [10] not being in papers/. the outcome
+    of the check is not in doubt for p1, every function involved being a
+    polynomial with a strictly positive radius, and b1 does not rest on the
+    number; the paper is still wanted so the memoria can cite it properly
 
 p-06 | does [1] anywhere identify the "strict minimum" it asserts at x = 0 for the
     worked function after example 3.9 with one of definition 3.1's three named
@@ -177,15 +182,24 @@ format: s-nn | question / assumption / status / discussed in
 s-01 | (16) of [1] is inconsistent in the w subscripts on the beta terms: the
     expanded line carries w_2i, the collected line w_2i-1. which is intended?
     assumption: b1 does not cite (16), it expands (15) from the definitions.
-    status: not yet asked, costs nothing until b1 runs.
+    status: not yet asked. b1 has run and the assumption held: (15) was expanded
+    from the definitions of Lambda_i and B_i and (16) is cited nowhere, so the row
+    now costs nothing until the memoria wants to print (16).
     discussed in: docs/a0_framework.md c14.
 
 s-02 | example 3.9's "w_i >= 0 not equal zero for all i": nonnegative and not all
     zero, or strictly positive?
     assumption: the former, the latter making statement 3 redundant.
-    status: not yet asked, and any b1 result turning on a zero weight carries the
-    ambiguity explicitly.
-    discussed in: docs/a0_framework.md c14 and a-2.
+    status: not yet asked, and now carrying a witness rather than only the
+    redundancy argument. b1 found a point of p1, x = (4/3, 1) under phi_lu, that
+    example 3.8 statement 3 certifies as an optimal and hence weak optimal
+    solution and at which (15) holds for w = (0, 0, 1, 0) and for no strictly
+    positive w, so the strict reading makes example 3.9 statement 1 false there.
+    no b1 result depends on the answer: every optimality conclusion is drawn from
+    example 3.8, whose weight condition is unambiguous, and the strict reading
+    would cost only the necessity direction.
+    discussed in: docs/a0_framework.md c14 and a-2, docs/b1_phi_efficient_sets.md
+    section 6.
 
 s-03 | [1]'s efficient solution for (12) requires no strictness, which is strong
     efficiency and not definition 3.1(2). which does theorem 3.1 mean?
@@ -239,11 +253,13 @@ s-08 | p1's phi-efficient set is a two-dimensional band and not a curve, and a1
     quadratic with a constant hessian, so the closed form is the
     weight-parameterized stationarity map x(w) = -(sum_k w_k H_k)^-1 (sum_k w_k
     b_k) over the weight simplex, which b2 samples and pushes points through.
-    status: re-answered in a4. the old answer rested on the set being a product of
-    intervals whose x_2 bounds do not depend on x_1; a1-b removed that premise for
-    phi_lu and phi_ls, and it was the wrong criterion anyway. b1 is expected to
-    produce the map, not a bounding box.
-    discussed in: docs/a1_uncertainty_model.md part 3 and a1-b section 3.
+    status: answered as assumed, and b1 delivered what a4 predicted. the map is
+    an explicit rational function of the weight vector for all three phi and the
+    band has a closed-form boundary, two conic arcs for phi_lu, one for phi_ls and
+    none for phi_cw, whose set is the unit square. the row can retire on the
+    supervisors' acknowledgement.
+    discussed in: docs/a1_uncertainty_model.md part 3 and a1-b section 3,
+    docs/b1_phi_efficient_sets.md sections 2.2 and 2.4.
 
 s-09 | tier 1 uses one absolute half-width for every objective, which on zdt1 is
     large relative to f_1 and small relative to f_2. scale it per objective?
@@ -308,13 +324,20 @@ r-03 | the pdf of [1] is not in the repository and the extracted text lacks its
     trigger: already realised in a0.
     mitigation: obtain the pdf; p-01 and p-02.
 
-r-04 | example 3.9's hypotheses fail at p0's anchor x = 0 under phi_lu, both image
-    coordinates of the first objective being non-differentiable there.
-    cost: b1's "is the published conclusion recovered" check may not close by the
-    planned route.
-    trigger: b1 starting p0.
-    mitigation: example 3.8, or definition 3.1 directly, or the research chat;
-    a4 carries the same warning at src/problems_tier0.py's p0_anchor.
+r-04 | example 3.9's hypotheses fail at p0's anchor x = 0, and b1 found the
+    failure wider than this row stated: the differentiability hypothesis fails
+    under all three phi, p0's first half-width being |x|, and theorem 3.3 refuses
+    phi-convexity under phi_lu and phi_ls as well.
+    cost: realised. p0's efficient set is not reachable from the optimality
+    conditions under any phi, and under phi_cw they hold and are vacuous, the
+    first image coordinate being identically zero.
+    trigger: fired in b1.
+    mitigation: the one this row named worked for the anchor. example 3.8
+    statement 3 makes x = 0 an optimal solution under all three phi, so the
+    published conclusion is recovered and the procedure is validated before p1.
+    the sets come from definition 3.1 applied directly. the consequence is that
+    p0 is a smoke test and not a b2 fixture, docs/b1_phi_efficient_sets.md
+    section 7.4, and the row retires with that reasoning.
 
 r-05 | example 2.1 shows the class permits different coefficients per objective,
     which none of the three implemented phi use.
@@ -472,3 +495,32 @@ format:
     CONTEXT.md section 10 e3 now takes the sensitivity signal from phi_lu against
     phi_cw. s-11 widened to three questions, r-06 corrected, its phi_cw clause
     withdrawn. 115 tests pass | b1
+2026-09-01 | b1 | docs/b1_phi_efficient_sets.md, PROGRESS.md | the phi-efficient
+    sets derived. condition (15) confirmed to be stationarity of the weighted sum
+    before use, from [1] lines 715-723. p1: all ten image coordinates convex with
+    constant psd hessians so theorem 3.3 gives phi-convexity globally under all
+    three phi, regularity trivial by [10]'s midpoint-radius criterion, cited to
+    the literature/ summary with the number unverified, p-05. (15) is a diagonal
+    linear system and x(w) comes out as an explicit rational map for each phi,
+    verified exactly on 3000 random weights per phi with the gradient identically
+    zero. the singular weights characterised: none for phi_lu, and for phi_ls and
+    phi_cw exactly the two rays putting all mass on one width coordinate, each
+    giving a consistent system with a line of solutions and never an inconsistent
+    one. the sets in closed form, two conic arcs bounding phi_lu, one bounding
+    phi_ls, and phi_cw's set exactly the unit square; all three strictly interior
+    to the box. optimality taken from example 3.8 statement 3 rather than example
+    3.9 statement 3, uniqueness of a strictly convex minimiser covering zero
+    weights too, with example 3.9 statement 1 closing the set from the other
+    side. against a4's grid: 0 of 20000 derived points dominated under any phi,
+    phi_cw exact at every resolution, and the phi_lu and phi_ls residue shown to
+    be the finite grid, the excess distance fixed at 2.6 spacings while the
+    absolute distance halves with the spacing and 0 of 289, 0 of 1418 and 0 of
+    961 in-region points falling under a 24-fold local refinement. both
+    containments reproduced from the closed forms independently of
+    docs/a_close_containment.md. p0: hypotheses fail wider than r-04 stated, the
+    anchor still recovered under all three phi by example 3.8, the sets only from
+    definition 3.1 directly, and p0 recorded as a smoke test and not a fixture.
+    s-02 gains a witness against the strict reading, s-08 answered, r-04 realised
+    and mitigated. one thing does not close and was not patched: on the two
+    singular segments the published conditions give weak optimality and no
+    optimality verdict | b2, which encodes the map and the regions
