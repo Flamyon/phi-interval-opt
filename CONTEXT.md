@@ -155,8 +155,12 @@ two consequences the project depends on, both from the paper and not assumed:
         gives ((f_l + f_u)/2, (f_u - f_l)/2). centre and half-width.
         [1] states that phi-convexity under it coincides with cw-convexity.
 
-these three are the experiment variable. they are the named examples of [1] and
-the project implements them and nothing else. an automorphism satisfying the
+these three are the experiment variable. they are the three named examples of [1]
+that are each identified with a convexity notion, and the project implements them
+and nothing else. they are not the only named examples in the paper: example 2.1,
+the car-purchase illustration, is a further named phi with fully explicit
+coefficients, verified in a0. it carries no convexity notion and no optimality
+condition and it is not part of the experiment. an automorphism satisfying the
 determinant condition but not named in the paper is not added to the experiment on
 the project's own initiative; if one is ever wanted, it is proposed in the research
 chat with a reason and recorded as a decision first.
@@ -259,9 +263,20 @@ from [1], by name and number:
 
     a point that matters for b1 and is easy to get wrong: example 3.9 requires
     Lambda_i^T f and B_i^T f to be differentiable. it does not require f_l and f_u
-    to be differentiable. [1] makes exactly this point with a worked function whose
-    endpoint functions are non-differentiable at the candidate point while the
-    relevant combination is smooth and convex.
+    to be differentiable. that is the hypothesis as [1] prints it, and a0 confirms
+    it verbatim. it is not a usable weakening: every phi_i is invertible, so
+    differentiability of the pair (Lambda_i^T f, B_i^T f) and of the pair (f_l, f_u)
+    are equivalent for every admissible phi, at every point.
+    the worked function [1] gives after example 3.9 does not illustrate that
+    distinction and must not be read as doing so. under the phi it is stated under,
+    example 2.2, Lambda_i^T f is f_l and B_i^T f is f_u, so the two hypotheses are
+    the same hypothesis; and the function satisfies neither, since both image
+    coordinates of its first objective are non-differentiable at the candidate
+    point. what [1] states is weaker: the aggregate sum of the image coordinates is
+    smooth and convex there and its gradient vanishes, which the paper calls "a
+    version of condition (15)". example 3.9 therefore does not apply at that point
+    and b1 must reach the anchor by another published route or record that the
+    conditions do not close.
 
     [1] itself describes these as techniques of karush-kuhn-tucker type. using a
     published result of a paper in scope is using that paper. no rule in this
@@ -652,9 +667,15 @@ session discipline:
     tests are written in the same session as the code they test.
     every session ends with its output brought to the research chat for review
     before the next begins.
-    neither CONTEXT.md nor PROGRESS.md is edited by the coding agent. the agent ends
-    each session by emitting a session record block; the human pastes it into
-    PROGRESS.md after review.
+    the agent maintains PROGRESS.md: it updates the subpart status, the verified
+    facts, the open questions, the risks and the session log at the end of each
+    session, and it does not put specification there.
+    the agent may correct CONTEXT.md, but only against a source verified in the
+    same session, and only where that source refutes what this file says. every
+    such change is reproduced in the session reply as an explicit before and after
+    block, so it can be read without diffing. no silent edits, and nothing is
+    tidied, reworded or reorganised that was not required to be corrected. an
+    ambiguity is not a refutation and does not license an edit.
 
 code style, no exceptions:
     comments in english, lowercase only, using # exclusively.
