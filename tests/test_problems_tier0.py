@@ -3,7 +3,6 @@
 import numpy as np
 import pytest
 
-from interval_math import centre, half_width, width
 from phi_transforms import phi_registry
 from problems_tier0 import p0, p0_anchor, p1, problem_registry
 
@@ -31,40 +30,54 @@ def grid_points(lower, upper, n_side=grid_side):
     return np.stack([axis.ravel() for axis in mesh], axis=-1)
 
 
+# the route of one phi record that matches a problem's declared representation.
+# this is the whole of the pairing convention: the problem names the form it
+# computes its intervals in and the phi record is asked for that route by name,
+# so the two cannot be crossed. no endpoint is ever rebuilt from a centre and a
+# radius on the way, which is the no-round-trip rule of src/problems_tier0.py.
+def route_for(problem, record):
+    return getattr(record, "of_" + problem.representation)
+
+
 # the 2m columns of the transformed real problem, phi applied to each objective
-def phi_image(problem, x, phi, params=None):
+def phi_image(problem, x, record, params=None):
+    route = route_for(problem, record)
     columns = []
-    for f_l, f_u in problem.evaluate(x, params):
-        first, second = phi(f_l, f_u)
+    for pair in problem.evaluate(x, params):
+        first, second = route(*pair)
         columns.append(first)
         columns.append(second)
     return np.stack(columns, axis=-1)
 
 
-# the m columns of the underlying crisp problem, the interval centres
+# the m columns of the underlying crisp problem, the interval centres.
+# the centre is the first coordinate of example 2.4 under either route, so it is
+# read off phi_cw rather than recomputed, and the problem's own route is used.
 def crisp_image(problem, x, params=None):
-    return np.stack([centre(f_l, f_u) for f_l, f_u in problem.evaluate(x, params)], axis=-1)
+    route = route_for(problem, phi_registry["cw"])
+    return np.stack([route(*pair)[0] for pair in problem.evaluate(x, params)], axis=-1)
+
+
+# the m centre arrays and the m half-width arrays of a problem, under its own route
+def centres_and_half_widths(problem, x, params=None):
+    route = route_for(problem, phi_registry["cw"])
+    pairs = [route(*pair) for pair in problem.evaluate(x, params)]
+    return [c for c, _ in pairs], [r for _, r in pairs]
 
 
 # the non-dominated index set of a population of objective rows, usual pareto relation.
 # local to this test file on purpose, as in tests/test_phi_transforms.py: c1 and
 # d2 own the real one and a second implementation under src/ would be two
 # implementations of the same thing.
-# the rows are rounded first, and that is r-07 and not a convenience. the second
-# image coordinate of phi_ls and phi_cw is a subtraction of the two endpoints,
-# and (c + r) - (c - r) is not exactly 2r in doubles, so two points sharing a
-# width by construction can differ in it by an ulp. left alone that noise makes
-# dominated points survive: on this grid it adds 4 points to phi_ls and 10 to
-# phi_cw at delta = 1/8, and added 9 and 17 at a1-b's delta = 1/10. phi_lu is
-# untouched in every case, since it has no width column at all.
-# nine decimals is far below the smallest real gap on these grids, which is a
-# multiple of 1/3600, and far above the noise. with it the box grid reproduces
-# a1-b's published counts exactly: 31 crisp, 460 lu, 1505 ls, 961 cw.
-# this rounding is local to this file and is not the project's dominance rule.
-# a4-b measures the choices and recommends one; docs/a4b_dominance_tolerance.md
-# carries the measurements and d-02 in PROGRESS.md carries the open decision.
-def non_dominated_indices(image, decimals=9):
-    rows = np.round(image, decimals)
+# there is no tolerance and no rounding here, and that is d-02 closed in a3-b.
+# a4 needed a rounding step because the image was reached by subtracting
+# endpoints, which broke the width column's structural ties and left dominated
+# points alive; p1 now returns its centre and half-width and phi is applied to
+# those, so the ties survive and the plain relation is exact. the box grid still
+# reproduces a1-b's counts, 31 crisp, 460 lu, 1505 ls and 961 cw, and now does it
+# with no tolerance at all.
+def non_dominated_indices(image):
+    rows = image
     keep = np.ones(rows.shape[0], dtype=bool)
     for i in range(rows.shape[0]):
         not_worse = np.all(rows <= rows[i], axis=1)
@@ -140,17 +153,24 @@ def test_evaluate_returns_one_pair_per_interval_objective(problem):
     # columns the transformed problem has after phi, and phi is not applied here.
     assert len(pairs) == problem.n_obj
     assert problem.n_obj == 2
-    for f_l, f_u in pairs:
-        assert f_l.shape == (37,)
-        assert f_u.shape == (37,)
+    assert problem.representation in ("endpoints", "centre_radius")
+    for first, second in pairs:
+        assert first.shape == (37,)
+        assert second.shape == (37,)
 
 
 # both problems return legitimate intervals everywhere in their box
 @pytest.mark.parametrize("problem", [p0, p1], ids=["p0", "p1"])
-def test_lower_endpoint_never_exceeds_upper_endpoint(problem):
+def test_every_interval_is_legitimate(problem):
+    # the same statement in either representation: f_l <= f_u for a problem that
+    # returns endpoints, r >= 0 for one that returns a centre and a half-width.
+    # the second is checked as it is computed and is not turned into the first.
     x = random_population(problem, size=2000)
-    for f_l, f_u in problem.evaluate(x, None):
-        assert np.all(f_l <= f_u)
+    for first, second in problem.evaluate(x, None):
+        if problem.representation == "endpoints":
+            assert np.all(first <= second)
+        else:
+            assert np.all(second >= 0.0)
 
 
 # the registry holds both problems under the names the rest of the project uses
@@ -209,15 +229,15 @@ def test_p1_centres_and_half_widths_at_three_points():
     # the third point is the corner carrying the largest half-width on the box,
     # and the pair (0.6875, 0.1875) is the design's asymmetry: r_1 is driven by
     # x_2 and r_2 by x_1, so they differ at the same point.
-    # every value here is an exact double now that delta is dyadic, so the
-    # comparison could be exact; it is left as approx because the assertion is
-    # about the design and not about the arithmetic, which a4-b measures.
+    # p1's representation is centre_radius, so evaluate returns exactly these
+    # four arrays and nothing is recovered from an endpoint.
     x = np.array([[0.0, 0.0], [1.0, 1.0], [-0.5, 1.5]])
-    (f1_l, f1_u), (f2_l, f2_u) = p1.evaluate(x, None)
-    assert centre(f1_l, f1_u) == pytest.approx([1.0, 1.0, 0.5])
-    assert centre(f2_l, f2_u) == pytest.approx([2.0, 0.0, 2.5])
-    assert half_width(f1_l, f1_u) == pytest.approx([0.125, 0.375, 0.6875])
-    assert half_width(f2_l, f2_u) == pytest.approx([0.125, 0.375, 0.1875])
+    (centre_1, radius_1), (centre_2, radius_2) = p1.evaluate(x, None)
+    assert p1.representation == "centre_radius"
+    assert centre_1 == pytest.approx([1.0, 1.0, 0.5])
+    assert centre_2 == pytest.approx([2.0, 0.0, 2.5])
+    assert radius_1 == pytest.approx([0.125, 0.375, 0.6875])
+    assert radius_2 == pytest.approx([0.125, 0.375, 0.1875])
 
 
 # p1's half-width stays strictly positive on the box, over a1-b's measured range
@@ -227,8 +247,7 @@ def test_p1_half_width_is_strictly_positive_on_the_box(p1_box_grid):
     # shifted by the change and identical in span. a width that reached zero
     # would put the second image coordinate of phi_ls and phi_cw into the
     # cancellation regime of r-07.
-    for f_l, f_u in p1.evaluate(p1_box_grid, None):
-        radii = half_width(f_l, f_u)
+    for _, radii in p1.evaluate(p1_box_grid, None):
         assert np.min(radii) == pytest.approx(0.125)
         assert np.max(radii) == pytest.approx(0.6875)
         assert np.all(radii > 0.0)
@@ -239,8 +258,8 @@ def test_p1_width_varies_within_a_centre_bin(p1_box_grid):
     # a1-b measures 0.966 of the span for both objectives on the box. the
     # assertion is a floor well under that, so the test states the property and
     # not the number.
-    for f_l, f_u in p1.evaluate(p1_box_grid, None):
-        fraction = within_bin_width_spread(centre(f_l, f_u), width(f_l, f_u))
+    for centres, radii in zip(*centres_and_half_widths(p1, p1_box_grid)):
+        fraction = within_bin_width_spread(centres, 2.0 * radii)
         assert fraction >= 0.9
 
 
@@ -248,8 +267,8 @@ def test_p1_width_varies_within_a_centre_bin(p1_box_grid):
 def test_p1_width_varies_within_a_centre_bin_near_the_efficient_region(p1_slice_grid):
     # a1-b measures 0.987 and 0.895 of the span here, the two objectives no longer
     # agreeing because the modified design is not symmetric in x_1 and x_2.
-    for f_l, f_u in p1.evaluate(p1_slice_grid, None):
-        fraction = within_bin_width_spread(centre(f_l, f_u), width(f_l, f_u))
+    for centres, radii in zip(*centres_and_half_widths(p1, p1_slice_grid)):
+        fraction = within_bin_width_spread(centres, 2.0 * radii)
         assert fraction >= 0.85
 
 
@@ -283,3 +302,63 @@ def test_the_three_phi_give_distinct_sets_near_the_efficient_region(p1_slice_gri
     # 0.190 on the slice. strict inequalities only, no numbers.
     assert 0.0 < containment(lu, cw) < 1.0
     assert 0.0 < containment(cw, lu) < 1.0
+
+
+# phi_cw's exact route returns the half-width itself, ties and all
+def test_phi_cw_of_centre_radius_preserves_the_half_widths_distinct_values(p1_box_grid):
+    # r_1 depends on x_2 alone, so on a grid it takes far fewer distinct values
+    # than there are points, and every pair of points sharing x_2 shares r_1
+    # exactly. those ties are what the order is built on. a4-b measured the
+    # endpoint route shattering 46 of them into 210 on this grid.
+    # the count is compared with the half-width's own count and not with 46, so
+    # the test says the ties are preserved rather than pinning a resolution.
+    centres, radii = centres_and_half_widths(p1, p1_box_grid)
+    for objective, (own_centre, own_radius) in enumerate(zip(centres, radii)):
+        exact = phi_registry["cw"].of_centre_radius(own_centre, own_radius)[1]
+        assert len(np.unique(exact)) == len(np.unique(own_radius)), objective
+        assert np.array_equal(exact, own_radius), objective
+        # the contrast, asserted only in the direction that cannot be brittle:
+        # rebuilding endpoints and differencing them back can add distinct values
+        # and can never remove one.
+        shattered = phi_registry["cw"].of_endpoints(
+            own_centre - own_radius, own_centre + own_radius)[1]
+        assert len(np.unique(shattered)) >= len(np.unique(own_radius)), objective
+
+
+# the exact route's efficient sets on one grid at offset zero, computed once
+magnitude_sweep_cache = {}
+
+
+# the non-dominated set of every phi with a constant added to every centre
+def exact_sets_at_offset(grid, offset):
+    centres, radii = centres_and_half_widths(p1, grid)
+    sets = {}
+    for name, record in phi_registry.items():
+        columns = []
+        for own_centre, own_radius in zip(centres, radii):
+            columns.extend(record.of_centre_radius(own_centre + offset, own_radius))
+        sets[name] = non_dominated_indices(np.stack(columns, axis=-1))
+    return sets
+
+
+# the exact route's efficient sets do not move as the centres grow in magnitude
+@pytest.mark.parametrize("offset", [0.0, 1e3, 1e6, 1e9], ids=["1", "1e3", "1e6", "1e9"])
+def test_the_exact_route_is_stable_under_centre_magnitude(offset):
+    # adding a constant to a column cannot change dominance, so the exact answer
+    # is the same set at every offset and anything that moves is arithmetic
+    # alone. this reproduces a4-b's magnitude sweep as an assertion.
+    # only the exact route is asserted on. the endpoint route was measured here
+    # as the contrast and is not tested, because what it does is sample
+    # dependent and not a property: on this 41 x 41 grid it gives phi_ls 711
+    # against 706 and phi_cw 447 against 441 at offset 0, and then happens to
+    # agree with the exact route at 1e3, 1e6 and 1e9, where the low bits it
+    # corrupts fall off the end of the shifted centre instead. a4-b saw the
+    # opposite pattern on the 61 x 61 grid, 7, 8, 2, 3 and 12 spurious points as
+    # the offset grew. that is v-41's sample dependence and a test must not pin
+    # it in either direction.
+    grid = grid_points(*p1.bounds(), n_side=41)
+    if "reference" not in magnitude_sweep_cache:
+        magnitude_sweep_cache["reference"] = exact_sets_at_offset(grid, 0.0)
+    reference = magnitude_sweep_cache["reference"]
+    for name, exact_set in exact_sets_at_offset(grid, offset).items():
+        assert exact_set == reference[name], name

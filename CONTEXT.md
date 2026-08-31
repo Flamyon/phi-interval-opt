@@ -170,6 +170,47 @@ phi_cw is the half-width. they are not the same quantity and the difference is n
 cosmetic: it is what makes example 2.3 and example 2.4 different orders. no code
 and no table may use one word for both.
 
+### the same phi in centre and half-width coordinates
+
+an interval is carried either as its endpoint pair (f_l, f_u) or as its centre and
+half-width (c, r), and the two are related by the linear map
+
+    (f_l, f_u) = M (c, r),    M = [[1, -1], [1, 1]],    det M = 2
+
+since f_l = c - r and f_u = c + r. composing the phi above with M gives
+
+    first  = (lambda_2i-1 + lambda_2i) c + (lambda_2i - lambda_2i-1) r
+    second = (beta_2i-1  + beta_2i)  c + (beta_2i  - beta_2i-1)  r
+
+and the determinant of that composite is 2 (lambda_2i-1 beta_2i - lambda_2i
+beta_2i-1), that is 2 det phi.
+
+three things follow and all three matter.
+
+it is the same phi. this is an evaluation-order change and not an interface
+change: the paper's definition on endpoint pairs, above, is unchanged and is what
+the class is defined by. the composite is that same automorphism read in other
+coordinates, so no order, no efficient set and no result depends on which route is
+evaluated. only the arithmetic does.
+
+admissibility is still the paper's condition, tested on lambda and beta. the
+composite determinant is twice the paper's, so it vanishes exactly when the
+paper's condition fails and never otherwise; there is no separate admissibility
+notion for the composite and none is introduced.
+
+the three named examples in these coordinates:
+
+    phi_lu   (c - r, c + r),   which is M itself
+    phi_ls   (c - r, 2r),      the full width read and never subtracted
+    phi_cw   (c, r),           the identity, determinant 1 = 2 * (1/2)
+
+the reason for having both routes is arithmetic and is measured in
+docs/a4b_dominance_tolerance.md: reaching the second coordinate of phi_ls or
+phi_cw by subtracting endpoints costs an error of order eps|c|, reaching 1.1e-07
+at |c| = 1e9, and destroys the exact ties a width column has by construction,
+46 distinct values becoming 210 on p1's grid. subpart a3 implements both routes
+from one coefficient pair and one admissibility check.
+
 ### the parameterized extension, available and not required
 
 because admissibility is exactly the determinant condition, a family interpolating
@@ -235,6 +276,31 @@ step 5, analyse sensitivity to phi.
     filter it under the order of phi_b, and the reverse. this asks what a decision
     maker committed to phi_b would lose by being handed phi_a's solutions, and it
     needs no common scale between image spaces.
+
+one dominance relation, everywhere, and no tolerance anywhere.
+    every comparison of two objective rows in this project, in c1's random search,
+    in d2's coverage and cross-evaluation, in b2's reference fronts and in any
+    post hoc filtering of a solver's output, is the ordinary pareto relation on
+    doubles with no tolerance, no rounding and no epsilon.
+    exactness is obtained by evaluation order and not by tolerance: a problem
+    returns the representation in which its intervals are actually computed and
+    phi is applied once to that, per section 4 and the no-round-trip rule in
+    section 10. the arithmetic error that a tolerance would have had to cover is
+    not committed in the first place.
+    a tolerance was measured before it was rejected. docs/a4b_dominance_tolerance.md
+    finds a clean band eleven decades wide at p1's magnitudes and shows it
+    narrowing by one decade per decade of centre magnitude, with no clean
+    tolerance at all by |c| = 1e12, and finds that scaling per column by that
+    column's own size is worse than not scaling, the noise in a width column
+    being proportional to the centre it was subtracted out of. this is the
+    reasoning behind d-02 and it is not reopened without a measurement.
+    pymoo 0.6.2 could not be given a tolerance even if one were wanted. its
+    NonDominatedSorting takes an epsilon argument which computes F - epsilon and
+    ranks that; subtracting the same number from every entry of every row is a
+    translation, and dominance is translation invariant, so the argument cannot
+    change a front. verified in a4-b, and nsga-ii's default survival passes
+    epsilon=None in any case. so pymoo compares raw doubles exactly, which is the
+    project's rule, and the two agree by construction rather than by patching.
 
 
 ## 6. what theory the project uses, and from where
@@ -467,23 +533,50 @@ is code, and a session record block for PROGRESS.md.
             in a comment.
         phi_lu, phi_ls, phi_cw: the three instances, each with a comment naming its
             example number in [1] and its coefficients.
-        phi_registry: name to function, so experiment code loops over phi rather
-            than naming them.
-    every function takes two numpy arrays, the lower and upper bounds of one
-    interval objective over a population, and returns two arrays.
+        make_phi_of_centre_radius(lam, beta): returns a function of (c, r)
+            producing the same two image coordinates through the composite of
+            section 4. it is the same phi in other coordinates and not a second
+            family, and admissibility is tested on lam and beta, once, for both
+            routes.
+        phi_registry: name to a record carrying the coefficients and both routes,
+            so experiment code loops over phi rather than naming them. the record
+            is not itself callable, so a caller has to name of_endpoints or
+            of_centre_radius and cannot silently take the wrong one.
+    every function takes two numpy arrays for one interval objective over a
+    population and returns two arrays.
+    the no-round-trip rule. a problem returns the representation in which its
+    intervals are actually computed, and phi is applied as one linear map to that
+    representation, through the matching route. endpoints are never built from a
+    centre and a radius and then differenced back, and a centre and a half-width
+    are never recovered by halving the sum and difference of endpoints that were
+    built that way. both round trips are exact in real arithmetic and neither is
+    in doubles.
     no phi that is not a named example is defined here, not even flagged.
     tests: phi_lu is the identity; phi_ls returns the full width in its second
     coordinate and phi_cw the half-width, and the two differ by a factor of two on
     a random sample; make_phi rejects a singular coefficient pair; every phi in the
-    registry is invertible on a random sample, recovering (f_l, f_u).
+    registry is invertible on a random sample, recovering (f_l, f_u); the
+    centre-radius route is the endpoint route composed with M, on coefficients
+    outside the registry as well as inside it; the composite determinant is twice
+    the paper's and vanishes with it; the two routes agree on a random sample and
+    agree bitwise on a dyadic one.
 
 ### a4: problems_tier0.py
     the small analytic problems of slide 19, which that slide lists before zdt and
     dtlz. they are the only problems where the phi-efficient set is available in
     closed form, so they are the only place a reference front exists, the only place
     igd is defined, and the only place the solvers can be validated.
-    each problem exposes evaluate(x, params) returning the interval bounds of every
-    objective, bounds() returning the decision box, and n_vars and n_obj.
+    each problem exposes evaluate(x, params) returning every objective's interval,
+    representation naming the form those pairs are in, bounds() returning the
+    decision box, and n_vars and n_obj.
+    representation is "endpoints" for (f_l, f_u) or "centre_radius" for (c, r),
+    and it is the no-round-trip rule of a3 applied here: a problem declares and
+    returns the form in which its intervals are actually computed, and the caller
+    pairs it with the matching route of phi_registry. p0's is "endpoints", which
+    is the form [1] states it in, and its centre and half-width follow in closed
+    form and exactly, c_1 = 0 with r_1 = |x| and c_2 = r_2 = x^2 / 2. p1's is
+    "centre_radius", which is the form a1 designs it in, and p1 builds no endpoint
+    at all.
     problem p0 is the worked function [1] gives after example 3.9, transcribed in
     a0. the paper states a conclusion about the point x = 0 under one specific phi.
     that is the published anchor. it is not a statement about the whole efficient
@@ -511,11 +604,21 @@ is code, and a session record block for PROGRESS.md.
     origin and needs a box containing negative values.
     tests: the bounds contain p0's anchor point; the width of p1 varies
     independently of the centre over a sample, which is step 1's condition checked
-    as an assertion rather than assumed.
+    as an assertion rather than assumed; phi_cw's centre-radius route leaves the
+    half-width's distinct values exactly as many as the half-width itself has, so
+    the ties the order rests on survive; the efficient sets under the declared
+    route do not move as a constant is added to every centre, up to 1e9.
 
 ### a5: problems_tier1.py
     zdt1 and dtlz2 as interval problems under the model chosen in a1, same interface
-    as a4.
+    as a4, including representation and the no-round-trip rule.
+    tier 1 is built in centre and half-width form from the start. a1's construction
+    is F_i(x) = [f_i(x) - r_i(x), f_i(x) + r_i(x)], so the centre and the
+    half-width are the two functions actually given and the endpoints are derived
+    from them; a5 therefore declares "centre_radius", returns (f_i, r_i), and
+    never forms an endpoint. the crisp baseline is the r_i = 0 case in the same
+    form, and in it the second image coordinate of phi_ls and phi_cw is exactly
+    zero rather than a cancellation residue.
     sweep: the crisp case plus at least three levels of imprecision. the crisp case
     is a degenerate baseline and is labelled as such, since under phi_ls and phi_cw
     its second coordinate is identically zero and half the transformed objectives

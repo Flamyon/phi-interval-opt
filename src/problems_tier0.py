@@ -1,13 +1,29 @@
 # the two tier 0 analytic problems, evaluation only. no efficient set is derived
 # here and none is assumed; what the phi-efficient sets are is b1's work.
-# every problem is a Problem record and the four names on it are the calling
+# every problem is a Problem record and the five names on it are the calling
 # convention a4, a5, c1 and c2 all share:
-#   evaluate(x, params)  the interval bounds of every objective, as a tuple of
-#                        (f_l, f_u) pairs, one pair per interval objective, each
-#                        entry a numpy array over the population.
+#   evaluate(x, params)  every objective's interval, as a tuple of pairs, one pair
+#                        per interval objective, each entry a numpy array over the
+#                        population. which pair it is depends on representation.
+#   representation       "endpoints" for (f_l, f_u), "centre_radius" for (c, r).
 #   bounds()             the decision box, as (lower, upper) arrays.
 #   n_vars               the number of decision variables.
 #   n_obj                the number of interval objectives, m.
+#
+# the no-round-trip rule, which is why representation exists. a problem returns
+# the representation in which its intervals are actually computed, and phi is
+# applied as one linear map to that representation, through the matching route of
+# src/phi_transforms.py: phi_registry[name].of_endpoints for "endpoints" and
+# .of_centre_radius for "centre_radius". endpoints are never built from a centre
+# and a radius and then differenced back, and a centre and a radius are never
+# recovered by halving a sum and a difference of endpoints that were themselves
+# built that way. both round trips are exact in real arithmetic and neither is in
+# doubles: docs/a4b_dominance_tolerance.md measures the second one destroying a
+# width column's structural ties, 46 true values becoming 210, with an error of
+# eps|c| that reaches 1.1e-07 at |c| = 1e9. the two routes are the same phi, so
+# nothing about the order depends on this; only the arithmetic does.
+# the calling convention that makes the pairing automatic is
+# getattr(phi, "of_" + problem.representation).
 # n_obj is m and never 2m. the transformed real problem that theorem 3.1 of [1]
 # licenses solving has 2m objectives, m interval objectives times two image
 # coordinates each, and that doubling is done by src/phi_transforms.py and never
@@ -22,7 +38,10 @@ from collections import namedtuple
 
 import numpy as np
 
-Problem = namedtuple("Problem", ("name", "n_vars", "n_obj", "evaluate", "bounds"))
+Problem = namedtuple(
+    "Problem",
+    ("name", "n_vars", "n_obj", "representation", "evaluate", "bounds"),
+)
 
 
 # splits a population array into one array per decision variable
@@ -61,6 +80,19 @@ p0_n_obj = 2
 # B_1^T f = |x| are both non-differentiable at 0, so that example's hypotheses
 # fail exactly there.
 p0_anchor = np.array([0.0])
+
+
+# p0's representation is the endpoint pair, which is the form [1] states it in.
+# the centre and half-width follow from the paper's endpoint functions in closed
+# form, and both are exact, so nothing is lost by keeping the paper's form:
+#   F_1(x) = [-|x|, |x|]   c_1 = (-|x| + |x|) / 2 = 0      r_1 = (|x| + |x|) / 2 = |x|
+#   F_2(x) = [0, x^2]      c_2 = (0 + x^2) / 2 = x^2 / 2   r_2 = (x^2 - 0) / 2 = x^2 / 2
+# p0 is also the case where the endpoint route carries no cancellation at all:
+# -|x| + |x| is exactly zero in ieee arithmetic, |x| - (-|x|) is exactly 2|x|, and
+# x^2 - 0 is exactly x^2, so the two routes agree bitwise here for every x. the
+# declaration is therefore about faithfulness to [1] and not about arithmetic,
+# and the no-round-trip rule keeps it that way.
+p0_representation = "endpoints"
 
 
 # p0, the worked function [1] gives after example 3.9, as two interval objectives
@@ -149,13 +181,22 @@ def p1_parameters(params):
     # a1's two standing conditions on the pair. rho >= 1 makes c - r non-convex,
     # which loses theorem 3.3 and example 3.9 together; delta <= 0 lets the
     # half-width vanish, which is the degenerate case of CONTEXT.md section 5
-    # step 1. only rho = 1/4 with delta = 1/10 has been measured; any other
-    # admissible pair passes these checks but carries none of a1-b's numbers.
+    # step 1. only rho = 1/4 has been measured, with delta = 1/10 in a1-b and
+    # delta = 1/8 since d-01; any other admissible pair passes these checks but
+    # carries none of a1-b's numbers.
     if not 0.0 < rho < 1.0:
         raise ValueError("rho must lie strictly in (0, 1); got {}".format(rho))
     if delta <= 0.0:
         raise ValueError("delta must be strictly positive; got {}".format(delta))
     return rho, delta
+
+
+# p1's representation is the centre and half-width pair, which is the form a1-b
+# designs it in: the centres and the half-widths are the four given functions and
+# the endpoints c -+ r are derived from them. so p1 returns (c, r) and builds no
+# endpoint at all, and under the no-round-trip rule nothing downstream builds one
+# either. this is the whole of a3-b's arithmetic content for p1.
+p1_representation = "centre_radius"
 
 
 # p1, the modified two-variable design of a1-b, as two interval objectives
@@ -170,10 +211,7 @@ def evaluate_p1(x, params=None):
     centre_2 = np.square(x_1 - 1.0) + np.square(x_2 - 1.0)
     half_width_1 = rho * np.square(x_2) + delta
     half_width_2 = rho * np.square(x_1) + delta
-    return (
-        (centre_1 - half_width_1, centre_1 + half_width_1),
-        (centre_2 - half_width_2, centre_2 + half_width_2),
-    )
+    return ((centre_1, half_width_1), (centre_2, half_width_2))
 
 
 # p1's decision box, the square a1-b measured every efficient set inside
@@ -181,8 +219,10 @@ def bounds_p1():
     return np.array(p1_lower), np.array(p1_upper)
 
 
-p0 = Problem(name="p0", n_vars=p0_n_vars, n_obj=p0_n_obj, evaluate=evaluate_p0, bounds=bounds_p0)
-p1 = Problem(name="p1", n_vars=p1_n_vars, n_obj=p1_n_obj, evaluate=evaluate_p1, bounds=bounds_p1)
+p0 = Problem(name="p0", n_vars=p0_n_vars, n_obj=p0_n_obj,
+             representation=p0_representation, evaluate=evaluate_p0, bounds=bounds_p0)
+p1 = Problem(name="p1", n_vars=p1_n_vars, n_obj=p1_n_obj,
+             representation=p1_representation, evaluate=evaluate_p1, bounds=bounds_p1)
 
 # name to problem, so experiment code loops over problems rather than naming them,
 # the same convention phi_registry uses in src/phi_transforms.py.

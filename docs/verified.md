@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-42.
+highest number in use: v-43.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -318,3 +318,20 @@ v-42 | the arithmetic half of the s-06 guard, built in a2 and recorded here so
     v-41 | project diagnostic, not a paper | asserted in
     tests/test_interval_math.py::test_constant_width_construction_is_constant_up_to_rounding
     | a2 | 2026-08-31
+
+v-43 | an interval's endpoint pair and its centre-half-width pair are related by
+    the linear map (f_l, f_u) = M (c, r) with M = [[1, -1], [1, 1]] and det M = 2,
+    and composing the phi of [1] with M gives first = (lam_1 + lam_2) c +
+    (lam_2 - lam_1) r and second = (beta_1 + beta_2) c + (beta_2 - beta_1) r,
+    whose determinant is 2 (lam_1 beta_2 - lam_2 beta_1) = 2 det phi. so the
+    composite is singular exactly when the paper's admissibility condition fails,
+    the centre-radius route is the same automorphism in other coordinates rather
+    than a second family, and [1]'s definition on endpoint pairs stands unchanged.
+    checked entry by entry in exact rational arithmetic on 2000 random coefficient
+    sets before it was implemented, with no mismatch and no determinant
+    disagreement | derivation from [1] section 2, page 3, lines 170-172, checked
+    in this project | the composite is stated in CONTEXT.md section 4; the check
+    is asserted in
+    tests/test_phi_transforms.py::test_the_centre_radius_route_is_phi_composed_with_the_endpoint_map
+    and ::test_the_composite_determinant_is_twice_the_paper_determinant
+    | a3-b | 2026-08-31

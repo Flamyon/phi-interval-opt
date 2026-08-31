@@ -11,7 +11,7 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-42, p-06, s-10, r-10, d-02.
+    highest numbers in use: v-43, p-06, s-10, r-10, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -19,8 +19,8 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      a, formulation
-    current subpart:    a4-b, awaiting review (a0, a0-b, a1, a1-b, a2, a3 and
-                        a4 also awaiting review)
+    current subpart:    a3-b, awaiting review (a0, a0-b, a1, a1-b, a2, a3, a4
+                        and a4-b also awaiting review)
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
@@ -95,17 +95,25 @@ d-01, 2026-08-31. p1's default delta becomes 1/8, replacing a1-b's 1/10.
     measured at 1/10 and their efficient sets are unchanged by this.
     status: closed.
 
-d-02, 2026-08-31. proposed: the project computes every phi image from the centre
-    and the half-width rather than by subtracting endpoints, and then uses one
-    untoleranced dominance relation everywhere.
+d-02, 2026-08-31, taken in the research chat and built in a3-b. every phi image is
+    computed from the representation the problem declares, and one untoleranced
+    dominance relation is used everywhere.
     why: it is the only option measured that needs no tolerance parameter, is
     stable over twelve decades of magnitude, and reaches inside pymoo rather than
-    patching its output.
-    source: docs/a4b_dominance_tolerance.md part 3.
-    affects: a3's make_phi signature, a4 and a5's evaluate, c1, c2, d2 and b2. it
-    pre-empts s-06, which asks the supervisors this question and has not been
-    asked, and that is the reason it is proposed and not taken.
-    status: proposed, awaiting the research chat.
+    patching its output. the framing that made it cheap is that it is an
+    evaluation-order change and not an interface change: (f_l, f_u) = M (c, r)
+    with M = [[1, -1], [1, 1]] and det M = 2, so composing with phi gives the same
+    phi in other coordinates and the composite determinant is 2 det phi, leaving
+    admissibility exactly where [1] states it, on lam and beta.
+    source: docs/a4b_dominance_tolerance.md for the measurements; the composite
+    was re-derived and checked in a3-b before being implemented, on 2000 random
+    rational coefficient sets, and is in CONTEXT.md section 4.
+    affects: a3 gained make_phi_of_centre_radius and a paired registry, make_phi
+    itself unchanged; a4 gained Problem.representation, p0 declaring "endpoints"
+    and p1 "centre_radius"; a5 builds tier 1 in centre and half-width form from
+    the start; c1, c2, d2 and b2 compare with no tolerance. the a4 test's rounding
+    step is gone and the same grids return a1-b's counts without it.
+    status: closed.
 
 ## 4. verified facts
 
@@ -191,14 +199,18 @@ s-05 | CONTEXT.md section 9 excludes sections 4 and 5 of [1], but section 5 hold
 
 s-06 | computing the second image coordinate as f_u - f_l loses it at constant or
     near-zero width. should make_phi carry (centre, half_width) instead?
-    assumption: a3 keeps the specified (f_l, f_u) signature, since changing a
-    specified interface is not the agent's call.
-    status: not yet asked, and it is now the blocking question: a4-b measured the
-    alternatives and recommends the (centre, half_width) route as d-02, which is
-    this row's answer arrived at from the project's side, so the row should be put
-    to the supervisors before d-02 is taken.
-    discussed in: docs/a4b_dominance_tolerance.md part 3, and part 1 of
-    docs/a1_uncertainty_model.md, and v-41 and v-42.
+    assumption: both, which is what a3-b built. make_phi keeps the specified
+    (f_l, f_u) signature and is unchanged; make_phi_of_centre_radius is the same
+    phi in the other coordinates, and a problem declares which route applies to it.
+    status: the row is narrower than a4-b framed it and is no longer blocking. the
+    mathematics is unchanged: the composite is phi o M with det 2 det phi, so [1]'s
+    definition on endpoint pairs and its admissibility condition both stand as
+    written, and no order, efficient set or result depends on the route. what is
+    left to ask is a presentation question for the memoria, whether the supervisors
+    want the centre-radius form given as the working form of phi or kept as an
+    implementation note.
+    discussed in: docs/a4b_dominance_tolerance.md part 3, CONTEXT.md section 4,
+    and v-41 and v-42.
 
 s-07 | the step 1 degeneracy check runs on a uniform sample of the box, which
     zdt1 with half-width eps*x_n passes while phi_cw reproduces the crisp
@@ -278,19 +290,6 @@ r-06 | if an interval analogue of proposition 5.1 holds, the phi_lu and phi_ls
     mitigation: report that pair as a check on s-05's prediction, not as an
     independent finding; the phi_cw comparisons are unaffected, v-25.
 
-r-07 | computing an image coordinate as f_u - f_l is unsafe at constant or near
-    zero width, the cancellation being the whole second coordinate of phi_ls and
-    phi_cw.
-    cost: a degenerate construction presents as the three phi differing, which
-    reads as a positive result, so arithmetic could be reported as a phi effect.
-    trigger: already realised, in the a1 diagnostic and again in a4. a4-b measured
-    it: the error is eps|c|, reaching 1.1e-07 at |c| = 1e9, and it shatters the
-    width column's 46 true values into 210.
-    mitigation: d-02 once the research chat takes it, and until then the local
-    rounding in the a4 test; delta = 1/8 by d-01, which makes p1 exact on a dyadic
-    sample only; the a2 and a3 halves of s-06, v-42 and v-41; the eps=0 tier 1
-    baseline is labelled degenerate.
-
 r-08 | a construction can pass every width-versus-centre statistic on a uniform
     sample and still give phi_cw the crisp efficient set, a uniform sample of a
     large box containing almost nothing near that set.
@@ -308,8 +307,8 @@ r-09 | a1's width driver rule was derived from two benchmarks and one tier 0
     mitigation: treat it as a working rule and not a result, and run the full a1
     diagnostic including the slice check on every new problem before use.
 
-r-10 | retired in a3, and r-01 in a4. both are in docs/answered.md with the
-    reasoning that retired them.
+r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
+    docs/answered.md with the reasoning that retired them.
 
 ## 8. session log
 
@@ -356,3 +355,11 @@ format:
     d-01 after exact verification; the (centre, half_width) route recommended as
     d-02, open. pymoo's epsilon argument shown to be a no-op | the research chat
     takes or rejects d-02; then a5
+2026-08-31 | a3-b | src/phi_transforms.py, src/problems_tier0.py, their tests,
+    CONTEXT.md, PROGRESS.md, docs/answered.md, docs/verified.md | the composite
+    re-derived and checked before implementing; both routes built from one
+    coefficient pair and one admissibility check; p1 now primary in centre and
+    half-width and p0 in endpoints; the a4 rounding step deleted and a1-b's counts
+    reproduced without it. 55 tests pass. d-02 closed, r-07 retired, s-06 narrowed
+    to a presentation question, v-43 added | a5, which builds tier 1 in centre and
+    half-width form
