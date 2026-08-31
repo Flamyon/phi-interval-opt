@@ -10,11 +10,16 @@ project started 2026-08-30. nothing has been built.
 ## 1. where the project stands
 
     current phase:      a, formulation
-    current subpart:    a0 and a0-b, awaiting review
+    current subpart:    a2, awaiting review (a0, a0-b and a1 also awaiting review)
     blocked on:         nothing
     files on disk:      docs/a0_framework.md
+                        docs/a1_uncertainty_model.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
+                        src/interval_math.py
+                        tests/conftest.py
+                        tests/test_interval_math.py
+                        requirements.txt, versions pinned to the venv
 
 
 ## 2. subpart status
@@ -23,8 +28,8 @@ status is one of: not started, in progress, awaiting review, done, reopened.
 
 phase a, formulation
     a0  verification pass over [1]          awaiting review
-    a1  uncertainty model                   not started
-    a2  interval_math.py                    not started
+    a1  uncertainty model                   awaiting review
+    a2  interval_math.py                    awaiting review
     a3  phi_transforms.py                   not started
     a4  problems_tier0.py                   not started
     a5  problems_tier1.py                   not started
@@ -258,6 +263,36 @@ v-28 | the fuzzy order is the interval order applied at every alpha-level:
     from proposition 2.2 | [1] | definition 4.1, page 12, lines 851-862; eq (18),
     lines 865-872; proposition 4.1, lines 875-878 | a0-b | 2026-08-31
 
+v-30 | a constant half-width collapses phi_lu, phi_ls and phi_cw to one order and
+    to the crisp order. on zdt1 (n=30, m=2) and dtlz2 (n=12, m=3) at eps in
+    {0.05, 0.5}, over 5000 uniform points, all four non-dominated index sets are
+    identical, not merely equal in size. this is CONTEXT.md section 5 step 1's
+    constant-width clause, confirmed | project diagnostic, not a paper |
+    docs/a1_uncertainty_model.md part 1, exact arithmetic, seed 20260831 | a1 |
+    2026-08-31
+
+v-31 | a half-width that is an exact function of the centre collapses all three
+    phi to the crisp order too, even when the width is far from constant.
+    proportional imprecision f -> [f(1-eps), f(1+eps)] on zdt1 at eps in
+    {0.10, 0.25} gives width spans of 0.84 and 2.19, correlation +1.0000, and all
+    four index sets identical. this is step 1's "function of the centre alone"
+    clause, confirmed | project diagnostic | docs/a1_uncertainty_model.md part 2
+    (c) | a1 | 2026-08-31
+
+v-32 | multiplicative coefficient imprecision makes the half-width an exact linear
+    function of the centre for any objective that is a monomial in the imprecise
+    coefficient. on zdt1 with f1 = c1*x1, c1 in [1-d, 1+d], objective 1 gives
+    correlation +1.0000 and phi_cw returns the crisp non-dominated set exactly, at
+    d = 0.10 and d = 0.25 | project diagnostic | docs/a1_uncertainty_model.md part
+    2 (b) | a1 | 2026-08-31
+
+v-33 | all six image coordinates of a problem are convex under all three phi if
+    and only if (centre - half_width) is convex and half_width is convex, since
+    centre + half_width and centre are non-negative combinations of those two.
+    this is the design rule p1 is built to | derived from [1] theorem 3.3 and the
+    coefficients of examples 2.2, 2.3 and 2.4, verified in a0 as v-06 to v-08 and
+    v-12 | docs/a1_uncertainty_model.md part 3 | a1 | 2026-08-31
+
 v-29 | the conclusion's "better option" claim about the inclusion-order
     automorphism is conditional and not general. it is stated for the case m = 1
     and under the antecedent "if one of the objectives of a decision making is to
@@ -268,6 +303,21 @@ v-29 | the conclusion's "better option" claim about the inclusion-order
     order satisfies. it is structural, not empirical, and compares no solution
     sets. this refines v-23 | [1] | conclusion, page 20, lines 1503 and 1509-1516
     | a0-b | 2026-08-31
+
+v-34 | the interval arithmetic of [1] is: [a_l, a_u] + [b_l, b_u] = [a_l + b_l,
+    a_u + b_u], and lam . [a_l, a_u] = [lam a_l, lam a_u] if lam >= 0 and
+    [lam a_u, lam a_l] if lam < 0. the sign rule is printed as a two-case brace,
+    so the endpoint swap is part of the definition and not a convention this
+    project added. [1] attributes both operations to its own reference [21] | [1]
+    | section 2, page 2, lines 101-106 | a2 | 2026-08-31
+
+v-35 | [1] never defines a centre, a midpoint, a width, a radius or a
+    gh-difference, and never uses those words. the only place those quantities
+    appear is as image coordinates of examples 2.3 and 2.4. so centre, half_width
+    and width have their definitions in [1] only through those two examples, and
+    the gh-difference has no source in [1] at all | [1] | established by
+    exhaustive search of the whole file for hukuhara, gh, midpoint, center,
+    centre, width and radius, case-insensitive, zero hits | a2 | 2026-08-31
 
 
 ## 5. questions the papers answer
@@ -297,6 +347,25 @@ p-03 | does an interval-space analogue of proposition 5.1 appear in any source
     framework, and its [26] and [31] | b1 | open, blocked on p-01, since [1]'s
     bibliography is not in the extracted text and those numbers cannot yet be
     resolved to works |
+
+p-04 | does any construction in [7] or [8], the two interval evolutionary
+    algorithm papers, drive the interval width from the decision vector rather
+    than by a constant band? both extend crisp benchmarks into interval ones, and
+    [8] is named in CONTEXT.md section 3 as the methodological template for doing
+    so, so their construction is directly comparable to a1's | a5 | open, needs
+    the two papers rather than their literature/ summaries |
+
+p-05 | does stefanini, arana-jimenez and sorini 2025, [10] in the project's
+    numbering, state the gh-difference exactly as
+    a -gh b = [min{a_l - b_l, a_u - b_u}, max{a_l - b_l, a_u - b_u}], with the
+    two-branch definition a = b + c or b = a + (-1) c, and in which numbered
+    definition of its section 2? a2 implemented gh_difference from
+    literature/gH-differentiability calculus for interval analysis.md section 2,
+    because the paper is not in papers/. that is a summary and not a paper, so
+    under the evidence rule of CONTEXT.md section 11 the formula is not yet
+    established. the same paper is CONTEXT.md section 6's source for the
+    midpoint-radius regularity criterion b1 needs, so one acquisition closes both
+    | b1, and a2 on re-check | open, needs the paper itself |
 
 
 ## 6. questions only the supervisors can answer
@@ -351,6 +420,44 @@ s-05 | CONTEXT.md section 9 excludes sections 4 and 5 of [1] as the fuzzy branch
     agent's call. if an empirical result contradicts the prediction, that is a
     finding about the interval case and not a refutation of [1] | not yet asked
     |
+
+s-06 | the phi transforms are numerically unsafe at small width. computing the
+    second image coordinate as f_u - f_l loses it entirely when the true width is
+    constant or near zero: on the a1 part 1 diagnostic that turned four identical
+    non-dominated sets of 16 into |lu|=16 and |ls|=|cw|=30, which reads as a phi
+    effect and is rounding noise. CONTEXT.md section 10 a3 specifies make_phi as a
+    function of (f_l, f_u), which forces the subtraction. should the interface
+    carry (centre, half_width) instead? | a3 keeps the specified (f_l, f_u)
+    signature for now, and a2 and a3 each carry a test that the constant-width
+    case returns identical non-dominated sets under all three phi, so the artefact
+    cannot reach a result unnoticed. changing a specified interface is not a1's
+    call | not yet asked |
+
+s-07 | the degeneracy check CONTEXT.md section 5 step 1 prescribes, and the a4 and
+    a5 tests that implement it, run on a uniform sample of the box. that is not
+    sufficient: zdt1 with half-width eps*x_n passes every width-versus-centre
+    statistic and separates all three phi on a uniform sample, yet on the slice
+    where the efficient set lives phi_cw returns the crisp efficient set exactly.
+    should the check also run on that slice? | yes. a4 and a5 add a second
+    assertion on the slice obtained by holding the non-conflicting variables at
+    their crisp optima. a1's tier 1 forms were chosen against that stronger check
+    | not yet asked |
+
+s-08 | p1's phi-efficient set is a two-dimensional band, not the curve the a4 spec
+    asked for, and a1 establishes that a curve and three distinct phi are not both
+    available at two variables and two interval objectives. accept the band, or
+    change p1's shape? | accept the band. it serves the stated purpose, giving
+    spread and coverage two dimensions of structure rather than one, and it is
+    tractable for b1, being a product of intervals whose x_2 bounds do not depend
+    on x_1. CONTEXT.md section 10 a4 has been corrected to say so | not yet asked |
+
+s-09 | tier 1 uses one absolute half-width for every objective, following slide
+    19's "incertidumbre acotada +-eps en los objetivos". on zdt1 that is a large
+    relative imprecision on f_1, which ranges over [0,1], and a small one on f_2,
+    which ranges over roughly [0,10]. should the half-width be scaled per
+    objective instead? | keep the common absolute width, as the closest reading of
+    slide 19, and record the asymmetry in every tier 1 table. a per-objective
+    scaling is a one-line change if the supervisors prefer it | not yet asked |
 
 
 ## 7. risks
@@ -407,6 +514,46 @@ r-06 | if an interval analogue of proposition 5.1 holds, the phi_lu and phi_ls
     comparisons are unaffected: v-25 records that no statement of [1] relates
     example 2.4 to either of the other two
 
+r-07 | computing a phi image coordinate as f_u - f_l is numerically unsafe when
+    the width is constant or near zero. the cancellation error is of order machine
+    epsilon times |f|, and under phi_ls and phi_cw that error becomes the whole
+    content of the second coordinate | a degenerate construction would present as
+    the three phi differing, which reads as a positive result, rather than as the
+    three phi coinciding, which is the symptom CONTEXT.md section 5 step 1 tells
+    the project to look for. a study could report arithmetic as a phi effect |
+    already realised in the a1 diagnostic, where it gave |lu|=16 against
+    |ls|=|cw|=30 on a construction whose exact answer is four identical sets of 16
+    | a2 and a3 carry the constant-width test described in s-06; the tier 1 eps=0
+    baseline sits exactly at the dangerous limit and is labelled degenerate already
+
+r-08 | a construction can pass every width-versus-centre statistic on a uniform
+    sample and still give phi_cw the crisp efficient set, because a uniform sample
+    of a 30-dimensional box contains almost nothing near the efficient set | tier 1
+    would measure nothing while appearing to measure something, and the failure
+    would surface only at e3 when the phi comparison came out empty | already
+    realised for zdt1 with half-width eps*x_n, measured in a1 part 2 | the width
+    driver rule in a1 part 2, plus the slice check proposed as s-07. a1's
+    recommended tier 1 forms were selected against it
+
+r-09 | a1's width driver rule was derived from two benchmarks and one tier 0 design
+    and has not been tested outside them | a tier 1 or portfolio problem built on
+    it could still be degenerate in a way not yet seen | f1 constructing interval
+    returns for part 2, which is a different kind of problem | treat the rule as a
+    working rule and not a result, and run the full a1 diagnostic including the
+    slice check on every new problem before it is used
+
+r-10 | gh_difference in src/interval_math.py is the first piece of code in the
+    project whose formula is cited to a literature/ summary and not to a paper,
+    because [10] is not in papers/. v-35 records that [1] contains no
+    gh-difference, so there is no second source in scope | if the summary's
+    closed form or its branch condition differs from the paper's, every later use
+    of gh_difference carries the error, and the project would have broken its own
+    evidence rule without noticing | already realised in a2; the comment above the
+    function says so in the code itself | obtain [10] and close p-05. nothing in
+    the committed experiment calls gh_difference yet: the three phi and the tier 0
+    and tier 1 objectives need only add, scalar_multiply, centre, half_width and
+    width, all of which are cited to [1] as v-34 and v-35
+
 
 ## 8. session log
 
@@ -456,3 +603,87 @@ format:
     p-03, s-05 and r-06 raised. |
     next: s-05 goes to the supervisors before b1 or e3 uses anything from section
     5. otherwise unchanged from a0: a1 or a2, and a0 still unblocks a3 and b1.
+
+2026-08-31 | a1 | docs/a1_uncertainty_model.md. CONTEXT.md section 10 a4 corrected
+    in one place, shown as a before and after block in the session reply.
+    PROGRESS.md sections 1, 2, 4, 5, 6, 7 and 8 updated. no src/, no tests, nothing
+    committed. the diagnostic ran from a throwaway script in the session scratchpad
+    under /tmp, numpy only. |
+    outcome: the degeneracy hypothesis of CONTEXT.md section 5 step 1 is confirmed
+    in exact arithmetic on both benchmarks, and its "function of the centre alone"
+    clause is confirmed separately by a proportional-imprecision control. the first
+    run appeared to refute it and did not: computing the width as f_u - f_l turns
+    the constant-width case into what looks like a phi effect, recorded as r-07 and
+    s-06. imprecision in the coefficients is rejected, because it makes the
+    half-width an exact linear function of the centre on any monomial objective and
+    phi_cw then returns the crisp set exactly. imprecision in the objective with a
+    decision-driven half-width is recommended, subject to a width driver rule the
+    session had to derive, since a construction can pass the uniform-sample check
+    and still be degenerate on the efficient set, r-08 and s-07. p1 is proposed
+    with its six image coordinates written out, all convex and differentiable, on a
+    box chosen so the efficient set is interior and example 3.9 is applicable; its
+    efficient set is a two-dimensional band and not the curve a4 asked for, which
+    is why CONTEXT.md was corrected, s-08. tier 1 forms and a five-level eps sweep
+    are fixed for both benchmarks. 4 verified facts, 1 p-row, 4 s-rows, 3 r-rows,
+    6 unsettled items. |
+    next: a1 is reviewed in the research chat before a4, a5 or b1's p1 branch, per
+    CONTEXT.md section 10. a2 is unblocked now and is parallel with that review.
+
+2026-08-31 | a2 | src/interval_math.py, tests/conftest.py,
+    tests/test_interval_math.py, requirements.txt with every version pinned to the
+    venv. branch a2-interval-math, commit on that branch and not on main. the a0,
+    a0-b and a1 edits to CONTEXT.md, PROGRESS.md and docs/ were already uncommitted
+    on main when the session opened and were left uncommitted, so the a2 commit
+    carries only a2's own four files. PROGRESS.md sections 1, 2, 4, 5, 7 and 8
+    updated. CONTEXT.md not changed: nothing read this session refutes it. |
+    outcome: the six functions build and 16 tests pass. add and scalar_multiply are
+    cited to [1] section 2 page 2 lines 101-106, recorded as v-34; the sign rule is
+    printed there as a two-case brace and the negative-scalar endpoint swap is part
+    of the definition. centre, half_width and width are cited to examples 2.4 and
+    2.3, which is the only place [1] defines them, recorded as v-35. the same
+    search established that [1] contains no gh-difference at all, so gh_difference
+    had to be cited to literature/gH-differentiability calculus for interval
+    analysis.md section 2 rather than to [10] itself, which is not in papers/. that
+    is a summary and not a paper, so under the evidence rule it is not established:
+    raised as p-05 and r-10, and the comment above the function says so in the
+    code. gh_difference is implemented with np.minimum and np.maximum on the two
+    endpoint differences, so both branches are resolved entry by entry and one
+    array may hold entries of either; a test asserts the defining property
+    a = b + c or b = a + (-1) c holds entrywise on a 500-entry random array where
+    both branches occur. one item for the research chat: s-06's working assumption
+    says a2 and a3 each carry a constant-width test on the non-dominated sets under
+    all three phi, and a2 cannot, since it has no phi and CONTEXT.md section 10 a2
+    forbids one. a2 carries instead the arithmetic half of that check, that a
+    constant-width construction at centres of order 1000 returns a width constant
+    to better than 1e-12 and exactly twice the half-width; the non-dominated half
+    of the check falls entirely to a3. |
+    pytest output, literal:
+
+        ============================= test session starts ==============================
+        platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/flamyon/quant/imus/phi-interval-opt/.venv/bin/python
+        cachedir: .pytest_cache
+        rootdir: /home/flamyon/quant/imus/phi-interval-opt
+        collecting ... collected 16 items
+
+        tests/test_interval_math.py::test_add_sums_endpoints PASSED              [  6%]
+        tests/test_interval_math.py::test_scalar_multiply_negative_swaps_endpoints PASSED [ 12%]
+        tests/test_interval_math.py::test_scalar_multiply_positive_keeps_endpoints PASSED [ 18%]
+        tests/test_interval_math.py::test_scalar_multiply_zero_gives_degenerate_interval PASSED [ 25%]
+        tests/test_interval_math.py::test_scalar_multiply_mixed_sign_array_is_elementwise PASSED [ 31%]
+        tests/test_interval_math.py::test_centre_half_width_and_width_on_known_intervals PASSED [ 37%]
+        tests/test_interval_math.py::test_width_is_twice_half_width_on_a_random_array PASSED [ 43%]
+        tests/test_interval_math.py::test_gh_difference_first_branch PASSED      [ 50%]
+        tests/test_interval_math.py::test_gh_difference_second_branch PASSED     [ 56%]
+        tests/test_interval_math.py::test_gh_difference_mixed_branches_in_one_array PASSED [ 62%]
+        tests/test_interval_math.py::test_gh_difference_satisfies_its_definition_entrywise PASSED [ 68%]
+        tests/test_interval_math.py::test_degenerate_interval_is_handled PASSED  [ 75%]
+        tests/test_interval_math.py::test_gh_difference_of_an_interval_with_itself_is_zero PASSED [ 81%]
+        tests/test_interval_math.py::test_every_function_preserves_shape PASSED  [ 87%]
+        tests/test_interval_math.py::test_no_function_mutates_its_inputs PASSED  [ 93%]
+        tests/test_interval_math.py::test_constant_width_construction_is_constant_up_to_rounding PASSED [100%]
+
+        ============================== 16 passed in 0.21s ==============================
+
+    next: a3, phi_transforms.py, which a0 unblocked and which a2 now supplies the
+    arithmetic for. p-05 goes with the other paper-acquisition items; it does not
+    block a3, a4 or a5, none of which call gh_difference.

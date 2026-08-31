@@ -490,9 +490,16 @@ is code, and a session record block for PROGRESS.md.
     set and must not be treated as one: what the efficient set is, under each of the
     three phi, is derived in b1.
     problem p1, two variables, two interval objectives, smooth, with an efficient
-    set that is a curve. smoothness is a design requirement: it is what keeps the
-    hypotheses of example 3.9 satisfiable under every phi. its concrete form comes
-    from a1.
+    set of positive extent in the decision space. smoothness is a design
+    requirement: it is what keeps the hypotheses of example 3.9 satisfiable under
+    every phi. its concrete form comes from a1.
+    that set is a two-dimensional band and not a curve, and a1 establishes that a
+    curve is not available: two variables and two interval objectives give a
+    four-objective real problem on a two-dimensional decision space, whose
+    efficient set is generically two-dimensional, and forcing it down to a curve
+    requires the width and centre coordinates to share an optimum, which is
+    exactly the case where phi_cw reproduces the crisp order. a curve and three
+    distinct phi cannot both be had at this size.
     bounds are explicit and are not the unit box. p0's anchor point sits at the
     origin and needs a box containing negative values.
     tests: the bounds contain p0's anchor point; the width of p1 varies
