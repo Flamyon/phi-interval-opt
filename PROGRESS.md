@@ -11,7 +11,7 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-47, p-06, s-11, r-11, d-02.
+    highest numbers in use: v-47, p-06, s-12, r-12, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -19,9 +19,10 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      b, ground truth
-    current subpart:    b1, awaiting review. phase a is complete: a0, a0-b, a1,
-                        a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all done
-                        and docs/phase_a_summary.md is the close-out document
+    current subpart:    b2, awaiting review. b1 is reviewed and done. phase a is
+                        complete: a0, a0-b, a1, a1-b, a2, a3, a3-b, a4, a4-b, a5
+                        and a-close are all done and docs/phase_a_summary.md is
+                        the close-out document
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
@@ -33,10 +34,11 @@ project started 2026-08-30.
                         papers/zitzler_deb_thiele_2000_comparison.pdf
                         papers/deb_thiele_laumanns_zitzler_2002_scalable.pdf
                         src/interval_math.py, src/phi_transforms.py,
-                        src/problems_tier0.py, src/problems_tier1.py
+                        src/problems_tier0.py, src/problems_tier1.py,
+                        src/reference_fronts.py
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
-                        tests/test_problems_tier1.py
+                        tests/test_problems_tier1.py, tests/test_reference_fronts.py
                         requirements.txt, versions pinned to the venv
 
 ## 2. subpart status
@@ -52,8 +54,8 @@ phase a, formulation. complete, tagged phase-a-complete.
     a5  problems_tier1.py                   done
 
 phase b, ground truth
-    b1  phi-efficient sets, derivation      awaiting review
-    b2  reference_fronts.py                 not started, and is the next subpart
+    b1  phi-efficient sets, derivation      done
+    b2  reference_fronts.py                 awaiting review
 
 phase c, solvers
     c1  random_search.py                    not started
@@ -307,6 +309,36 @@ s-11 | three questions about docs/a_close_containment.md, widened in a-close-b
     v-47.
 
 
+s-12 | on the two singular weight rays of phi_ls and phi_cw the published results
+    give weak optimality and no optimality verdict either way, so the status of
+    the segment {(x_1, 0) : 0 < x_1 <= 4/3} under phi_ls and {(x_1, 0) :
+    0 < x_1 <= 1} under phi_cw is undecided. example 3.8 statement 3 does not
+    apply there, the scalar problem having a line of minimisers rather than one;
+    example 3.8 statement 2 and example 3.9 statement 3 need every weight
+    strictly positive, which the singular rays do not have; and no regular weight
+    reaches the interior of the segments, x_2(w) = 0 forcing w_1 = w_3 = 0. are
+    those points optimal solutions for (1MIOP_phi)? every measurement this
+    project has made says they are non-dominated, a4's 61 x 61 grid in b1 section
+    2.6 and b2's dense random sample of 50000 box points at three seeds, 0 of
+    2000 front points dominated under either setting; the published conditions
+    say only that they are weakly optimal.
+    assumption: b2 does not choose and does not patch. efficient_set and
+    reference_front take include_singular_segments with no default, so a caller
+    states which of the two sets it wants, and the value belongs in every table
+    d1 and e1 write next to the seed and the point count. b2 measured what the
+    choice costs so that the question can be priced rather than argued: with the
+    region sample held fixed and the segment added on top, the igd of a fixed
+    test front moves by -0.6 to +5.4 per cent at 1000 reference points and by
+    -0.3 to +2.6 per cent at 5000, and the sign depends on the test front, the
+    segment lowering the igd of a front that already reaches x_2 = 0 and raising
+    that of one that does not.
+    status: not yet asked. nothing is blocked: the two fronts differ on a
+    one-dimensional boundary of a two-dimensional set and every b2 test passes
+    under both settings.
+    discussed in: docs/b1_phi_efficient_sets.md section 2.6, and the module
+    comment of src/reference_fronts.py.
+
+
 ## 7. risks
 
 format: r-nn | risk / cost / trigger / mitigation
@@ -396,6 +428,25 @@ r-11 | the phi_lu inside phi_ls nesting is a theorem in real arithmetic and
     this is not r-07: no endpoint is built and no round trip is performed, the
     cancellation is inside phi's own first coordinate c - r, and no representation
     a problem can declare removes it.
+
+r-12 | the reference front with the singular segments and the one without are two
+    different objects, so an igd computed against one is not comparable with an
+    igd computed against the other, and s-12 says the published conditions do not
+    decide which is the right one.
+    cost: measured, and small rather than negligible. holding the region sample
+    fixed and adding the segment on top, the igd of a fixed test front moves by
+    -0.63 to +5.36 per cent at 1000 reference points, -0.27 to +2.62 per cent at
+    5000 and -0.11 to +1.35 per cent at 20000, the negative figures being the a4
+    61 x 61 grid's non-dominated set and the positive ones a 400-point uniform
+    sample's. so the choice cannot flip a comparison that is not already inside a
+    few per cent at the densities e1 will use, and it can flip one that is.
+    trigger: d1 computing igd and e1 tabling it, under phi_ls or phi_cw. phi_lu
+    has no singular ray at all, b1 section 2.3, so the flag is a no-op there and
+    the risk does not touch it.
+    mitigation: include_singular_segments has no default, so the value is stated
+    at the call site; it is recorded in every table beside the seed and the point
+    count; and where two solvers land within a few per cent of each other under
+    phi_ls or phi_cw, e1 reports the metric both ways rather than picking one.
 
 r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
     docs/answered.md with the reasoning that retired them.
@@ -524,3 +575,24 @@ format:
     and mitigated. one thing does not close and was not patched: on the two
     singular segments the published conditions give weak optimality and no
     optimality verdict | b2, which encodes the map and the regions
+
+2026-09-01 | b2 | src/reference_fronts.py, tests/test_reference_fronts.py,
+    PROGRESS.md | b1's derivation encoded as the map w -> x(w) of section 2.2 and
+    a weight sample, never as the region's inequalities, which live only in the
+    tests as the check that the sample lands where the derivation says. p1 only:
+    both entry points refuse p0 with b1 section 7.4's reason. the weight sample is
+    a dirichlet draw with concentration 0.3, chosen by measurement and not by
+    taste, every extreme of b1 section 2.4 needing a zero weight: the worst gap
+    from a fine lattice of the derived region to the sample is 0.034, 0.165 and
+    0.138 for phi_lu, phi_ls and phi_cw against 0.274, 1.191 and 0.868 at
+    concentration 1. the singular segments are a stated parameter with no default,
+    b1 section 2.6 not closing there and b2 not closing it either; the cost of not
+    knowing was measured rather than argued and is s-12 and r-12, the igd of a
+    fixed test front moving by -0.63 to +5.36 per cent at 1000 reference points
+    and -0.11 to +1.35 per cent at 20000, with the sign depending on the test
+    front. 46 tests pass and 161 in the suite. the dominance test is 0 of 2000
+    front points dominated by 50000 uniform box points, at three seeds, under
+    every phi and under both settings of the flag; on a lattice test set it is not
+    0, one phi_ls segment point colliding with an a4 grid point 5.6e-17 away and
+    losing by one rounding step, which is d-02's subject and is why the test
+    samples randomly | c1, random_search.py
