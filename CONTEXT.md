@@ -674,9 +674,16 @@ session discipline:
     tests are written in the same session as the code they test.
     every session ends with its output brought to the research chat for review
     before the next begins.
-    the agent maintains PROGRESS.md: it updates the subpart status, the verified
-    facts, the open questions, the risks and the session log at the end of each
-    session, and it does not put specification there.
+    work is committed directly to main, one commit per subpart, the message
+    prefixed with the subpart id. no branches. a session that is rejected in
+    review is reverted.
+    the agent maintains PROGRESS.md, which holds current state and open items
+    only: the subpart status, the open questions, the open risks and the session
+    log, updated at the end of each session, and no specification. verified facts
+    live in docs/verified.md, answered questions and retired risks in
+    docs/answered.md, and session-by-session detail in the commit history.
+    PROGRESS.md stays under 200 lines; if it grows past that, something is in the
+    wrong file.
     the agent may correct CONTEXT.md, but only against a source verified in the
     same session, and only where that source refutes what this file says. every
     such change is reproduced in the session reply as an explicit before and after

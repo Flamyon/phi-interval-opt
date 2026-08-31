@@ -865,3 +865,279 @@ relation. a0's ambiguity a-3 records that [1] prints a different one for problem
 count in this document changes, though the degeneracy conclusions of parts 1 and
 2 would not: they rest on the image coordinates being monotone functions of one
 another, which no choice of dominance relation affects.
+
+
+## a1-b, distinct widths
+
+appended 2026-08-31, session a1-b. a1 proposed p1 with r_1 = r_2 = (1/4) x_2^2 +
+1/10, one width function for both interval objectives. under phi_cw the
+transformed image is then (c_1, r, c_2, r) and under phi_ls it is
+(c_1 - r, 2r, c_2 - r, 2r): the second and fourth columns are the same function
+of x, so the nominally four-objective transformed problem is effectively
+three-objective and one column contributes nothing to dominance. p1 is the
+project's only analytic fixture and a redundant column in it is a defect worth
+removing if the cost is acceptable. this section prices that.
+
+all numbers below are from a throwaway script in the session scratchpad, numpy
+only, nothing committed. the grid, the box, rho, delta and the exact mode are
+a1 part 3's, so the control column reproduces a1's published numbers exactly and
+the comparison is like for like.
+
+
+### 1. was a distinct-width variant among the candidates a1 rejected?
+
+partly, and not this one.
+
+of the four named candidates in "four designs that do not work":
+
+    P1-A   r_1 = p x_2,  r_2 = p (1 - x_2)     distinct
+    P1-B   r_1 = p x_2,  r_2 = p (1 - x_2)     distinct
+    P1-C   r_1 = p x_2,  r_2 = p (1 - x_2)     distinct
+    P1-D   r_1 = p x_2,  r_2 = p x_2           identical
+
+so three of the four did carry distinct widths. they were rejected for the first
+of a1's three obstructions: the two half-widths are **opposed**, one increasing
+and one decreasing in the same width variable x_2, and a1 found that the width
+columns alone then make every pair of points with different x_2 incomparable, so
+phi_ls and phi_cw return the whole box. P1-D, the identical-width design, was
+rejected for the second obstruction instead.
+
+a1 also reports a further family, c_1 = x_1^2 + x_2^2, c_2 = (x_1-1)^2 + x_2^2,
+r = p x_2, "with three variants of r_2 and rho in {0.5, 0.8}", rejected for the
+third obstruction, centres monotone in the width variable making phi_lu and
+phi_ls coincide. those three r_2 variants are **not written out** in a1, so their
+forms cannot be reported here.
+
+what is clear is that every distinct-width design a1 records keeps both widths as
+functions of the **same** variable, x_2, and separates them by direction within
+it. the variant asked about here is structurally different: it drives the second
+width by the **other** decision variable, r_2 = (1/4) x_1^2 + 1/10, so the two
+widths are non-monotone in different variables rather than opposed in one. that
+design is not among a1's candidates and a1 did not consider it. the rejection
+reasons on record therefore do not apply to it, and it had to be measured.
+
+
+### 2. the modified p1, measured
+
+unchanged from a1: the box [-0.5, 1.5]^2, the centres c_1 = x_1^2 + (x_2 - 1)^2
+and c_2 = (x_1 - 1)^2 + (x_2 - 1)^2, rho = 1/4, delta = 1/10, and
+r_1 = (1/4) x_2^2 + 1/10. changed: r_2 = (1/4) x_1^2 + 1/10.
+
+#### the image coordinates
+
+a note on the count. the session brief asks for eight image coordinates; there
+are twelve slots, three phi times two objectives times two coordinates, holding
+ten distinct functions, because phi_lu and phi_ls share their first coordinate
+f^l = c - r on each objective. all twelve slots are listed. in a1 the two
+objectives were mirror images and only six needed writing out; that is no longer
+true, which is the whole point of the change.
+
+    objective 1, r_1 = (1/4) x_2^2 + 1/10
+
+      phi_lu  Lam^T f = f^l = c_1 - r_1 = x_1^2 + (3/4) x_2^2 - 2 x_2 + 9/10
+      phi_lu  B^T f   = f^u = c_1 + r_1 = x_1^2 + (5/4) x_2^2 - 2 x_2 + 11/10
+      phi_ls  Lam^T f = f^l = c_1 - r_1, as above
+      phi_ls  B^T f   = f^u - f^l = 2 r_1 = (1/2) x_2^2 + 1/5
+      phi_cw  Lam^T f = (f^l + f^u)/2 = c_1 = x_1^2 + (x_2 - 1)^2
+      phi_cw  B^T f   = (f^u - f^l)/2 = r_1 = (1/4) x_2^2 + 1/10
+
+    objective 2, r_2 = (1/4) x_1^2 + 1/10
+
+      phi_lu  Lam^T f = f^l = c_2 - r_2 = (3/4) x_1^2 - 2 x_1 + x_2^2 - 2 x_2 + 19/10
+      phi_lu  B^T f   = f^u = c_2 + r_2 = (5/4) x_1^2 - 2 x_1 + x_2^2 - 2 x_2 + 21/10
+      phi_ls  Lam^T f = f^l = c_2 - r_2, as above
+      phi_ls  B^T f   = f^u - f^l = 2 r_2 = (1/2) x_1^2 + 1/5
+      phi_cw  Lam^T f = (f^l + f^u)/2 = c_2 = (x_1 - 1)^2 + (x_2 - 1)^2
+      phi_cw  B^T f   = (f^u - f^l)/2 = r_2 = (1/4) x_1^2 + 1/10
+
+objective 2 is now objective 1 with the roles of x_1 and x_2 exchanged and the
+centre shifted, not objective 1 with x_1 replaced by x_1 - 1. the two width
+columns are different functions of x, which is what the change was for:
+
+    phi_ls: width columns identical = False, max|2r_1 - 2r_2| = 1.1250
+    phi_cw: width columns identical = False, max|r_1  -  r_2| = 0.5625
+
+against the original, where both were identical with max difference exactly 0.
+
+#### Hessians, eigenvalues, convexity and stationary points
+
+every coordinate is a degree-2 polynomial with a constant diagonal Hessian, so
+it is differentiable to every order on the whole plane and its convexity verdict
+is global rather than pointwise.
+
+    coordinate                     Hessian        eigenvalues     convex  stationary point       interior
+    obj1 c-r   (lu Lam, ls Lam)    diag(2.0, 1.5)  [1.50, 2.00]    yes     x1=0,      x2=4/3      yes
+    obj1 c+r   (lu B)              diag(2.0, 2.5)  [2.00, 2.50]    yes     x1=0,      x2=0.8      yes
+    obj1 2r    (ls B)              diag(0.0, 1.0)  [0.00, 1.00]    yes     x1 free,   x2=0        yes
+    obj1 c     (cw Lam)            diag(2.0, 2.0)  [2.00, 2.00]    yes     x1=0,      x2=1        yes
+    obj1 r     (cw B)              diag(0.0, 0.5)  [0.00, 0.50]    yes     x1 free,   x2=0        yes
+    obj2 c-r   (lu Lam, ls Lam)    diag(1.5, 2.0)  [1.50, 2.00]    yes     x1=4/3,    x2=1        yes
+    obj2 c+r   (lu B)              diag(2.5, 2.0)  [2.00, 2.50]    yes     x1=0.8,    x2=1        yes
+    obj2 2r    (ls B)              diag(1.0, 0.0)  [0.00, 1.00]    yes     x1=0,      x2 free     yes
+    obj2 c     (cw Lam)            diag(2.0, 2.0)  [2.00, 2.00]    yes     x1=1,      x2=1        yes
+    obj2 r     (cw B)              diag(0.5, 0.0)  [0.00, 0.50]    yes     x1=0,      x2 free     yes
+
+all ten are convex, four of them positive semidefinite rather than positive
+definite: the width coordinates, which are affine in the variable they do not
+depend on and so have a stationary line rather than a stationary point. that
+matches a1, where the two width coordinates had the same degenerate direction;
+here the degenerate directions of the two objectives are different, x_1 for
+objective 1 and x_2 for objective 2. every stationary point and every stationary
+line meets the interior of [-0.5, 1.5]^2, so example 3.9's unconstrained
+stationarity remains available to b1 on this box.
+
+confirmed numerically as well as by hand, by a 20000-chord midpoint convexity
+test as in a1. every violation is negative, meaning convexity holding with slack:
+
+    obj1 c-r  -1.312e-07    obj2 c-r  -9.999e-06
+    obj1 c+r  -1.000e-05    obj2 c+r  -1.389e-05
+    obj1 2r   -2.081e-11    obj2 2r   -1.457e-10
+    obj1 c    -1.073e-05    obj2 c    -9.660e-06
+    obj1 r    -2.444e-11    obj2 r    -1.900e-10
+
+a1's design rule survives unchanged: all six image coordinates per objective are
+convex for all three phi if and only if (c - r) and r are convex, and both hold
+for both objectives here.
+
+#### phi-separation on the box
+
+61x61 grid on [-0.5, 1.5]^2, 3721 points, exact mode, the same as a1 part 3. the
+original is reproduced alongside as a control and matches a1's published table
+row for row.
+
+    half-width range on the box: [0.1000, 0.6625]  (strictly positive: True)
+
+    obj 1: width span 1.1250, corr(centre,width) = -0.4018,
+           median within-centre-bin width spread = 1.0872 (0.966 of span)
+    obj 2: width span 1.1250, corr(centre,width) = -0.4018,
+           median within-centre-bin width spread = 1.0872 (0.966 of span)
+
+    original p1, identical widths                modified p1, distinct widths
+
+    set     |eff|   frac  x1 extent    x2 extent   |  |eff|   frac  x1 extent    x2 extent
+    crisp      31 0.0083 [0.000,1.000] [1.000,1.000]|    31 0.0083 [0.000,1.000] [1.000,1.000]
+    phi_lu    527 0.1416 [0.000,1.000] [0.800,1.333]|   460 0.1236 [0.000,1.333] [0.800,1.333]
+    phi_ls   1271 0.3416 [0.000,1.000] [0.000,1.333]|  1505 0.4045 [0.000,1.333] [0.000,1.333]
+    phi_cw    961 0.2583 [0.000,1.000] [0.000,1.000]|   961 0.2583 [0.000,1.000] [0.000,1.000]
+
+    all four sets interior to the box in both designs.
+
+    modified p1, pairwise:
+      lu/ls: |A|=460   |B|=1505  |A^B|=460   in-A=1.000 in-B=0.306
+      lu/cw: |A|=460   |B|=961   |A^B|=196   in-A=0.426 in-B=0.204
+      ls/cw: |A|=1505  |B|=961   |A^B|=961   in-A=0.639 in-B=1.000
+      lu subset of ls: True     |lu|/|ls| = 0.306
+
+the x_1 extent of phi_lu and phi_ls grows from [0, 1] to [0, 4/3]. that is not
+noise: it is the stationary point of c_2 - r_2 in x_1, which the modification
+moved from x_1 = 1 to x_1 = 1/(1 - rho) = 4/3, exactly as the same mechanism
+moved the x_2 extent to 4/3 in a1. phi_cw's extents are unchanged.
+
+a result worth stating separately, because it is not what one would predict:
+
+    lu: original   527  modified   460   index sets identical: False
+    ls: original  1271  modified  1505   index sets identical: False
+    cw: original   961  modified   961   index sets identical: True
+
+**the phi_cw efficient set is bit-identical under the two designs.** the
+modification changes phi_lu and phi_ls and leaves phi_cw exactly where it was.
+so the redundant column that phi_cw carried in a1 was contributing nothing to
+dominance in the strong sense: removing it changes no membership decision. that
+is a direct confirmation of the defect the session set out to price, and it also
+means the modification buys nothing for phi_cw's measurements.
+
+#### phi-separation near the efficient region
+
+the union bounding box of the three modified phi efficient sets, widened by a
+0.1 margin, is [-0.1, 1.4333]^2. re-gridded at 61x61 there, 3721 points. this is
+the s-07 style check on the slice where the efficient set lives rather than on a
+uniform sample of the whole box.
+
+    half-width range: [0.1000, 0.6136]  (strictly positive: True)
+
+    obj 1: width span 1.0272, corr(centre,width) = -0.3272,
+           median within-centre-bin width spread = 1.0138 (0.987 of span)
+    obj 2: width span 1.0272, corr(centre,width) = -0.4741,
+           median within-centre-bin width spread = 0.9191 (0.895 of span)
+
+    set        |eff|   frac     x1 extent        x2 extent      interior?
+    crisp         40  0.0107  [ 0.002, 0.999]  [ 0.999, 0.999]    True
+    phi_lu       724  0.1946  [ 0.002, 1.331]  [ 0.794, 1.331]    True
+    phi_ls      2496  0.6708  [ 0.002, 1.331]  [ 0.002, 1.331]    True
+    phi_cw      1600  0.4300  [ 0.002, 0.999]  [ 0.002, 0.999]    True
+
+      lu/ls: |A|=724   |B|=2496  |A^B|=724   in-A=1.000 in-B=0.290
+      lu/cw: |A|=724   |B|=1600  |A^B|=304   in-A=0.420 in-B=0.190
+      ls/cw: |A|=2496  |B|=1600  |A^B|=1600  in-A=0.641 in-B=1.000
+
+the two objectives now give different width-versus-centre statistics on the
+slice, 0.987 and 0.895 of span, where on the whole box they were equal at 0.966.
+that asymmetry is expected and is the modification working: the two objectives
+are no longer mirror images. both are far above any degeneracy threshold, and
+the three phi remain distinct on the slice, so the modified design passes the
+s-07 style check as well as the uniform one.
+
+
+### 3. verdict
+
+the modified p1 keeps every property a1 established except one, and the one it
+loses is load-bearing for a different reason than the redundant column.
+
+kept:
+
+    the half-width is strictly positive on the box, [0.1000, 0.6625], so no
+      interval degenerates.
+    all ten distinct image coordinates are degree-2 polynomials, differentiable
+      to every order, so example 3.9's differentiability hypothesis holds.
+    all ten are convex with constant positive semidefinite Hessians, so theorem
+      3.3 holds globally and remark 2.2's pointwise form everywhere. a1's
+      design rule, that this is equivalent to (c - r) and r being convex, is
+      unchanged and satisfied by both objectives.
+    every stationary point and stationary line is interior to the box, so
+      example 3.9 remains available to b1 there.
+    the width is independent of the centre by the statistic that matters, 0.966
+      of span within a centre bin on the box and 0.987 and 0.895 on the slice.
+    all three phi give distinct, non-trivial efficient sets: none equal to the
+      crisp set, none the whole box, all strictly interior to the box.
+    phi_lu remains a strict subset of phi_ls, and phi_cw remains non-nested with
+      phi_lu in either direction.
+    the redundant width column is gone, which is what the change was for.
+
+broken, one thing:
+
+**the efficient set is no longer a product of intervals.** in a1 the efficient
+set of each phi was a rectangle: the x_2 range was the same for every occupied
+x_1 column, for all three phi. under the modification that holds only for
+phi_cw. counting distinct x_2 ranges across the occupied x_1 columns on the
+61x61 grid:
+
+    original p1   phi_lu  31 columns,  1 distinct x_2 range   product of intervals
+                  phi_ls  31 columns,  1 distinct x_2 range   product of intervals
+                  phi_cw  31 columns,  1 distinct x_2 range   product of intervals
+
+    modified p1   phi_lu  41 columns, 13 distinct x_2 ranges  not a product
+                  phi_ls  41 columns, 11 distinct x_2 ranges  not a product
+                  phi_cw  31 columns,  1 distinct x_2 range   product of intervals
+
+    modified phi_lu: x_2 lower bound varies over [0.8000, 1.0000],
+                     x_2 upper bound varies over [1.0000, 1.3333]
+    modified phi_ls: x_2 lower bound constant at 0.0000,
+                     x_2 upper bound varies over [1.0000, 1.3333]
+
+this matters because it is exactly the property s-08's answer rested on. the
+research chat accepted a1's two-dimensional band on the stated ground that it
+"is tractable for b1, being a product of intervals whose x_2 bounds do not
+depend on x_1". under the modification that sentence is false for phi_lu and
+phi_ls: the x_2 bounds do depend on x_1. the set is still two-dimensional and
+still interior and still convex-imaged, but b1 would be deriving a region with a
+curved boundary rather than a rectangle, for two of the three phi.
+
+so the trade is: the modification removes a redundant column from the
+transformed problem, changes nothing at all for phi_cw, and in exchange makes
+b1's derivation harder for phi_lu and phi_ls by replacing a rectangle with a
+region whose x_2 bounds are functions of x_1.
+
+no fix is proposed here, per the session brief. the choice between the redundant
+column and the non-rectangular efficient set is the research chat's, and it
+should be made knowing that s-08 was answered on a premise the modification
+removes.
