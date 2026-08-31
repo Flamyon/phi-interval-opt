@@ -20,6 +20,15 @@ none yet. every s-row is still marked "not yet asked" and stays in PROGRESS.md.
 
 ## retired risks
 
+r-01 | closed in a4. as raised in a0 this said the source papers were not under
+    version control: .gitignore line 1 is "*.txt", so git mv failed and the two
+    files were moved with plain mv. a0-b committed both papers and added the
+    "!papers/*.txt" exception to .gitignore, so the premise is gone: the exact
+    text a0 verified against is now in history and a re-extraction that differed
+    from it would show as a diff | it would have cost the recoverability of the
+    verified text, silently | no longer live | none needed. r-03, the missing pdf
+    of [1], is a different risk and is still open in PROGRESS.md
+
 r-10 | closed in a3, and the entry is kept rather than deleted because the
     reasoning is worth having on record. as raised in a2 this said gh_difference
     was the first piece of code in the project cited to a literature/ summary

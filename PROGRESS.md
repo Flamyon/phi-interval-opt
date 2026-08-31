@@ -7,11 +7,11 @@ research chat.
 this file holds current state and open items only. everything settled lives
 elsewhere:
 
-    docs/verified.md    every verified fact, v-01 to v-41
+    docs/verified.md    every verified fact, v-01 to v-42
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-41, p-05, s-10, r-10.
+    highest numbers in use: v-42, p-05, s-10, r-10.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -19,20 +19,17 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      a, formulation
-    current subpart:    a1-b, awaiting review (a0, a0-b, a1, a2 and a3 also
+    current subpart:    a4, awaiting review (a0, a0-b, a1, a1-b, a2 and a3 also
                         awaiting review)
     blocked on:         nothing
-    files on disk:      docs/a0_framework.md
-                        docs/a1_uncertainty_model.md
+    files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
+                        docs/verified.md, docs/answered.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
-                        src/interval_math.py
-                        tests/conftest.py
-                        src/phi_transforms.py
-                        tests/test_interval_math.py
-                        tests/test_phi_transforms.py
-                        docs/verified.md
-                        docs/answered.md
+                        src/interval_math.py, src/phi_transforms.py,
+                        src/problems_tier0.py
+                        tests/conftest.py, tests/test_interval_math.py,
+                        tests/test_phi_transforms.py, tests/test_problems_tier0.py
                         requirements.txt, versions pinned to the venv
 
 ## 2. subpart status
@@ -44,7 +41,7 @@ phase a, formulation
     a1  uncertainty model                   awaiting review
     a2  interval_math.py                    awaiting review
     a3  phi_transforms.py                   awaiting review
-    a4  problems_tier0.py                   not started
+    a4  problems_tier0.py                   awaiting review
     a5  problems_tier1.py                   not started
 
 phase b, ground truth
@@ -74,8 +71,8 @@ phase f, part 2
 
 ## 3. decisions
 
-decisions taken in the research chat and closed. a decision is reopened only with a
-reason recorded here as a new entry, never by editing the old one.
+decisions taken in the research chat and closed. a decision is reopened only with
+a reason recorded here as a new entry, never by editing the old one.
 
 format:
 
@@ -92,54 +89,31 @@ moved to docs/verified.md in session a1-b. the number is kept in place so that
 every existing reference to "PROGRESS.md section 4", in the session log, in the
 s-rows and in the commit history, still resolves to something.
 
-
 ## 5. questions the papers answer
 
-reading tasks with an owner. no working assumption is attached to these, because
-the source can settle them and guessing is what this project is avoiding.
+reading tasks with an owner. no working assumption, because the source can settle
+them and guessing is what this project is avoiding.
 
-format:
+format: p-nn | question | owner subpart | status
 
-    p-nn | question | owner subpart | status | answer once found
+p-01 | what letter and typeface does [1] use for the automorphism class and the
+    beta row vector, and what works are its [7], [9], [23], [26] and [31]? | a0,
+    then b1 | open, needs the pdf of [1]
 
-p-01 | what letter and typeface does [1] use for the class of automorphisms and
-    for the beta row vector, and what works are behind its own references [7],
-    [9], [23], [26] and [31]? the extracted text drops both glyphs everywhere and
-    ends before the bibliography | a0, then b1 | open, needs the pdf of [1] |
+p-02 | does ishibuchi and tanaka 1990, [9], state the centre-width comparison in
+    the same coefficients as example 2.4 of [1]? | b1 | open, needs the paper and
+    not literature/Center-Width Decomposition.md
 
-p-02 | does ishibuchi and tanaka 1990, [9] in the project's numbering, state the
-    centre-width comparison in the same coefficients as example 2.4 of [1]? this
-    is the provenance sentence in CONTEXT.md section 3, and a0 could not verify it
-    because [1] attributes CW-convexity to its own unresolvable reference [31] |
-    b1 | open, needs the paper itself and not literature/Center-Width
-    Decomposition.md |
+p-03 | does an interval-space analogue of proposition 5.1 appear outside [1],
+    whose own [9], [26] and [31] are the candidates? | b1 | open, blocked on p-01
 
-p-03 | does an interval-space analogue of proposition 5.1 appear in any source
-    outside [1]? [1] itself does not state one, established in a0-b as v-26. the
-    candidates are [1]'s own reference [9], the m = 1 predecessor of this
-    framework, and its [26] and [31] | b1 | open, blocked on p-01, since [1]'s
-    bibliography is not in the extracted text and those numbers cannot yet be
-    resolved to works |
+p-04 | does any construction in [7] or [8] drive the interval width from the
+    decision vector rather than by a constant band? | a5 | open, needs the two
+    papers themselves
 
-p-04 | does any construction in [7] or [8], the two interval evolutionary
-    algorithm papers, drive the interval width from the decision vector rather
-    than by a constant band? both extend crisp benchmarks into interval ones, and
-    [8] is named in CONTEXT.md section 3 as the methodological template for doing
-    so, so their construction is directly comparable to a1's | a5 | open, needs
-    the two papers rather than their literature/ summaries |
-
-p-05 | under which numbered definition does stefanini, arana-jimenez and sorini
-    2025, [10] in the project's numbering, state the gh-difference, and does it
-    print the collected closed form directly? narrowed in a3: the content is no
-    longer open. v-39 establishes the two-branch definition, with its branch test
-    on the interval length, from the presentation, slide 5 equation (2), which is
-    a primary source in papers/, and gh_difference is now cited to it. what is
-    still missing is only the definition number in [10] itself, wanted so the
-    memoria can cite the journal article rather than a slide, and because
-    CONTEXT.md section 6 also needs [10] for the midpoint-radius regularity
-    criterion b1 uses. that second need is unchanged and is the reason to obtain
-    the paper | b1 | narrowed, content settled by v-39, numbering still needs the
-    paper itself |
+p-05 | under which numbered definition does [10] state the gh-difference? | b1 |
+    narrowed in a3, content settled by v-39; the paper is still wanted for the
+    number and for the midpoint-radius criterion CONTEXT.md section 6 gives b1
 
 ## 6. questions only the supervisors can answer
 
@@ -147,205 +121,158 @@ each carries the working assumption the project proceeds on. none blocks work. i
 an answer differs from the assumption, record it as a decision in section 3 and
 list the subparts that have to change.
 
-format:
+format: s-nn | question / assumption / status / discussed in
 
-    s-nn | question | working assumption | asked on | answer
+s-01 | (16) of [1] is inconsistent in the w subscripts on the beta terms: the
+    expanded line carries w_2i, the collected line w_2i-1. which is intended?
+    assumption: b1 does not cite (16), it expands (15) from the definitions.
+    status: not yet asked, costs nothing until b1 runs.
+    discussed in: docs/a0_framework.md c14.
 
-s-01 | equation (16) of [1] is internally inconsistent in the w subscripts on the
-    beta terms: the expanded line carries w_2i, the collected line carries
-    w_2i-1. which is intended? | b1 does not cite (16). it expands (15) directly
-    from the definitions of Lambda_i and B_i, which reproduces the expanded line.
-    (16) is a convenience under a hypothesis (15) does not require | not yet asked
-    |
+s-02 | example 3.9's "w_i >= 0 not equal zero for all i": nonnegative and not all
+    zero, or strictly positive?
+    assumption: the former, the latter making statement 3 redundant.
+    status: not yet asked, and any b1 result turning on a zero weight carries the
+    ambiguity explicitly.
+    discussed in: docs/a0_framework.md c14 and a-2.
 
-s-02 | example 3.9 statements 1 and 2 read "w_i >= 0 not equal zero for all i".
-    does that mean nonnegative and not all zero, or strictly positive? | the
-    former, which is the reading CONTEXT.md section 6 already carries; the latter
-    would make statement 3 redundant. any b1 result that turns on a zero weight in
-    statements 1 or 2 carries the ambiguity explicitly | not yet asked |
+s-03 | [1]'s efficient solution for (12) requires no strictness, which is strong
+    efficiency and not definition 3.1(2). which does theorem 3.1 mean?
+    assumption: the usual pareto definition, as in definition 3.1(2) and pymoo.
+    status: not yet asked; the two differ only when two decision vectors share an
+    image, so the choice is recorded in b2 rather than assumed away.
+    discussed in: docs/a0_framework.md.
 
-s-03 | [1] defines an efficient solution for (12) as one for which no x != x-bar
-    has h_i(x) <= h_i(x-bar) for all i, with no strictness required anywhere. that
-    is strong efficiency, not the usual Pareto efficiency, and it does not match
-    definition 3.1(2). which does theorem 3.1 mean? | the usual Pareto definition,
-    which is what definition 3.1(2) and equation (6) give and what pymoo
-    implements. the two differ only when two distinct decision vectors have the
-    same image, so the choice is recorded in b2 rather than assumed away | not yet
-    asked |
+s-04 | should CONTEXT.md section 2 record that [1]'s conclusion does compare two
+    phi, under the quasilinear-space criterion?
+    assumption: no amendment; the rule that part 1 may not rank phi is about what
+    this study can measure, and [1]'s criterion is structural, not empirical.
+    status: not yet asked, wording only.
+    discussed in: docs/verified.md v-23.
 
-s-04 | should CONTEXT.md section 2 record that the conclusion of [1] does make a
-    comparative statement about two phi, under the quasilinear-space criterion,
-    see v-23? | no amendment. the project rule that part 1 may not rank phi is a
-    project rule about what this study can measure, and it stands independently of
-    what [1] says; the paper's criterion is structural, not empirical, and does not
-    bear on the measurement design | not yet asked |
+s-05 | CONTEXT.md section 9 excludes sections 4 and 5 of [1], but section 5 holds
+    proposition 5.1, which relates two of the three phi. does the exclusion stand?
+    assumption: it stands for implementation; proposition 5.1 is a prediction to
+    be checked, never a result the project asserts, and no analogue is derived.
+    status: not yet asked, wanted before b1 or e3 touches section 5.
+    discussed in: docs/a0_framework.md, a0-b addendum, and v-24 and v-26.
 
-s-05 | CONTEXT.md section 9 excludes sections 4 and 5 of [1] as the fuzzy branch.
-    that exclusion was written before anyone had read section 5, and section 5
-    contains proposition 5.1, which relates the solution sets of the example 2.2
-    and example 2.3 automorphisms, two of the three phi in the experiment, see
-    v-24. does the exclusion stand? | the exclusion stands for implementation. the
-    project formulates the interval problem, implements the three phi as
-    committed, and takes nothing from sections 4 or 5 as a result it claims.
-    proposition 5.1 is recorded as a prediction to be checked empirically, not as
-    a result the project asserts, and no interval analogue is derived from it: [1]
-    does not state one, v-26, and whether theorem 5.1 yields one is not the
-    agent's call. if an empirical result contradicts the prediction, that is a
-    finding about the interval case and not a refutation of [1] | not yet asked
-    |
+s-06 | computing the second image coordinate as f_u - f_l loses it at constant or
+    near-zero width. should make_phi carry (centre, half_width) instead?
+    assumption: a3 keeps the specified (f_l, f_u) signature, since changing a
+    specified interface is not the agent's call.
+    status: not yet asked; both halves of the guard are built and passing, the
+    arithmetic half in a2 as v-42 and the non-domination half in a3 as v-41, and
+    a4 met the artefact again and rounds before every non-domination filter.
+    discussed in: docs/a1_uncertainty_model.md part 1, and v-41 and v-42.
 
-s-06 | the phi transforms are numerically unsafe at small width. computing the
-    second image coordinate as f_u - f_l loses it entirely when the true width is
-    constant or near zero: on the a1 part 1 diagnostic that turned four identical
-    non-dominated sets of 16 into |lu|=16 and |ls|=|cw|=30, which reads as a phi
-    effect and is rounding noise. CONTEXT.md section 10 a3 specifies make_phi as a
-    function of (f_l, f_u), which forces the subtraction. should the interface
-    carry (centre, half_width) instead? | a3 keeps the specified (f_l, f_u)
-    signature for now, and the constant-width check is carried in two halves, so
-    the artefact cannot reach a result unnoticed. changing a specified interface
-    is not a1's call.
-    split recorded in a2, which found it could not carry the whole check: a2 has
-    no phi and CONTEXT.md section 10 a2 forbids one, so a non-dominated set cannot
-    be formed there. a2 carries the arithmetic half, that a constant-width
-    construction returns a width constant to better than 1e-12 at centres of order
-    1000 and exactly twice the half-width, in
-    tests/test_interval_math.py::test_constant_width_construction_is_constant_up_to_rounding.
-    a3 carries the whole of the non-domination half, that the constant-width case
-    returns identical non-dominated sets under all three phi. the original wording
-    of this row asked a2 for the non-domination half as well.
-    both halves are now built. a3's is
-    tests/test_phi_transforms.py::test_constant_width_collapses_the_three_phi_to_one_order,
-    which applies each of the three phi to f -> [f - eps, f + eps], takes the
-    non-dominated index set of each 2m-column image, and asserts the three are
-    identical and equal to the crisp one. it gets a1's exact-arithmetic case by
-    construction and not by tolerance: the crisp values are multiples of 2^-10
-    below 2 and eps is 2^-6, so every endpoint, difference and half-sum involved
-    is an exact double. its non-domination filter is local to that test file,
-    since c1 and d2 own the real one. v-41 records that both a1 findings, the
-    collapse and the rounding artefact, reproduce against the built phi
-    | not yet asked |
+s-07 | the step 1 degeneracy check runs on a uniform sample of the box, which
+    zdt1 with half-width eps*x_n passes while phi_cw reproduces the crisp
+    efficient set. should the check also run on the slice where that set lives?
+    assumption: yes, and a1's tier 1 forms were chosen against the stronger check.
+    status: not yet asked; a4 has built it, re-gridding the union bounding box of
+    the three efficient sets and asserting separation there, and a5 repeats it.
+    discussed in: docs/a1_uncertainty_model.md part 2 and a1-b.
 
-s-07 | the degeneracy check CONTEXT.md section 5 step 1 prescribes, and the a4 and
-    a5 tests that implement it, run on a uniform sample of the box. that is not
-    sufficient: zdt1 with half-width eps*x_n passes every width-versus-centre
-    statistic and separates all three phi on a uniform sample, yet on the slice
-    where the efficient set lives phi_cw returns the crisp efficient set exactly.
-    should the check also run on that slice? | yes. a4 and a5 add a second
-    assertion on the slice obtained by holding the non-conflicting variables at
-    their crisp optima. a1's tier 1 forms were chosen against that stronger check
-    | not yet asked |
+s-08 | p1's phi-efficient set is a two-dimensional band and not a curve, and a1
+    establishes that a curve and three distinct phi are not both available at two
+    variables and two interval objectives. accept the band, or change p1's shape?
+    assumption: accept the band. it gives spread and coverage two dimensions of
+    structure, and b1 needs no axis bounds for it: every image coordinate is a
+    quadratic with a constant hessian, so the closed form is the
+    weight-parameterized stationarity map x(w) = -(sum_k w_k H_k)^-1 (sum_k w_k
+    b_k) over the weight simplex, which b2 samples and pushes points through.
+    status: re-answered in a4. the old answer rested on the set being a product of
+    intervals whose x_2 bounds do not depend on x_1; a1-b removed that premise for
+    phi_lu and phi_ls, and it was the wrong criterion anyway. b1 is expected to
+    produce the map, not a bounding box.
+    discussed in: docs/a1_uncertainty_model.md part 3 and a1-b section 3.
 
-s-08 | p1's phi-efficient set is a two-dimensional band, not the curve the a4 spec
-    asked for, and a1 establishes that a curve and three distinct phi are not both
-    available at two variables and two interval objectives. accept the band, or
-    change p1's shape? | accept the band. it serves the stated purpose, giving
-    spread and coverage two dimensions of structure rather than one, and it is
-    tractable for b1, being a product of intervals whose x_2 bounds do not depend
-    on x_1. CONTEXT.md section 10 a4 has been corrected to say so | not yet asked |
+s-09 | tier 1 uses one absolute half-width for every objective, which on zdt1 is
+    large relative to f_1 and small relative to f_2. scale it per objective?
+    assumption: keep the common absolute width as the closest reading of slide 19
+    and record the asymmetry in every tier 1 table.
+    status: not yet asked, a one-line change in a5 if the answer differs.
+    discussed in: docs/a1_uncertainty_model.md part 4.
 
-s-09 | tier 1 uses one absolute half-width for every objective, following slide
-    19's "incertidumbre acotada +-eps en los objetivos". on zdt1 that is a large
-    relative imprecision on f_1, which ranges over [0,1], and a small one on f_2,
-    which ranges over roughly [0,10]. should the half-width be scaled per
-    objective instead? | keep the common absolute width, as the closest reading of
-    slide 19, and record the asymmetry in every tier 1 table. a per-objective
-    scaling is a one-line change if the supervisors prefer it | not yet asked |
-
-s-10 | CONTEXT.md section 10 c2 says "set the seed both through numpy.random.seed
-    and through minimize, because pymoo 0.6.2 builds its own generator
-    independently". v-38 confirms the mechanism and measures the opposite
-    consequence: because the generator is independent, the global seed does
-    nothing for a pymoo run, and minimize(seed=s) alone is bit-reproducible for
-    both nsga2 and mopso_cd. the sentence's reason does not support its
-    instruction. should c2 keep the double seeding? | keep it. it costs one line,
-    it is harmless, and c1's own uniform sampling and any numpy-level randomness
-    the runners add do need a seeded global state, so the instruction is right
-    even though its stated reason is inverted. a2 did not edit CONTEXT.md for
-    this: the licence in section 11 is to correct against a paper that refutes,
-    and a project diagnostic is not a paper | not yet asked |
+s-10 | CONTEXT.md section 10 c2 justifies double seeding by pymoo's independent
+    generator, but v-38 measures the opposite: minimize(seed=s) alone is
+    bit-reproducible. keep the double seeding?
+    assumption: keep it, since c1's own uniform sampling does need a seeded global
+    state, so the instruction is right though its stated reason is inverted.
+    status: not yet asked; CONTEXT.md was not edited, the section 11 licence being
+    to correct against a paper, and a project diagnostic is not a paper.
+    discussed in: docs/verified.md v-38.
 
 ## 7. risks
 
-format:
+format: r-nn | risk / cost / trigger / mitigation
 
-    r-nn | risk | what it would cost | what would trigger it | mitigation
+r-02 | [9] of [1], where the order relations on C that (3) decomposes are defined,
+    is not among the five papers in scope.
+    cost: b1 has no source for a property of those relations beyond (3).
+    trigger: b1 needing such a property.
+    mitigation: (3) states the relation fully in terms of phi_i and the order on
+    R^2, so nothing is missing today; research chat if b1 needs more.
 
-r-01 | the source papers are not under version control: .gitignore line 1 is
-    "*.txt", so git mv failed in a0 and the two files were moved with plain mv |
-    the exact text a0 verified against is not recoverable from history, and a
-    re-extraction could differ from it silently | any re-extraction of the pdf, or
-    a fresh clone of the repository | un-ignore papers/ or commit the extracted
-    text; decision for the research chat
+r-03 | the pdf of [1] is not in the repository and the extracted text lacks its
+    reference list and two glyphs.
+    cost: section 3's provenance claims and [1]'s own citations cannot be resolved.
+    trigger: already realised in a0.
+    mitigation: obtain the pdf; p-01 and p-02.
 
-r-02 | reference [9] of [1], the m = 1 predecessor, is where the order relations
-    on C that equation (3) decomposes into are defined, and it is not among the
-    five papers of CONTEXT.md section 3 | if b1 needs a property of those
-    relations beyond what equation (3) states, it has no source in scope | b1
-    needing a property of the componentwise relation on C | equation (3) states
-    the relation fully in terms of phi_i and the order on R^2, so nothing is
-    missing today; raise in the research chat if b1 needs more
-
-r-03 | the pdf of [1] is not in the repository, and the extracted text is missing
-    its reference list and two glyphs | provenance claims in CONTEXT.md section 3
-    cannot be verified and [1]'s own citations cannot be resolved | already
-    realised in a0 | obtain the pdf; p-01 and p-02
-
-r-04 | b1's route to p0's published anchor is not the one CONTEXT.md previously
-    assumed: example 3.9's hypotheses fail at x = 0 under phi_lu, because both
-    image coordinates of the first objective are non-differentiable there | b1's
-    check on its own procedure, "state whether the paper's published conclusion is
-    recovered", may not close by the planned route | b1 starting p0 | CONTEXT.md
-    section 6 corrected in a0; b1 uses example 3.8, which needs no
-    differentiability, or definition 3.1 directly, or records that the conditions
-    do not close and goes to the research chat
+r-04 | example 3.9's hypotheses fail at p0's anchor x = 0 under phi_lu, both image
+    coordinates of the first objective being non-differentiable there.
+    cost: b1's "is the published conclusion recovered" check may not close by the
+    planned route.
+    trigger: b1 starting p0.
+    mitigation: example 3.8, or definition 3.1 directly, or the research chat;
+    a4 carries the same warning at src/problems_tier0.py's p0_anchor.
 
 r-05 | example 2.1 shows the class permits different coefficients per objective,
-    which none of the three implemented phi use | nothing for the committed
-    experiment, but a reviewer may ask why the study fixes one 2x2 map across all
-    objectives when the framework does not require it | memoria review | the
-    answer is in docs/a0_framework.md c9 and in CONTEXT.md section 4: the three
-    named examples carrying convexity notions are the committed variable
+    which none of the three implemented phi use.
+    cost: nothing for the experiment; a reviewer may ask why one 2x2 map is fixed
+    across all objectives when the framework does not require it.
+    trigger: memoria review.
+    mitigation: the answer is in docs/a0_framework.md c9 and CONTEXT.md section 4.
 
 r-06 | if an interval analogue of proposition 5.1 holds, the phi_lu and phi_ls
-    efficient sets are nested rather than merely different | it invalidates no
-    measurement, but a result reported as "the sets differ" for that pair would be
-    presenting a containment as a free empirical finding, and cross-evaluating
-    phi_lu's set under phi_ls would lose nothing by construction, making the
-    delta-coverage in that direction trivially complete | e1 producing the phi_lu
-    against phi_ls decision-space metrics | report that pair as a check on the
-    prediction of s-05 rather than as an independent finding, and state the
-    containment as a prediction and not as a result the project claims. the phi_cw
-    comparisons are unaffected: v-25 records that no statement of [1] relates
-    example 2.4 to either of the other two
+    efficient sets are nested rather than merely different.
+    cost: "the sets differ" would present a containment as a free finding, and one
+    direction of delta-coverage would be trivially complete.
+    trigger: e1 producing the phi_lu against phi_ls decision-space metrics.
+    mitigation: report that pair as a check on s-05's prediction, not as an
+    independent finding; the phi_cw comparisons are unaffected, v-25.
 
-r-07 | computing a phi image coordinate as f_u - f_l is numerically unsafe when
-    the width is constant or near zero. the cancellation error is of order machine
-    epsilon times |f|, and under phi_ls and phi_cw that error becomes the whole
-    content of the second coordinate | a degenerate construction would present as
-    the three phi differing, which reads as a positive result, rather than as the
-    three phi coinciding, which is the symptom CONTEXT.md section 5 step 1 tells
-    the project to look for. a study could report arithmetic as a phi effect |
-    already realised in the a1 diagnostic, where it gave |lu|=16 against
-    |ls|=|cw|=30 on a construction whose exact answer is four identical sets of 16
-    | a2 and a3 carry the constant-width test described in s-06, a2 the
-    arithmetic half and a3 the non-domination half; the tier 1 eps=0 baseline sits
-    exactly at the dangerous limit and is labelled degenerate already
+r-07 | computing an image coordinate as f_u - f_l is unsafe at constant or near
+    zero width, the cancellation being the whole second coordinate of phi_ls and
+    phi_cw.
+    cost: a degenerate construction presents as the three phi differing, which
+    reads as a positive result, so arithmetic could be reported as a phi effect.
+    trigger: already realised, in the a1 diagnostic and again in a4, where ulp
+    noise in (c + r) - (c - r) kept 9 dominated points in ls and 17 in cw.
+    mitigation: the a2 and a3 halves of s-06, v-42 and v-41; a4 rounds before
+    every non-domination filter; the eps=0 tier 1 baseline is labelled degenerate.
 
 r-08 | a construction can pass every width-versus-centre statistic on a uniform
-    sample and still give phi_cw the crisp efficient set, because a uniform sample
-    of a 30-dimensional box contains almost nothing near the efficient set | tier 1
-    would measure nothing while appearing to measure something, and the failure
-    would surface only at e3 when the phi comparison came out empty | already
-    realised for zdt1 with half-width eps*x_n, measured in a1 part 2 | the width
-    driver rule in a1 part 2, plus the slice check proposed as s-07. a1's
-    recommended tier 1 forms were selected against it
+    sample and still give phi_cw the crisp efficient set, a uniform sample of a
+    large box containing almost nothing near that set.
+    cost: tier 1 would measure nothing while appearing to measure something, and
+    the failure would surface only at e3.
+    trigger: already realised for zdt1 with half-width eps*x_n, a1 part 2.
+    mitigation: a1's width driver rule plus the slice check of s-07, built as a
+    test in a4 and repeated in a5.
 
-r-09 | a1's width driver rule was derived from two benchmarks and one tier 0 design
-    and has not been tested outside them | a tier 1 or portfolio problem built on
-    it could still be degenerate in a way not yet seen | f1 constructing interval
-    returns for part 2, which is a different kind of problem | treat the rule as a
-    working rule and not a result, and run the full a1 diagnostic including the
-    slice check on every new problem before it is used
+r-09 | a1's width driver rule was derived from two benchmarks and one tier 0
+    design and has not been tested outside them.
+    cost: a tier 1 or portfolio problem built on it could still be degenerate in a
+    way not yet seen.
+    trigger: f1 constructing interval returns, a different kind of problem.
+    mitigation: treat it as a working rule and not a result, and run the full a1
+    diagnostic including the slice check on every new problem before use.
+
+r-10 | retired in a3, and r-01 in a4. both are in docs/answered.md with the
+    reasoning that retired them.
 
 ## 8. session log
 
@@ -380,3 +307,8 @@ format:
     convexity, interiority and phi-separation and loses the product-of-intervals
     efficient set for phi_lu and phi_ls. PROGRESS.md restructured | research chat
     decides p1's widths; then a4
+2026-08-31 | a4 | src/problems_tier0.py, tests/test_problems_tier0.py,
+    PROGRESS.md, docs/answered.md, docs/verified.md, CONTEXT.md | p0 and p1 built,
+    p1 in a1-b's distinct-width form, 13 tests pass and 42 in the suite. the r-08
+    slice check is a test. s-08 re-answered on the stationarity map, r-01 retired,
+    v-42 added, CONTEXT.md sections 11 and 12 amended | b1, or a5

@@ -665,6 +665,12 @@ evidence rules, before everything else:
     checking.
     an ambiguity in a paper is written down as an ambiguity and sent to the
     supervisors. it is not resolved by choosing the convenient reading.
+    a candidate design that is evaluated and rejected is written out in full in
+    the deliverable that rejects it, together with its rejection reason. a
+    candidate recorded only by name cannot be re-examined: a1 named three width
+    variants without giving their forms, and a1-b could not tell whether the
+    variant it was asked about was among them, so it had to measure one from
+    scratch.
 
 session discipline:
     one subpart per session, in the phase order of section 8.
@@ -717,6 +723,12 @@ phi-interval-opt/
                                 for the papers.
     docs/                       a0, a1, b1, c3 deliverables and research-chat
                                 analyses.
+        verified.md             every verified fact, v-nn, moved out of
+                                PROGRESS.md section 4 in a1-b.
+        answered.md             answered p- and s-questions and retired risks,
+                                moved out of PROGRESS.md in a1-b. nothing is
+                                deleted there; a row is kept with the reasoning
+                                that retired it.
     src/
         interval_math.py        a2
         phi_transforms.py       a3

@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-41.
+highest number in use: v-42.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -307,3 +307,14 @@ v-41 | the constant-width collapse of v-30 reproduces exactly under the three ph
     scratchpad; the exact case is asserted in
     tests/test_phi_transforms.py::test_constant_width_collapses_the_three_phi_to_one_order
     | a3 | 2026-08-31
+
+v-42 | the arithmetic half of the s-06 guard, built in a2 and recorded here so
+    that s-06's history sits with the a2 and a3 records rather than in
+    PROGRESS.md. a constant-width construction f -> [f - eps, f + eps] at 500
+    centres drawn uniformly from [-1000, 1000] with eps = 0.05 returns a width
+    constant to better than 1e-12 and exactly twice the half-width, so the
+    endpoint subtraction of r-07 is safe at that scale and the collapse of v-30
+    cannot be blamed on it there. the non-domination half of the same guard is
+    v-41 | project diagnostic, not a paper | asserted in
+    tests/test_interval_math.py::test_constant_width_construction_is_constant_up_to_rounding
+    | a2 | 2026-08-31
