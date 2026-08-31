@@ -55,18 +55,27 @@ def width(a_l, a_u):
 
 # gh-difference of two intervals, defined for every pair and covering both branches
 def gh_difference(a_l, a_u, b_l, b_u):
-    # source read in this project: literature/gH-differentiability calculus for
-    # interval analysis.md section 2, "what is the gh-difference?", which quotes
-    # stefanini, arana-jimenez and sorini 2025, information sciences 691,
-    # 121601, section 2. the primary paper is not in papers/, so this citation
-    # is to the summary and not to the paper itself.
-    # definition as quoted there:
-    #   a -gh b = c  iff  (a) a = b + c  or  (b) b = a + (-1) c,
-    # with the closed form that covers both branches
+    # primary source: papers/Presentacion_optimizacion_intervalar.txt, slide 5 of
+    # 23, equation (2), lines 109-117, which prints the definition as
+    #   a -gh b = c  iff  (a) a = b + c      if mu(b) <= mu(a)
+    #                     (b) b = a + (-1) c if mu(b) >  mu(a),
+    # where mu is the length of the interval, mu(a) = a_u - a_l. the slide
+    # attributes it to markov 1974 and stefanini 2008.
+    # the closed form below is those two branches collected, not a further
+    # assumption: on branch (a) solving a = b + c gives c = [a_l - b_l,
+    # a_u - b_u], whose width mu(a) - mu(b) is non-negative there, so its lower
+    # endpoint is the smaller of the two differences; on branch (b) solving
+    # b = a + (-1) c gives c = [a_u - b_u, a_l - b_l], and there mu(b) > mu(a)
+    # makes that ordering the correct one. hence
     #   a -gh b = [min{a_l - b_l, a_u - b_u}, max{a_l - b_l, a_u - b_u}].
-    # branch (a) is the one taken where half_width(a) >= half_width(b) and
-    # branch (b) where it is smaller. np.minimum and np.maximum choose entrywise,
-    # so a single array may hold entries falling in either branch.
+    # secondary source, agreeing with the above and stating the closed form
+    # directly: literature/gH-differentiability calculus for interval analysis.md
+    # section 2, quoting stefanini, arana-jimenez and sorini 2025, information
+    # sciences 691, 121601, section 2. that paper is not in papers/, so what is
+    # still unverified is its own definition number, not the content; see p-05.
+    # mu(b) <= mu(a) is the same test as half_width(b) <= half_width(a).
+    # np.minimum and np.maximum choose entrywise, so a single array may hold
+    # entries falling in either branch.
     lower_difference = np.subtract(a_l, b_l)
     upper_difference = np.subtract(a_u, b_u)
     lower = np.minimum(lower_difference, upper_difference)
