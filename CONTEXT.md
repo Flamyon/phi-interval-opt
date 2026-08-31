@@ -758,6 +758,22 @@ is code, and a session record block for PROGRESS.md.
     phi, with random search as the reference.
     also selects the phi carried into part 2 and states the criterion for that
     selection explicitly, since part 1 cannot rank phi on quality.
+    one comparison of the three carries the signal and two do not, and e3 says so
+    rather than reporting all three alike. phi_ls's non-dominated set contains
+    both of the others, ND_lu and ND_cw inside ND_ls, exactly and for every
+    problem: docs/a_close_containment.md derives both from one criterion, that
+    phi_B = M phi_A with M entrywise non-negative and invertible makes
+    phi_A-dominance imply phi_B-dominance. so on the phi_ls against phi_lu pair
+    and on the phi_ls against phi_cw pair, one direction of every coverage and
+    overlap statistic is fixed before a solver is run, and a difference measured
+    there is in part a theorem and must not be reported as evidence that the
+    efficient set is sensitive to the order. the comparison that does carry the
+    sensitivity signal is phi_lu against phi_cw, which are nested in neither
+    direction, and e3's headline number comes from that pair. the other two pairs
+    are reported as checks on r-06 with the containment named.
+    this instruction stands on the containment being true, which is s-11 to the
+    supervisors. if they refute it the instruction is removed and all three pairs
+    are reported alike; nothing else in the project depends on it.
 
 ### f1 to f4: part 2
     f1  yfinance, 30 s&p 500 assets, 5 years of daily returns. two interval

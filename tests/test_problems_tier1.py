@@ -186,6 +186,12 @@ def sets_of(name, eps):
 
 
 # one line of the separation report: sizes, fractions, intersections, containments
+# and the two noise counts. a-close-b added cw<ls and ls<cw to the containment
+# line and the noise line beneath it, for the reason recorded above the overlap
+# test: |ls&cw| was printed here from a5 onward with no containment beside it, so
+# a shortfall that is entirely double-precision read as a structural fact. these
+# are the numbers that fill the e1 and e2 tables and they carry their own noise
+# measure now.
 def separation_report(name, eps, sets, total):
     order = ("crisp", "lu", "ls", "cw")
     sizes = " ".join("{} {}".format(k, len(sets[k])) for k in order)
@@ -195,13 +201,19 @@ def separation_report(name, eps, sets, total):
     conts = " ".join(
         "{}<{} {:.3f}".format(a, b, containment(sets[a], sets[b]))
         for a, b in (("lu", "ls"), ("ls", "lu"), ("lu", "cw"), ("cw", "lu"),
-                     ("crisp", "cw"))
+                     ("crisp", "cw"), ("cw", "ls"), ("ls", "cw"))
     )
+    # both containments below are exact in real arithmetic, so every point
+    # counted here is a rounding artefact and not a property of the orders. this
+    # is the count CONTEXT.md section 10 c3 has the validation gate report.
+    noise = " ".join("|{}\\{}| {}".format(a, b, len(sets[a] - sets[b]))
+                     for a, b in (("lu", "ls"), ("cw", "ls")))
     return "\n".join(("{} eps={} total={}".format(name, eps, total),
                       "  sizes       " + sizes,
                       "  fractions   " + fractions,
                       "  meets       " + meets,
-                      "  containment " + conts))
+                      "  containment " + conts,
+                      "  noise       " + noise))
 
 
 # evaluate returns m pairs of arrays shaped like the population, m and not 2m
@@ -510,21 +522,33 @@ def test_the_three_phi_separate_on_the_constructed_sample(name, eps, capsys):
 
 # phi_lu's efficient set inside phi_ls's, the direction r-06 predicts and a1-b
 # measured at containment 1.000 on tier 0. in exact arithmetic that containment
-# is a theorem and not an observation: phi_ls's image is (c - r, 2r) and phi_lu's
-# is (c - r, c + r), and c + r = (c - r) + 2r, so a point dominated under phi_ls
-# is dominated under phi_lu by the same point, and the non-dominated sets are
-# nested the other way.
-# in doubles that identity is not exact, so the containment is asserted as a band
-# and not as an equality. measured here: 1.000 at every level on zdt1 and at
-# eps = 0.05, 0.10 and 0.25 on dtlz2, and 0.999361 on dtlz2 at eps = 0.50, one
-# point of 1565. that point sits at x_1 = 1, where the first centre is
-# (1 + g) cos(pi/2) = 6.1e-17 against a half-width of 0.5, so c - r absorbs a
-# difference between two points that c + r keeps, and one of them survives under
-# phi_lu having been eliminated under phi_ls. it is a cancellation inside phi's
-# own first coordinate and not a round trip, and no representation choice open to
-# a5 removes it, the centre being what [3] prints. the band is asserted at 0.99,
-# far from the 0.9994 measured, so the test states the nesting and not the size
-# of the artefact.
+# is a theorem and not an observation, and so is the same containment for phi_cw:
+# docs/a_close_containment.md states the criterion once, that phi_B = M phi_A
+# with M entrywise non-negative and invertible makes phi_A-dominance imply
+# phi_B-dominance and so puts ND_B inside ND_A, and both follow from it, M being
+# [[1, 0], [1, 1]] from phi_ls to phi_lu and [[1, 1/2], [0, 1/2]] from phi_ls to
+# phi_cw. phi_ls's non-dominated set is therefore the largest of the three and
+# contains the other two. the project does not build on that; it is s-11 to the
+# supervisors and this comment records why the numbers below look as they do.
+# in doubles neither containment is exact, and the two fail by different amounts
+# for a reason worth stating. phi_cw's route is (c, r) with coefficients 1 and 0,
+# so it commits no arithmetic at all, while phi_ls's and phi_lu's shared first
+# coordinate is computed as c - r and rounds. so every rounded tie in c - r is a
+# chance for a phi_cw point to leave the phi_ls set, and the phi_lu set, which is
+# built on the same rounded column, mostly moves with it. measured here, and
+# printed on the report's noise line: |cw \ ls| is 7, 13, 28 and 39 on dtlz2 and
+# 0 at every level on zdt1, while |lu \ ls| is 0 everywhere except the single
+# point of v-46. a-close-b checked all 39 of the eps = 0.50 points directly:
+# every one is dominated under phi_ls in doubles by a named point and none of
+# them is dominated exactly, and the same 39 are non-dominated under phi_cw
+# exactly. they sit at x_1 = 1, where the first centre is (1 + g) cos(pi/2) =
+# 6.1e-17 against a half-width of 0.5, so c - r absorbs differences of order
+# 1e-18 that phi_cw's untouched centre column keeps. it is a cancellation inside
+# phi's own first coordinate and not a round trip, and no representation choice
+# open to a5 removes it, the centre being what [3] prints.
+# only the phi_lu band is asserted, at 0.99 against the 0.9994 measured, and no
+# assertion is added for phi_cw: the containments are awaiting s-11 and a test
+# that asserted one would be building on it. the numbers are reported instead.
 # the pairwise structure of the same three sets, split off to keep the two tests
 # short; both read the same cached sets and neither recomputes anything
 @pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))

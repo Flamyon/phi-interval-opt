@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-46.
+highest number in use: v-47.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -374,3 +374,26 @@ v-46 | the nesting of the phi_lu and phi_ls efficient sets is exact in real
     declare removes it | project diagnostic, not a paper | asserted as a band in
     tests/test_problems_tier1.py::test_the_separation_sets_overlap_without_coinciding
     | a5 | 2026-08-31
+
+v-47 | a5's separation report shows |ls&cw| falling short of |cw| on dtlz2 by 7,
+    13, 28 and 39 points at the four levels and not at all on zdt1. the helper is
+    not at fault: tests/test_problems_tier1.py builds all four sets as frozensets
+    of row indices over one sample array, so |ls&cw| is an index-set intersection,
+    and recomputing every set with a second implementation, an explicit pair loop
+    with no broadcasting, reproduces all eight cases exactly, 0 mismatches. the
+    shortfall is the c - r cancellation. all 39 points at eps = 0.50 are dominated
+    under phi_ls in doubles by a named point and none of them is dominated under
+    phi_ls, or under phi_cw, in exact rational arithmetic; recomputed exactly,
+    |cw \ ls| and |lu \ ls| are 0 in all eight cases. the asymmetry between the
+    two counts has a cause: phi_cw's centre-radius route is (c, r) with
+    coefficients 1 and 0 and commits no arithmetic, while phi_ls's and phi_lu's
+    shared first coordinate is computed as c - r and rounds, so every rounded tie
+    in c - r can drop a phi_cw point out of the phi_ls set while phi_lu, built on
+    the same rounded column, moves with it. the affected points sit at x_1 = 1,
+    where dtlz2's first centre is (1 + g) cos(pi/2) = 6.1e-17 against a half-width
+    of up to 0.5; zdt1 has no such face and shows none. the crisp column and |cw|
+    are bit-identical in exact and double arithmetic in all eight cases, 144 and
+    32, and 947 and 483 | project diagnostic, not a paper |
+    docs/a_close_containment.md section 3.4; the two counts are printed on the
+    noise line of tests/test_problems_tier1.py's separation report | a-close-b |
+    2026-09-01

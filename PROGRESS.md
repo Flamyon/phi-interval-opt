@@ -11,7 +11,7 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-46, p-06, s-11, r-11, d-02.
+    highest numbers in use: v-47, p-06, s-11, r-11, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -261,26 +261,34 @@ s-10 | CONTEXT.md section 10 c2 justifies double seeding by pymoo's independent
     to correct against a paper, and a project diagnostic is not a paper.
     discussed in: docs/verified.md v-38.
 
-s-11 | two questions about the phi_lu inside phi_ls containment of
-    docs/a_close_containment.md. first, is the argument correct? phi_ls-dominance
-    gives (c_A - r_A) <= (c_B - r_B) and r_A <= r_B, hence
-    c_A + r_A = (c_A - r_A) + 2 r_A <= c_B + r_B, with strictness carrying in
-    either branch, so phi_ls-dominance implies phi_lu-dominance and the phi_lu
-    non-dominated set is contained in the phi_ls one. second, is the interval
-    statement already published? it is the interval-space analogue of proposition
-    5.1 of [1], which a0-b looked for under c17 and found nowhere in sections 2 or
-    3, the paper stating it for the fuzzy problems only; [1] cites its own [26]
-    for LS-convexity and LS-Pareto, so [26] is where such a statement would sit,
-    with [9] and [31] the other candidates.
-    assumption: the project does not build on it. b1 derives from [1]'s own
-    results and does not shorten a derivation with it, and d2 and e3 report the
-    phi_lu against phi_ls pair as a check on r-06 and never as an independent
-    finding. it is recorded, not used.
-    status: not yet asked. nothing waits on it, and the one consequence that does
-    not wait is in CONTEXT.md section 10 c3, where the gate reports the violation
-    count as numerical noise, which holds whichever way both questions are
-    answered.
-    discussed in: docs/a_close_containment.md, and v-24, v-25, v-26 and v-46.
+s-11 | three questions about docs/a_close_containment.md, widened in a-close-b
+    from the phi_lu case alone to the criterion both containments follow from.
+    first, is the criterion correct? if phi_B = M phi_A with M entrywise
+    non-negative and invertible then phi_A-dominance implies phi_B-dominance, so
+    ND_B is contained in ND_A; non-negativity keeps every inequality and
+    invertibility keeps the strict one. second, are both containments correct?
+    M is [[1, 0], [1, 1]] from phi_ls to phi_lu and [[1, 1/2], [0, 1/2]] from
+    phi_ls to phi_cw, both non-negative, so ND_lu and ND_cw both sit inside
+    ND_ls, and no map into phi_ls or between phi_lu and phi_cw is non-negative.
+    third, is any of it published? the phi_lu case is the interval-space analogue
+    of proposition 5.1 of [1], which a0-b found nowhere in sections 2 or 3, the
+    paper stating it for the fuzzy problems only; [1] cites its own [26] for
+    LS-convexity and LS-Pareto so [26] is where it would sit, with [9] and [31]
+    the other candidates. the phi_cw case and the criterion have no candidate
+    location: v-25 records that [1] relates example 2.4's solution set to
+    nothing, and the criterion is about the class and not about a pair of named
+    examples.
+    assumption: the project does not build on any of it. b1 derives from [1]'s
+    own results and does not shorten a derivation with it, no test asserts the
+    phi_cw containment, and d2 and e3 report the phi_ls pairs as checks on r-06
+    and never as independent findings. it is recorded, not used.
+    status: not yet asked. two consequences do not wait on it because they hold
+    whichever way it is answered: CONTEXT.md section 10 c3 has the gate report the
+    violation count as numerical noise, and a5's separation report prints the same
+    two counts on its noise line. the e3 instruction added in a-close-b does
+    depend on it and says so in place.
+    discussed in: docs/a_close_containment.md, and v-24, v-25, v-26, v-46 and
+    v-47.
 
 
 ## 7. risks
@@ -315,13 +323,23 @@ r-05 | example 2.1 shows the class permits different coefficients per objective,
     trigger: memoria review.
     mitigation: the answer is in docs/a0_framework.md c9 and CONTEXT.md section 4.
 
-r-06 | if an interval analogue of proposition 5.1 holds, the phi_lu and phi_ls
-    efficient sets are nested rather than merely different.
-    cost: "the sets differ" would present a containment as a free finding, and one
-    direction of delta-coverage would be trivially complete.
-    trigger: e1 producing the phi_lu against phi_ls decision-space metrics.
-    mitigation: report that pair as a check on s-05's prediction, not as an
-    independent finding; the phi_cw comparisons are unaffected, v-25.
+r-06 | corrected in a-close-b, the conditional removed and the phi_cw clause
+    withdrawn. as raised in a0-b this read "if an interval analogue of
+    proposition 5.1 holds, the phi_lu and phi_ls efficient sets are nested rather
+    than merely different", and closed "the phi_cw comparisons are unaffected,
+    v-25". the first half is no longer conditional and the second half is false.
+    both ND_lu and ND_cw are contained in ND_ls, exactly, for every problem, so
+    two of the three pairs are nested and only phi_lu against phi_cw is not.
+    cost: "the sets differ" would present a containment as a free finding on two
+    pairs and not one, and one direction of delta-coverage and of overlap is
+    trivially complete on both. the phi_ls against phi_cw pair is the one the
+    old wording would have let through unlabelled.
+    trigger: e1 or e2 producing the decision-space metrics for either phi_ls
+    pair, which is r-11's trigger as well.
+    mitigation: report both phi_ls pairs as checks on the containment with it
+    named, never as independent findings, and take the sensitivity signal from
+    phi_lu against phi_cw, which is nested in neither direction. CONTEXT.md
+    section 10 e3 now states this and states that it stands on s-11.
 
 r-08 | a construction can pass every width-versus-centre statistic on a uniform
     sample and still give phi_cw the crisp efficient set, a uniform sample of a
@@ -438,3 +456,19 @@ format:
     recorded and not developed: the same map argument appears to put phi_cw's set
     inside phi_ls's too, which bears on r-06 and is for the research chat. 115
     tests pass | b1
+2026-09-01 | a-close-b | tests/test_problems_tier1.py, docs/a_close_containment.md,
+    docs/verified.md, CONTEXT.md, PROGRESS.md | a5's |ls&cw| shortfall on dtlz2
+    run down and found to be arithmetic, not bookkeeping: the helper builds index
+    sets over one array and reproduces exactly under a second implementation, 8 of
+    8 cases, and all 39 points at eps = 0.50 are phi_ls-dominated in doubles and
+    none in exact arithmetic. every number the helper prints was recomputed
+    exactly; only the phi_ls and phi_lu columns move, the crisp set and |cw| being
+    bit-identical. v-47. the report gains cw<ls, ls<cw and a noise line, which is
+    the one thing that was wrong, a containment printed as a raw intersection with
+    no noise count beside it; no computation and no assertion was wrong. the
+    result generalised: phi_B = M phi_A with M non-negative and invertible gives
+    ND_B inside ND_A, verified with both hypotheses removed in turn, and both
+    containments follow from it, so ND_lu and ND_cw both sit inside ND_ls.
+    CONTEXT.md section 10 e3 now takes the sensitivity signal from phi_lu against
+    phi_cw. s-11 widened to three questions, r-06 corrected, its phi_cw clause
+    withdrawn. 115 tests pass | b1
