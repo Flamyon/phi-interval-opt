@@ -52,14 +52,17 @@ def crisp_image(problem, x, params=None):
 # implementations of the same thing.
 # the rows are rounded first, and that is r-07 and not a convenience. the second
 # image coordinate of phi_ls and phi_cw is a subtraction of the two endpoints,
-# and (c + r) - (c - r) is not exactly 2r in doubles once delta = 1/10 has made r
-# inexact, so two points sharing a width by construction can differ in it by an
-# ulp. left alone that noise makes dominated points survive: on the box grid it
-# added 9 points to phi_ls and 17 to phi_cw, all of them at x_1 < 0 and all
-# strictly dominated in every coordinate by the point above them at x_1 = 0.
+# and (c + r) - (c - r) is not exactly 2r in doubles, so two points sharing a
+# width by construction can differ in it by an ulp. left alone that noise makes
+# dominated points survive: on this grid it adds 4 points to phi_ls and 10 to
+# phi_cw at delta = 1/8, and added 9 and 17 at a1-b's delta = 1/10. phi_lu is
+# untouched in every case, since it has no width column at all.
 # nine decimals is far below the smallest real gap on these grids, which is a
 # multiple of 1/3600, and far above the noise. with it the box grid reproduces
 # a1-b's published counts exactly: 31 crisp, 460 lu, 1505 ls, 961 cw.
+# this rounding is local to this file and is not the project's dominance rule.
+# a4-b measures the choices and recommends one; docs/a4b_dominance_tolerance.md
+# carries the measurements and d-02 in PROGRESS.md carries the open decision.
 def non_dominated_indices(image, decimals=9):
     rows = np.round(image, decimals)
     keep = np.ones(rows.shape[0], dtype=bool)
@@ -197,31 +200,37 @@ def test_p0_bounds_contain_the_anchor_in_the_interior():
 
 # p1's centres and half-widths match hand-computed values at three points
 def test_p1_centres_and_half_widths_at_three_points():
-    # a1-b: c_1 = x_1^2 + (x_2-1)^2, c_2 = (x_1-1)^2 + (x_2-1)^2,
-    # r_1 = x_2^2/4 + 1/10, r_2 = x_1^2/4 + 1/10. hand-computed:
-    #   x = ( 0.0, 0.0)   c = (1.0, 2.0)   r = (0.1000, 0.1000)
-    #   x = ( 1.0, 1.0)   c = (1.0, 0.0)   r = (0.3500, 0.3500)
-    #   x = (-0.5, 1.5)   c = (0.5, 2.5)   r = (0.6625, 0.1625)
-    # the third point is the corner where a1-b measures the largest half-width on
-    # the box, 0.6625, and the pair (0.6625, 0.1625) is the design's asymmetry:
-    # r_1 is driven by x_2 and r_2 by x_1, so they differ at the same point.
+    # a1-b for the centres and rho, a4-b part 2 for delta = 1/8:
+    # c_1 = x_1^2 + (x_2-1)^2, c_2 = (x_1-1)^2 + (x_2-1)^2,
+    # r_1 = x_2^2/4 + 1/8, r_2 = x_1^2/4 + 1/8. hand-computed:
+    #   x = ( 0.0, 0.0)   c = (1.0, 2.0)   r = (0.1250, 0.1250)
+    #   x = ( 1.0, 1.0)   c = (1.0, 0.0)   r = (0.3750, 0.3750)
+    #   x = (-0.5, 1.5)   c = (0.5, 2.5)   r = (0.6875, 0.1875)
+    # the third point is the corner carrying the largest half-width on the box,
+    # and the pair (0.6875, 0.1875) is the design's asymmetry: r_1 is driven by
+    # x_2 and r_2 by x_1, so they differ at the same point.
+    # every value here is an exact double now that delta is dyadic, so the
+    # comparison could be exact; it is left as approx because the assertion is
+    # about the design and not about the arithmetic, which a4-b measures.
     x = np.array([[0.0, 0.0], [1.0, 1.0], [-0.5, 1.5]])
     (f1_l, f1_u), (f2_l, f2_u) = p1.evaluate(x, None)
     assert centre(f1_l, f1_u) == pytest.approx([1.0, 1.0, 0.5])
     assert centre(f2_l, f2_u) == pytest.approx([2.0, 0.0, 2.5])
-    assert half_width(f1_l, f1_u) == pytest.approx([0.1, 0.35, 0.6625])
-    assert half_width(f2_l, f2_u) == pytest.approx([0.1, 0.35, 0.1625])
+    assert half_width(f1_l, f1_u) == pytest.approx([0.125, 0.375, 0.6875])
+    assert half_width(f2_l, f2_u) == pytest.approx([0.125, 0.375, 0.1875])
 
 
 # p1's half-width stays strictly positive on the box, over a1-b's measured range
 def test_p1_half_width_is_strictly_positive_on_the_box(p1_box_grid):
-    # a1-b, "phi-separation on the box": half-width range [0.1000, 0.6625]. a
-    # width that reached zero would put the second image coordinate of phi_ls and
-    # phi_cw into the cancellation regime of r-07.
+    # a1-b, "phi-separation on the box", measured the range [0.1000, 0.6625] at
+    # delta = 1/10; at a4-b's delta = 1/8 the same range is [0.1250, 0.6875],
+    # shifted by the change and identical in span. a width that reached zero
+    # would put the second image coordinate of phi_ls and phi_cw into the
+    # cancellation regime of r-07.
     for f_l, f_u in p1.evaluate(p1_box_grid, None):
         radii = half_width(f_l, f_u)
-        assert np.min(radii) == pytest.approx(0.1)
-        assert np.max(radii) == pytest.approx(0.6625)
+        assert np.min(radii) == pytest.approx(0.125)
+        assert np.max(radii) == pytest.approx(0.6875)
         assert np.all(radii > 0.0)
 
 

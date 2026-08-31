@@ -45,9 +45,14 @@ p0_n_obj = 2
 # lines 753-755, transcribed in docs/a0_framework.md c15: "Hence, f_1 and f_1-bar
 # are not differentiable at x = 0, although x = 0 is a strict minimum for F
 # considering the order relation <=_phi with phi given in Example 2.2." so the
-# point is x = 0, the property asserted is a strict minimum, which is definition
-# 3.1(1)'s strong optimal solution, and the phi it is asserted under is phi_lu,
-# example 2.2, lambda = (1, 0), beta = (0, 1). the paper gives no proof of it.
+# point is x = 0, the phi it is asserted under is phi_lu, example 2.2,
+# lambda = (1, 0), beta = (0, 1), and the property is what the paper calls "a
+# strict minimum". the paper does not name that property in the vocabulary of
+# definition 3.1, whose three names are strong or strict optimal solution,
+# optimal solution and weak optimal solution, and a0 found no sentence of [1]
+# identifying the two. definition 3.1(1) is the plausible reading, being the one
+# stated through the same relation <=_phi, but that is an inference and it is
+# p-06 for b1, not something this comment asserts. the paper gives no proof.
 # what the paper does not state, and what must therefore not be read off this
 # constant: it says nothing about the efficient set of this F under phi_lu, and
 # nothing at all about it under examples 2.3 or 2.4. this is an anchor point and
@@ -95,17 +100,27 @@ p1_n_obj = 2
 p1_lower = np.array([-0.5, -0.5])
 p1_upper = np.array([1.5, 1.5])
 
-# p1's imprecision parameters, docs/a1_uncertainty_model.md a1-b, "the modified
-# p1, measured": rho = 1/4 and delta = 1/10.
+# p1's imprecision parameters. rho = 1/4 is a1-b's,
+# docs/a1_uncertainty_model.md a1-b, "the modified p1, measured". delta was 1/10
+# there and is 1/8 here; the change is a4-b's and its verification is
+# docs/a4b_dominance_tolerance.md part 2.
 # rho is fixed by interiority and not by taste. the stationary point of c - r in
 # its width variable is at 1/(1 - rho); at rho = 1/2 that is 2, outside any
 # reasonable box, and a1's grid check at rho = 1/2 returned a phi_lu efficient set
 # running to the face. at rho = 1/4 it is 4/3, interior to [-0.5, 1.5]. rho must
 # also stay below 1 for c - r to be convex at all.
-# delta keeps the half-width strictly positive: on the box a1-b measures it over
-# [0.1000, 0.6625], so no interval degenerates and the r-07 cancellation regime
-# is never entered.
-p1_default_params = {"rho": 0.25, "delta": 0.1}
+# delta keeps the half-width strictly positive, over [0.1250, 0.6875] on the box,
+# so no interval degenerates. it is 1/8 rather than a1-b's 1/10 because 1/10 is
+# not a dyadic rational and was the only constant in p1 that is not: a4-b
+# measured that on a dyadic sample f_u - f_l then differs from 2r at 3314 of 4225
+# points and gives the width column 150 distinct values where it truly has 49,
+# while at delta = 1/8 the same sample is exact, 4225 of 4225 bitwise and 49
+# distinct values. delta enters every image coordinate as an additive constant,
+# so no gradient, hessian, stationary point or interiority claim of a1-b moves
+# and every phi's efficient index set is unchanged; a4-b part 2 verifies both in
+# exact integer arithmetic. this buys exactness only where the sample is itself
+# dyadic, so it does not remove the need for a project dominance rule.
+p1_default_params = {"rho": 0.25, "delta": 0.125}
 
 # the shape of p1, docs/a1_uncertainty_model.md a1-b, "the modified p1, measured".
 # this is the modified design with distinct widths, not a1's identical-width

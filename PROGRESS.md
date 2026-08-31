@@ -11,7 +11,7 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-42, p-05, s-10, r-10.
+    highest numbers in use: v-42, p-06, s-10, r-10, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -19,10 +19,11 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      a, formulation
-    current subpart:    a4, awaiting review (a0, a0-b, a1, a1-b, a2 and a3 also
-                        awaiting review)
+    current subpart:    a4-b, awaiting review (a0, a0-b, a1, a1-b, a2, a3 and
+                        a4 also awaiting review)
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
+                        docs/a4b_dominance_tolerance.md,
                         docs/verified.md, docs/answered.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
@@ -80,8 +81,31 @@ format:
         why: the reason.
         source: the paper, example or file it rests on, or "project judgement".
         affects: the subparts it constrains.
+        status: closed, or proposed and awaiting the research chat.
 
-none yet.
+d-01, 2026-08-31. p1's default delta becomes 1/8, replacing a1-b's 1/10.
+    why: 1/10 was p1's only non-dyadic constant. at 1/8 the endpoint route is
+    exact on a dyadic sample, 4225 of 4225 points bitwise and the width column
+    carrying its true 49 distinct values against 150 at 1/10.
+    source: docs/a4b_dominance_tolerance.md part 2, which verifies in exact
+    integer arithmetic that delta enters every image coordinate as an additive
+    constant, that no gradient or hessian moves, and that all three efficient
+    index sets are identical.
+    affects: a4, done; b1 and b2 inherit the new constant; a1-b's tables were
+    measured at 1/10 and their efficient sets are unchanged by this.
+    status: closed.
+
+d-02, 2026-08-31. proposed: the project computes every phi image from the centre
+    and the half-width rather than by subtracting endpoints, and then uses one
+    untoleranced dominance relation everywhere.
+    why: it is the only option measured that needs no tolerance parameter, is
+    stable over twelve decades of magnitude, and reaches inside pymoo rather than
+    patching its output.
+    source: docs/a4b_dominance_tolerance.md part 3.
+    affects: a3's make_phi signature, a4 and a5's evaluate, c1, c2, d2 and b2. it
+    pre-empts s-06, which asks the supervisors this question and has not been
+    asked, and that is the reason it is proposed and not taken.
+    status: proposed, awaiting the research chat.
 
 ## 4. verified facts
 
@@ -114,6 +138,14 @@ p-04 | does any construction in [7] or [8] drive the interval width from the
 p-05 | under which numbered definition does [10] state the gh-difference? | b1 |
     narrowed in a3, content settled by v-39; the paper is still wanted for the
     number and for the midpoint-radius criterion CONTEXT.md section 6 gives b1
+
+p-06 | does [1] anywhere identify the "strict minimum" it asserts at x = 0 for the
+    worked function after example 3.9 with one of definition 3.1's three named
+    concepts? | b1 | open. the paper's words are "a strict minimum", which is not
+    one of the three names, and a0 found no sentence joining them. definition
+    3.1(1) is the plausible reading, being the only one stated through the same
+    relation, but a4-b demoted it from a claim to an inference in both
+    CONTEXT.md section 10 a4 and p0's comment
 
 ## 6. questions only the supervisors can answer
 
@@ -161,10 +193,12 @@ s-06 | computing the second image coordinate as f_u - f_l loses it at constant o
     near-zero width. should make_phi carry (centre, half_width) instead?
     assumption: a3 keeps the specified (f_l, f_u) signature, since changing a
     specified interface is not the agent's call.
-    status: not yet asked; both halves of the guard are built and passing, the
-    arithmetic half in a2 as v-42 and the non-domination half in a3 as v-41, and
-    a4 met the artefact again and rounds before every non-domination filter.
-    discussed in: docs/a1_uncertainty_model.md part 1, and v-41 and v-42.
+    status: not yet asked, and it is now the blocking question: a4-b measured the
+    alternatives and recommends the (centre, half_width) route as d-02, which is
+    this row's answer arrived at from the project's side, so the row should be put
+    to the supervisors before d-02 is taken.
+    discussed in: docs/a4b_dominance_tolerance.md part 3, and part 1 of
+    docs/a1_uncertainty_model.md, and v-41 and v-42.
 
 s-07 | the step 1 degeneracy check runs on a uniform sample of the box, which
     zdt1 with half-width eps*x_n passes while phi_cw reproduces the crisp
@@ -249,10 +283,13 @@ r-07 | computing an image coordinate as f_u - f_l is unsafe at constant or near
     phi_cw.
     cost: a degenerate construction presents as the three phi differing, which
     reads as a positive result, so arithmetic could be reported as a phi effect.
-    trigger: already realised, in the a1 diagnostic and again in a4, where ulp
-    noise in (c + r) - (c - r) kept 9 dominated points in ls and 17 in cw.
-    mitigation: the a2 and a3 halves of s-06, v-42 and v-41; a4 rounds before
-    every non-domination filter; the eps=0 tier 1 baseline is labelled degenerate.
+    trigger: already realised, in the a1 diagnostic and again in a4. a4-b measured
+    it: the error is eps|c|, reaching 1.1e-07 at |c| = 1e9, and it shatters the
+    width column's 46 true values into 210.
+    mitigation: d-02 once the research chat takes it, and until then the local
+    rounding in the a4 test; delta = 1/8 by d-01, which makes p1 exact on a dyadic
+    sample only; the a2 and a3 halves of s-06, v-42 and v-41; the eps=0 tier 1
+    baseline is labelled degenerate.
 
 r-08 | a construction can pass every width-versus-centre statistic on a uniform
     sample and still give phi_cw the crisp efficient set, a uniform sample of a
@@ -312,3 +349,10 @@ format:
     p1 in a1-b's distinct-width form, 13 tests pass and 42 in the suite. the r-08
     slice check is a test. s-08 re-answered on the stationarity map, r-01 retired,
     v-42 added, CONTEXT.md sections 11 and 12 amended | b1, or a5
+2026-08-31 | a4-b | docs/a4b_dominance_tolerance.md, src/problems_tier0.py,
+    tests/test_problems_tier0.py, PROGRESS.md, CONTEXT.md | the endpoint route's
+    error measured at eps|c| and shown to shatter the width column's structural
+    ties; an eleven-decade clean tolerance band found; delta changed to 1/8 as
+    d-01 after exact verification; the (centre, half_width) route recommended as
+    d-02, open. pymoo's epsilon argument shown to be a no-op | the research chat
+    takes or rejects d-02; then a5

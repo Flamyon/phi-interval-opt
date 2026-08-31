@@ -489,6 +489,13 @@ is code, and a session record block for PROGRESS.md.
     that is the published anchor. it is not a statement about the whole efficient
     set and must not be treated as one: what the efficient set is, under each of the
     three phi, is derived in b1.
+    the paper's words for the property at that point are "a strict minimum". that
+    is not one of the three names definition 3.1 gives, which are strong or strict
+    optimal solution, optimal solution and weak optimal solution, and a0
+    transcribes no sentence of [1] identifying the two. so p0's comment gives the
+    paper's words and says that the paper does not name the concept there. the
+    mapping to definition 3.1(1) is plausible, ≦_phi being the relation both use,
+    but it is an inference and it is p-06 for b1, not a fact the code asserts.
     problem p1, two variables, two interval objectives, smooth, with an efficient
     set of positive extent in the decision space. smoothness is a design
     requirement: it is what keeps the hypotheses of example 3.9 satisfiable under
@@ -688,8 +695,15 @@ session discipline:
     log, updated at the end of each session, and no specification. verified facts
     live in docs/verified.md, answered questions and retired risks in
     docs/answered.md, and session-by-session detail in the commit history.
-    PROGRESS.md stays under 200 lines; if it grows past that, something is in the
-    wrong file.
+    PROGRESS.md holds open rows only, in fixed shapes. a p-row is question,
+    owner subpart, status. an s-row is question, working assumption, status, and
+    the docs/ deliverable that discusses it. an r-row is risk, cost, trigger,
+    mitigation. four fields, and nothing beyond them: the history of a row lives
+    in the deliverable that produced it and in the commit log, and a row that has
+    been answered or retired moves to docs/answered.md with the reasoning that
+    retired it. there is no line-count target. a row that has accumulated a
+    history is a filing mistake and not a length problem, and the fix is to move
+    the history, never to shorten the row.
     the agent may correct CONTEXT.md, but only against a source verified in the
     same session, and only where that source refutes what this file says. every
     such change is reproduced in the session reply as an explicit before and after
