@@ -11,19 +11,21 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-46, p-06, s-10, r-11, d-02.
+    highest numbers in use: v-46, p-06, s-11, r-11, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
 
 ## 1. where the project stands
 
-    current phase:      a, formulation
-    current subpart:    a5, awaiting review (a0, a0-b, a1, a1-b, a2, a3, a3-b,
-                        a4 and a4-b also awaiting review)
+    current phase:      b, ground truth
+    current subpart:    b1, not started. phase a is complete: a0, a0-b, a1, a1-b,
+                        a2, a3, a3-b, a4, a4-b, a5 and a-close are all done and
+                        docs/phase_a_summary.md is the close-out document
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
+                        docs/a_close_containment.md, docs/phase_a_summary.md,
                         docs/verified.md, docs/answered.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
@@ -40,16 +42,17 @@ project started 2026-08-30.
 
 status is one of: not started, in progress, awaiting review, done, reopened.
 
-phase a, formulation
-    a0  verification pass over [1]          awaiting review
-    a1  uncertainty model                   awaiting review
-    a2  interval_math.py                    awaiting review
-    a3  phi_transforms.py                   awaiting review
-    a4  problems_tier0.py                   awaiting review
-    a5  problems_tier1.py                   awaiting review
+phase a, formulation. complete, tagged phase-a-complete.
+    a0  verification pass over [1]          done
+    a1  uncertainty model                   done
+    a2  interval_math.py                    done
+    a3  phi_transforms.py                   done
+    a4  problems_tier0.py                   done
+    a5  problems_tier1.py                   done
 
 phase b, ground truth
-    b1  phi-efficient sets, derivation      not started
+    b1  phi-efficient sets, derivation      not started, and is the current
+                                            subpart
     b2  reference_fronts.py                 not started
 
 phase c, solvers
@@ -139,14 +142,17 @@ p-02 | does ishibuchi and tanaka 1990, [9], state the centre-width comparison in
     the same coefficients as example 2.4 of [1]? | b1 | open, needs the paper and
     not literature/Center-Width Decomposition.md
 
-p-03 | does an interval-space analogue of proposition 5.1 appear outside [1],
-    whose own [9], [26] and [31] are the candidates? | b1 | open, blocked on p-01
-
 p-04 | does any construction in [7] or [8] drive the interval width from the
-    decision vector rather than by a constant band? | a5 | open, needs the two
-    papers themselves, which are not in papers/. a5 ran without them: tier 1's
-    widths are a1 part 4's and are cited there, so nothing in the module waits on
-    this, and the row survives as a citation question for the memoria
+    decision vector rather than by a constant band? | e3 | open, needs the two
+    papers themselves, which are not in papers/. the owner moves from a5 to e3 in
+    a-close, which is the date the row was missing: [7] and [8] are comparison
+    references, CONTEXT.md section 3, and the first place the project has to say
+    anything about them is e3's synthesis, where the memoria answers the direct-
+    interval objection. a5 ran without them and nothing between here and e3 waits
+    on them: tier 1's widths are a1 part 4's and are cited there. if they are not
+    obtained by e3, e3 records that the comparison is made against the literature
+    summaries in literature/ and not against the papers, which is a weaker
+    citation and has to be visible as one
 
 p-05 | under which numbered definition does [10] state the gh-difference? | b1 |
     narrowed in a3, content settled by v-39; the paper is still wanted for the
@@ -254,6 +260,28 @@ s-10 | CONTEXT.md section 10 c2 justifies double seeding by pymoo's independent
     status: not yet asked; CONTEXT.md was not edited, the section 11 licence being
     to correct against a paper, and a project diagnostic is not a paper.
     discussed in: docs/verified.md v-38.
+
+s-11 | two questions about the phi_lu inside phi_ls containment of
+    docs/a_close_containment.md. first, is the argument correct? phi_ls-dominance
+    gives (c_A - r_A) <= (c_B - r_B) and r_A <= r_B, hence
+    c_A + r_A = (c_A - r_A) + 2 r_A <= c_B + r_B, with strictness carrying in
+    either branch, so phi_ls-dominance implies phi_lu-dominance and the phi_lu
+    non-dominated set is contained in the phi_ls one. second, is the interval
+    statement already published? it is the interval-space analogue of proposition
+    5.1 of [1], which a0-b looked for under c17 and found nowhere in sections 2 or
+    3, the paper stating it for the fuzzy problems only; [1] cites its own [26]
+    for LS-convexity and LS-Pareto, so [26] is where such a statement would sit,
+    with [9] and [31] the other candidates.
+    assumption: the project does not build on it. b1 derives from [1]'s own
+    results and does not shorten a derivation with it, and d2 and e3 report the
+    phi_lu against phi_ls pair as a check on r-06 and never as an independent
+    finding. it is recorded, not used.
+    status: not yet asked. nothing waits on it, and the one consequence that does
+    not wait is in CONTEXT.md section 10 c3, where the gate reports the violation
+    count as numerical noise, which holds whichever way both questions are
+    answered.
+    discussed in: docs/a_close_containment.md, and v-24, v-25, v-26 and v-46.
+
 
 ## 7. risks
 
@@ -397,3 +425,16 @@ format:
     through rounding, v-46 and r-11. 22 tests, 115 in the suite. the a4-b against
     a3-b magnitude-sweep discrepancy recorded beside r-07 and not investigated |
     b1, which now has both tiers to derive against
+2026-08-31 | a-close | docs/a_close_containment.md, docs/phase_a_summary.md,
+    CONTEXT.md, PROGRESS.md, docs/answered.md | phase a closed. the phi_lu inside
+    phi_ls containment verified three ways, symbolically through the project's own
+    phi routes, by exhaustive rational case analysis covering both strictness
+    branches, and on p0, p1, zdt1 and dtlz2 with an exact filter returning zero
+    violations where doubles return the one v-46 records. p-03 closed by the proof
+    and s-11 raised, two questions: is it correct, and is it published, [26] being
+    where it would sit. the project does not build on it. CONTEXT.md section 10 c3
+    gains the violation count as a numerical-noise measure, which holds either
+    way. p-04 re-owned to e3 with the date it was missing. one observation
+    recorded and not developed: the same map argument appears to put phi_cw's set
+    inside phi_ls's too, which bears on r-06 and is for the research chat. 115
+    tests pass | b1

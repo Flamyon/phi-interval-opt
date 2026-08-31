@@ -702,6 +702,16 @@ is code, and a session record block for PROGRESS.md.
     tolerance, per seed.
     a gate, not a report. if it fails, phase e does not start and the failure is
     diagnosed first. record the tolerance and why it was chosen.
+    the gate also reports one number that is not a recovery check: the count of
+    points in the phi_lu non-dominated set that are not in the phi_ls one, over
+    every tier 0 problem and every run it filters. that containment is exact in
+    real arithmetic, docs/a_close_containment.md, so in doubles the count is a
+    violation of an identity and is by definition numerical noise in the
+    pipeline. it is reported as such, as a diagnostic of the arithmetic and never
+    as a result about phi. this instruction does not depend on the containment
+    result being new or being confirmed by anyone: a violation of an exact
+    statement is noise whichever way s-11 is answered, and the project builds
+    nothing else on the result meanwhile.
 
 ### d1: metrics_objective.py
         compute_hv(front, reference_point)

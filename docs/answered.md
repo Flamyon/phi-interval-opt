@@ -10,7 +10,27 @@ later session can see why it stopped being live rather than finding it gone.
 
 ## answered questions from section 5, questions the papers answer
 
-none yet. p-05 was narrowed in a3 but is still open and stays in PROGRESS.md.
+p-03 | closed in a-close, and closed by a proof rather than by a paper. as raised
+    in a0-b this asked whether an interval-space analogue of proposition 5.1
+    appears outside [1], the candidates being [1]'s own [9], [26] and [31], and it
+    was marked blocked on p-01 because none of the three can be resolved from the
+    extracted text, r-03. it is closed because the project no longer needs the
+    literature to supply the statement: the interval analogue follows in one line
+    from the definitions [1] already gives, phi_ls's image being (c - r, 2r) and
+    phi_lu's (c - r, c + r) with c + r = (c - r) + 2r, so phi_ls-dominance implies
+    phi_lu-dominance and the phi_lu non-dominated set is contained in the phi_ls
+    one. the argument is verified symbolically through the project's own phi
+    routes, by exhaustive case analysis in exact rational arithmetic covering both
+    strictness branches, and numerically on p0, p1, zdt1 and dtlz2, in
+    docs/a_close_containment.md. what the row was really carrying is two questions
+    and both are now s-11 to the supervisors: is the argument correct, and is the
+    interval statement already published, [26] being where it would sit. the
+    project does not build on the result until they answer; it is recorded, not
+    used. nothing about a0-b's finding changes: v-25 and v-26 stand exactly as
+    written, sections 2 and 3 of [1] state no such analogue, and this session
+    derives one rather than finding one
+
+p-05 was narrowed in a3 but is still open and stays in PROGRESS.md.
 
 
 ## answered questions from section 6, questions only the supervisors can answer
