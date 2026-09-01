@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-52.
+highest number in use: v-53.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -484,3 +484,38 @@ v-52 | objective-space metrics move with front cardinality by more than the
     draws is 0.1013 to 0.2260 at k = 25 and 0.0217 to 0.0223 at k = 500 | project
     diagnostic, not a paper | scratchpad script over src/random_search.py,
     src/reference_fronts.py and pymoo's IGD and HV indicators | c2-b | 2026-09-01
+
+v-53 | the forward recovery distance on p1 carries a floor that is a property of
+    filtering a finite sample and not of any solver, under phi_ls and phi_cw and
+    not under phi_lu. the mechanism is structural: p1's image columns are
+    (c_1 - r_1, c_1 + r_1, c_2 - r_2, c_2 + r_2) under phi_lu,
+    (c_1 - r_1, 2 r_1, c_2 - r_2, 2 r_2) under phi_ls and (c_1, r_1, c_2, r_2)
+    under phi_cw, so phi_ls and phi_cw each carry two columns depending on one
+    decision variable alone, r_1 = rho x_2^2 + delta and r_2 = rho x_1^2 + delta,
+    and phi_lu carries none. in any finite candidate set the point of smallest
+    |x_1| is then the strict minimiser of the r_2 column, so no other candidate is
+    no worse in every column and none can dominate it, whatever its x_2; it enters
+    every front the ordinary pareto filter returns. its x_2 ranges over the whole
+    box [-1/2, 3/2] while b1 section 2.4 puts X_cw's x_2 in [0, 1] and X_ls's in
+    [0, 4/3], so the forward hausdorff distance is bounded below by that overhang,
+    up to 1/2 under phi_cw, and a larger sample supplies a new such pair rather
+    than removing the old one. measured on the gate's own uniform draws at budget
+    5000: under phi_ls and phi_cw both extreme points are non-dominated at all
+    five gate seeds, under phi_lu both are dominated at all five, and over 40
+    independent draws of 2000 points the phi_lu extreme points are dominated in 24
+    and 40 of 40 while the phi_ls and phi_cw ones are dominated in 0 of 40. the
+    two overhangs the mechanism predicts are the two largest forward distances c3
+    reported for random search under phi_cw: the smallest-|x_1| point of seed 11
+    is (0.00026, 1.41550) at distance 0.4155 from X_cw and of seed 12 is
+    (-0.00000, -0.36913) at 0.3691, which are c3's section 5.1 worst points
+    exactly, and c3's largest measured forward distance, 0.5000154 at mopso under
+    phi_ls at seed 11, is the box overhang 1/2 to within the reference sample's
+    own resolution. this is a property of the design and not a defect: it is why
+    c3's forward assertion could not pass, why c3 found the budget removed none of
+    random search's forward failures, and why every later reader of e1's tables
+    must read a forward distance as reported and never as a quality measure |
+    project diagnostic, not a paper | c3's sections 3, 5.1, 5.2 and 5.4, and
+    tests/test_validation.py::test_one_image_column_is_a_function_of_one_variable_under_ls_and_cw,
+    ::test_the_extreme_points_of_a_finite_sample_survive_the_filter and
+    ::test_the_surviving_extreme_point_can_lie_outside_the_derived_region | c3-b |
+    2026-09-01

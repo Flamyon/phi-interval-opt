@@ -35,7 +35,39 @@ p-05 was narrowed in a3 but is still open and stays in PROGRESS.md.
 
 ## answered questions from section 6, questions only the supervisors can answer
 
-none yet. every s-row is still marked "not yet asked" and stays in PROGRESS.md.
+s-13 | closed in c3-b, and closed by the derivation rather than by the
+    supervisors. as raised in c3 this said that two points returned by a solver
+    under phi_cw, (1.42192, -0.00039) from random search at seed 15 and
+    (1.50000, 0.00026) from mopso at seed 13, lie on the singular line x_2 = 0
+    beyond x_1 = 1 and are dominated by no point of b1's derived set X_cw, so that
+    what the phi_cw-optimal set is past x_1 = 1 was undecided. that finding was a
+    statement about b2's sample and not about the derived set. b2 reaches X_cw's
+    extreme values only in the limit, src/reference_fronts.py and b1 section 2.4,
+    its weight sample being dirichlet at concentration 0.3, so no row of the
+    1000-point reference front sits close enough to x_1 = 1 to beat either point;
+    the derived set itself does. b1 section 2.4 gives X_cw = [0, 1]^2 minus the
+    open segment {(x_1, 0) : 0 < x_1 <= 1}, so (0.999, 0.0001) is in it, is off
+    the undecided segment since its x_2 is strictly positive, and under phi_cw's
+    columns (c_1, r_1, c_2, r_2) has image (1.997801, 0.125000, 0.999801,
+    0.374500) against (3.022637, 0.125000, 1.178797, 0.630464) and
+    (3.249480, 0.125000, 1.249480, 0.687500), strictly smaller in all four against
+    both. the r_1 column is strictly smaller too and not tied: it is
+    rho x_2^2 + delta and the witness's x_2 of 1e-04 is smaller in modulus than
+    both points', 3.9e-04 and 2.6e-04, so the three values are 0.125 + 2.5e-09,
+    0.125 + 3.8e-08 and 0.125 + 1.7e-08 and only the printed rounding hides it. it is not an isolated witness: 28 and 26 of 200000 uniform draws of the
+    interior of X_cw dominate the two points respectively. so both points are
+    dominated by points of the derived set, both are genuinely not efficient, the
+    derivation is missing nothing there, and the ten-of-twelve figure c3 reported
+    in its own section 5.4 is twelve of twelve. checked against b1's closed form in
+    exact arithmetic on doubles, not against a sample, and carried in
+    tests/test_validation.py::test_the_points_raised_as_s13_are_dominated_by_the_derived_set.
+    s-12 is untouched and stays open in PROGRESS.md: it asks what the status of the
+    segment {(x_1, 0) : 0 < x_1 <= 1} itself is, where the published conditions
+    give weak optimality and no verdict either way, and nothing here bears on it |
+    b1 section 2.4's closed form, read instead of b2's sample | closed in c3-b |
+    docs/c3_validation.md section 5.5 and docs/b1_phi_efficient_sets.md section 2.6
+
+every other s-row is still marked "not yet asked" and stays in PROGRESS.md.
 
 
 ## retired risks

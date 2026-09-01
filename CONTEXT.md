@@ -725,6 +725,36 @@ is code, and a session record block for PROGRESS.md.
     space is the parametrisation's and not the front's. r-13.
     a gate, not a report. if it fails, phase e does not start and the failure is
     diagnosed first. record the tolerance and why it was chosen.
+    what the gate asserts, and what it only reports. c3-b. the forward direction,
+    solver to reference, is reported and is never asserted, because it is bounded
+    below by an artifact of filtering a finite sample and not by anything a solver
+    does. the mechanism: under phi_cw the image columns are (c_1, r_1, c_2, r_2)
+    and under phi_ls they are (c_1 - r_1, 2 r_1, c_2 - r_2, 2 r_2), so each
+    carries a column that depends on one decision variable alone, and the sample
+    point of smallest |x_1| is then the strict minimiser of that column and cannot
+    be dominated whatever its x_2 is; its x_2 ranges over the whole box while the
+    derived set's does not, and the overhang is the floor. phi_lu has no such
+    column, which is why its outliers are the only ones off the singular lines.
+    so the gate asserts, pass or fail, both directions of the pipeline:
+        reference to solver, the hausdorff distance from the derived set to the
+        recovered set, within the derived tolerance, per solver, phi and seed.
+        that is the convergence question.
+        no solver front point dominates any point of b2's reference front. this
+        is asserted in c1 and c2 as well and is asserted here because the gate is
+        where the claim that the derivation and the solvers agree is made.
+    and the gate reports, never asserting:
+        the forward hausdorff, per configuration, with the note that it carries
+        the floor above and is not a quality measure.
+        the count of solver front points dominated by the reference front, as a
+        fraction of front size and for all three solvers. this is the quality
+        measure: a solver point beaten by a known-efficient point is one the
+        solver should have improved on, and no sampling artifact produces one.
+        the front cardinality beside every number, r-16.
+    and the gate asserts one trend, for the population methods only: the
+    dominated fraction does not rise when the budget is quadrupled, per phi and
+    per seed, for nsga-ii and mopso. monotone improvement and not a threshold.
+    random search is excluded with the reason in the code: its front always
+    contains the sample's column-wise extreme points, which no budget removes.
     the gate also reports one number that is not a recovery check: the count of
     points in the phi_lu non-dominated set that are not in the phi_ls one, over
     every tier 0 problem and every run it filters. that containment is exact in
