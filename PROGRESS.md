@@ -11,21 +11,29 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-52, p-06, s-12, r-16, d-03.
+    highest numbers in use: v-52, p-06, s-13, r-17, d-03.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
 
 ## 1. where the project stands
 
-    current phase:      c, solvers
-    current subpart:    c2-b, awaiting review. c1 is done, its review evidenced by
-                        c2's prompt, and c2 is done, its review evidenced by
-                        c2-b's prompt, which reverses one of its choices. b1 and b2 are done and
+    current phase:      c, solvers. phase c is complete and its gate does not pass
+    current subpart:    c3, awaiting review. c1 is done, its review evidenced by
+                        c2's prompt; c2 is done, its review evidenced by c2-b's
+                        prompt, which reverses one of its choices; and c2-b is
+                        done, its review evidenced by c3's prompt, which quotes
+                        its findings into CONTEXT.md sections 10 c2, 10 d1 and 11.
+                        b1 and b2 are done and
                         phase b is complete. phase a is complete: a0, a0-b, a1,
                         a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all done
                         and docs/phase_a_summary.md is the close-out document
-    blocked on:         nothing
+    blocked on:         phase e. the c3 gate fails on twelve of forty-five
+                        configurations, all in the solver-to-reference direction,
+                        and CONTEXT.md section 8 makes c3 the condition on e1. the
+                        failures are diagnosed in docs/c3_validation.md section 5
+                        and three of the questions they raise are decisions for
+                        the research chat, listed in that document's section 9
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
                         docs/a_close_containment.md, docs/phase_a_summary.md,
@@ -39,10 +47,12 @@ project started 2026-08-30.
                         src/problems_tier0.py, src/problems_tier1.py,
                         src/reference_fronts.py, src/random_search.py,
                         src/runners.py
+                        docs/c3_validation.md
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
                         tests/test_problems_tier1.py, tests/test_reference_fronts.py,
-                        tests/test_random_search.py, tests/test_runners.py
+                        tests/test_random_search.py, tests/test_runners.py,
+                        tests/test_validation.py
                         requirements.txt, versions pinned to the venv
                         pytest.ini, holding the slow marker and nothing else
 
@@ -65,8 +75,8 @@ phase b, ground truth
 phase c, solvers
     c1  random_search.py                    done
     c2  runners.py                          done, corrected in c2-b
-    c2-b archive and cardinality             awaiting review
-    c3  validation gate                     not started
+    c2-b archive and cardinality             done
+    c3  validation gate                     awaiting review, gate does not pass
 
 phase d, analysis
     d1  metrics_objective.py                not started
@@ -394,6 +404,25 @@ s-12 | on the two singular weight rays of phi_ls and phi_cw the published result
     comment of src/reference_fronts.py.
 
 
+s-13 | two points returned by a solver under phi_cw lie on the singular line
+    x_2 = 0 beyond x_1 = 1, at (1.42192, -0.00039) from random search at seed 15
+    and (1.50000, 0.00026) from mopso at seed 13, and no point of b1's derived
+    set X_cw dominates either. b1 section 2.4 puts the end of X_cw at x_1 = 1 and
+    b2 samples the singular segment only to there, so what the phi_cw-optimal set
+    is on that line past x_1 = 1 is not settled by the published conditions and
+    is not settled by c3. this extends s-12 rather than repeating it: s-12 asks
+    about the segment b1 bounds, s-13 about the line beyond that bound.
+    assumption: nothing is patched and no point is added to the derived set. c3
+    reports the two as the reason two of its twelve failures are not a solver
+    convergence problem, and the other ten offending points are dominated by the
+    reference front and are therefore genuinely not efficient.
+    status: not yet asked. it is one of the three things
+    docs/c3_validation.md section 9 says have to be settled before e1, and it
+    decides two of the twelve gate failures.
+    discussed in: docs/c3_validation.md sections 5.1 and 5.4, and
+    docs/b1_phi_efficient_sets.md section 2.6.
+
+
 ## 7. risks
 
 format: r-nn | risk / cost / trigger / mitigation
@@ -605,6 +634,25 @@ r-16 | every objective-space metric moves with the number of rows a solver
     metrics, a crowding-distance selection being a spread rule reported beside
     spread. the second rule is kept as well and not instead: cardinality belongs in
     the table whichever way the metric is computed.
+
+r-17 | the c3 gate's verdict is sensitive to its tolerance within a factor of
+    about 1.5, and no derivation of that tolerance from the region gives a sharp
+    gate on p1. the derived sets are two-dimensional regions of substantial area,
+    b1 section 2.4, so a design-sized front of 100 points cannot cover one to
+    better than about 0.15 in a box of side 2, and that resolution floor is the
+    larger of the tolerance's two terms.
+    cost: measured. reading the floor as the largest of twenty draws instead of
+    their mean raises the tolerance from 0.1629, 0.3415 and 0.3213 to 0.2767,
+    0.4121 and 0.4184, and nine of the twelve failures disappear. the reverse
+    direction passes at either reading and only the forward direction moves.
+    trigger: realised in c3, and again wherever a recovery tolerance on p1 is
+    quoted, in e1 or in the memoria.
+    mitigation: docs/c3_validation.md section 2 states both readings and both
+    verdicts rather than one, and section 4 prints the margin of every
+    configuration so a pass with no margin is visible. the tolerance is derived
+    before the runs and is not adjusted after them; the fix if a sharper gate is
+    wanted is a fixture whose efficient set is one-dimensional, which a1 and
+    CONTEXT.md section 10 a4 record is not available at p1's size.
 
 r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
     docs/answered.md with the reasoning that retired them.
@@ -846,3 +894,44 @@ format:
     budget-20000 run per problem as a convergence check, about 11 minutes for e1
     and about an hour for e2, the latter mostly random search's filter. 175 tests
     in the file, 432 in the suite | c3, the validation gate
+2026-09-01 | c3 | tests/test_validation.py, docs/c3_validation.md, CONTEXT.md
+    sections 10 c2, 10 d1 and 11 | the gate does not pass and phase e does not
+    start. all three solvers on p1 under all three phi at budget 5000 over seeds
+    11 to 15, both settings of include_singular_segments, recovery by hausdorff
+    distance in the decision space with both directions reported separately and
+    igd used nowhere. the tolerance is derived before the runs and not adjusted
+    after them: the sum of two measured resolution floors, the covering radius of
+    the derived region by b2's 1000-point reference sample and by a 100-point
+    uniform draw of the region, 100 being nsga-ii's population and the smallest
+    front the design fixes in advance; 0.1629, 0.3415 and 0.3213 for phi_lu,
+    phi_ls and phi_cw against a box of side 2. twelve of forty-five
+    configurations fail, every one of them in the solver-to-reference direction;
+    the reference-to-solver direction passes in all ninety measurements, so no
+    solver misses part of a derived set by more than the tolerance and the
+    failures are all points returned that are not in the set. diagnosed in the
+    order the brief sets and not concluded before: the box face is not the cause,
+    two of twelve worst points sit on one; the budget is the cause for nsga-ii,
+    all three of its failures fixed at 20000, for three of mopso's five and for
+    none of random search's, whose forward distance is unchanged to four decimals
+    at four times the budget; and no solver and phi pair fails on all five seeds,
+    the worst being random search under phi_cw at three of five. a fourth check
+    was added because the three did not say what the offending points are: ten of
+    the twelve are dominated by b2's reference front and are therefore genuinely
+    not efficient, and for random search that is structural, the sampled point
+    with the smallest x_1^2 uniquely minimising an image coordinate and so
+    surviving any filter whatever its x_2. the remaining two are dominated by
+    nothing in the derived set, both under phi_cw on the singular line x_2 = 0
+    past x_1 = 1 where b1 section 2.6 leaves the status undecided; s-13, which
+    extends s-12. p0 checked as a smoke test only, per b1 section 7.4: all
+    forty-five runs find the anchor x = 0, by two orders of magnitude, and the
+    document says what that is worth, the whole box being optimal under phi_lu and
+    phi_ls. the phi_lu points absent from the phi_ls set are zero in all ninety
+    runs filtered, forty-five on p1 and forty-five on p0, so no tier 0 arithmetic
+    noise; r-11's one measured violation stays a tier 1 finding. cardinality
+    printed beside every number and nothing truncated, r-16 being an
+    objective-space rule. CONTEXT.md corrected in three places, each reproduced as
+    a before and after block in the session reply: section 10 c2's "unmodified"
+    clause, section 11's evidence rules, and section 10 d1's two additions to
+    r-16. r-17 raised, the gate's sensitivity to its own tolerance. 235 tests in
+    the file, 667 in the suite, 24 failing and all of them the gate | the research
+    chat, on the three decisions in docs/c3_validation.md section 9. e1 waits

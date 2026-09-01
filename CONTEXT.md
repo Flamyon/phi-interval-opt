@@ -701,6 +701,17 @@ is code, and a session record block for PROGRESS.md.
     objective matrix, so the swarm runner uses mopso_cd. set the seed both through
     numpy.random.seed and through minimize, because pymoo 0.6.2 builds its own
     generator independently.
+    what "unmodified" excludes, and what it does not. pymoo's algorithms are used
+    as published, with no operator, survival rule, sorting or archiving policy
+    replaced. a subclass that seeds a generator pymoo leaves uncontrolled, while
+    delegating every decision back to pymoo, is not a modification of the
+    algorithm: it changes which random draws occur and not what the algorithm does
+    with them. c2-b's SeededArchiveMopso is that and nothing more, calling pymoo's
+    own _update_archive and reinstalling the archive it returns with the same
+    uniform choice without replacement drawn from the algorithm's own seeded
+    generator, at pymoo's own archive size. the resize it replaced was a
+    modification, because the archive is mopso's leader pool and changing its size
+    changes what the search does. d-03.
 
 ### c3: validation gate
     output: docs/c3_validation.md and tests/test_validation.py.
@@ -750,6 +761,15 @@ is code, and a session record block for PROGRESS.md.
     stated seed, to the smallest front in the comparison: it is the only selection
     that does not itself optimise one of the three metrics, a crowding-distance
     selection being a spread rule reported beside spread. r-16.
+    two additions to that rule. the common cardinality is shared across phi and is
+    not computed per phi. the smallest front in a comparison is systematically
+    phi_lu's, ND_lu being contained in ND_ls, docs/a_close_containment.md, so
+    truncating each phi to its own smallest would put a phi-dependent selection
+    inside the one comparison the study exists to make.
+    and the rule is for objective-space metrics only. d2's hausdorff, coverage and
+    overlap are set-geometry measures in the decision space and truncating there
+    discards real coverage; they are computed on the full recovered sets, with the
+    cardinality reported beside them as the second rule requires.
 
 ### d2: metrics_decision.py
     the comparable ones. all take two (k, n_vars) arrays of decision vectors.
@@ -832,6 +852,12 @@ evidence rules, before everything else:
     variants without giving their forms, and a1-b could not tell whether the
     variant it was asked about was among them, so it had to measure one from
     scratch.
+    a test that guards a branch must demonstrate the branch was entered. c2's
+    reproducibility grid ran at a budget where mopso's archive never overflowed,
+    so the truncation it was written to put under a seed was never called: it
+    asserted a property it could not observe and would have passed with the defect
+    present. counting the guarded operation is the instrument, and c2-b's test
+    counts the truncation calls and fails if the count is zero.
 
 session discipline:
     one subpart per session, in the phase order of section 8.
