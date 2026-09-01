@@ -724,37 +724,73 @@ is code, and a session record block for PROGRESS.md.
     heavily, and b2 samples through b1's weight map, whose density in objective
     space is the parametrisation's and not the front's. r-13.
     a gate, not a report. if it fails, phase e does not start and the failure is
-    diagnosed first. record the tolerance and why it was chosen.
-    what the gate asserts, and what it only reports. c3-b. the forward direction,
-    solver to reference, is reported and is never asserted, because it is bounded
-    below by an artifact of filtering a finite sample and not by anything a solver
-    does. the mechanism: under phi_cw the image columns are (c_1, r_1, c_2, r_2)
-    and under phi_ls they are (c_1 - r_1, 2 r_1, c_2 - r_2, 2 r_2), so each
-    carries a column that depends on one decision variable alone, and the sample
-    point of smallest |x_1| is then the strict minimiser of that column and cannot
-    be dominated whatever its x_2 is; its x_2 ranges over the whole box while the
-    derived set's does not, and the overhang is the floor. phi_lu has no such
-    column, which is why its outliers are the only ones off the singular lines.
+    diagnosed first. c3-c adds what "first" means, because the gate has now
+    failed: phase e starts after the diagnosis and only if the diagnosis shows
+    the failure is not about whether the derivation and the solvers agree about
+    where the efficient set is. the two things that settle that are whether any
+    solver returns a point beating the derivation and whether the failing
+    solver's front lies on and around the derived set; if either goes the other
+    way, phase e does not start. record the tolerance and why it was chosen.
+    what the gate asserts, and what it only reports. c3-c, superseding c3-b.
+    the forward direction, solver to reference, is reported and is never
+    asserted, and the reason is a proposition and not an observation, v-54.
+    under phi_cw the image columns are (c_1, r_1, c_2, r_2) and under phi_ls
+    they are (c_1 - r_1, 2 r_1, c_2 - r_2, 2 r_2), so each carries a column
+    that is a (rho x_1^2 + delta) with a > 0, a strictly increasing function of
+    |x_1| alone. in any finite candidate set the member of strictly smallest
+    |x_1| is therefore the strict minimiser of that column and no member can
+    dominate it, whatever its x_2; the same holds for smallest |x_2| through the
+    second column. under phi_lu every column is c -+ r and moves with both
+    variables, so no such member exists. the corollary is the one that matters:
+    domination in that column requires a strictly smaller |x_1|, so the member of
+    j-th smallest |x_1| can be dominated only by one of the j - 1 below it, and
+    the whole low-|x_1| tail is shielded while its x_2 ranges over the whole box.
+    the overhang of that tail past the derived set is the forward floor.
     so the gate asserts, pass or fail, both directions of the pipeline:
         reference to solver, the hausdorff distance from the derived set to the
-        recovered set, within the derived tolerance, per solver, phi and seed.
-        that is the convergence question.
+        recovered set, within the derived tolerance, per solver, phi, seed and
+        setting of the singular flag. that is the convergence question, and it
+        is asserted for all three solvers with no solver exempted from it.
         no solver front point dominates any point of b2's reference front. this
         is asserted in c1 and c2 as well and is asserted here because the gate is
         where the claim that the derivation and the solvers agree is made.
     and the gate reports, never asserting:
+        the fraction of solver front points outside b1 section 2.4's closed-form
+        region, with the distribution of the excess. this is the quality measure
+        and it is exact: it is algebraic, it needs no sample, and a point outside
+        the region is not efficient whatever any sample says. it replaces the
+        count of front points dominated by b2's reference front, which depends on
+        b2's sampling density and is biased downward at every finite reference
+        size: on one run it runs from 9 per cent at 250 reference rows to 31 per
+        cent at 16000 while the exact answer is 46. that count is kept for one
+        run at several reference sizes, so the bias is quantified once, and
+        nowhere else.
         the forward hausdorff, per configuration, with the note that it carries
         the floor above and is not a quality measure.
-        the count of solver front points dominated by the reference front, as a
-        fraction of front size and for all three solvers. this is the quality
-        measure: a solver point beaten by a known-efficient point is one the
-        solver should have improved on, and no sampling artifact produces one.
+        the budget trend, on both measures, at the gate budget against four times
+        it, for all three solvers. it is reported and never asserted, and the
+        proposition above is the reason: a larger budget elects a new protected
+        member of smaller |x_1| at an x_2 no better placed, so no monotone trend
+        in budget is a property either population method has under phi_ls or
+        phi_cw. restricting the assertion to phi_lu is refused as well, phi_lu
+        being exactly the phi where the mechanism is absent.
         the front cardinality beside every number, r-16.
-    and the gate asserts one trend, for the population methods only: the
-    dominated fraction does not rise when the budget is quadrupled, per phi and
-    per seed, for nsga-ii and mopso. monotone improvement and not a threshold.
-    random search is excluded with the reason in the code: its front always
-    contains the sample's column-wise extreme points, which no budget removes.
+    the tolerance, and it is derived before the runs and never adjusted after
+    them. the reverse direction is the supremum over reference points of the
+    distance to the recovered set; every reference point lies in the derived
+    region R, so that supremum is at most sup over y in R of dist(y, recovered
+    set), the fill distance of the recovered set with respect to R, and the
+    reference sample enters only through being a subset of R. **its own
+    resolution is therefore not part of this tolerance**, and even between two
+    subsets of R with fill distances h_A and h_B the two-sided bound is
+    max(h_A, h_B) and never their sum. v-55. so the tolerance is the fill
+    distance of a design-sized front alone, estimated as a distribution: the
+    fill distance with respect to R of a uniform 100-point draw of R, over at
+    least 200 independent draws, read at an upper quantile stated and justified
+    before the study is run. 100 is the smallest front size the design fixes in
+    advance. the distribution is reported and not only the quantile.
+    what c3-c's own failure was diagnosed as is r-19, and section 10 e3 carries
+    what e3 must do with it.
     the gate also reports one number that is not a recovery check: the count of
     points in the phi_lu non-dominated set that are not in the phi_ls one, over
     every tier 0 problem and every run it filters. that containment is exact in
@@ -850,6 +886,32 @@ is code, and a session record block for PROGRESS.md.
     supervisors. if they refute it the instruction is removed and all three pairs
     are reported alike; nothing else in the project depends on it.
 
+    e3 must report the c3-c finding, r-19, with its numbers, and must not report
+    it as a result about phi. for a full-dimensional efficient set nsga-ii's
+    decision-space coverage is worse than uniform random sampling of that set at
+    equal cardinality, under phi_ls and phi_cw and not under phi_lu. before and
+    after: c3-b read the same numbers as a question about how to read the gate's
+    tolerance and wrote that "nsga-ii returns exactly a hundred points and covers
+    the derived region less well than a uniform hundred-point draw of it does in
+    twenty-two of its thirty measurements", then kept the looser tolerance so
+    that the gate would not be "a gate on nsga-ii's spread operator"; c3-c
+    derives the tolerance correctly, finds the same effect at twelve of ninety
+    measurements rather than twenty-two, finds it under two phi and not under
+    three, and reports it as a finding with the gate left failing. the numbers e3
+    carries: nsga-ii's fill distance with respect to the derived region sits at
+    the 85th to the 99th percentile of 1000 uniform 100-point draws under phi_ls
+    and phi_cw, worse than the uniform mean in all ten measurements, and at the
+    33rd to the 60th under phi_lu; mopso at its own cardinality of 200 is above
+    the uniform mean in four of five measurements under phi_ls and two of five
+    under phi_cw; random search, at the 586 to 2256 rows it returns, is far below
+    any draw of either size, which is cardinality and not search. what it says is
+    that one solver's front covers this efficient set less uniformly than random
+    sampling does; what it does not say is that nsga-ii fails to converge, since
+    no solver returns a point that beats the derivation anywhere. the consequence
+    for e3's own instruments: d1's compute_spread is computed in the objective
+    space where nsga-ii sorts, and this finding is in the decision space where
+    the result lives, so a spread statistic must never be read as decision-space
+    coverage.
 ### f1 to f4: part 2
     f1  yfinance, 30 s&p 500 assets, 5 years of daily returns. two interval
         constructions compared: [min, max] over a rolling window, and

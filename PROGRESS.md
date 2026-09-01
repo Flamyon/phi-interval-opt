@@ -11,36 +11,51 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-53, p-06, s-13, r-18, d-03.
+    highest numbers in use: v-55, p-06, s-13, r-19, d-03.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
 
 ## 1. where the project stands
 
-    current phase:      c, solvers. phase c is complete and its gate passes on the
-                        two directions of the pipeline
-    current subpart:    c3-b, awaiting review. c1 is done, its review evidenced by
+    current phase:      c, solvers. phase c is complete. its gate does not pass:
+                        twelve of ninety reverse measurements exceed the corrected
+                        tolerance, every one of them nsga-ii, and the failure is
+                        understood and is a finding rather than a defect
+    current subpart:    c3-c, awaiting review. c1 is done, its review evidenced by
                         c2's prompt; c2 is done, its review evidenced by c2-b's
                         prompt, which reverses one of its choices; c2-b is
                         done, its review evidenced by c3's prompt, which quotes
                         its findings into CONTEXT.md sections 10 c2, 10 d1 and 11;
-                        and c3 is done, corrected in c3-b, its review evidenced by
-                        c3-b's prompt, which reverses its forward assertion.
-                        b1 and b2 are done and
+                        c3 is done, corrected in c3-b, its review evidenced by
+                        c3-b's prompt, which reverses its forward assertion; and
+                        c3-b is done, its review evidenced by c3-c's prompt, which
+                        corrects three things c3-b left: the missing proposition
+                        behind the forward floor, the sampled quality measure, and
+                        the tolerance. b1 and b2 are done and
                         phase b is complete. phase a is complete: a0, a0-b, a1,
                         a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all done
                         and docs/phase_a_summary.md is the close-out document
-    blocked on:         nothing. the gate no longer blocks phase e: every solver
-                        reaches every part of every derived set to within the
-                        tolerance in all ninety measurements and no solver point
-                        dominates any reference front point in any of them,
-                        docs/c3_validation.md sections 3 and 4. c3's twelve
-                        failures were an artifact of asserting the forward
-                        hausdorff, which carries a finite-sample floor, v-53. what
-                        is open is r-18, the budget trend failing under phi_cw,
-                        which is a question about what to assert of a capped-front
-                        method and not a condition on e1
+    blocked on:         nothing, and that is a decision and not an absence. the
+                        gate fails in twelve of ninety, all nsga-ii, three seeds
+                        under phi_ls and three under phi_cw and none under phi_lu,
+                        docs/c3_validation.md sections 3 and 4. what those twelve
+                        say is r-19: nsga-ii's decision-space coverage of a
+                        full-dimensional efficient set is worse than uniform
+                        random sampling at equal cardinality. no solver returns a
+                        point that beats the derivation anywhere, ninety of
+                        ninety, so the derivation, b2's encoding and all three
+                        solvers agree about where the efficient set is and two of
+                        the three cover it to within the derivation's own
+                        resolution. phase e starts carrying the six items of
+                        docs/c3_validation.md section 10
+    the suite:          twelve tests fail on purpose, all
+                        test_the_derived_set_is_reached_by_the_solver at nsga-ii,
+                        and the count is recorded so a later session can see
+                        whether it moved. c3-c refused both ways of making them
+                        green, exempting nsga-ii from the assertion and marking
+                        the six configurations xfail, docs/c3_validation.md
+                        section 4.1
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
                         docs/a_close_containment.md, docs/phase_a_summary.md,
@@ -624,63 +639,77 @@ r-16 | every objective-space metric moves with the number of rows a solver
     spread. the second rule is kept as well and not instead: cardinality belongs in
     the table whichever way the metric is computed.
 
-r-17 | the c3 gate's verdict is sensitive to its tolerance within a factor of
-    about 1.5, and no derivation of that tolerance from the region gives a sharp
-    gate on p1. the derived sets are two-dimensional regions of substantial area,
-    b1 section 2.4, so a design-sized front of 100 points cannot cover one to
-    better than about 0.15 in a box of side 2, and that resolution floor is the
-    larger of the tolerance's two terms.
-    cost: measured, and smaller since c3-b than it was in c3. reading the floor as
-    the largest of twenty draws instead of their mean raises the tolerance from
-    0.1629, 0.3415 and 0.3213 to 0.2767, 0.4121 and 0.4184, a factor of 1.2 to
-    1.7. in c3 that moved nine of twelve verdicts, all of them forward. c3-b does
-    not assert the forward direction at all, v-53, so the sensitivity now bites on
-    the reverse direction alone and no verdict moves with it: the reverse
-    direction passes in all ninety measurements at the mean reading and therefore
-    at the larger one too, the tightest margin being 0.0106 at nsga-ii under
-    phi_ls at seed 11 and 0.0171 at seed 13, which the larger reading widens to
-    0.0812 and 0.0877.
-    trigger: realised in c3, and again wherever a recovery tolerance on p1 is
-    quoted, in e1 or in the memoria.
-    mitigation: docs/c3_validation.md section 2 states both readings and both
-    verdicts rather than one, and section 3 prints the reverse margin of every
-    configuration so a pass with no margin is visible. the tolerance is derived
-    before the runs and is not adjusted after them, and c3-b did not adjust it
-    either; the fix if a sharper gate is wanted is a fixture whose efficient set
-    is one-dimensional, which a1 and CONTEXT.md section 10 a4 record is not
-    available at p1's size.
+r-19 | nsga-ii's decision-space coverage of a full-dimensional efficient set is
+    worse than uniform random sampling of that set at equal cardinality, under
+    the two phi whose image carries a column depending on one decision variable
+    alone and not under the third. this is what the c3 gate's twelve failures
+    say, docs/c3_validation.md section 5, and it is a finding rather than a
+    defect: nsga-ii returns no point that beats the derivation anywhere. it
+    returns exactly 100 rows, which is the cardinality the tolerance's
+    distribution is measured at, so the comparison needs no correction. its fill
+    distance with respect to the derived region sits at the 85th to the 99th
+    percentile of 1000 uniform 100-point draws under phi_ls and phi_cw, worse
+    than the uniform mean in all ten measurements, and at the 33rd to the 60th
+    under phi_lu, which is where a uniform draw itself sits. mopso shows the same
+    tendency weaker at its own cardinality of 200, four of five above the uniform
+    mean under phi_ls and two of five under phi_cw. the reading offered, and it
+    is a reading and not a demonstration, is that nsga-ii spreads by crowding
+    distance in the four-column image space and the coverage is measured in the
+    two-dimensional decision space, and under phi_ls and phi_cw two of those four
+    columns are functions of a single decision variable.
+    cost: measured, and it is a cost to the comparison and not to the pipeline.
+    twelve of the gate's ninety reverse measurements fail, by 0.005 to 0.039 in a
+    box of side 2, and the suite is red in twelve tests by decision,
+    docs/c3_validation.md section 4.1. four times the budget removes none of it:
+    at 20000 evaluations nsga-ii's worst reverse distance is 0.3315 against
+    0.3309 under phi_ls and 0.2531 against 0.2503 under phi_cw.
+    trigger: e3 reading any spread statistic, d1's compute_spread included, since
+    that statistic is computed in the objective space where nsga-ii sorts while
+    the finding is in the decision space where the result lives; and e1 reporting
+    a decision-space coverage or hausdorff number for nsga-ii without the
+    cardinality-matched uniform draw beside it.
+    mitigation: partial and stated. e1 and e3 report nsga-ii's coverage as
+    measured, against a uniform draw of its own cardinality, which is the cheap
+    option and the one c3-c takes. what is not decided is whether a
+    decision-space diversity operator belongs in the comparison at all; that
+    would be a change to c2 and is out of scope for a gate. CONTEXT.md section 10
+    e3 now requires the finding to be reported.
 
-r-18 | the c3 gate's budget trend fails under phi_cw for both population
-    methods, and it may be the wrong thing to assert of a capped-front method at
-    all. the assertion is that the fraction of a solver's front dominated by the
-    reference front does not rise when the budget is quadrupled, read over the
-    five seeds. it holds for nsga-ii and mopso under phi_lu and phi_ls at both
-    settings of the singular flag and fails in three cells, all phi_cw: nsga-ii at
-    the True setting, 20.80 to 21.80 per cent, and mopso at both, 13.40 to 14.60
-    and 14.50 to 15.40. no mechanism in either algorithm forces the worst member
-    of a front capped at 100 or 200 rows to improve when the budget rises, and
-    mopso's archive discards at that cap by a random rule, d-03, so four times the
-    budget gives it four times as many candidates to discard rather than a better
-    two hundred.
-    cost: measured, and small in size and large in kind. the three rises are 1.0,
-    1.2 and 0.9 points of a hundred, against falls of 0.2 to 3.8 in the nine cells
-    that hold, so nothing gets much worse; what it costs is the claim that more
-    budget buys a better front, which e1 will want to make. per seed the count
-    rises in eleven of thirty and falls or holds in nineteen,
-    docs/c3_validation.md section 6.1, so the pooled reading is not hiding a
-    one-sided per-seed pattern.
-    trigger: e1 reading its budget-20000 convergence check against the dominated
-    count, r-15, and any statement in the memoria that the population methods
-    improve with budget.
-    mitigation: none applied, and that is deliberate. pooling over phi as well as
-    over seeds would make both solvers pass, 19.00 to 17.07 per cent for nsga-ii
-    and 16.33 to 15.77 for mopso, and c3-b refuses that adjustment: the assertion
-    was fixed before the measurement and is left where it was, with the three
-    failing cells reported. what to assert of a capped-front method instead is a
-    question for the research chat.
+r-18 | rewritten in c3-c. as raised in c3-b this said the gate's budget trend
+    failed under phi_cw for both population methods and that no mechanism in
+    either algorithm forces the worst member of a capped front to improve with
+    budget. the truth is stronger, and it is v-54: a mechanism protects the
+    offending points. under phi_ls and phi_cw the member of strictly smallest
+    |x_1| is the strict minimiser of a column that depends on |x_1| alone, so
+    nothing can dominate it whatever its other coordinate is, and the whole
+    low-|x_1| tail is shielded by the same argument one rank at a time. a larger
+    budget elects a new such member of smaller |x_1| at an x_2 that is no better
+    placed: measured over 200 uniform draws at four sizes, the median smallest
+    |x_1| falls by a factor of four for every factor of four in the budget while
+    the mean overhang of the elected point's other coordinate does not move at
+    all, 0.1226, 0.1404, 0.1334 and 0.1261. **so no monotone trend in budget is a
+    property either population method has under phi_ls or phi_cw**, and c3-b's
+    assertion had no mechanism behind it rather than merely lacking one.
+    c3-c removes the assertion for all three solvers. not weakened, not pooled
+    differently and not restricted to phi_lu: phi_lu is exactly the phi where the
+    mechanism is absent, so a trend asserted there and nowhere else would be an
+    assertion selected by the measurement that is supposed to judge it.
+    cost: measured, and the numbers are unchanged from c3-b's, which is the check
+    that this is a change of what is asserted and not of what is measured. on the
+    exact measure four times the budget lowers the outside fraction for both
+    population methods under phi_lu, by 2.2 and 2.1 points, and does not lower it
+    under phi_ls or phi_cw for nsga-ii, 47.8 to 48.4 and 47.0 to 53.8, nor
+    materially for mopso.
+    trigger: any statement in e1 or the memoria that more budget buys a better
+    front, and r-15's plan of a 5000 sweep with one 20000 check per problem,
+    which is not contradicted but must be read as a check and never as a trend.
+    what remains open under the number is the reporting question, what a
+    capped-front method's budget response should be reported as at all.
+    mitigation: docs/c3_validation.md section 6 reports the trend as a number on
+    both measures for all three solvers, with section 1 beside it.
 
-r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
-    docs/answered.md with the reasoning that retired them.
+r-17 | retired in c3-c, r-10 in a3, r-01 in a4 and r-07 in a3-b. all four are
+    in docs/answered.md with the reasoning that retired them.
 
 ## 8. session log
 
@@ -1011,3 +1040,77 @@ format:
     of them the budget trend under phi_cw | the research chat, on r-18 and on
     whether the trend is the right thing to assert of a capped-front method. e1 is
     not blocked
+2026-09-01 | c3-c | docs/c3_validation.md rewritten, tests/test_validation.py,
+    docs/verified.md, docs/answered.md, CONTEXT.md sections 10 c3 and 10 e3,
+    pytest.ini | three corrections, all of c3-b's own, and none about the
+    solvers. **the protected extreme is now a proposition with a proof**, v-54:
+    under phi_ls and phi_cw the second and fourth image columns are a (rho x^2 +
+    delta) with a > 0, functions of one decision variable alone, so the member of
+    strictly smallest |x_1| is the strict minimiser of one of them and nothing
+    can dominate it whatever its other coordinate; the corollary is that the
+    member of j-th smallest |x_1| can be dominated only by one of the j - 1 below
+    it, so the whole low-|x_1| tail is shielded and not merely its first member.
+    checked on 2000 adversarial finite sets, 0 dominations under phi_ls and
+    phi_cw against 1066 and 1939 under phi_lu; on the gate's own draws the thirty
+    smallest |x_1| survive the filter at 0.73 and 0.60 against 0.44 and 0.31 for
+    the sample at large, and the thirty smallest |x_2| are dominated 150 of 150
+    under phi_lu. over 200 uniform draws at n = 1000 to 80000 the median smallest
+    |x_1| falls by a factor of four per factor of four in n while the mean
+    overhang of the elected point's other coordinate does not move, 0.1226,
+    0.1404, 0.1334, 0.1261, so a larger budget re-elects rather than removes.
+    **the budget trend assertion is removed for all three solvers**, not
+    weakened, not pooled and not restricted to phi_lu, and reported as a number
+    on both measures; r-18 rewritten, it said no mechanism forces improvement and
+    the truth is that a mechanism protects the offending points.
+    **the sampled quality measure is replaced by exact region membership.** on
+    nsga-ii under phi_cw at seed 11 the count dominated by b2's reference front
+    runs 9, 12, 15, 18, 24, 26, 31 at reference sizes 250 to 16000 while the
+    exact answer is 46 outside b1 section 2.4's region, so the old number was
+    biased downward by a factor of three at the size c3 and c3-b used and is not
+    comparable across reference sizes. region_excess duplicated from
+    tests/test_reference_fronts.py rather than moved to src/, for the reason that
+    file already gives: a region src/ also held would make both checks a file
+    agreeing with itself. the outside fraction is 14 to 57 per cent, against the
+    13 to 21 the brief expected, and the two protected extremes account for 0.4
+    to 3.6 per cent of the outside points. diagnosis: boundary under phi_lu and
+    for random search everywhere, at most 6 per cent of outside points beyond 0.1
+    from the region and 925 of random search's 1062 phi_lu ones violating a
+    curved boundary; scattered under phi_ls and phi_cw for the population
+    methods, 32 to 47 per cent beyond 0.1, spread over all four faces of the box
+    and reaching them, which is non-convergence and not spread.
+    **the tolerance is corrected**, v-55: every reference point lies in the
+    derived region, so the reverse direction is bounded by the fill distance of
+    the solver set with respect to that region and by nothing else, and between
+    two subsets of it the bound is max and never sum; checked 300 of 300 in both
+    directions under all three phi with the reverse slack reaching 0.0000. so
+    h_reference leaves the tolerance and h_design stops being one draw: 1000
+    draws at k = 100, the 0.95 quantile fixed and justified in writing before the
+    study ran, giving 0.2405, 0.2919 and 0.2318 against c3's 0.1629, 0.3415 and
+    0.3213 -- up for one phi and down for two, which is what a derived tolerance
+    looks like. the estimator is c3's: the first twenty draws reproduce 0.1246,
+    0.2174 and 0.1836 exactly. the full distribution is in section 2.2 and
+    phi_lu's runs 0.077 to 0.440 over 1000 draws, which is why twenty was not
+    enough. r-17 retired to docs/answered.md, both its causes removed.
+    **the gate now fails, and it is asserted for all three solvers anyway.**
+    twelve of ninety reverse measurements over the tolerance, every one nsga-ii,
+    three seeds under phi_ls and three under phi_cw and none under phi_lu, by
+    0.005 to 0.039. exempting nsga-ii was refused and so was xfail: an assertion
+    dropped for whichever solver it catches is not an assertion, and the one
+    exemption granted before, random search's, rested on a proof of vacuity that
+    v-54 has now extended to all three. r-19 raised: for a full-dimensional
+    efficient set nsga-ii's decision-space coverage is worse than uniform random
+    sampling at equal cardinality, at the 85th to 99th percentile of 1000 uniform
+    100-point draws under phi_ls and phi_cw and the 33rd to 60th under phi_lu,
+    with mopso showing it weaker at its own 200. four times the budget removes
+    none of it, 0.3309 to 0.3315 and 0.2503 to 0.2531. everything else holds: no
+    solver point dominates any reference front point in any of the ninety, p0's
+    anchor found in all forty-five by two orders of magnitude, the containment
+    diagnostic zero in all ninety runs filtered. CONTEXT.md sections 10 c3 and 10
+    e3 corrected, both reproduced as before and after blocks in the session
+    reply. no phi, problem, derivation, solver or dominance relation touched and
+    no tolerance adjusted to make anything pass. 362 tests in the file, 794 in
+    the suite, 12 failing and all of them the gate's reverse direction at
+    nsga-ii; the fast run is 310 passed in 155s and the full run 782 passed and
+    12 failed in 736s | the research chat, on r-19 and on whether a red suite
+    carrying a stated finding is the right way to leave a gate. e1 is not blocked
+

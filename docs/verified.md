@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-53.
+highest number in use: v-55.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -515,7 +515,72 @@ v-53 | the forward recovery distance on p1 carries a floor that is a property of
     random search's forward failures, and why every later reader of e1's tables
     must read a forward distance as reported and never as a quality measure |
     project diagnostic, not a paper | c3's sections 3, 5.1, 5.2 and 5.4, and
-    tests/test_validation.py::test_one_image_column_is_a_function_of_one_variable_under_ls_and_cw,
-    ::test_the_extreme_points_of_a_finite_sample_survive_the_filter and
-    ::test_the_surviving_extreme_point_can_lie_outside_the_derived_region | c3-b |
+    tests/test_validation.py::test_one_image_column_is_a_function_of_one_variable_under_ls_and_cw
+    and ::test_the_protected_extreme_can_lie_outside_the_derived_region, the
+    latter renamed in c3-c and the third test this row cited,
+    ::test_the_extreme_points_of_a_finite_sample_survive_the_filter, replaced
+    there by ::test_the_strict_minimiser_of_a_width_column_is_never_dominated,
+    which asserts the same thing about an arbitrary finite set instead of about
+    one sampler's draws. **the claim stands and its explanation is superseded by
+    v-54**, which proves what this row observed and adds the corollary that the
+    whole low-|x_1| tail is shielded, not only its first member | c3-b |
     2026-09-01
+
+v-54 | the protected extreme. let S be any finite set of decision vectors in p1's
+    box, of at least two elements. if x* in S has |x*_1| strictly smaller than
+    every other member's |x_1|, then under phi_ls and under phi_cw no member of S
+    dominates x*, whatever x*_2 is; and the same holds for the member of strictly
+    smallest |x_2|. proof: under phi_cw the fourth image column is r_2 and under
+    phi_ls it is 2 r_2, so in both cases it is a (rho x_1^2 + delta) with a > 0, a
+    strictly increasing function of |x_1| and of nothing else; the hypothesis
+    makes x* its strict minimiser over S; domination requires being no worse in
+    every column and therefore no worse in that one, which contradicts
+    strictness. the second column is a (rho x_2^2 + delta) and gives the |x_2|
+    statement. under phi_lu the four columns are c_1 -+ r_1 and c_2 -+ r_2 and
+    every one of them moves with both variables, d(c_1 - r_1)/dx_1 = 2 x_1 and
+    d(c_1 - r_1)/dx_2 = 2 (x_2 - 1) - 2 rho x_2, so the hypothesis is
+    unavailable there. corollary, and it is the corollary that matters: ordering S
+    by |x_1| ascending, the j-th member can be dominated only by one of the j - 1
+    below it, so the whole low-|x_1| tail is shielded and not only its first
+    member. consequences: the protected member's other coordinate is unconstrained
+    by the hypothesis, so for a uniform draw it lies outside X_cw's x_2 range with
+    probability exactly 1/2 and its expected overhang is exactly 1/8 at every
+    budget; and a larger budget elects a new member of smaller |x_1| rather than
+    removing the old one, so no monotone trend in budget is a property either
+    population method has under phi_ls or phi_cw. measured: over 2000 adversarial
+    finite sets with two members planted at the worst place the box allows, the
+    two extremes are dominated 0 times under phi_ls and phi_cw and 1066 and 1939
+    times under phi_lu; over the five gate draws of 5000 points the thirty
+    smallest |x_1| survive the filter at rate 0.73 and 0.60 under phi_ls and
+    phi_cw against 0.44 and 0.31 for the sample at large, while the thirty
+    smallest |x_2| survive at 0.79 and 0.69 under those two phi and are dominated
+    in all 150 cases under phi_lu; and over 200 uniform draws at n = 1000, 5000, 20000 and 80000 the
+    median smallest |x_1| falls as 7.45e-04, 1.41e-04, 4.21e-05, 1.00e-05 while
+    the mean overhang of the elected point's x_2 does not move, 0.1226, 0.1404,
+    0.1334, 0.1261. this supersedes v-53's account of the same phenomenon by
+    proving it rather than observing it, and it is what removes c3-b's budget
+    trend assertion | project diagnostic, not a paper | docs/c3_validation.md
+    section 1, and tests/test_validation.py::test_the_strict_minimiser_of_a_width_column_is_never_dominated,
+    ::test_one_image_column_is_a_function_of_one_variable_under_ls_and_cw,
+    ::test_the_whole_low_width_tail_is_shielded_and_not_only_its_first_member,
+    ::test_the_low_width_tail_is_not_shielded_under_lu and
+    ::test_a_larger_budget_re_elects_the_protected_extreme | c3-c | 2026-09-01
+
+v-55 | the reverse recovery direction is bounded by one fill distance and not by
+    a sum of two. write R for a derived region of b1 section 2.4 and S for a
+    recovered set. the reverse hausdorff is sup over p in the reference set of
+    dist(p, S); every reference point lies in R, so that supremum is at most
+    sup over y in R of dist(y, S), the fill distance of S with respect to R, and
+    the reference sample enters only through being a subset of R. its own
+    resolution therefore plays no part in this direction, and for any two subsets
+    A and B of R the two-sided bound is max(fill(A), fill(B)) and never
+    fill(A) + fill(B). the bound requires nothing of S: S need not lie in R, and
+    p1's protected extremes do not. measured on 300 random pairs of subsets of
+    each region at sizes 1000 and 100: the bound held 300 of 300 in both
+    directions under all three phi and its reverse slack reached 0.0000, so it is
+    attained and not merely valid, while the sum stands at 0.189, 0.293 and 0.238
+    against maxima of 0.143, 0.219 and 0.177 for phi_lu, phi_ls and phi_cw. this
+    is what removes h_reference from the c3 gate tolerance and retires r-17 |
+    project diagnostic, not a paper | docs/c3_validation.md section 2.1, and
+    tests/test_validation.py::test_the_reverse_distance_is_bounded_by_the_solver_fill_distance
+    | c3-c | 2026-09-01

@@ -136,3 +136,32 @@ r-10 | closed in a3, and the entry is kept rather than deleted because the
     the summary been wrong | no longer live | none needed. what remains is p-05,
     which is a citation-quality question about the definition number in [10] and
     not a correctness risk
+
+r-17 | retired in c3-c, and retired by a correction to the tolerance rather than
+    by a new measurement. as raised in c3 this said the gate's verdict was
+    sensitive to its tolerance within a factor of about 1.5, and that no
+    derivation of the tolerance from the region gave a sharp gate on p1. both
+    causes of that sensitivity are now gone. the first was that the tolerance was
+    the sum of two resolution floors, and v-55 shows the reverse direction, which
+    is the only direction asserted, is bounded by one of them alone: every
+    reference point lies in the derived region, so the supremum over reference
+    points of the distance to the solver set is at most the fill distance of the
+    solver set with respect to that region, and the reference sample's own
+    resolution plays no part in it. the second was that the surviving term was
+    read off twenty draws, which is a statistic that moves with the draw count,
+    and c3-c replaces the point estimate with a measured distribution over 1000
+    draws whose quantiles are printed in docs/c3_validation.md section 2.2 and
+    whose 0.95 quantile, fixed before the study ran, is the tolerance. the
+    estimator itself is unchanged and the first twenty draws reproduce c3's
+    published 0.1246, 0.2174 and 0.1836 to four decimal places, so what was
+    corrected is the derivation and not the measurement | it would have cost the
+    reader of any recovery tolerance quoted in e1 or the memoria, who would have
+    had to be told the verdict moved with a choice | no longer live | none
+    needed, and the new tolerance moved in both directions against c3's, up by
+    0.0776 under phi_lu and down by 0.0496 and 0.0895 under phi_ls and phi_cw,
+    which is the evidence that it was derived and not aimed. what r-17 also said,
+    that no sharp gate on p1 is available because the derived sets are
+    two-dimensional regions of substantial area, is still true and is now stated
+    where it belongs, in docs/c3_validation.md section 2.3, as a property of the
+    fixture rather than as a risk about a number
+
