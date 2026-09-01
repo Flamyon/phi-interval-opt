@@ -862,6 +862,22 @@ is code, and a session record block for PROGRESS.md.
     the plots, and a short written record of what was run.
     e2 does not start until c3 has passed and e1 is reviewed.
 
+    e2 reports the rank-1 size against the population size for every configuration
+    it runs, because a configuration in which rank 1 fills the survivor slots is one
+    where dominance-based selection has no pressure and the solver's front is a
+    spread and not a convergence result. this is a property of the transformation,
+    which takes m interval objectives to 2m real ones, and it is the empirical form
+    of the objection [7] raises against transformation methods. c3-d measured it,
+    docs/c3_validation.md section 5.1: on p1 rank 1 holds about 170 of the 200
+    sorted candidates from generation three or four onwards under every phi, on
+    dtlz2_interval's six columns it saturates at generation 3 or 4 and sits at 135
+    to 170, and on zdt1_interval's four columns it saturates at generation 13 to 21
+    and sits at 100 to 144. the column count is not on its own what orders those
+    three, since p1 also transforms to four columns and saturates as fast as dtlz2
+    does, which is why e2 measures the number per configuration rather than
+    predicting it. the number is read out of the algorithm's state through a pymoo
+    callback; pymoo is not modified.
+
 ### e3: results synthesis
     the part 1 answer: how much the efficient sets differ across phi, measured in
     decision space, with variance across seeds, and under which imprecision levels
@@ -912,6 +928,14 @@ is code, and a session record block for PROGRESS.md.
     space where nsga-ii sorts, and this finding is in the decision space where
     the result lives, so a spread statistic must never be read as decision-space
     coverage.
+
+    e3 reports the rank-1 size against the population size alongside the coverage
+    finding, since together they say what the transformation costs: one says the
+    solver's front covers the derived set less uniformly than a uniform draw of the
+    same size, the other says that from generation three or four onwards the
+    selection producing that front is crowding distance and not dominance. the
+    measurement and its numbers are in the e2 paragraph above and in
+    docs/c3_validation.md section 5.1.
 ### f1 to f4: part 2
     f1  yfinance, 30 s&p 500 assets, 5 years of daily returns. two interval
         constructions compared: [min, max] over a rolling window, and

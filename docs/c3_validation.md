@@ -34,6 +34,19 @@ its derivation, what every configuration returned, what the outside points
 actually are, the finding about nsga-ii's coverage, the budget trend as a number,
 and where that leaves phase e.
 
+**c3-d is a diagnostic pass on top of this file and it changes one paragraph.** it
+tested whether the reading section 5 offers for the phi split is a demonstration,
+by instrumenting nsga-ii's non-dominated sorting through a pymoo callback. the
+answer is no: rank 1 fills the survivor slots under all three phi from generation
+three or four onwards, so the mechanism is present everywhere and cannot carry a
+result that appears under two phi and not the third. section 5's mechanism
+paragraph is rewritten to say that and section 5.1 is the measurement. **no
+assertion, no tolerance and no number in sections 1 to 4 is touched by c3-d**, and
+the finding of section 5 itself is unchanged. what the saturation does change is
+what e2 has to report, CONTEXT.md section 10 e2, since a configuration where rank 1
+fills the slots is one where the solver's front is a spread and not a convergence
+result.
+
 
 ## 0. what the gate asserts and what it reports
 
@@ -673,9 +686,12 @@ does not. nsga-ii sorts and spreads by crowding distance in the four-column imag
 space, not in the two-dimensional decision space where the coverage is measured,
 and under phi_ls and phi_cw two of those four columns are functions of a single
 decision variable, so the crowding distance nsga-ii equalises is computed in a
-space whose relation to the decision space is different from phi_lu's. this is
-offered as the reading and not as a demonstration: what is measured is the
-coverage and its dependence on phi, not the operator's internals.
+space whose relation to the decision space is different from phi_lu's. **this is
+offered as the reading and not as a demonstration.** c3-d set out to turn it into
+one by measuring the operator's internals directly, and the measurement does not
+carry the split. section 5.1 is what it measured and why the reading stays a
+reading; the finding above is unchanged by it and nothing in sections 1 to 4
+moves.
 
 what it does **not** say, and e1 must not let it be read as saying: it is not that
 nsga-ii fails to converge, since it does not return points that beat the
@@ -686,6 +702,204 @@ therefore that the largest gap between the derived set and nsga-ii's front is
 larger than the derivation's own resolution at that cardinality.
 
 recorded in CONTEXT.md section 10 e3 as something e3 must report.
+
+### 5.1 rank 1 saturates, under every phi, and the reading stays a reading
+
+the hypothesis c3-d tested, stated before the run. nsga-ii sorts
+pop_size + offspring = 200 candidates per generation. if rank 1 alone holds at
+least pop_size of them then dominance never enters the selection: every survivor
+is chosen by crowding distance, and the algorithm is a spread maximiser with no
+convergence pressure. a4 measured p1's exact non-dominated sets at 460, 1505 and
+961 points for phi_lu, phi_ls and phi_cw, docs/a4b_dominance_tolerance.md section
+1.5, on the 61 x 61 grid of 3721 points on [-0.5, 1.5]^2 that section 1.2 states,
+so the fractions are 0.124, 0.404 and 0.258. if a generation's candidate set
+behaved like that grid the expected rank-1 size among 200 would be about 25, 81
+and 52. that is a phi split of the right shape and in the right order, and it
+would have explained the finding above and the population members
+section 3.3 finds at all four corners of the box after fifty generations, which
+crowding distance in the image space alone does not.
+
+one arithmetic correction to the hypothesis as it was put, and it does not change
+what the hypothesis predicts. the expected sizes were given as 53, 174 and 111,
+which is 460, 1505 and 961 over 1728; 1728 is the size of dtlz2's separation
+sample and p1's
+grid is 61 x 61 = 3721, so the correct figures are the 25, 81 and 52 above. both
+sets of numbers predict the same split in the same order and both are refuted the
+same way.
+
+**it is not what happens. rank 1 saturates under all three phi, by generation four
+at the latest, and it never falls back.** the hypothesis's conclusion is right
+under phi_ls and phi_cw and it is right under phi_lu as well, which is what
+refutes it as an explanation: a mechanism present under every phi cannot be what
+distinguishes phi_lu from the other two. the sizes it predicted are wrong under
+all three, 25, 81 and 52 against measured medians of about 170, 172 and 170 over
+the second half of the run, and the direction of the error is the same in each.
+so the crowding-distance reading of the paragraph above is left as a reading, and
+the saturation is recorded as its own fact rather than as an explanation of that
+one.
+
+the route taken, and there were two available. the four series are read out of the
+algorithm's state after every generation through a pymoo Callback, which pymoo
+calls at the end of _post_advance, core/algorithm.py line 329, after survival has
+run. **pymoo is not modified and nsga2.py is not touched**: a callback reads state
+and the one used here writes nothing back. two of the four series come straight
+off that state. the survivors' rank attribute, which RankAndCrowding._do sets on
+every individual it sorts, operators/survival/rank_and_crowding/classes.py line 99,
+gives the number of survivors that came from rank 1; comparing it to the population
+size gives whether rank 1 filled the slots. the other two cannot be reached that
+way, because pymoo keeps the survivors and discards the merged set they were
+chosen from, so the number of fronts and the size of rank 1 among the 200
+candidates are obtained by **re-running pymoo's own NonDominatedSorting** on a
+matrix the callback records, the previous generation's survivors stacked on this
+generation's offspring, algorithm.off. that is the second route, and no sorting is
+reimplemented: the class called is pymoo's. the instrument is checked against
+src/runners.py's own solve_once at the same seed and the front comes back
+bit-identical under all three phi, so the callback does not perturb the run. the
+harness is a session diagnostic and is not committed: it adds no module and
+changes no file under src/ or tests/, and this paragraph is what it would take to
+rebuild it.
+
+p1, nsga-ii, pop_size 100, n_gen 50, budget 5000, seed 11, which is the gate's
+own configuration. generations 1 to 6 and then every fifth. one caveat on the
+first column: generation 1 is the initialisation, where pymoo runs survival on the
+initial population alone with n_survive equal to its own size, so the candidate
+set there is 100 and not 200 and nothing is discarded; from generation 2 on it is
+200:
+
+    gen                    1    2    3    4    5    6   10   15   20   25   30   35   40   45   50
+    phi_lu
+      fronts, all sorted  12   18    8    5    4    4    5    4    5    4    4    5    4    4    4
+      fronts, survival    12    4    2    1    1    1    1    1    1    1    1    1    1    1    1
+      rank 1 of 200       26   49   74  112  156  172  168  167  167  159  174  177  179  176  169
+      survivors from r1   26   49   74  100  100  100  100  100  100  100  100  100  100  100  100
+      infinite crowding   41   19   10    4    4    4    6    6    4    4    5    6    7    5    5
+    phi_ls
+      fronts, all sorted   5    8    3    3    4    4    3    3    4    3    4    3    3    3    4
+      fronts, survival     5    2    1    1    1    1    1    1    1    1    1    1    1    1    1
+      rank 1 of 200       57   99  174  184  175  159  172  173  168  167  174  176  167  172  175
+      survivors from r1   57   99  100  100  100  100  100  100  100  100  100  100  100  100  100
+      infinite crowding   23    9    8    8    8    7    8    7    8    8    8    8    8    7    8
+    phi_cw
+      fronts, all sorted   7    9    5    4    4    3    4    4    5    3    4    3    3    4    3
+      fronts, survival     7    2    1    1    1    1    1    1    1    1    1    1    1    1    1
+      rank 1 of 200       48   75  120  165  165  169  157  174  173  169  171  170  169  168  175
+      survivors from r1   48   75  100  100  100  100  100  100  100  100  100  100  100  100  100
+      infinite crowding   30   13    7    7    7    7    8    8    6    8    7    8    8    8    8
+
+the front count is given twice because they are two different numbers. "all
+sorted" is the full sort of the 200. "survival" is how many fronts pymoo actually
+enumerates, since RankAndCrowding calls the sort with n_stop_if_ranked = n_survive,
+operators/survival/rank_and_crowding/classes.py line 69, and NonDominatedSorting
+breaks as soon as the ranked count reaches it,
+util/nds/non_dominated_sorting.py lines 46 to 48. from generation three or four
+onwards that number is **one**: nsga-ii enumerates a single front and fills the
+entire population out of it, and the four or five other fronts that exist are
+never looked at.
+
+the decisive number, over the five gate seeds, at the gate's budget:
+
+    phi   rank 1 at gen 1   first generation with rank 1 >= 100   rank 1 over gens 21 to 50, min median max   later dips below 100
+    lu    19 to 26          4, 4, 4, 4, 4                         159 to 163   168 to 172   175 to 179       none, in any seed
+    ls    57 to 65          3, 3, 3, 3, 2                         157 to 165   170 to 173   177 to 184       none, in any seed
+    cw    46 to 54          3, 4, 3, 3, 3                         148 to 161   167 to 170   176 to 179       none, in any seed
+
+generation 1 is the only generation whose candidate set is a draw of the box, and
+it is the only one where a grid's non-dominated fraction is a comparable quantity
+at all. there the split is present and in the predicted order: rank 1 is 19 to 26,
+57 to 65 and 46 to 54 of 100, against the 12, 40 and 26 of 100 the 3721-point
+grid's fractions give: between 1.4 and 2.1 times the grid's figure under every
+phi, which is the sample size and not the phi, and lu below cw below ls in both.
+**by generation 3 or 4 rank 1 holds about 170 of the 200 candidates under every
+phi, and for the remaining 46 or 47 generations of the run every one of the 100
+survivors is a rank-1 member selected on crowding distance alone.** dominance
+decides nothing after generation four under any of the three orders.
+
+**the extreme points, and they are not the outside points of section 3.3 either.**
+nsga-ii's crowding distance assigns infinity to the extreme member in each
+objective column, so with four columns up to eight members per generation are
+unremovable while they stay extreme. from generation four onwards the count sits
+at 4 to 8, as the series above show; in the first generations, before the sort
+collapses to one front, it is 23 to 41, because a crowding distance is computed
+per front and every front contributes its own extremes.
+
+whether section 3.3's outside points are those members, or
+their descendants, needs a genealogy pymoo does not record: no operator writes a
+parent link onto an offspring. it is obtained by giving the algorithm a Mating
+subclass that delegates to pymoo's own _do with the selected parents hoisted out
+so they are visible, and tags each offspring with whether either parent held or
+descended from an infinite crowding distance. it is a wrapper of the same kind
+src/runners.py's SeededArchiveMopso already is, pymoo is again unmodified, and the
+check is the same one: with the traced mating installed the fronts and every
+series above come back identical to the plain run under all three phi. the final
+generation, all five gate seeds, against the outside points of section 3.3:
+
+    phi   front   outside   infinite crowding now   of those, outside   outside points that are extreme now   ever an extreme itself   descends from an extreme
+    lu    500     222       28                      18, 64%             18 of 222, 8.1%                       21 of 222, 9.5%          222 of 222, 100%
+    ls    500     239       37                      29, 78%             29 of 239, 12.1%                      33 of 239, 13.8%         239 of 239, 100%
+    cw    500     235       39                      33, 85%             33 of 235, 14.0%                      37 of 235, 15.7%         235 of 235, 100%
+
+the outside counts 222, 239 and 235 are section 3.3's own, which is the check that
+this is the same run and the same measure. **the extremes are strongly enriched
+among the outside points and they do not carry them.** an extreme is outside the
+region 64 to 85 per cent of the time against a base rate of 44 to 48 per cent for
+the front as a whole, so being unremovable and being outside go together; but the
+extremes are 28 to 39 points and the outside points are 222 to 239, so they
+account for 8 to 14 per cent of them, and the points that were ever an extreme
+during the run account for 10 to 16 per cent. the descent column is reported and
+is vacuous: after fifty generations every member of the front descends from some
+individual that held an infinite crowding distance, and so does every member of
+the population, so the number is 100 per cent against a base rate of 100 per cent
+and separates nothing. that is what a genealogy in a population of 100 over 50
+generations looks like, and it is stated rather than used.
+
+**tier 1, where it matters more.** the same instrument on zdt1_interval, which
+transforms to 4 columns in 30 variables, and dtlz2_interval, which transforms to 6
+columns in 12, at eps = 0.10 and seed 11, at the same budget:
+
+    problem          columns  phi   rank 1 at gen 1   first gen with rank 1 >= 100   rank 1 gens 21 to 50, min median max   fronts, median   infinite crowding, median
+    zdt1_interval    4        lu    16                14                             110  124  144                          6                5
+    zdt1_interval    4        ls    29                13                             111  131  143                          5                6
+    zdt1_interval    4        cw    26                21                             100  118  137                          4                5
+    dtlz2_interval   6        lu    50                 4                             129  146  155                          4                9
+    dtlz2_interval   6        ls    64                 3                             144  155  167                          3                7
+    dtlz2_interval   6        cw    56                 3                             135  153  170                          3                8
+
+**it saturates in all six tier 1 configurations, and it is worse on dtlz2 than on
+zdt1.** dtlz2 saturates at generation 3 or 4, exactly as p1 does, and then sits at
+a median rank 1 of 146 to 155 of 200 with three or four fronts in the sort, so
+nsga-ii spends 46 or 47 of its 50 generations selecting on crowding distance alone
+in a six-column image space. zdt1 is the one configuration where dominance
+survives a while: rank 1 does not reach 100 until generation 13, 13 and 21 under
+the three phi, it dips back below 100 twice under phi_lu at generations 16 and 17,
+and its median over the last thirty generations is 118 to 131 rather than p1's or
+dtlz2's 146 to 173.
+
+what orders the three problems is not the column count, and this is worth saying
+because the column count is the obvious candidate and it is wrong. p1 transforms
+to 4 columns and saturates at generation 3 or 4, as fast as dtlz2's 6; zdt1 also
+transforms to 4 and takes 13 to 21. what does track the ordering is the
+non-dominated fraction of the transformed image, on a5's separation samples,
+recomputed in exact arithmetic in docs/a_close_containment.md section 3.3: at
+eps = 0.10 dtlz2 gives 995, 1362 and 947 of 1728, which is 0.58, 0.79 and 0.55,
+against zdt1's 247, 535 and 483 of 1024, which is 0.24, 0.52 and 0.47. three
+problems is not enough to assert that as a law and it is not asserted here; what
+is asserted is the measurement, that every one of the nine problem-phi
+configurations run in this section reaches saturation and, apart from two
+generations on zdt1 under phi_lu, stays there for the rest of the run. **e2 cannot be read without this
+number**, and CONTEXT.md section 10 e2 now requires every configuration to report
+it.
+
+what 5.1 concludes, and what it does not. it concludes that from generation three
+or four onwards nsga-ii on this transformed problem is selecting on crowding
+distance and not on dominance, that this holds under every phi and on both tier 1
+benchmarks, and that on zdt1 it takes until generation 13 to 21 rather than 3 to 4
+but arrives all the same. it does **not** conclude that this explains section 5's
+finding, because a mechanism
+that fires equally under all three phi cannot produce a result that appears under
+two of them and not the third. the phi split therefore keeps the reading it had,
+and a second hypothesis is not constructed here to replace it; that goes to the
+research chat.
+
 
 
 ## 6. the budget trend, reported and no longer asserted
@@ -889,6 +1103,15 @@ what is open, and none of it is a blocker:
           on how e3 reads any spread statistic, d1's compute_spread included,
           since that statistic is computed in the objective space where nsga-ii
           sorts and the finding is in the decision space where the result lives.
+          extended in c3-d. the crowding-distance reading of the split was put to
+          a direct measurement and does not survive as an explanation: rank 1
+          saturates under all three phi by generation four and never falls back,
+          section 5.1, and on tier 1 it saturates at generation 3 or 4 on dtlz2's
+          six columns and at 13 to 21 on zdt1's four. so the split still has a
+          reading and not a mechanism, and what to do with it is still what is
+          open. what c3-d adds under the same row is a second thing e2 and e3 must
+          report, the rank-1 size against the population size, which is a property
+          of the transformation and not of any one phi.
 
     r-18  rewritten. it said the budget trend fails under phi_cw and that no
           mechanism forces improvement. the truth is stronger and is section 1: a

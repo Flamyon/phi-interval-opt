@@ -22,8 +22,10 @@ project started 2026-08-30.
                         twelve of ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    c3-c, awaiting review. c1 is done, its review evidenced by
-                        c2's prompt; c2 is done, its review evidenced by c2-b's
+    current subpart:    c3-d, awaiting review. c3-c is done, its review evidenced
+                        by c3-d's prompt, which accepts its corrections and asks
+                        one diagnostic question about section 5. c1 is done, its
+                        review evidenced by c2's prompt; c2 is done, its review evidenced by c2-b's
                         prompt, which reverses one of its choices; c2-b is
                         done, its review evidenced by c3's prompt, which quotes
                         its findings into CONTEXT.md sections 10 c2, 10 d1 and 11;
@@ -32,7 +34,8 @@ project started 2026-08-30.
                         c3-b is done, its review evidenced by c3-c's prompt, which
                         corrects three things c3-b left: the missing proposition
                         behind the forward floor, the sampled quality measure, and
-                        the tolerance. b1 and b2 are done and
+                        the tolerance; and c3-c is done, its review evidenced by
+                        c3-d's prompt. b1 and b2 are done and
                         phase b is complete. phase a is complete: a0, a0-b, a1,
                         a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all done
                         and docs/phase_a_summary.md is the close-out document
@@ -99,7 +102,9 @@ phase c, solvers
     c2  runners.py                          done, corrected in c2-b
     c2-b archive and cardinality             done
     c3  validation gate                     done, corrected in c3-b
-    c3-b the gate's assertions, restated     awaiting review, gate passes
+    c3-b the gate's assertions, restated     done, corrected in c3-c
+    c3-c the three corrections               done, gate fails and is asserted
+    c3-d the saturation diagnostic           awaiting review, no code changed
 
 phase d, analysis
     d1  metrics_objective.py                not started
@@ -657,6 +662,34 @@ r-19 | nsga-ii's decision-space coverage of a full-dimensional efficient set is
     distance in the four-column image space and the coverage is measured in the
     two-dimensional decision space, and under phi_ls and phi_cw two of those four
     columns are functions of a single decision variable.
+    the reading was put to a direct measurement in c3-d and does not become a
+    demonstration. nsga-ii sorts 200 candidates a generation and keeps 100, and if
+    rank 1 alone holds 100 of them then no survivor is chosen by dominance. it
+    does: on p1 rank 1 first reaches 100 at generation 4, 3 and 3 under phi_lu,
+    phi_ls and phi_cw, at every one of the five gate seeds, never falls back in
+    any of them, and sits at a median of 167 to 173 of 200 over the last thirty
+    generations under all three phi, with the survival sort enumerating one front
+    where three to five exist. **the mechanism is present under phi_lu too**, so it cannot be
+    what makes the coverage finding appear under two phi and not the third, and
+    the crowding-distance reading stays a reading. the extreme points that hold an
+    infinite crowding distance, 28 to 39 over the five final fronts, are enriched
+    among the outside points of docs/c3_validation.md section 3.3, outside 64 to
+    85 per cent of the time against a front base rate of 44 to 48, and account for
+    8 to 14 per cent of them; descent from an extreme is 100 per cent of the front
+    against a base rate of 100 per cent and separates nothing.
+    the tier 1 numbers, at eps = 0.10 and seed 11 at the same budget, and this is
+    where it matters more. dtlz2_interval transforms to 6 columns and saturates at
+    generation 4, 3 and 3, then sits at a median rank 1 of 146, 155 and 153 of 200
+    with three or four fronts in the sort. zdt1_interval transforms to 4 columns
+    in 30 variables and is the one configuration where dominance survives a while:
+    rank 1 first reaches 100 at generation 14, 13 and 21, dips back below it twice
+    under phi_lu, and its median over the last thirty generations is 124, 131 and
+    118. the column count is not on its own what orders the three problems, since
+    p1 also transforms to four columns and saturates as fast as dtlz2 does; what
+    tracks the ordering is the non-dominated fraction of the transformed image on
+    a5's separation samples, 0.58, 0.79 and 0.55 on dtlz2 against 0.24, 0.52 and
+    0.47 on zdt1, and three problems is not enough to assert that and it is not
+    asserted.
     cost: measured, and it is a cost to the comparison and not to the pipeline.
     twelve of the gate's ninety reverse measurements fail, by 0.005 to 0.039 in a
     box of side 2, and the suite is red in twelve tests by decision,
@@ -665,15 +698,19 @@ r-19 | nsga-ii's decision-space coverage of a full-dimensional efficient set is
     0.3309 under phi_ls and 0.2531 against 0.2503 under phi_cw.
     trigger: e3 reading any spread statistic, d1's compute_spread included, since
     that statistic is computed in the objective space where nsga-ii sorts while
-    the finding is in the decision space where the result lives; and e1 reporting
+    the finding is in the decision space where the result lives; e1 reporting
     a decision-space coverage or hausdorff number for nsga-ii without the
-    cardinality-matched uniform draw beside it.
+    cardinality-matched uniform draw beside it; and e1 or e2 reporting any
+    population-method front without the rank-1 size against the population size,
+    since a front produced under saturation is a spread and not a convergence
+    result.
     mitigation: partial and stated. e1 and e3 report nsga-ii's coverage as
     measured, against a uniform draw of its own cardinality, which is the cheap
-    option and the one c3-c takes. what is not decided is whether a
-    decision-space diversity operator belongs in the comparison at all; that
-    would be a change to c2 and is out of scope for a gate. CONTEXT.md section 10
-    e3 now requires the finding to be reported.
+    option and the one c3-c takes, and e2 and e3 report the rank-1 size against
+    the population size for every configuration, which is what c3-d adds. what is
+    not decided is whether a decision-space diversity operator belongs in the
+    comparison at all; that would be a change to c2 and is out of scope for a
+    gate. CONTEXT.md sections 10 e2 and 10 e3 now require both to be reported.
 
 r-18 | rewritten in c3-c. as raised in c3-b this said the gate's budget trend
     failed under phi_cw for both population methods and that no mechanism in
@@ -1114,3 +1151,61 @@ format:
     12 failed in 736s | the research chat, on r-19 and on whether a red suite
     carrying a stated finding is the right way to leave a gate. e1 is not blocked
 
+2026-09-01 | c3-d | docs/c3_validation.md section 5 and its new section 5.1,
+    CONTEXT.md sections 10 e2 and 10 e3, PROGRESS.md | one diagnostic, and the
+    hypothesis it tested is refuted. **no code changed: no module added, nothing
+    under src/ or tests/ touched, pymoo unmodified, and no assertion, tolerance or
+    number in sections 1 to 4 of the deliverable moved.** the question was whether
+    section 5's crowding-distance reading of the phi split is a demonstration.
+    nsga-ii sorts pop_size + offspring = 200 candidates a generation and keeps 100,
+    so if rank 1 alone holds 100 of them then no survivor is chosen by dominance
+    and the front is a spread and not a convergence result. the route: a pymoo
+    Callback reads the survivors' own rank and crowding attributes after every
+    generation, core/algorithm.py line 329 and
+    operators/survival/rank_and_crowding/classes.py line 99, and because pymoo
+    keeps the survivors and discards the merged set they came from, the rank-1 size
+    among the 200 and the front count are obtained by re-running **pymoo's own**
+    NonDominatedSorting on the previous generation's survivors stacked on
+    algorithm.off. a callback that reads state is not a modification and no sorting
+    is reimplemented. the instrument is checked and not assumed: at every phi the
+    front comes back bit-identical to src/runners.py's own solve_once at the same
+    seed. **it saturates, and under all three phi.** on p1 at the gate's budget rank
+    1 first reaches 100 at generation 4, 3 and 3 under phi_lu, phi_ls and phi_cw at
+    all five gate seeds, never falls back at any of them, and holds a median of 167
+    to 173 of 200 over the last thirty generations under every phi, with the
+    survival sort enumerating one front where four or five exist. so for 46 or 47
+    of the 50 generations dominance decides nothing, **including under phi_lu**, and
+    a mechanism present under every phi cannot produce a finding that appears under
+    two and not the third. **section 5's reading stays a reading**, rewritten to say
+    so with the series as evidence, and no second hypothesis is constructed here to
+    replace it. the finding itself is unchanged. the extremes were checked too: the
+    28 to 39 points holding an infinite crowding distance in the five final fronts
+    are enriched among section 3.3's outside points, outside 64 to 85 per cent of
+    the time against a front base rate of 44 to 48, but account for only 8 to 14 per
+    cent of them, 10 to 16 counting every point that was ever an extreme; descent
+    from an extreme, measured with a Mating subclass that delegates to pymoo's own
+    _do and again reproduces the run bit-identically, is 100 per cent of the front
+    against a base rate of 100 per cent and separates nothing. the outside counts
+    the run returns, 222, 239 and 235, are section 3.3's own, which is the check
+    that this is the same run. **tier 1, at eps = 0.10 and seed 11**: dtlz2_interval
+    at 6 columns saturates at generation 4, 3 and 3 and sits at a median rank 1 of
+    146, 155 and 153 of 200; zdt1_interval at 4 columns in 30 variables is the only
+    place dominance survives a while, first reaching 100 at generation 14, 13 and
+    21, dipping back twice under phi_lu, and holding a median of 124, 131 and 118.
+    the column count is not on its own what orders the three problems, since p1 also
+    transforms to four columns and saturates as fast as dtlz2 does; what tracks the
+    ordering is the non-dominated fraction of the transformed image, 0.58, 0.79 and
+    0.55 on dtlz2 against 0.24, 0.52 and 0.47 on zdt1, and three problems is not
+    enough to assert that and it is not asserted. one arithmetic correction to the
+    prompt, which does not change what it predicted: p1's a4 grid is 61 x 61 = 3721
+    and not 1728, so the expected rank-1 sizes among 200 are 25, 81 and 52 rather
+    than 53, 174 and 111; both sets predict the same split and both are refuted the
+    same way. no v-row added: the brief attached one to the branch where the
+    mechanism carries the split, and it does not. CONTEXT.md sections 10 e2 and 10
+    e3 now require the rank-1 size against the population size for every
+    configuration, r-19 extended with the tier 1 numbers and with the trigger and
+    mitigation that follow. the suite is unchanged because nothing in it changed:
+    the fast run is 310 passed in 144s and the full run 782 passed and 12 failed in
+    728s, the same twelve gate tests at nsga-ii as c3-c left | the research chat,
+    on what the phi split is if it is not the sorting, and on r-19. e1 is not
+    blocked
