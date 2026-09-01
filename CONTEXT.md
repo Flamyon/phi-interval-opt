@@ -699,7 +699,12 @@ is code, and a session record block for PROGRESS.md.
     output: docs/c3_validation.md and tests/test_validation.py.
     runs all three solvers on every tier 0 problem under every phi for which b1
     closed, and checks recovery of the known efficient set within a stated
-    tolerance, per seed.
+    tolerance, per seed. recovery is measured by hausdorff distance in the
+    decision space and never by igd. hausdorff is a maximum over the two sets and
+    is insensitive to how densely the reference front is sampled; igd is an
+    average over reference points, so it weights a densely sampled region more
+    heavily, and b2 samples through b1's weight map, whose density in objective
+    space is the parametrisation's and not the front's. r-13.
     a gate, not a report. if it fails, phase e does not start and the failure is
     diagnosed first. record the tolerance and why it was chosen.
     the gate also reports one number that is not a recovery check: the count of

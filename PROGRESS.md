@@ -11,18 +11,18 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-47, p-06, s-12, r-12, d-02.
+    highest numbers in use: v-47, p-06, s-12, r-13, d-02.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
 
 ## 1. where the project stands
 
-    current phase:      b, ground truth
-    current subpart:    b2, awaiting review. b1 is reviewed and done. phase a is
-                        complete: a0, a0-b, a1, a1-b, a2, a3, a3-b, a4, a4-b, a5
-                        and a-close are all done and docs/phase_a_summary.md is
-                        the close-out document
+    current phase:      c, solvers
+    current subpart:    c1, awaiting review. b1 and b2 are done and phase b is
+                        complete. phase a is complete: a0, a0-b, a1, a1-b, a2, a3,
+                        a3-b, a4, a4-b, a5 and a-close are all done and
+                        docs/phase_a_summary.md is the close-out document
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
@@ -35,10 +35,11 @@ project started 2026-08-30.
                         papers/deb_thiele_laumanns_zitzler_2002_scalable.pdf
                         src/interval_math.py, src/phi_transforms.py,
                         src/problems_tier0.py, src/problems_tier1.py,
-                        src/reference_fronts.py
+                        src/reference_fronts.py, src/random_search.py
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
-                        tests/test_problems_tier1.py, tests/test_reference_fronts.py
+                        tests/test_problems_tier1.py, tests/test_reference_fronts.py,
+                        tests/test_random_search.py
                         requirements.txt, versions pinned to the venv
 
 ## 2. subpart status
@@ -55,10 +56,10 @@ phase a, formulation. complete, tagged phase-a-complete.
 
 phase b, ground truth
     b1  phi-efficient sets, derivation      done
-    b2  reference_fronts.py                 awaiting review
+    b2  reference_fronts.py                 done
 
 phase c, solvers
-    c1  random_search.py                    not started
+    c1  random_search.py                    awaiting review
     c2  runners.py                          not started
     c3  validation gate                     not started
 
@@ -448,6 +449,19 @@ r-12 | the reference front with the singular segments and the one without are tw
     count; and where two solvers land within a few per cent of each other under
     phi_ls or phi_cw, e1 reports the metric both ways rather than picking one.
 
+r-13 | b2's reference front is sampled through b1's weight map, so it covers the
+    derived region well but its density in objective space is the
+    parametrisation's and not the front's, and igd is an average over reference
+    points, so a denser region is weighted more heavily.
+    cost: igd in d1 is biased by the parametrisation rather than by the solvers.
+    trigger: d1 computing igd.
+    mitigation: oversample through the map and subsample by farthest-point
+    selection in objective space, which changes which points are kept and not the
+    derivation; to be done in a b2-b before d1, and not at all if d1 is cut.
+    c3 is unaffected and says so: CONTEXT.md section 10 c3 measures recovery by
+    hausdorff distance in decision space, which is a maximum and insensitive to
+    reference-front density.
+
 r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
     docs/answered.md with the reasoning that retired them.
 
@@ -596,3 +610,26 @@ format:
     0, one phi_ls segment point colliding with an a4 grid point 5.6e-17 away and
     losing by one rounding step, which is d-02's subject and is why the test
     samples randomly | c1, random_search.py
+
+2026-09-01 | c1 | src/random_search.py, tests/test_random_search.py, CONTEXT.md,
+    PROGRESS.md | the control of slide 17, built so that the order is separable
+    from the search: sample_decision_space takes no phi, so the sample is a pure
+    function of the box, the budget and the seed, and
+    filter_one_sample_under_every_phi draws one sample, evaluates it once and
+    returns the non-dominated index set under each phi, three sets over one array.
+    non_dominated_indices is the project's one dominance relation, no tolerance
+    and no rounding; the copies in tests/test_phi_transforms.py and
+    tests/test_problems_tier1.py could now import it and that is left as a
+    separate decision. phi arrives by name and not as the phi_fn CONTEXT.md
+    section 10 c1 writes, d-02 having made a bare callable unpairable with a
+    problem's declared representation. 96 tests pass and 257 in the suite. the
+    containment of docs/a_close_containment.md is asserted on solver output for
+    the first time and holds exactly, ND_lu and ND_cw strictly inside ND_ls on p1
+    and on both tier 1 benchmarks at two seeds, with no band: a5 needed 0.99
+    because its lattice sample sits on dtlz2's face x_1 = 1 where c - r rounds a
+    strict inequality to a tie, and a uniform sample reaches no such point. no
+    random-search front point dominates any point of b2's reference front, under
+    every phi and both settings of the singular flag. r-13 raised, the reference
+    front's density in objective space being the weight parametrisation's and
+    biasing igd; CONTEXT.md section 10 c3 corrected to measure recovery by
+    hausdorff distance and never by igd | c2, runners.py
