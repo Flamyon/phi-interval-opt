@@ -12,12 +12,25 @@ statement for phi_cw on dtlz2, found that it does not, and generalised: both
 containments are instances of one criterion on the map between two automorphisms,
 and that criterion is stated once here rather than proved twice.
 
-the standing constraint, stated first because it governs everything below. the
-project does not build on these results. they are recorded, not used. b1 derives
-its efficient sets from [1]'s own results and does not shorten a derivation with
-them; d2 and e3 report the pairs as checks on r-06's prediction and never as
-independent findings; no test asserts either containment for phi_cw. that stands
-until the supervisors answer s-11.
+the standing constraint, stated first because it governs everything below, and
+amended in session c2, 2026-09-01. the project claims no result from either
+containment. they are recorded, not used. b1 derives its efficient sets from [1]'s
+own results and does not shorten a derivation with them, and d2 and e3 report the
+pairs as checks on r-06's prediction and never as independent findings. that
+stands until the supervisors answer s-11.
+
+what the constraint does not forbid, which is the amendment. a test may assert
+either containment as a self-check on the encoding. c1 asserted both on random
+search output and c2 asserts both on nsga-ii's and mopso's, and neither test
+claims anything about the orders: the containment holds for the non-dominated
+sets of any finite point set whatever produced it, so what such a test can fail on
+is the sample, the route pairing, the column order or the dominance relation, and
+that is the whole of what it is for. it is the cheapest end-to-end check the
+project has. the earlier wording of this paragraph read "no test asserts either
+containment for phi_cw", which was a statement about the state of the suite and
+not a rule, and c1's phi_cw assertion stands. if s-11 refutes either containment
+the tests asserting it are deleted along with the e3 instruction, and no result
+moves, because none was claimed from them.
 
 [1] is papers/new_preference_order_relationships_paper.txt, costa, osuna-gomez
 and chalco-cano, "new preference order relationships and their application to
@@ -336,8 +349,9 @@ containment beside it and no noise count anywhere, so a shortfall that is entire
 double-precision presented as though it were a property of the orders. the report
 now prints cw<ls and ls<cw with the other containments and a noise line carrying
 |lu \ ls| and |cw \ ls|, which is the count CONTEXT.md section 10 c3 has the
-validation gate report. no assertion was added for the phi_cw containment: the
-containments are awaiting s-11 and a test asserting one would be building on it.
+validation gate report. no assertion was added for the phi_cw containment in that
+session; c1 added one and c2 added another, as self-checks on the encoding and not
+as claims, per the amended standing constraint above.
 
 
 ## 4. relation to proposition 5.1 of [1]
@@ -454,7 +468,11 @@ three things and nothing else.
     are both containments correct? corollary 1 for phi_lu is the case a-close
     verified and the one the project already carries two tests around, v-46 and the
     band assertion in tests/test_problems_tier1.py. corollary 2 for phi_cw was
-    reached in a-close-b and no test asserts it.
+    reached in a-close-b, and since c1 both are asserted on solver output as
+    self-checks on the encoding, exactly and with no band, on p1 and on both tier 1
+    benchmarks. that is evidence that the project's own arithmetic reproduces them
+    and it is not evidence that they are correct as mathematics, which is what is
+    being asked here.
 
     is any of it already published? [1] cites its own reference [26] for
     LS-convexity in example 2.3 and for LS-Pareto in the conclusion, line 1526,

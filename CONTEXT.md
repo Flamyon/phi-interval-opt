@@ -666,10 +666,17 @@ is code, and a session record block for PROGRESS.md.
     the control named "referencia base" on slide 17. not a competitor.
         sample_decision_space(bounds, n_evals, seed): uniform sample, separated
             because it is deliberately independent of phi.
-        run_random_search(problem, phi_fn, params, n_evals, seeds): evaluates the
+        run_random_search(problem, phi_name, params, n_evals, seeds): evaluates the
             sample, applies phi per interval objective, returns the non-dominated
             subset as objective values and the matching decision vectors, one result
             per seed.
+    phi arrives by name and not as a callable, corrected in c2 against d-02, which
+    made the phi_fn this line used to specify impossible: a phi record carries two
+    routes, of_endpoints and of_centre_radius, and which one applies is fixed by the
+    problem's declared representation, so a bare callable cannot be paired with a
+    problem without the caller doing the pairing, which is the crossing a3-b
+    removed. the record is looked up in phi_registry, as src/reference_fronts.py
+    does it. the same correction applies to c2 below.
     why the separation matters: one uniform sample can be filtered under each phi in
     turn, and the resulting fronts then differ only through the order, because the
     search was identical. in nsga-ii and mopso, phi drives the search as well as the
@@ -682,8 +689,8 @@ is code, and a session record block for PROGRESS.md.
 
 ### c2: runners.py
     nsga-ii and mopso from pymoo, unmodified.
-        run_nsga2(problem, phi_fn, params, n_gen, pop_size, seeds)
-        run_mopso(problem, phi_fn, params, n_gen, pop_size, seeds)
+        run_nsga2(problem, phi_name, params, n_gen, pop_size, seeds)
+        run_mopso(problem, phi_name, params, n_gen, pop_size, seeds)
     both return, per seed, the front as a (k, 2m) array and the matching
     (k, n_vars) array of decision vectors. the decision vectors are not optional:
     the only metrics comparable across phi are computed on them.
@@ -821,6 +828,11 @@ session discipline:
     tests are written in the same session as the code they test.
     every session ends with its output brought to the research chat for review
     before the next begins.
+    an agent may not mark a subpart reviewed. review happens in the research chat
+    and nowhere else, and a status an agent wrote cannot record it. an agent may
+    move a subpart from awaiting review to done when the next subpart's prompt
+    presupposes it, that prompt being the evidence the review happened, and it
+    records which prompt that was in the session log.
     work is committed directly to main, one commit per subpart, the message
     prefixed with the subpart id. no branches. a session that is rejected in
     review is reverted.

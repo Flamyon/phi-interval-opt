@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-47.
+highest number in use: v-50.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -397,3 +397,51 @@ v-47 | a5's separation report shows |ls&cw| falling short of |cw| on dtlz2 by 7,
     docs/a_close_containment.md section 3.4; the two counts are printed on the
     noise line of tests/test_problems_tier1.py's separation report | a-close-b |
     2026-09-01
+
+v-48 | pymoo 0.6.2 does construct a generator that no seeding call reaches, which
+    refines v-38 rather than contradicting it: v-38's search was for calls to the
+    global numpy state and there are none, while this is a fresh generator seeded
+    from the operating system. core/algorithm.py line 249, inside advance, is
+    self.archive = self.archive.add(infills) for any algorithm holding an archive,
+    and Archive.add truncates with self.truncation once the non-dominated set
+    passes max_size, util/archive.py lines 86 and 87 inside add, which begins at
+    line 77. the default truncation is
+    RandomTruncation, util/archive.py lines 16 to 19, whose __call__ is decorated
+    with default_random_state and is called with no random_state, so it draws from
+    np.random.default_rng(None). measured consequence for mopso_cd, whose archive
+    is a MultiObjectiveArchive with max_size = archive_size, default 200: on p1
+    under phi_ls at pop_size 40 and n_gen 20, five runs at seed 7 with both
+    numpy.random.seed(7) and minimize(seed=7) gave five different fronts of 179,
+    178, 184, 194 and 189 rows. the runs diverge at generation 17 with the
+    algorithm's own seeded generator in an identical state at that point, which is
+    what rules out the seeded stream as the cause. nsga-ii is unaffected, holding
+    no archive. setting archive_size to the whole evaluation budget removes it, the
+    archive then holding at most one entry per evaluation and never overflowing:
+    bit-reproducible over p0, p1, zdt1 and dtlz2 under all three phi, and that is
+    what src/runners.py does, d-03 | project diagnostic, not a paper | pymoo 0.6.2
+    source, plus scratchpad scripts and tests/test_runners.py::
+    test_the_same_seed_gives_the_same_front | c2 | 2026-09-01
+
+v-49 | under pymoo's ("n_gen", n) termination the two solvers do not spend the
+    same budget: at pop_size 20 and n_gen 3, 5 and 10, nsga-ii's evaluator reports
+    60, 100 and 200 evaluations and mopso_cd's reports 80, 120 and 220, one
+    population more, its initial swarm being evaluated outside the generation
+    count. under MaximumFunctionCallTermination(pop_size * n_gen) both report 60,
+    100 and 200 exactly. so budget parity, CONTEXT.md section 5 step 4, needs the
+    termination stated in evaluations, which is what src/runners.py does; the
+    count is asserted against the problem's own evaluation calls in
+    tests/test_runners.py | project diagnostic, not a paper | pymoo 0.6.2,
+    scratchpad script and tests/test_runners.py::test_the_budget_is_pop_size_times_n_gen
+    | c2 | 2026-09-01
+
+v-50 | pymoo's non-domination and the project's agree exactly on solver output.
+    random_search.non_dominated_indices is the identity on the front returned by
+    both nsga-ii and mopso_cd, on p0, p1, zdt1 and dtlz2 under all three phi, 24
+    cases, with no row differing in any of them. this is what CONTEXT.md section 5
+    predicts structurally, pymoo comparing raw doubles and its NonDominatedSorting
+    epsilon argument being a translation, and it is now measured on output rather
+    than argued from the source. src/runners.py therefore returns pymoo's front
+    unfiltered: re-filtering it would hide a future disagreement instead of
+    reporting one | project diagnostic, not a paper |
+    tests/test_runners.py::test_the_project_filter_is_the_identity_on_the_pymoo_front
+    | c2 | 2026-09-01

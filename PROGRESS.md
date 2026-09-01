@@ -11,7 +11,7 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-47, p-06, s-12, r-13, d-02.
+    highest numbers in use: v-50, p-06, s-12, r-15, d-03.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -19,10 +19,11 @@ project started 2026-08-30.
 ## 1. where the project stands
 
     current phase:      c, solvers
-    current subpart:    c1, awaiting review. b1 and b2 are done and phase b is
-                        complete. phase a is complete: a0, a0-b, a1, a1-b, a2, a3,
-                        a3-b, a4, a4-b, a5 and a-close are all done and
-                        docs/phase_a_summary.md is the close-out document
+    current subpart:    c2, awaiting review. c1 is done, its review evidenced by
+                        c2's prompt, which presupposes it. b1 and b2 are done and
+                        phase b is complete. phase a is complete: a0, a0-b, a1,
+                        a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all done
+                        and docs/phase_a_summary.md is the close-out document
     blocked on:         nothing
     files on disk:      docs/a0_framework.md, docs/a1_uncertainty_model.md,
                         docs/a4b_dominance_tolerance.md,
@@ -35,12 +36,14 @@ project started 2026-08-30.
                         papers/deb_thiele_laumanns_zitzler_2002_scalable.pdf
                         src/interval_math.py, src/phi_transforms.py,
                         src/problems_tier0.py, src/problems_tier1.py,
-                        src/reference_fronts.py, src/random_search.py
+                        src/reference_fronts.py, src/random_search.py,
+                        src/runners.py
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
                         tests/test_problems_tier1.py, tests/test_reference_fronts.py,
-                        tests/test_random_search.py
+                        tests/test_random_search.py, tests/test_runners.py
                         requirements.txt, versions pinned to the venv
+                        pytest.ini, holding the slow marker and nothing else
 
 ## 2. subpart status
 
@@ -59,8 +62,8 @@ phase b, ground truth
     b2  reference_fronts.py                 done
 
 phase c, solvers
-    c1  random_search.py                    awaiting review
-    c2  runners.py                          not started
+    c1  random_search.py                    done
+    c2  runners.py                          awaiting review
     c3  validation gate                     not started
 
 phase d, analysis
@@ -123,6 +126,35 @@ d-02, 2026-08-31, taken in the research chat and built in a3-b. every phi image 
     the start; c1, c2, d2 and b2 compare with no tolerance. the a4 test's rounding
     step is gone and the same grids return a1-b's counts without it.
     status: closed.
+
+d-03, 2026-09-01, proposed in c2 and awaiting the research chat. mopso_cd's
+    archive is sized to the whole evaluation budget, pop_size * n_gen, rather than
+    left at pymoo's default of 200.
+    why: reproducibility, which is not otherwise available. pymoo 0.6.2 adds every
+    infill to the algorithm's archive, core/algorithm.py line 249, and an archive
+    that passes max_size truncates itself with RandomTruncation, which is called
+    with no random_state and draws from np.random.default_rng(None), a generator
+    seeded from the operating system that neither minimize(seed=s) nor
+    numpy.random.seed reaches. at the default size, five runs of one seed on p1
+    under phi_ls gave five different fronts. an archive sized to the budget cannot
+    overflow, holding at most one entry per evaluation, so the branch is never
+    entered; nsga-ii is unaffected, holding no archive.
+    what it costs, since it is not free: the archive is re-sorted for
+    non-domination every generation, so the run is roughly quadratic in the budget.
+    on p1 under phi_lu at pop_size 100, budgets 500, 1000, 2000 and 4000 take 0.17,
+    0.59, 2.58 and 10.60 seconds against 0.17, 0.64, 1.84 and 3.64 at the default,
+    and at budget 20000 the run takes 228.84 seconds against nsga-ii's 1.54. it
+    also changes what mopso does and not only what it records, leaders being drawn
+    from the archive, so it is a change to the search and not to bookkeeping.
+    the alternative, written out so it can be re-examined: override mopso_cd's
+    _update_archive so the archive it installs truncates deterministically, keeping
+    the default size and the cost. it is not taken because CONTEXT.md section 10 c2
+    says pymoo is used unmodified and an archive policy is part of the algorithm.
+    source: project diagnostic, v-48, with the pymoo 0.6.2 source read in this
+    session.
+    affects: c2, built this way; c3, e1 and e2, which pay the cost and must state
+    the archive size beside the budget; r-15.
+    status: proposed.
 
 ## 4. verified facts
 
@@ -462,6 +494,52 @@ r-13 | b2's reference front is sampled through b1's weight map, so it covers the
     hausdorff distance in decision space, which is a maximum and insensitive to
     reference-front density.
 
+r-14 | pymoo 0.6.2 reaches a generator no seeding call controls. any algorithm
+    holding an archive truncates it with RandomTruncation once it passes max_size,
+    and that call passes no random_state, so it draws from
+    np.random.default_rng(None). v-48.
+    cost: a run that is not bit-reproducible while appearing to be seeded, which
+    would put unreproducible numbers in every table that used it. realised on
+    mopso_cd at its default archive size, five runs of one seed giving five
+    different fronts.
+    trigger: any use of a pymoo algorithm with a bounded archive. mopso_cd today;
+    a future d1 indicator or a phase f solver that carries one tomorrow.
+    mitigation: d-03 sizes mopso_cd's archive to the budget so the truncation is
+    never reached, and tests/test_runners.py asserts bitwise reproducibility for
+    both solvers on every problem and every phi, which is what would catch a
+    recurrence. the general guard is that reproducibility is asserted for any new
+    solver rather than assumed from a seed argument.
+
+r-15 | a full e1 sweep costs hours rather than minutes at a large budget, and the
+    two drivers are mopso_cd's archive, d-03, and the project's dominance filter,
+    which is O(N^2 m) with (block x N x 2m) boolean temporaries.
+    cost: measured in c2 on one seed, three processes on an eight-core machine.
+    per run at budget 5000, pop_size 100: nsga-ii 0.8 to 1.3 s, mopso 2.7 to 34.2
+    s, random search 3.9 to 4.6 s, over p1, zdt1 and dtlz2 under all three phi. at
+    budget 20000 under phi_lu, mopso takes 228.84 s on p1 run alone and 323.63,
+    289.19 and 251.37 s on p1, zdt1 and dtlz2 with the three measurement processes
+    running together, against 1.4 to 3.5 s for nsga-ii and 27 to 54 s for random
+    search, mopso's archive reaching 6295, 8664 and 7707 rows. random_search.non_dominated_indices alone, uniform rows: n = 5000
+    takes 2.27 s at 2m = 4 and 2.40 s at 2m = 6; n = 25000 takes 66.19 s and 78.06
+    s; n = 50000 takes 381.04 s and 396.01 s. peak resident memory over the same
+    six is 44, 49, 94, 88, 119 and 144 MiB against a 33 MiB baseline, so memory is
+    not the constraint at these sizes and time is. projecting a sweep of two tier 0
+    problems, three phi, three solvers and ten seeds, 60 runs per solver: about 35
+    minutes at budget 5000 and about 4.7 hours at budget 20000. e2 multiplies its
+    own sweep by the five imprecision levels of src/problems_tier1.py and is
+    several hours at either budget.
+    trigger: e1 choosing its budget and seed count, and d1 or d2 filtering large
+    sets repeatedly.
+    mitigation: the budget and the seed count are stated in e1's plan rather than
+    discovered while it runs, and both are chosen against these numbers. two
+    reductions exist and neither is taken here, both being decisions rather than
+    tuning: pymoo's own NonDominatedSorting is O(N^2) with a better constant and
+    v-50 measures it agreeing with the project's filter row for row, so the two
+    could be used interchangeably where speed matters, against CONTEXT.md section
+    5's rule that the project has one implementation and not two; and d-03 could be
+    reversed for runs where reproducibility is not needed, which is no run this
+    project makes.
+
 r-10 | retired in a3, r-01 in a4 and r-07 in a3-b. all three are in
     docs/answered.md with the reasoning that retired them.
 
@@ -633,3 +711,37 @@ format:
     front's density in objective space being the weight parametrisation's and
     biasing igd; CONTEXT.md section 10 c3 corrected to measure recovery by
     hausdorff distance and never by igd | c2, runners.py
+
+2026-09-01 | c2 | src/runners.py, tests/test_runners.py, pytest.ini, CONTEXT.md,
+    docs/a_close_containment.md, docs/verified.md, PROGRESS.md | nsga-ii and
+    mopso_cd wrapped around one shared contract: SearchResult, phi_image and
+    require_seeds are imported from c1 and nothing of c1 is defined a second time,
+    so the three solvers return one shape. two findings, both about pymoo 0.6.2 and
+    both measured before being acted on. first, budget parity is not what ("n_gen",
+    n) gives: nsga-ii spends pop_size * n_gen and mopso_cd spends one population
+    more, 60, 100 and 200 against 80, 120 and 220 at pop_size 20, so the runners
+    terminate on the evaluation count and both spend the stated budget exactly,
+    v-49. second, mopso_cd is not reproducible at its default archive size: pymoo
+    truncates an overflowing archive from a generator seeded by the operating
+    system, and five runs of one seed on p1 under phi_ls gave five different
+    fronts, diverging at generation 17 with the algorithm's own generator in an
+    identical state; sizing the archive to the budget removes the overflow and the
+    runs are bit-reproducible on all four problems under all three phi, v-48 and
+    d-03, at a cost that is quadratic in the budget and is r-15. the check this
+    session existed to make passes: the project's dominance relation is the
+    identity on both solvers' fronts in all 24 cases, so pymoo's non-domination and
+    the project's agree exactly and no phase e number will depend on which produced
+    it, v-50. the column order is asserted through b2's own transformed_image and
+    not inferred; the containments hold on both solvers' output; no solver front
+    point dominates b2's reference front under any phi at either setting of the
+    singular flag. 13 tests and 162 cases in the new file, 419 in the suite, 273 of
+    them fast, and the suite splits by a slow marker,
+    python -m pytest -q -m "not slow" for the fast run and python -m pytest -q for
+    the full one. cost measured for e1 to plan against, r-15: at budget 5000 a run
+    is 0.8 to 1.3 s for nsga-ii, 2.7 to 34.2 s for mopso and 3.9 to 4.6 s for
+    random search, and non_dominated_indices alone is 2.3 s at n = 5000 and 396 s
+    at n = 50000 with 2m = 6. CONTEXT.md section 10 c1 and c2 corrected from phi_fn
+    to phi_name, section 11 given the rule that an agent may not mark a subpart
+    reviewed, and docs/a_close_containment.md's standing constraint amended to say
+    that a test may assert a containment as a self-check while no result is claimed
+    from it | c3, the validation gate
