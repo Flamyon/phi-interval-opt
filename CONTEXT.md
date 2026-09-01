@@ -737,6 +737,19 @@ is code, and a session record block for PROGRESS.md.
     approximation.
     igd is reported for tier 0 only unless a tier 1 reference front is agreed with
     the supervisors.
+    all three metrics move with the number of rows a front carries, and the three
+    solvers return very different numbers: nsga-ii exactly its population, mopso at
+    most its archive, random search whatever is non-dominated. c2-b measured one
+    fixed front of 610 rows subsampled uniformly at random: igd 0.1303, 0.0851,
+    0.0551, 0.0357, 0.0221 and 0.0201 at 25, 50, 100, 200, 500 and 610 rows, and
+    hypervolume 4.6845 to 5.1665 over the same sizes, from cardinality alone on the
+    same points from the same search. so d1 must state, and every table must
+    carry, the cardinality each metric was computed at, and a metric compared
+    across solvers is computed at a common cardinality reached by a selection rule
+    stated in advance. the recommended rule is a uniform random subsample, at a
+    stated seed, to the smallest front in the comparison: it is the only selection
+    that does not itself optimise one of the three metrics, a crowding-distance
+    selection being a spread rule reported beside spread. r-16.
 
 ### d2: metrics_decision.py
     the comparable ones. all take two (k, n_vars) arrays of decision vectors.

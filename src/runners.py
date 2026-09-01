@@ -1,11 +1,13 @@
 # c2: nsga-ii and mopso from pymoo, on the transformed real problem theorem 3.1
 # of [1] licenses solving. the two solvers of slide 17 that are not the control.
 #
-# what this module is and is not. it is a wrapper: pymoo is used unmodified and
-# no operator, survival rule or dominance test of it is replaced. what the module
-# owns is the problem handed to pymoo, the budget the run is stopped at, and the
-# record the run is returned in, and all three are shared with c1 so that the
-# three solvers are comparable by construction. the transform is
+# what this module is and is not. it is a wrapper: no operator, survival rule,
+# archive rule or dominance test of pymoo's is replaced, and the one override in
+# the file, SeededArchiveMopso below, changes which generator an existing pymoo
+# truncation draws from and nothing else. what the module owns is the problem
+# handed to pymoo, the budget the run is stopped at, and the record the run is
+# returned in, and all three are shared with c1 so that the three solvers are
+# comparable by construction. the transform is
 # random_search.phi_image, the record is random_search.SearchResult and the seed
 # rule is random_search.require_seeds; none of them is defined a second time
 # here. three solvers returning two different shapes is how analysis code
@@ -39,37 +41,59 @@
 # to the algorithm's archive, and MultiObjectiveArchive truncates itself with
 # RandomTruncation once it passes max_size, util/archive.py lines 86 and 87 inside
 # Archive.add, the class itself being at lines 16 to 19. that truncation is
-# decorated with default_random_state and is called with no
-# random_state, so it draws from np.random.default_rng(None), a generator seeded
-# from the operating system that neither minimize(seed=s) nor numpy.random.seed
-# reaches. with mopso_cd's default archive_size of 200 the run is therefore not
-# reproducible once the archive overflows: measured here on p1 under phi_ls at
-# pop_size 40 and n_gen 20, five runs at one seed gave five different fronts,
-# 179, 178, 184, 194 and 189 rows, diverging at generation 17 with the seeded
-# generator's state still identical at that point, which is what rules out the
-# seeded stream as the cause. sizing the archive to the whole budget means the
-# archive can never exceed it, since it holds at most one entry per evaluation,
-# so the truncation branch is never entered and the run is bit-reproducible;
-# measured on p1, zdt1, dtlz2 and p0 under all three phi. the archive is a stated
-# parameter of the algorithm and setting it is not a modification of it, but it
-# is a choice, it is not free in either sense, and it is d-03 to the research chat.
+# decorated with default_random_state and is called with no random_state, so it
+# draws from np.random.default_rng(None), a generator seeded from the operating
+# system that neither minimize(seed=s) nor numpy.random.seed reaches. the run is
+# therefore not reproducible once the archive overflows: measured on p1 under
+# phi_ls at pop_size 40 and n_gen 20, five runs at one seed gave five different
+# fronts, 179, 178, 184, 194 and 189 rows, diverging at generation 17 with the
+# seeded generator's state still identical at that point, which is what rules out
+# the seeded stream as the cause. nsga-ii holds no archive and is unaffected.
 #
-# what the archive choice costs, measured rather than argued. it changes what
-# mopso does and not only what it records: leaders are drawn from the archive by
-# binary tournament, so a larger archive is a larger leader pool. and it changes
-# what mopso costs, the archive being re-sorted for non-domination every
-# generation, which is quadratic in its size. on p1 under phi_lu at pop_size 100,
-# budgets 500, 1000, 2000 and 4000 take 0.17, 0.59, 2.58 and 10.60 seconds with
-# the archive at the budget against 0.17, 0.64, 1.84 and 3.64 at pymoo's default
-# of 200, and at budget 20000 the run takes 228.84 seconds and ends with 6295
-# archive rows, against nsga-ii's 1.54 seconds at the same budget. so the cost is
-# roughly quadratic in the budget, and it is r-15, which e1 has to plan around.
-# the alternative that would keep both the default archive and reproducibility is
-# to override mopso_cd's _update_archive so that the archive it installs truncates
-# deterministically. it is rejected here and not silently: CONTEXT.md section 10
-# c2 says pymoo is used unmodified, and replacing an algorithm's archive policy is
-# a modification of the algorithm rather than a setting of it, so it is not a
-# change an agent takes on its own.
+# what c2 did about it, and why c2-b reversed it. c2 set archive_size to the whole
+# evaluation budget, so that the archive could never overflow and the truncation
+# was never reached. that works and it is reproducible, but it is the larger
+# intervention of the two, and c2 justified it with a rule it had inverted. the
+# archive is mopso's leader pool: leaders are drawn from it by binary tournament,
+# _select_diverse_leaders, so taking it from 200 to the 6295 rows c2 measured at
+# budget 20000 changes what the search does, and it costs, the archive being
+# re-sorted for non-domination every generation. seeding the truncation changes
+# nothing but the generator it draws from: the same uniform choice, without
+# replacement, of the same number of rows from the same archive of the same size.
+# the option c2 chose modifies the algorithm's behaviour and the option c2
+# rejected preserves it, so c2-b takes the second and mopso runs at pymoo's own
+# archive_size of 200.
+#
+# how it is installed, and why a subclass is needed at all. pymoo's Algorithm does
+# accept an archive object as a constructor argument, core/algorithm.py line 34
+# and line 58, and MOPSO_CD passes **kwargs through to it, so an archive can be
+# handed in. it does not survive: MOPSO_CD._setup overwrites it at line 77 with
+# MultiObjectiveArchive(max_size=self.archive_size), and _update_archive builds
+# another fresh one at lines 216 to 219 on every generation, so an archive given
+# at construction is discarded twice. the only place the truncation can be fixed
+# is therefore the archive that _update_archive installs, which is what
+# SeededArchiveMopso below overrides, in three lines and by delegation: pymoo's
+# own _update_archive runs unchanged and the archive it returns is reinstalled
+# with a seeded truncation. the truncate_size is pymoo's, 100, because
+# MultiObjectiveArchive computes min(max_size, 100) either way.
+# the generator is the algorithm's own seeded one rather than a second generator
+# of this module's, so the run stays a single seeded stream and there is no second
+# seed for a table to have to record.
+#
+# what the reversal costs and saves, measured in c2-b on p1 under phi_lu at
+# pop_size 100, the three arms run back to back in one process. seconds, and the
+# rows the run returns, at budgets 500, 1000, 2000, 4000 and 20000:
+#     seeded truncation, archive 200   0.09  0.30  0.82  2.05   11.71   k <= 200
+#     c2's resize, archive = budget    0.08  0.32  1.18  6.61  187.78   k to 6295
+#     pymoo default, archive 200       0.08  0.32  0.82  1.91   10.35   k <= 200
+# the seeded arm tracks pymoo's own default, which is the point: the two differ
+# only in which generator the truncation draws from, and the gap between them at
+# budget 20000, 11.71 against 10.35 seconds, is the cost of that and of one extra
+# archive object per generation. against c2's resize it is a factor of 16 at
+# budget 20000, and the front comes back at pymoo's archive size rather than at
+# 6295 rows. the absolute seconds are lower than the ones c2 recorded, 228.84 for
+# the resize at budget 20000, because c2 measured with three processes running;
+# the ratios are what carry across.
 #
 # the seed is set twice, through numpy.random.seed and through minimize.
 # CONTEXT.md section 10 c2 asks for both and s-10 records that the stated reason
@@ -77,8 +101,8 @@
 # its own. the instruction is kept because the global state costs nothing and
 # because the archive finding above shows that pymoo 0.6.2 does reach generators
 # neither call controls, so removing either call on the strength of one
-# measurement is not warranted. neither call fixes the archive; only the size
-# does.
+# measurement is not warranted. neither call fixes the archive; only the seeded
+# truncation does.
 #
 # no endpoint is rebuilt from a centre and a radius anywhere, d-02: the problem
 # names the representation its intervals are computed in and phi_image asks the
@@ -99,6 +123,7 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.core.problem import Problem as PymooProblem
 from pymoo.optimize import minimize
 from pymoo.termination.max_eval import MaximumFunctionCallTermination
+from pymoo.util.archive import MultiObjectiveArchive, Truncation
 
 from phi_transforms import phi_registry
 from random_search import SearchResult, phi_image, require_phi, require_seeds
@@ -143,13 +168,45 @@ def make_nsga2(pop_size, n_evals):
     return NSGA2(pop_size=int(pop_size))
 
 
-# mopso_cd at one population size, its archive sized to the whole budget
+# pymoo's random archive truncation, drawn from a generator the caller controls
+class SeededTruncation(Truncation):
+
+    # keeps the generator the truncation is to draw from
+    def __init__(self, random_state):
+        super().__init__()
+        self.random_state = random_state
+
+    # the uniform choice without replacement of util/archive.py lines 16 to 19
+    def __call__(self, sols, k):
+        # RandomTruncation's own line, with the generator supplied instead of
+        # left to default_random_state, which would build one from the operating
+        # system. same distribution, same archive, same count; nothing about the
+        # search changes.
+        return self.random_state.choice(sols, size=k, replace=False)
+
+
+# mopso_cd with the archive truncation drawn from the algorithm's seeded generator
+class SeededArchiveMopso(MOPSO_CD):
+
+    # pymoo's own archive update, with the seeded truncation reinstalled on it
+    def _update_archive(self, pop):
+        # the delegation is the whole of the override: mopso's non-dominated
+        # sorting, its crowding-distance pruning and its archive size are pymoo's
+        # and are not reimplemented here. only the truncation the base class will
+        # reach through Archive.add is replaced, and only in the generator it
+        # draws from.
+        archive = super()._update_archive(pop)
+        return MultiObjectiveArchive(individuals=archive, max_size=self.archive_size,
+                                     truncation=SeededTruncation(self.random_state))
+
+
+# mopso_cd at one population size, at pymoo's own archive size, seeded throughout
 def make_mopso(pop_size, n_evals):
-    # the reproducibility reason is at the head of this module: pymoo 0.6.2
-    # truncates an overflowing archive from an unseeded generator, so an archive
-    # that cannot overflow is what makes the run reproducible. n_evals is the
-    # smallest such size, the archive holding at most one entry per evaluation.
-    return MOPSO_CD(pop_size=int(pop_size), archive_size=int(n_evals))
+    # archive_size is left at pymoo's default of 200 on purpose, c2-b: the
+    # reproducibility problem is the unseeded generator and not the size, and
+    # resizing the archive would change the leader pool and the cost. n_evals is
+    # taken for one factory signature with make_nsga2 and is not used.
+    return SeededArchiveMopso(pop_size=int(pop_size))
 
 
 # one seed of one pymoo algorithm on the transformed problem, as a SearchResult

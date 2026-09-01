@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-50.
+highest number in use: v-52.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -417,8 +417,10 @@ v-48 | pymoo 0.6.2 does construct a generator that no seeding call reaches, whic
     what rules out the seeded stream as the cause. nsga-ii is unaffected, holding
     no archive. setting archive_size to the whole evaluation budget removes it, the
     archive then holding at most one entry per evaluation and never overflowing:
-    bit-reproducible over p0, p1, zdt1 and dtlz2 under all three phi, and that is
-    what src/runners.py does, d-03 | project diagnostic, not a paper | pymoo 0.6.2
+    bit-reproducible over p0, p1, zdt1 and dtlz2 under all three phi, which is what
+    c2 did; c2-b replaced it with a seeded truncation at pymoo's own archive size,
+    v-51 and d-03, the finding about the generator being unchanged | project
+    diagnostic, not a paper | pymoo 0.6.2
     source, plus scratchpad scripts and tests/test_runners.py::
     test_the_same_seed_gives_the_same_front | c2 | 2026-09-01
 
@@ -445,3 +447,40 @@ v-50 | pymoo's non-domination and the project's agree exactly on solver output.
     reporting one | project diagnostic, not a paper |
     tests/test_runners.py::test_the_project_filter_is_the_identity_on_the_pymoo_front
     | c2 | 2026-09-01
+
+v-51 | the unseeded truncation of v-48 can be fixed without resizing the archive
+    and without reimplementing any of mopso. pymoo's Algorithm accepts an archive
+    object at construction, core/algorithm.py line 34 taking archive: Archive |
+    None = None and line 58 storing it, and MOPSO_CD passes **kwargs through to it,
+    so one can be handed in; it does not survive, _setup overwriting it at line 77
+    with MultiObjectiveArchive(max_size=self.archive_size) and _update_archive
+    building another at lines 216 to 219 on every generation. the only surviving
+    place is the archive _update_archive installs, so src/runners.py's
+    SeededArchiveMopso overrides that one method by delegation and reinstalls
+    pymoo's own archive with a truncation that draws from the algorithm's seeded
+    generator. measured: bit-identical over five runs at one seed on p0, p1, zdt1
+    and dtlz2 under all three phi, at pymoo's default archive_size of 200, with the
+    project's filter still the identity on every front. the truncation is reached
+    at 800 evaluations on p1 under phi_ls and at 400 on none of the four problems,
+    so the test that exercises it is separate from the reproducibility grid. cost
+    on p1 under phi_lu at pop_size 100, seconds at budgets 500, 1000, 2000, 4000
+    and 20000: 0.09, 0.30, 0.82, 2.05 and 11.71 seeded at archive 200, against
+    0.08, 0.32, 1.18, 6.61 and 187.78 for c2's resize and 0.08, 0.32, 0.82, 1.91
+    and 10.35 for pymoo's unseeded default | project diagnostic, not a paper |
+    pymoo 0.6.2 source, scratchpad scripts, and tests/test_runners.py::
+    test_the_archive_truncation_is_seeded_and_is_reached | c2-b | 2026-09-01
+
+v-52 | objective-space metrics move with front cardinality by more than the
+    differences a solver comparison would be reporting. one fixed front, random
+    search on p1 under phi_lu at budget 5000 and seed 11, 610 rows, measured
+    against b2's 1000-point reference front with include_singular_segments False
+    and subsampled uniformly at random, ten draws per size and the mean over them:
+    igd 0.1303, 0.0851, 0.0551, 0.0357, 0.0221 and 0.0201 at 25, 50, 100, 200, 500
+    and 610 rows, and hypervolume against the fixed reference point (1.5892, 2.334,
+    1.174, 1.3731) 4.6845, 4.9176, 5.0433, 5.1084, 5.1595 and 5.1665 over the same
+    sizes. the points are the same points and the search is the same search, so
+    the factor of 6.5 in igd between k = 25 and the full front, and of 2.7 between
+    k = 100 and it, is cardinality and nothing else. igd's spread over the ten
+    draws is 0.1013 to 0.2260 at k = 25 and 0.0217 to 0.0223 at k = 500 | project
+    diagnostic, not a paper | scratchpad script over src/random_search.py,
+    src/reference_fronts.py and pymoo's IGD and HV indicators | c2-b | 2026-09-01

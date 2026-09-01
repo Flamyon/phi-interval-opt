@@ -18,7 +18,7 @@ from problems_tier0 import p0, p1, p1_default_params
 from problems_tier1 import dtlz2_interval, zdt1_interval
 from random_search import SearchResult, non_dominated_indices, phi_image
 from reference_fronts import reference_front, transformed_image
-from runners import run_mopso, run_nsga2
+from runners import SeededTruncation, run_mopso, run_nsga2
 
 phi_names = ("lu", "ls", "cw")
 # the run size every test uses. it is a test size and not a project budget:
@@ -87,14 +87,58 @@ def indices_under_every_phi(problem, points, params):
 @pytest.mark.parametrize("problem,params", problem_cases, ids=problem_ids)
 @pytest.mark.parametrize("phi_name", phi_names)
 def test_the_same_seed_gives_the_same_front(run_solver, problem, params, phi_name):
-    # this is where pymoo 0.6.2's unseeded archive truncation shows, and it is why
-    # src/runners.py sizes mopso_cd's archive to the budget: at the default
-    # archive_size of 200 this test fails on p1 under phi_ls, five runs at one
-    # seed giving five different fronts.
+    # this is where pymoo 0.6.2's unseeded archive truncation would show. at this
+    # run size the archive does not overflow on every case, so the test that puts
+    # the truncation itself under a seed is
+    # test_the_archive_truncation_is_seeded_and_is_reached below; this one is the
+    # grid, every problem and every phi.
     first = run_solver(problem, phi_name, params, n_gen, pop_size, [seeds[0]])[0]
     second = run_solver(problem, phi_name, params, n_gen, pop_size, [seeds[0]])[0]
     assert np.array_equal(first.front, second.front)
     assert np.array_equal(first.decision_vectors, second.decision_vectors)
+
+
+# the archive truncation is reached and is reproducible when it is, c2-b
+@pytest.mark.slow
+def test_the_archive_truncation_is_seeded_and_is_reached(monkeypatch):
+    # the reproducibility grid above is worth only as much as the truncation it
+    # exercises, and at 400 evaluations pymoo's Archive.add never overflows
+    # mopso's 200-row archive on any of the four problems. p1 under phi_ls at 800
+    # evaluations does overflow it, so this is the case that actually runs
+    # src/runners.py's SeededTruncation, counted here rather than assumed. without
+    # the seed this is the run that gave five different fronts at one seed, c2 and
+    # v-48.
+    calls = []
+    original = SeededTruncation.__call__
+
+    # the module's own truncation, with each call recorded before it runs
+    def counted(self, sols, k):
+        calls.append(k)
+        return original(self, sols, k)
+
+    monkeypatch.setattr(SeededTruncation, "__call__", counted)
+    first = run_mopso(p1, "ls", p1_default_params, 20, 40, [seeds[0]])[0]
+    reached = len(calls)
+    repeats = [run_mopso(p1, "ls", p1_default_params, 20, 40, [seeds[0]])[0]
+               for _ in range(2)]
+    assert reached > 0, "the archive never overflowed, so nothing was truncated"
+    assert len(calls) == reached * 3
+    for repeat in repeats:
+        assert np.array_equal(first.front, repeat.front)
+        assert np.array_equal(first.decision_vectors, repeat.decision_vectors)
+
+
+# mopso's front is bounded by pymoo's own archive size and is not resized, c2-b
+@pytest.mark.slow
+@pytest.mark.parametrize("problem,params", problem_cases, ids=problem_ids)
+@pytest.mark.parametrize("phi_name", phi_names)
+def test_the_mopso_front_stays_within_the_default_archive(problem, params, phi_name):
+    # c2 sized the archive to the budget, which took the front to thousands of
+    # rows and the leader pool with it; c2-b seeds the truncation instead and
+    # leaves the size at pymoo's 200. the front mopso returns is its archive, so
+    # this is the assertion that the size is pymoo's and not this project's.
+    result = run_mopso(problem, phi_name, params, n_gen, pop_size, [seeds[0]])[0]
+    assert result.front.shape[0] <= 200
 
 
 # different seeds give different fronts, which is what makes variance across seeds real
