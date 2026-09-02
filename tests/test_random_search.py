@@ -16,7 +16,7 @@ from problems_tier1 import dtlz2_interval, zdt1_interval
 from random_search import (SearchResult, filter_one_sample_under_every_phi,
                            non_dominated_indices, phi_image, run_random_search,
                            sample_decision_space)
-from reference_fronts import reference_front
+from reference_fronts import dirichlet_mode, reference_front
 
 phi_names = ("lu", "ls", "cw")
 # the budget every test runs at. it is a test size and not a project budget:
@@ -263,7 +263,9 @@ def test_no_random_search_point_dominates_the_reference_front(phi_name, include_
     # singular segment's own lattice and is then ordered by a rounding step,
     # which is d-02's subject and not this test's.
     result = run_random_search(p1, phi_name, p1_default_params, n_evals, [seeds[0]])[0]
-    front = reference_front(p1, phi_name, 1000, include_singular)
+    # the dirichlet mode, stated and not defaulted, b2-b: dominance is a relation
+    # between points and the reference's density does not enter it.
+    front = reference_front(p1, phi_name, 1000, include_singular, dirichlet_mode)
     assert dominated_count(front, result.front) == 0
 
 

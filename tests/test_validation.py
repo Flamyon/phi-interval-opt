@@ -127,7 +127,7 @@ from phi_transforms import phi_registry
 from problems_tier0 import p0, p0_anchor, p1, p1_default_params
 from random_search import (non_dominated_indices, phi_image, run_random_search,
                            sample_decision_space)
-from reference_fronts import efficient_set, reference_front
+from reference_fronts import dirichlet_mode, efficient_set, reference_front
 from runners import run_mopso, run_nsga2
 
 phi_names = ("lu", "ls", "cw")
@@ -353,8 +353,15 @@ def recovery(solver_id, phi_name, seed, include_singular, multiple=1):
     key = (solver_id, phi_name, seed, include_singular, multiple)
     if key not in recovery_cache:
         run = one_run(solver_id, p1, p1_default_params, phi_name, seed, multiple)
-        reference, _ = efficient_set(p1, phi_name, reference_points, include_singular)
-        front = reference_front(p1, phi_name, reference_points, include_singular)
+        # the dirichlet mode, stated and not defaulted, b2-b. the gate measures
+        # recovery by a directed hausdorff distance, which is a maximum and does
+        # not weight the reference by its density, so r-13's correction does not
+        # bear on it; and every number docs/c3_validation.md tables was measured
+        # against this reference, so changing it here would silently restate them.
+        reference, _ = efficient_set(p1, phi_name, reference_points,
+                                     include_singular, dirichlet_mode)
+        front = reference_front(p1, phi_name, reference_points, include_singular,
+                                dirichlet_mode)
         recovered = run.decision_vectors
         excess = region_residuals(phi_name, recovered)
         outside = excess > 0.0
@@ -775,7 +782,8 @@ def test_the_exact_region_measure_does_not_move_with_the_reference_and_the_sampl
     # one run, the one docs/c3_validation.md section 3.2 tables.
     run = one_run("nsga2", p1, p1_default_params, "cw", 11)
     exact = int(np.count_nonzero(region_residuals("cw", run.decision_vectors) > 0.0))
-    counts = [dominated_count(run.front, reference_front(p1, "cw", size, False))
+    counts = [dominated_count(run.front,
+                              reference_front(p1, "cw", size, False, dirichlet_mode))
               for size in (250, 1000, 4000)]
     assert counts[0] < counts[1] < counts[2], counts
     assert counts[-1] < exact, (counts, exact)
@@ -862,8 +870,9 @@ def test_the_singular_flag_changes_the_reference_set_except_under_lu(phi_name):
     # phi_lu, so there the flag is a no-op and that is what is asserted; for
     # phi_ls and phi_cw the sets differ and the count of differing rows is the
     # evidence that the gate's two settings are two measurements.
-    without, _ = efficient_set(p1, phi_name, reference_points, False)
-    with_segment, _ = efficient_set(p1, phi_name, reference_points, True)
+    without, _ = efficient_set(p1, phi_name, reference_points, False, dirichlet_mode)
+    with_segment, _ = efficient_set(p1, phi_name, reference_points, True,
+                                    dirichlet_mode)
     assert len(without) == len(with_segment) == reference_points
     differing = int(np.count_nonzero(np.any(without != with_segment, axis=1)))
     if phi_name == "lu":
@@ -881,7 +890,7 @@ def test_the_region_sample_lies_in_the_derived_region(phi_name):
     # and so does every point of the reference set, which is what makes the region
     # the right thing to take the fill distance over: the reverse direction is a
     # supremum over points that are all in it.
-    points, _ = efficient_set(p1, phi_name, 500, False)
+    points, _ = efficient_set(p1, phi_name, 500, False, dirichlet_mode)
     assert region_excess(phi_name, points) <= 1e-12
 
 

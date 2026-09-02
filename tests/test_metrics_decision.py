@@ -18,7 +18,7 @@ from metrics_decision import (check_status, compare_phi_on_one_sample,
                               phi_pairs)
 from problems_tier0 import p1, p1_default_params
 from random_search import filter_one_sample_under_every_phi, sample_decision_space
-from reference_fronts import efficient_set
+from reference_fronts import dirichlet_mode, efficient_set
 
 phi_names = ("lu", "ls", "cw")
 # the budget the sample-based tests run at. it is a test size and not a project
@@ -157,7 +157,10 @@ def test_coverage_and_overlap_are_non_decreasing_in_delta():
 @pytest.mark.parametrize("phi_name", phi_names)
 @pytest.mark.parametrize("include_singular", (False, True))
 def test_hausdorff_of_the_efficient_set_against_itself_is_zero(phi_name, include_singular):
-    points, _ = efficient_set(p1, phi_name, 400, include_singular)
+    # the dirichlet mode, stated and not defaulted, b2-b. these metrics are in
+    # the decision space and are a maximum and two coverage counts, none of which
+    # averages over the reference, so r-13's correction does not bear on them.
+    points, _ = efficient_set(p1, phi_name, 400, include_singular, dirichlet_mode)
     measured = compute_hausdorff(points, points)
     assert measured == (0.0, 0.0, 0.0)
 
@@ -174,7 +177,7 @@ def test_hausdorff_against_a_subsample_is_bounded_by_its_fill_distance(phi_name)
     # actually is, with no slack added to either: the two routes to the same real
     # number agree bitwise on all three phi here, and a slack term would be the
     # tolerance CONTEXT.md section 5 refuses, in the one place it is not needed.
-    points, _ = efficient_set(p1, phi_name, 400, False)
+    points, _ = efficient_set(p1, phi_name, 400, False, dirichlet_mode)
     generator = np.random.default_rng(20260902)
     subsample = points[generator.choice(len(points), 80, replace=False)]
     measured = compute_hausdorff(points, subsample)

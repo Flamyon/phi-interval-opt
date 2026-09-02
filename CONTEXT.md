@@ -768,6 +768,23 @@ is code, and a session record block for PROGRESS.md.
     approximation.
     igd is reported for tier 0 only unless a tier 1 reference front is agreed with
     the supervisors.
+    igd is computed against the farthest-point reference front of b2-b and never
+    against the dirichlet one, and every table carries the sampling mode beside the
+    seed, the point count and include_singular_segments. the dirichlet draw's
+    density in objective space is the weight parametrisation's and not the front's,
+    r-13, and igd averages over reference points, so it weights a region of the
+    front by how the simplex happens to map. the correction was measured before it
+    was adopted, docs/b2b_reference_density.md: the nearest-neighbour spacing of a
+    1000-point front goes from a coefficient of variation of 0.74, 1.13 and 1.42
+    under phi_lu, phi_ls and phi_cw to 0.12, 0.16 and 0.20; the igd of one fixed
+    test front moves by 5.1 to 30.4 per cent between the two references, and by 5.1,
+    12.7 and 26.2 at 20000 reference points, so the gap does not close with
+    density; and the
+    two references rank fronts of equal fill distance in opposite orders, the
+    dirichlet one asking for 25 points of 200 more in the half it oversamples under
+    every phi and both flag settings. the cost is 0.61 s at 1000 reference points
+    and 189 s at 20000, once per phi, flag and size, and it is a per-table cost and
+    not a per-run one.
     all three metrics move with the number of rows a front carries, and the three
     solvers return very different numbers: nsga-ii exactly its population, mopso at
     most its archive, random search whatever is non-dominated. the effect is larger

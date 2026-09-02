@@ -17,7 +17,7 @@ from phi_transforms import phi_registry
 from problems_tier0 import p0, p1, p1_default_params
 from problems_tier1 import dtlz2_interval, zdt1_interval
 from random_search import SearchResult, non_dominated_indices, phi_image
-from reference_fronts import reference_front, transformed_image
+from reference_fronts import dirichlet_mode, reference_front, transformed_image
 from runners import SeededTruncation, run_mopso, run_nsga2
 
 phi_names = ("lu", "ls", "cw")
@@ -279,7 +279,10 @@ def test_no_solver_point_dominates_the_reference_front(run_solver, phi_name,
     # derivation is wrong. it holds exactly as written at both settings of the
     # singular flag, s-12 and r-12, which is why both are run.
     result = run_solver(p1, phi_name, p1_default_params, n_gen, pop_size, [seeds[0]])[0]
-    front = reference_front(p1, phi_name, 1000, include_singular)
+    # the dirichlet mode, stated and not defaulted, b2-b: what is asserted is that
+    # no solver point dominates a reference point, and dominance is a relation
+    # between points that the reference's density does not enter.
+    front = reference_front(p1, phi_name, 1000, include_singular, dirichlet_mode)
     assert dominated_count(front, result.front) == 0
 
 

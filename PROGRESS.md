@@ -28,7 +28,19 @@ project started 2026-08-30.
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    d2, metrics_decision.py, **built and awaiting review**. it
+    current subpart:    b2-b, the reference front's density, **built and awaiting
+                        review**. r-13's mitigation, built before d1 and not with
+                        it: sampling_mode has no default and its farthest-point
+                        setting oversamples through b1's map by ten and subsamples
+                        by farthest-point selection in objective space. the bias it
+                        removes is measured in docs/b2b_reference_density.md and is
+                        decision-relevant, two fronts of equal fill distance being
+                        ranked in opposite orders by the two references. the
+                        derivation, b1's map, the region inequalities and
+                        src/problems_tier0.py were not touched, and the c3 gate,
+                        d2 and the dominance checks state the dirichlet mode and
+                        keep every number they published. before it,
+                        d2, metrics_decision.py, **built and awaiting review**. it
                         is the only phase d subpart on CONTEXT.md section 8's
                         minimum presentable path; d1 and d3 are off it and are not
                         prerequisites for e1. nothing open blocked it, section 6
@@ -102,7 +114,7 @@ project started 2026-08-30.
                         d1 and is not needed at all if d1 is cut, and r-12, whose
                         trigger is d1 computing igd. r-19 bears on how e3 reads a
                         spread statistic, not on whether d2 can be written
-    the suite:          822 tests after d2's 28, of which twelve parameter sets of
+    the suite:          877 tests after b2-b's 55, of which twelve parameter sets of
                         test_the_derived_set_is_reached_by_the_solver at nsga-ii
                         fail on purpose and are marked xfail(strict=True) in
                         repo-clean-b, pinned to nsga-ii under phi_ls at seeds 11,
@@ -122,7 +134,8 @@ project started 2026-08-30.
                         docs/verified.md, docs/answered.md,
                         docs/phase_c_summary.md, docs/supervisor_questions.md,
                         docs/session_log.md, docs/phase_b_summary.md,
-                        docs/project_narrative.md
+                        docs/project_narrative.md,
+                        docs/b2b_reference_density.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
                         papers/zitzler_deb_thiele_2000_comparison.pdf
@@ -157,9 +170,11 @@ phase a, formulation. complete, tagged phase-a-complete.
 
 phase b, ground truth. complete, tagged phase-b-complete in d2-b, the tag naming
 b2's commit; its close-out document is docs/phase_b_summary.md, written after the
-fact in repo-clean-b.
+fact in repo-clean-b. b2-b came after the tag and during phase d, r-13's
+mitigation being a prerequisite for d1 and for nothing else.
     b1  phi-efficient sets, derivation      done
     b2  reference_fronts.py                 done
+    b2-b the reference front's density       awaiting review
 
 phase c, solvers
     c1  random_search.py                    done
@@ -186,9 +201,10 @@ phase d, analysis
 CONTEXT.md section 8's minimum presentable path is a0, a1, a2, a3, a4, b1, b2,
 c1, c2, c3, d2, e1: tier 0 only, with the decision-space metrics and the
 correctness gate. **d2 is the only phase d subpart on it.** d1 and d3 are built if
-the calendar allows and are not prerequisites for e1. that is also where two open
-risks go quiet: r-13 says its mitigation is "to be done in a b2-b before d1, and
-not at all if d1 is cut", and r-12's trigger is d1 computing igd.
+the calendar allows and are not prerequisites for e1. that is where r-12's trigger
+goes quiet, d1 computing igd. r-13's does not go quiet any more: its mitigation
+was built in b2-b rather than deferred with d1, so if d1 is built it computes igd
+against the corrected reference, and if it is cut nothing is owed.
 
 phase e, experiments
     e1  tier 0 run                          not started
@@ -452,12 +468,24 @@ r-12 | the reference front with the singular segments and the one without are tw
 r-13 | b2's reference front is sampled through b1's weight map, so its density in
     objective space is the parametrisation's and not the front's, and igd is an
     average over reference points.
-    cost: igd in d1 is biased by the parametrisation rather than by the solvers.
+    cost: measured in b2-b and decision-relevant rather than cosmetic. the
+    nearest-neighbour spacing of a 1000-point front has a coefficient of variation
+    of 0.74, 1.13 and 1.42 under phi_lu, phi_ls and phi_cw against 0.12, 0.16 and
+    0.20 after the correction; the igd of one fixed test front differs by 5.07 to
+    30.41 per cent between the two references and still by 5.07, 12.73 and 26.20
+    at 20000 reference points, so unlike r-12's the gap does not close with
+    density; and two fronts of equal fill distance can be ranked in opposite
+    orders, the dirichlet reference asking for 25 points of 200 more in the half
+    it oversamples under every phi and both flag settings.
     trigger: d1 computing igd.
-    mitigation: oversample through the map and subsample by farthest-point
-    selection in objective space, which changes which points are kept and not the
-    derivation; to be done in a b2-b before d1, and not at all if d1 is cut. c3
-    is unaffected, measuring recovery by a hausdorff distance in decision space.
+    mitigation: built in b2-b and no longer a plan. sampling_mode has no default
+    and its farthest-point setting oversamples by ten through the same map and
+    subsamples by farthest-point selection in objective space, which changes which
+    points are kept and not the derivation; d1 computes igd against that mode and
+    records it in every table beside the seed, the point count and the singular
+    flag, CONTEXT.md section 10 d1. c3, d2 and the dominance checks state the
+    dirichlet mode and are unaffected, measuring a hausdorff distance, two counts
+    and a relation. docs/b2b_reference_density.md.
 
 r-14 | pymoo 0.6.2 reaches a generator no seeding call controls: any algorithm
     holding an archive truncates it with RandomTruncation, which passes no
@@ -557,39 +585,6 @@ commit message and in its docs/ deliverable.
 format:
 
     date | subpart | files | outcome | next
-
-2026-09-02 | repo-clean-c | CONTEXT.md sections 5 and 11, PROGRESS.md | third and
-    last housekeeping pass. **nothing under src/ or tests/ was opened, and no
-    phi, problem, derivation, solver, dominance relation, tolerance or measured
-    number was touched. no new claim was added anywhere.** the two proposals
-    repo-clean-b flagged and did not act on are now taken. first, **CONTEXT.md
-    section 5's two tolerance-rejection paragraphs become one line each**
-    pointing at docs/a4b_dominance_tolerance.md, the measurement at parts 1.5
-    and 1.6 and pymoo's no-op epsilon at part 3; the rule itself, one dominance
-    relation and no tolerance, and the exactness-by-evaluation-order paragraph
-    are unchanged, and both arguments survive in full in the deliverable that
-    measured them. second, **section 11's three anecdotes become three clauses**,
-    one on each rule's own line: a1's three unwritten width variants, c2's
-    reproducibility grid never overflowing mopso's archive, and c3-e's
-    uncommitted session, which was already a clause and is only tightened. the
-    full stories are in docs/session_log.md at c2-b and at c-close and, for the
-    first, in docs/a1_uncertainty_model.md section 1 rather than in the log.
-    section 5 goes 79 lines to 70 and section 11's evidence rules 25 to 20.
-    third, two corrections to PROGRESS.md against the files themselves: the
-    header said docs/verified.md holds v-01 to v-46 where it holds v-01 to v-57,
-    which is what the same header's highest-numbers line already said; and
-    **r-15 is added to the phase d dependency list**, its trigger naming d2
-    filtering large sets repeatedly and its mitigation ruling out pymoo's
-    NonDominatedSorting as a speed-up, so the list d2 must respect is six rows
-    and not four. fourth, **the narrative check is still owed and still could
-    not be done**: docs/project_narrative.md did not arrive with this session's
-    brief either and is not in the repository, so nothing in it has been checked
-    against anything, while CONTEXT.md section 12 has named it since repo-clean.
-    that entry is the one thing in the docs/ inventory that does not correspond
-    to a file. the fast run is 293 passed and 501 deselected in 94.51s and the
-    full run is 782 passed and 12 xfailed in 879.49s, the same counts as
-    repo-clean-b at a longer wall time | the research chat, on d2 and on
-    docs/project_narrative.md. phase d is not blocked
 
 2026-09-02 | d2 | new src/metrics_decision.py and tests/test_metrics_decision.py;
     CONTEXT.md line 10; PROGRESS.md | the decision-space metrics, the ones
@@ -696,3 +691,45 @@ format:
     the same counts as d2 at a longer wall time, the twelve being the strict
     xfails c3-c left | the research chat, on d2-b and on the corrected narrative.
     next is e1
+
+2026-09-02 | b2-b | src/reference_fronts.py; tests/test_reference_fronts.py and
+    the four call sites in tests/test_validation.py, tests/test_runners.py,
+    tests/test_random_search.py and tests/test_metrics_decision.py; new
+    docs/b2b_reference_density.md; CONTEXT.md section 10 d1; PROGRESS.md | r-13's
+    mitigation, built before d1 rather than deferred with it. **sampling_mode has
+    no default**, for the reason include_singular_segments has none: dirichlet is
+    the draw as b2 built it and farthest_point is the same draw at ten times the
+    size subsampled to n_points by greedy farthest-point selection in objective
+    space, and the two are two reference objects. the selection is in objective
+    space because that is where igd averages; it is made at the derivation's own
+    parameters, delta translating the image and moving no distance in it, so the
+    caller's delta does not move which rows are kept; the singular segment is a
+    linspace on a one-dimensional set and is not selected. **the derivation is
+    untouched**: every kept point is still x(w) at a drawn w, the kept front is a
+    subsequence of the oversample and a test walks it through, and b1 section 2.4's
+    inequalities are still nowhere in src/. the factor ten is measured and not
+    chosen, the coefficient of variation of the nearest-neighbour spacing of a
+    1000-point front falling from 0.74, 1.13 and 1.42 at factor 1 to 0.12, 0.16 and
+    0.20 at ten and 0.11, 0.11 and 0.12 at forty, ten taking at least 94 per cent
+    of the available reduction at a quarter of forty's cost. **the bias is
+    decision-relevant and r-13 is not retired**: on one fixed random-search front
+    igd differs by 5.07 to 30.41 per cent between the two references and still by
+    5.07, 12.73 and 26.20 at 20000 reference points, where r-12's flag difference
+    on the same front falls from 4.30 to 0.55; the allocation minimising igd puts
+    25 points of 200 more in the oversampled half under the dirichlet reference
+    than under the corrected one, under every phi and both flags; 31 of 32 mirror
+    pairs under phi_ls and phi_cw are ranked in opposite orders by the two
+    references, with the density-free fill distance agreeing with the corrected
+    one; and one pair of equal fill distance, 0.080595 against 0.080788 under
+    phi_lu, is preferred one way by 22 per cent and the other by 3. everything was
+    measured under both settings of the flag, r-12. 55 tests added, the mode
+    parametrised into every b2 test that can afford it, the mode's own two being
+    the subsequence check and the nearest-neighbour spread comparison, which is
+    asserted as a comparison and never against a number; the 20000-point extreme
+    test stays in the dirichlet mode, the selection costing 189 s at that size, and
+    a companion test asserts the same convergence for the other mode at 200 and
+    2000. the four call sites outside b2 state dirichlet explicitly with the reason
+    at each, so docs/c3_validation.md's numbers are unchanged. the fast run is 370
+    passed and 507 deselected in 166.42s and the full run is 865 passed and 12
+    xfailed in 1268.75s | the research chat, on b2-b; then d1 if it is built, or
+    e1

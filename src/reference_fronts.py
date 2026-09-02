@@ -38,6 +38,28 @@
 # two reference fronts are two different objects and a metric computed against one
 # is not comparable with a metric computed against the other.
 #
+# the sampling mode, and why the caller has to state that one too. r-13: the
+# weight sample is a dirichlet draw on the simplex and w -> x(w) is a rational
+# map, so the density of the sample in objective space is the parametrisation's
+# and not the front's, while igd is an average over reference points and so
+# weights a densely sampled region of the front more heavily than a sparse one.
+# the correction is to oversample through the same map by oversampling_factor and
+# keep n_points of that draw by greedy farthest-point selection in objective
+# space. it changes which of the sampled points survive and nothing else: every
+# kept point is still x(w) at a weight this module recorded, and b1 section 2.4's
+# inequalities are still nowhere in this file. sampling_mode has no default for
+# the reason include_singular_segments has none, and for a measured reason as
+# well: docs/b2b_reference_density.md builds fronts that differ only in where they
+# place their points, one favouring the densely sampled part of the front and one
+# the sparse part, and the two references rank them differently. under every phi
+# and both settings of the flag the dirichlet reference asks for 25 points of 200
+# more in the half it oversamples than the corrected one does, 31 of the 32
+# swapped-allocation pairs under phi_ls and phi_cw are ranked in opposite orders,
+# and under phi_lu a pair whose fill distances agree to 0.24 per cent is preferred
+# one way by 22 per cent and the other by 3. so the mode is not a refinement, it
+# decides comparisons, and its value belongs in every table beside the seed, the
+# point count and the flag.
+#
 # [1] is papers/new_preference_order_relationships_paper.txt, costa,
 # osuna-gomez and chalco-cano, fuzzy sets and systems 477 (2024) 108812.
 
@@ -108,6 +130,30 @@ derivation_rho = 0.25
 weight_concentration = 0.3
 weight_sample_seed = 20260901
 
+# the two sampling modes. dirichlet is the draw described just above, kept as it
+# was and still the mode every measurement recorded before b2-b was made in;
+# farthest_point is the r-13 correction, the same draw at oversampling_factor
+# times the size, subsampled by farthest-point selection in objective space.
+dirichlet_mode = "dirichlet"
+farthest_point_mode = "farthest_point"
+sampling_modes = (dirichlet_mode, farthest_point_mode)
+
+# how much larger the draw the farthest-point selection chooses from is. it is
+# measured and not chosen by taste, docs/b2b_reference_density.md section 3. at
+# 1000 kept points the coefficient of variation of the nearest-neighbour distance
+# within the front falls, for phi_lu, phi_ls and phi_cw, from 0.74, 1.13 and 1.42
+# at factor 1, which is the dirichlet draw itself, to 0.15, 0.23 and 0.34 at
+# factor 5, 0.12, 0.16 and 0.20 at factor 10, 0.12, 0.13 and 0.14 at factor 20 and
+# 0.11, 0.11 and 0.12 at factor 40. the cost of the selection is linear in the
+# factor, 0.56 s at factor 10 against 2.51 s at factor 40 for those 1000 points,
+# and ten takes at least 94 per cent of the reduction factor 40 reaches at a
+# quarter of its cost. the factor is a constant and not an argument because it is
+# not a reporting parameter: unlike the mode and the flag it does not name a
+# different object, it converges to the same evenly spaced front from below, and a
+# table that carried it would invite comparing two fronts that differ only in how
+# well the same selection was resolved.
+oversampling_factor = 10
+
 
 # raises unless the problem is the one b1 derived a fixture for, which is p1 alone
 def require_p1(problem):
@@ -132,6 +178,17 @@ def require_phi(phi_name):
         raise ValueError(
             "unknown phi {!r}; docs/b1_phi_efficient_sets.md section 2.1 derives "
             "the system for {} only".format(phi_name, sorted(stationarity_systems))
+        )
+
+
+# raises unless the caller stated one of the two sampling modes
+def require_sampling_mode(sampling_mode):
+    if sampling_mode not in sampling_modes:
+        raise ValueError(
+            "sampling_mode must be stated as one of {}; got {!r}. the two modes "
+            "give reference fronts of different density in objective space and "
+            "igd is an average over reference points, r-13, so this module will "
+            "not choose for the caller.".format(list(sampling_modes), sampling_mode)
         )
 
 
@@ -174,6 +231,55 @@ def stationary_points(phi_name, weights):
                             (w @ system.rho_2) / (w @ system.d_2)])
 
 
+# the objective-space image the farthest-point selection is made in, at the
+# derivation's own parameters. the selection is in objective space and not in
+# decision space because igd is computed on the front and it is the front's
+# density that biases it, r-13. the parameters are not the caller's and need not
+# be: rho is fixed at derivation_rho for every reference front, and delta enters
+# every image coordinate as an additive constant, b1 section 1.2, so a different
+# delta translates the whole image and leaves every distance inside it unchanged.
+# the same rows are therefore selected at every delta the caller may pass.
+def selection_image(problem, phi_name, points):
+    return transformed_image(problem, points, phi_registry[phi_name],
+                             derivation_parameters(None))
+
+
+# greedy farthest-point selection: the point farthest from the ones already kept,
+# repeatedly, in the euclidean distance of the space the image lives in. the first
+# point is the one farthest from the image's centroid, which is on the boundary of
+# the front and is a function of the draw alone, so the whole selection is
+# deterministic and carries no second seed. the indices come back in the draw's own
+# order, so the kept front is a subsequence of the oversample and not a reordering.
+def farthest_point_indices(image, n_keep):
+    centre = np.mean(image, axis=0)
+    first = int(np.argmax(np.sum((image - centre) ** 2, axis=1)))
+    chosen = [first]
+    # the squared distance from each candidate to the nearest kept point, updated
+    # against the one just kept rather than recomputed against all of them
+    nearest = np.sum((image - image[first]) ** 2, axis=1)
+    while len(chosen) < n_keep:
+        index = int(np.argmax(nearest))
+        chosen.append(index)
+        nearest = np.minimum(nearest, np.sum((image - image[index]) ** 2, axis=1))
+    return np.sort(np.array(chosen, dtype=int))
+
+
+# the regular part of the sample, in the mode the caller stated. the dirichlet
+# mode returns the draw itself; the farthest-point mode draws oversampling_factor
+# times as many and keeps n_points of them, the weight that produced each kept
+# point travelling with it so the caller still holds x(w) and its w.
+def regular_sample(problem, phi_name, n_points, sampling_mode, seed):
+    if n_points < 1:
+        return np.zeros((0, 2)), np.zeros((0, 4))
+    if sampling_mode == dirichlet_mode:
+        weights = simplex_weights(phi_name, n_points, seed)
+        return stationary_points(phi_name, weights), weights
+    weights = simplex_weights(phi_name, n_points * oversampling_factor, seed)
+    points = stationary_points(phi_name, weights)
+    kept = farthest_point_indices(selection_image(problem, phi_name, points), n_points)
+    return points[kept], weights[kept]
+
+
 # how many of the requested points go on the singular segment, none unless asked
 def singular_share(phi_name, n_points, include_singular_segments):
     if not isinstance(include_singular_segments, bool):
@@ -204,14 +310,19 @@ def singular_segment_points(phi_name, n_points):
 
 # p1's phi-efficient set under one phi, sampled, with the weight that produced each point
 def efficient_set(problem, phi_name, n_points, include_singular_segments,
-                  seed=weight_sample_seed):
+                  sampling_mode, seed=weight_sample_seed):
     require_p1(problem)
     require_phi(phi_name)
+    require_sampling_mode(sampling_mode)
     if int(n_points) < 1:
         raise ValueError("n_points must be at least 1; got {}".format(n_points))
     n_singular = singular_share(phi_name, int(n_points), include_singular_segments)
-    weights = simplex_weights(phi_name, int(n_points) - n_singular, seed)
-    points = stationary_points(phi_name, weights)
+    # the segment is a linspace on a one-dimensional set, b1 section 2.6, so it is
+    # already as evenly spaced as it can be and the mode does not touch it: the
+    # correction is to the two-dimensional part, whose density is the weight
+    # parametrisation's.
+    points, weights = regular_sample(problem, phi_name, int(n_points) - n_singular,
+                                     sampling_mode, seed)
     segment_points, segment_weights = singular_segment_points(phi_name, n_singular)
     return (np.concatenate([points, segment_points]),
             np.concatenate([weights, segment_weights]))
@@ -233,9 +344,9 @@ def transformed_image(problem, x, record, params):
 
 # the efficient set pushed through phi, as the (k, 2m) array the solvers produce
 def reference_front(problem, phi_name, n_points, include_singular_segments,
-                    params=None, seed=weight_sample_seed):
+                    sampling_mode, params=None, seed=weight_sample_seed):
     require_p1(problem)
     values = derivation_parameters(params)
     points, _ = efficient_set(problem, phi_name, int(n_points),
-                              include_singular_segments, seed)
+                              include_singular_segments, sampling_mode, seed)
     return transformed_image(problem, points, phi_registry[phi_name], values)

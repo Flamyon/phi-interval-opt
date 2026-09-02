@@ -864,3 +864,45 @@ format:
     the same counts as d2 at a longer wall time, the twelve being the strict
     xfails c3-c left | the research chat, on d2-b and on the corrected narrative.
     next is e1
+
+2026-09-02 | b2-b | src/reference_fronts.py; tests/test_reference_fronts.py and
+    the four call sites in tests/test_validation.py, tests/test_runners.py,
+    tests/test_random_search.py and tests/test_metrics_decision.py; new
+    docs/b2b_reference_density.md; CONTEXT.md section 10 d1; PROGRESS.md | r-13's
+    mitigation, built before d1 rather than deferred with it. **sampling_mode has
+    no default**, for the reason include_singular_segments has none: dirichlet is
+    the draw as b2 built it and farthest_point is the same draw at ten times the
+    size subsampled to n_points by greedy farthest-point selection in objective
+    space, and the two are two reference objects. the selection is in objective
+    space because that is where igd averages; it is made at the derivation's own
+    parameters, delta translating the image and moving no distance in it, so the
+    caller's delta does not move which rows are kept; the singular segment is a
+    linspace on a one-dimensional set and is not selected. **the derivation is
+    untouched**: every kept point is still x(w) at a drawn w, the kept front is a
+    subsequence of the oversample and a test walks it through, and b1 section 2.4's
+    inequalities are still nowhere in src/. the factor ten is measured and not
+    chosen, the coefficient of variation of the nearest-neighbour spacing of a
+    1000-point front falling from 0.74, 1.13 and 1.42 at factor 1 to 0.12, 0.16 and
+    0.20 at ten and 0.11, 0.11 and 0.12 at forty, ten taking at least 94 per cent
+    of the available reduction at a quarter of forty's cost. **the bias is
+    decision-relevant and r-13 is not retired**: on one fixed random-search front
+    igd differs by 5.07 to 30.41 per cent between the two references and still by
+    5.07, 12.73 and 26.20 at 20000 reference points, where r-12's flag difference
+    on the same front falls from 4.30 to 0.55; the allocation minimising igd puts
+    25 points of 200 more in the oversampled half under the dirichlet reference
+    than under the corrected one, under every phi and both flags; 31 of 32 mirror
+    pairs under phi_ls and phi_cw are ranked in opposite orders by the two
+    references, with the density-free fill distance agreeing with the corrected
+    one; and one pair of equal fill distance, 0.080595 against 0.080788 under
+    phi_lu, is preferred one way by 22 per cent and the other by 3. everything was
+    measured under both settings of the flag, r-12. 55 tests added, the mode
+    parametrised into every b2 test that can afford it, the mode's own two being
+    the subsequence check and the nearest-neighbour spread comparison, which is
+    asserted as a comparison and never against a number; the 20000-point extreme
+    test stays in the dirichlet mode, the selection costing 189 s at that size, and
+    a companion test asserts the same convergence for the other mode at 200 and
+    2000. the four call sites outside b2 state dirichlet explicitly with the reason
+    at each, so docs/c3_validation.md's numbers are unchanged. the fast run is 370
+    passed and 507 deselected in 166.42s and the full run is 865 passed and 12
+    xfailed in 1268.75s | the research chat, on b2-b; then d1 if it is built, or
+    e1
