@@ -34,6 +34,15 @@ its derivation, what every configuration returned, what the outside points
 actually are, the finding about nsga-ii's coverage, the budget trend as a number,
 and where that leaves phase e.
 
+**c3-d, c3-e and c3-f are diagnostic passes on top of this file and none of them
+changes a number in sections 1 to 4.** c3-d is described in the paragraph below and
+is section 5.1. c3-e and c3-f continued the same question, why the finding of
+section 5 appears under two phi and not the third, and they are sections 5.2 to
+5.5. **c3-e did not commit: its session ended before it wrote, and its measurements
+are recorded here for the first time**, marked as its where they appear. what the
+two sessions together establish is a decomposition and not a mechanism, section
+5.5's closing part, and the finding of section 5 is unchanged by either.
+
 **c3-d is a diagnostic pass on top of this file and it changes one paragraph.** it
 tested whether the reading section 5 offers for the phi split is a demonstration,
 by instrumenting nsga-ii's non-dominated sorting through a pymoo callback. the
@@ -691,7 +700,15 @@ offered as the reading and not as a demonstration.** c3-d set out to turn it int
 one by measuring the operator's internals directly, and the measurement does not
 carry the split. section 5.1 is what it measured and why the reading stays a
 reading; the finding above is unchanged by it and nothing in sections 1 to 4
-moves.
+moves. **the reading did not survive c3-e and c3-f either, and neither did three
+further candidates.** sections 5.2 to 5.5 put the wasted-slot account, the
+pullback account, the anisotropy of the map and the alignment of the crowding
+distance's axes to direct measurement and refute all four, and then separate what
+is left with a phi-neutral control: half the swing between phi_lu and the other
+two is carried by random search, which has no operator at all, and half is
+nsga-ii's own and has no mechanism. **the finding above is unchanged in every one
+of its numbers and is now bounded**: section 5.5's closing part is what phase c
+closes on.
 
 what it does **not** say, and e1 must not let it be read as saying: it is not that
 nsga-ii fails to converge, since it does not return points that beat the
@@ -901,6 +918,575 @@ and a second hypothesis is not constructed here to replace it; that goes to the
 research chat.
 
 
+### 5.2 the effective cardinality, and it is not where the deficit is
+
+measured in c3-e. section 3.3 found that under phi_ls and phi_cw 32 to 47 per
+cent of nsga-ii's outside points lie more than 0.1 from R while under phi_lu they
+hug the boundary within 0.05, and a point far from R occupies a front slot
+without contributing coverage. if that is what the deficit is then section 5
+reads its percentile at the wrong k: a 100-row front with 25 far rows covers R
+like a smaller front, and it should be compared against a uniform draw of about
+75 and not of 100.
+
+**the stated distance is 0.10, and the reason is that it is section 3.3's own
+cut.** that is the distance at which section 3.3 measured the phi split in the
+outside points, so reading the percentile at it tests exactly the hypothesis
+section 3.3 raises and no other. the choice is not forced and it is not made
+load-bearing: 0.02, 0.05 and 0.20 are reported beside it, and so is a companion
+that states no distance at all, the number of front rows that are the nearest
+front row to at least one point of the 20000-point region sample. that last is
+"the rows that contribute any coverage" with no cut to choose, and it is the
+number of non-empty voronoi cells of the front within R.
+
+distance to R is measured against a uniform sample of the region of 150000
+points, whose own resolution is about 0.002, which is the sample section 3.3
+used. a point inside R is at distance zero.
+
+    phi  seed  outside/100   distance to R: med   q90     max   |  k_eff at 0.02  0.05  0.10  0.20   voronoi
+    lu   11    36            0.0301  0.0694  0.1100            |          79    94    99   100     86
+    lu   12    52            0.0238  0.0631  0.1256            |          70    91    99   100     80
+    lu   13    39            0.0232  0.0586  0.1702            |          80    94    97   100     84
+    lu   14    51            0.0274  0.0682  0.1704            |          71    89    99   100     79
+    lu   15    44            0.0241  0.0927  0.1361            |          77    86    96   100     82
+    ls   11    50            0.0666  0.1330  0.2602            |          59    68    87    98     75
+    ls   12    48            0.0869  0.1569  0.2119            |          56    64    80    98     66
+    ls   13    57            0.0684  0.1632  0.2223            |          54    64    81    97     72
+    ls   14    44            0.0836  0.1408  0.1659            |          60    66    89   100     72
+    ls   15    40            0.0752  0.1498  0.3485            |          70    76    86    97     77
+    cw   11    46            0.0509  0.1582  0.2072            |          64    77    85    97     73
+    cw   12    52            0.0705  0.1263  0.1982            |          59    69    83   100     72
+    cw   13    56            0.0764  0.1495  0.1886            |          53    63    81   100     68
+    cw   14    43            0.0786  0.1286  0.2388            |          64    74    86    99     74
+    cw   15    38            0.0584  0.1563  0.1624            |          69    79    89   100     82
+
+the uniform-draw distribution at every k a percentile is read at below, measured
+exactly as section 2.2 measures it, 1000 uniform k-point draws of the same
+20000-point region sample at the same seed. the k = 100 rows are section 2.2's
+own and reproduce it:
+
+    phi  k     mean    sd      min     q25     median  q75     q90     q95     q99     max
+    lu    70   0.1692  0.0614  0.0863  0.1233  0.1508  0.2011  0.2554  0.2924  0.3648  0.4242
+    lu    71   0.1647  0.0570  0.0890  0.1202  0.1512  0.1945  0.2468  0.2821  0.3253  0.4114
+    lu    77   0.1603  0.0566  0.0874  0.1159  0.1463  0.1881  0.2415  0.2737  0.3350  0.4603
+    lu    79   0.1598  0.0563  0.0772  0.1165  0.1450  0.1900  0.2406  0.2706  0.3353  0.4370
+    lu    80   0.1595  0.0573  0.0806  0.1152  0.1463  0.1868  0.2451  0.2706  0.3419  0.4844
+    lu    82   0.1561  0.0569  0.0815  0.1137  0.1393  0.1869  0.2383  0.2693  0.3360  0.4330
+    lu    84   0.1515  0.0521  0.0765  0.1131  0.1372  0.1778  0.2246  0.2556  0.3227  0.4218
+    lu    86   0.1505  0.0529  0.0812  0.1107  0.1337  0.1768  0.2299  0.2621  0.3150  0.3857
+    lu    89   0.1496  0.0534  0.0799  0.1079  0.1322  0.1793  0.2333  0.2558  0.2981  0.3594
+    lu    91   0.1500  0.0544  0.0768  0.1101  0.1335  0.1794  0.2298  0.2572  0.3167  0.4250
+    lu    94   0.1465  0.0530  0.0762  0.1062  0.1283  0.1741  0.2237  0.2498  0.3124  0.4034
+    lu    96   0.1452  0.0502  0.0726  0.1055  0.1295  0.1723  0.2237  0.2448  0.2849  0.3571
+    lu    97   0.1441  0.0519  0.0786  0.1044  0.1252  0.1723  0.2198  0.2520  0.2964  0.3519
+    lu    99   0.1423  0.0506  0.0743  0.1036  0.1275  0.1659  0.2156  0.2457  0.2898  0.3735
+    lu   100   0.1420  0.0511  0.0773  0.1030  0.1254  0.1691  0.2125  0.2405  0.3105  0.4396
+    ls    54   0.2937  0.0504  0.2016  0.2582  0.2860  0.3184  0.3565  0.3836  0.4542  0.5684
+    ls    56   0.2883  0.0499  0.1902  0.2532  0.2787  0.3167  0.3517  0.3746  0.4443  0.6036
+    ls    59   0.2856  0.0506  0.1961  0.2486  0.2749  0.3125  0.3524  0.3851  0.4454  0.5166
+    ls    60   0.2843  0.0528  0.1898  0.2472  0.2740  0.3075  0.3511  0.3897  0.4551  0.5943
+    ls    64   0.2720  0.0460  0.1902  0.2382  0.2638  0.2973  0.3342  0.3579  0.4038  0.6686
+    ls    66   0.2675  0.0454  0.1786  0.2358  0.2586  0.2883  0.3238  0.3553  0.4212  0.5093
+    ls    68   0.2622  0.0425  0.1773  0.2322  0.2530  0.2854  0.3195  0.3445  0.3934  0.4725
+    ls    70   0.2633  0.0461  0.1845  0.2288  0.2543  0.2889  0.3271  0.3528  0.3994  0.4537
+    ls    72   0.2582  0.0442  0.1726  0.2278  0.2510  0.2801  0.3147  0.3404  0.3948  0.5073
+    ls    75   0.2537  0.0448  0.1750  0.2219  0.2440  0.2755  0.3136  0.3349  0.3984  0.5073
+    ls    76   0.2520  0.0431  0.1694  0.2204  0.2444  0.2739  0.3081  0.3327  0.3896  0.4970
+    ls    77   0.2505  0.0431  0.1768  0.2198  0.2420  0.2727  0.3053  0.3328  0.3934  0.4750
+    ls    80   0.2432  0.0393  0.1670  0.2166  0.2362  0.2616  0.2948  0.3178  0.3773  0.4479
+    ls    81   0.2451  0.0426  0.1700  0.2161  0.2359  0.2642  0.3019  0.3263  0.3763  0.5183
+    ls    86   0.2377  0.0388  0.1643  0.2101  0.2307  0.2583  0.2905  0.3074  0.3626  0.4530
+    ls    87   0.2380  0.0412  0.1677  0.2094  0.2304  0.2550  0.2889  0.3240  0.3779  0.4433
+    ls    89   0.2326  0.0376  0.1654  0.2069  0.2255  0.2496  0.2828  0.3075  0.3435  0.4618
+    ls    97   0.2259  0.0369  0.1610  0.2004  0.2191  0.2425  0.2728  0.2989  0.3468  0.4615
+    ls    98   0.2251  0.0387  0.1562  0.1978  0.2171  0.2441  0.2745  0.2979  0.3533  0.4449
+    ls   100   0.2232  0.0373  0.1549  0.1975  0.2166  0.2430  0.2698  0.2919  0.3483  0.4211
+    cw    53   0.2373  0.0391  0.1653  0.2082  0.2304  0.2598  0.2891  0.3113  0.3498  0.5038
+    cw    59   0.2283  0.0380  0.1536  0.2003  0.2219  0.2482  0.2787  0.2961  0.3507  0.4012
+    cw    63   0.2208  0.0357  0.1485  0.1962  0.2149  0.2410  0.2648  0.2864  0.3355  0.3918
+    cw    64   0.2192  0.0359  0.1557  0.1923  0.2122  0.2375  0.2697  0.2886  0.3231  0.3828
+    cw    68   0.2130  0.0349  0.1514  0.1877  0.2062  0.2298  0.2635  0.2825  0.3144  0.3973
+    cw    69   0.2136  0.0368  0.1443  0.1876  0.2061  0.2327  0.2619  0.2812  0.3343  0.4221
+    cw    72   0.2065  0.0321  0.1344  0.1837  0.2005  0.2245  0.2484  0.2677  0.2957  0.4017
+    cw    73   0.2066  0.0339  0.1434  0.1822  0.2011  0.2230  0.2527  0.2738  0.3160  0.3464
+    cw    74   0.2055  0.0350  0.1430  0.1814  0.1986  0.2228  0.2503  0.2738  0.3253  0.3693
+    cw    77   0.2011  0.0335  0.1403  0.1777  0.1946  0.2166  0.2437  0.2631  0.3084  0.4481
+    cw    79   0.1987  0.0320  0.1404  0.1752  0.1922  0.2156  0.2438  0.2619  0.2883  0.3269
+    cw    81   0.1951  0.0297  0.1313  0.1740  0.1911  0.2117  0.2343  0.2523  0.2815  0.3224
+    cw    82   0.1958  0.0328  0.1398  0.1728  0.1892  0.2116  0.2372  0.2567  0.2966  0.3731
+    cw    83   0.1950  0.0311  0.1385  0.1717  0.1892  0.2119  0.2348  0.2556  0.2899  0.3312
+    cw    85   0.1917  0.0307  0.1360  0.1699  0.1863  0.2080  0.2319  0.2487  0.2906  0.3361
+    cw    86   0.1917  0.0318  0.1321  0.1686  0.1857  0.2096  0.2358  0.2488  0.2847  0.3339
+    cw    89   0.1890  0.0308  0.1217  0.1676  0.1827  0.2043  0.2308  0.2459  0.2838  0.3454
+    cw    97   0.1817  0.0288  0.1284  0.1611  0.1753  0.1964  0.2198  0.2378  0.2708  0.3237
+    cw    99   0.1799  0.0287  0.1260  0.1604  0.1745  0.1936  0.2173  0.2340  0.2767  0.3681
+    cw   100   0.1783  0.0270  0.1267  0.1591  0.1733  0.1910  0.2147  0.2318  0.2606  0.3204
+
+and the percentile of each run's own fill distance, read at k = 100 as section 5
+reads it and then at each effective k:
+
+    phi  seed  fill     pct at k = 100   at 0.02   0.05   0.10   0.20   voronoi
+    lu   11    0.1100   33.0             17.4      29.7   31.5   33.0   23.9
+    lu   12    0.1229   48.7             24.8      41.9   47.8   48.7   33.7
+    lu   13    0.1211   46.8             31.2      44.0   47.8   46.8   36.5
+    lu   14    0.1404   59.7             43.3      54.7   58.1   59.7   48.0
+    lu   15    0.1202   45.4             29.8      39.1   42.7   45.4   34.2
+    ls   11    0.3352   98.3             85.4      93.6   96.1   98.4   95.0
+    ls   12    0.2670   89.1             40.4      53.1   78.0   86.9   57.4
+    ls   13    0.3337   98.3             82.6      89.8   95.6   98.5   93.3
+    ls   14    0.3126   97.2             77.1      86.3   95.5   97.2   89.0
+    ls   15    0.2571   84.7             52.2      61.6   74.4   84.1   64.3
+    cw   11    0.2321   95.0             69.8      85.3   90.1   93.0   81.2
+    cw   12    0.2549   98.4             78.9      86.6   94.7   98.4   91.7
+    cw   13    0.2557   98.7             72.4      85.8   96.0   98.7   87.8
+    cw   14    0.2462   97.8             80.4      89.4   94.4   97.1   89.4
+    cw   15    0.2152   90.1             60.4      74.8   82.6   90.1   77.2
+
+**the percentiles move, and they do not move to the middle.** at the stated 0.10
+the effective cardinality is 96 to 99 under phi_lu and 80 to 89 under phi_ls and
+phi_cw, so the correction is from 100 to about 85, and it buys 2 to 11 percentile
+points: the median falls from 97.2 to 95.5 under phi_ls and from 97.8 to 94.4
+under phi_cw, while under phi_lu it does not move at all, 46.8 to 47.8. all ten
+measurements under the two failing phi are still at or above the 74th percentile
+and six of them are still above the 94th. the assumption-free companion says the
+same and splits less: 66 to 82 of the 100 rows carry a non-empty voronoi cell
+under phi_ls and phi_cw against 79 to 86 under phi_lu, and reading the percentile
+there leaves phi_ls at 57 to 95 and phi_cw at 77 to 92.
+
+only the most aggressive cut moves the number substantially, 0.02, and it moves
+it by discarding a third of the front: phi_ls lands at 40 to 85 and phi_cw at 60
+to 80. **a correction that has to remove a third of the rows before the number
+moves is describing the front, not correcting the reading of it.**
+
+so the answer to the question this part asked is no. wasted slots are real, they
+are larger under phi_ls and phi_cw than under phi_lu, and they account for a
+small part of the deficit and not for it. random search, for contrast, has almost
+none: at the 0.10 cut it loses at most one row of the 586 to 622 it returns under
+phi_lu, 14 to 19 of 2182 to 2256 under phi_ls and 11 to 24 of 1501 to 1591 under
+phi_cw, which is at most 1.6 per cent of the front under any phi against
+nsga-ii's 11 to 20. **section 5's finding is measured at equal
+nominal cardinality, it stands as measured, and nothing in it is restated on the
+strength of this section.**
+
+
+### 5.3 spread in the image space against spread in the decision space
+
+measured in c3-e. nsga-ii optimises spread in the 2m-dimensional image space,
+through a crowding distance computed per image column and summed, while section 5
+measures coverage in the two-dimensional decision space. section 5.1 established
+that from generation three or four onwards that crowding distance is the whole of
+the selection. so the open question is what uniform image-space spread becomes
+when it is pulled back, and whether that differs across phi.
+
+the measurement is section 2.2's, moved into the image and nothing else changed.
+the image of R is the same fixed 20000-point uniform sample of R that every fill
+distance in this document is taken over, pushed through phi by
+src/reference_fronts.py's transformed_image. **each column is divided by its range
+over that image, because that is the normalisation the crowding distance applies**,
+and the unnormalised reading is carried beside it as a robustness column. the
+comparison distribution is 1000 uniform k-point draws of that same image, drawn
+with the same generator and the same seed as the decision-space draws, so at one k
+the image draws are the images of the same index draws and the two readings are
+paired rather than merely parallel.
+
+three checks before the numbers, because the whole of this section is a
+comparison of two estimators and an error in either would produce a split of its
+own. the solver's own output is used and no image is recomputed: run.front is
+bit-identical to the image of run.decision_vectors under phi over all thirty runs,
+maximum absolute difference 0.000e+00. the nearest-neighbour route used here, a
+kd-tree rather than the squared-norm expansion, reproduces
+tests/test_validation.py's own fill_distance to 1.6e-15 and reproduces its
+1000-draw distribution at k = 100 to 7.0e-15, so the distributions in 5.2 and the
+decision-space column below are the gate's own numbers and not a second estimate
+of them. and the decision-space percentiles below reproduce section 5's published
+33, 49, 47, 60 and 45 exactly.
+
+    solver         phi  seed     k   decision: fill    mean   pct  |  image, normalised: fill    mean   pct  |  image, raw: pct
+    nsga2          lu     11   100     0.1100   0.1420    33  |              0.1013   0.3004     0  |             1
+    nsga2          lu     12   100     0.1229   0.1420    49  |              0.0899   0.3004     0  |             0
+    nsga2          lu     13   100     0.1211   0.1420    47  |              0.1021   0.3004     0  |             1
+    nsga2          lu     14   100     0.1404   0.1420    60  |              0.1394   0.3004     5  |             6
+    nsga2          lu     15   100     0.1202   0.1420    45  |              0.1140   0.3004     1  |             1
+    nsga2          ls     11   100     0.3352   0.2232    98  |              0.3092   0.2576    86  |            64
+    nsga2          ls     12   100     0.2670   0.2232    89  |              0.2637   0.2576    61  |            74
+    nsga2          ls     13   100     0.3337   0.2232    98  |              0.3086   0.2576    85  |            88
+    nsga2          ls     14   100     0.3126   0.2232    97  |              0.2439   0.2576    45  |            70
+    nsga2          ls     15   100     0.2571   0.2232    85  |              0.2108   0.2576    17  |            65
+    nsga2          cw     11   100     0.2321   0.1783    95  |              0.2827   0.2807    59  |            80
+    nsga2          cw     12   100     0.2549   0.1783    98  |              0.3002   0.2807    71  |            82
+    nsga2          cw     13   100     0.2557   0.1783    99  |              0.2484   0.2807    31  |            68
+    nsga2          cw     14   100     0.2462   0.1783    98  |              0.2973   0.2807    69  |            47
+    nsga2          cw     15   100     0.2152   0.1783    90  |              0.2921   0.2807    66  |            71
+    random_search  lu     11   610     0.0520   0.0586    48  |              0.0448   0.1287     1  |             0
+    random_search  lu     12   622     0.0427   0.0574    23  |              0.0586   0.1244     7  |             8
+    random_search  lu     13   590     0.0455   0.0588    33  |              0.0519   0.1273     3  |             2
+    random_search  lu     14   586     0.0503   0.0595    46  |              0.0431   0.1295     0  |             1
+    random_search  lu     15   608     0.0435   0.0584    24  |              0.0397   0.1265     0  |             0
+    random_search  ls     11  2220     0.0516   0.0501    67  |              0.0690   0.0586    91  |            20
+    random_search  ls     12  2253     0.0465   0.0494    33  |              0.0472   0.0576     3  |            22
+    random_search  ls     13  2256     0.0518   0.0495    71  |              0.0521   0.0578    25  |            38
+    random_search  ls     14  2195     0.0486   0.0502    43  |              0.0530   0.0586    23  |             9
+    random_search  ls     15  2182     0.0493   0.0503    50  |              0.0505   0.0592    10  |            45
+    random_search  cw     11  1544     0.0463   0.0494    33  |              0.0653   0.0838     4  |            27
+    random_search  cw     12  1528     0.0465   0.0497    34  |              0.0679   0.0846     7  |            63
+    random_search  cw     13  1591     0.0471   0.0481    50  |              0.0720   0.0822    24  |            39
+    random_search  cw     14  1501     0.0486   0.0497    50  |              0.0661   0.0845     4  |            53
+    random_search  cw     15  1504     0.0449   0.0497    18  |              0.0749   0.0840    26  |            40
+
+**the reading fixed in advance is the first of the three, and it holds with one
+wrinkle that has to be stated rather than smoothed.** under phi_ls and phi_cw,
+where the decision-space percentile is 85 to 99, the image-space percentile is 17
+to 86 and 31 to 71. nsga-ii is not worse than a uniform draw at the thing it
+actually optimises under either of the two phi where it fails the gate: it is
+indistinguishable from one. the deficit is in the pullback.
+
+the wrinkle is phi_lu, where the reading anticipated "middling" and the
+measurement is 0.1 to 4.9. nsga-ii does not merely match a uniform draw of the
+phi_lu image, it covers that image better than 95 to 99 per cent of them. so the
+image-space percentile is not middling under all three phi, and the phi split does
+not disappear in the image space; it changes size and sign. **what the section
+establishes is the negative half, and it is the half section 5 needed: the
+deficit under phi_ls and phi_cw is not present in the space nsga-ii sorts and
+spreads in.** what it does not establish is that the map alone carries the
+difference, and 5.4 is why that cannot be assumed either.
+
+the raw column, the same measurement without the per-column normalisation, moves
+individual numbers by up to 30 percentile points and changes none of that.
+
+
+### 5.4 the jacobian of the map
+
+measured in c3-e, and reported as a measured quantity with the reading beside it.
+a map close to a similarity carries spread from one space to the other; one that
+is strongly anisotropic does not. the map is x -> the four image columns, its
+jacobian is the four gradients of b1 section 1.1's image coordinates, every one
+of them a constant hessian times x plus a constant vector, so it is available in
+closed form:
+
+    phi_lu   (2 x_1,  (3/2) x_2 - 2)   (2 x_1,  (5/2) x_2 - 2)
+             ((3/2) x_1 - 2,  2 x_2 - 2)   ((5/2) x_1 - 2,  2 x_2 - 2)
+    phi_ls   (2 x_1,  (3/2) x_2 - 2)   (0,  x_2)
+             ((3/2) x_1 - 2,  2 x_2 - 2)   (x_1,  0)
+    phi_cw   (2 x_1,  2 x_2 - 2)   (0,  x_2 / 2)
+             (2 x_1 - 2,  2 x_2 - 2)   (x_1 / 2,  0)
+
+checked against central differences of src/reference_fronts.py's own
+transformed_image on 400 random points of the box, maximum absolute difference
+7.6e-10 under each phi, which is the step size and not a disagreement.
+
+the ratio of largest to smallest singular value of that 4 x 2 jacobian, over the
+same 20000-point uniform sample of R the fill distance is taken over. **raw** is
+the map as written; **scaled** divides each image column by its range over the
+image of R, which is the map 5.3 actually measures and the one the crowding
+distance works in:
+
+    raw
+    phi   mean     sd      min     q10     q25     median  q75     q90     q99     max     > 3      > 10
+    lu    3.0493  0.6236  1.8492  2.2789  2.6425  2.9622  3.4057  3.8621  4.9367  5.6229   46.9%    0.0%
+    ls    1.8011  0.4454  1.0048  1.3111  1.5091  1.6909  2.0310  2.4527  3.0988  3.2870    1.8%    0.0%
+    cw    2.1546  0.6706  1.0089  1.3965  1.6735  2.0216  2.4726  3.1646  3.9932  4.2500   13.1%    0.0%
+
+    scaled
+    phi   mean     sd      min     q10     q25     median  q75     q90     q99     max     > 3      > 10
+    lu    4.1961  1.0795  2.2193  2.9744  3.3660  3.9719  4.9352  5.8519  6.7666  7.0180   89.2%    0.0%
+    ls    1.4961  0.3471  1.0016  1.1229  1.2325  1.4162  1.6961  1.9617  2.6383  3.0779    0.1%    0.0%
+    cw    1.4721  0.3154  1.0012  1.0823  1.2018  1.4463  1.6835  1.9079  2.3364  2.6061    0.0%    0.0%
+
+**the reading, and it points the wrong way for a distortion story.** under the
+scaled map, the one the operator works in, phi_lu is the anisotropic one, median
+3.97 with 89 per cent of R above a ratio of 3, and phi_ls and phi_cw are close to
+similarities, medians 1.42 and 1.45 with essentially nothing above 3. if
+anisotropy of the pullback were what turns good image spread into bad decision
+coverage then phi_lu should be the phi where that happens, and phi_lu is the one
+where it does not happen. no ratio anywhere in the table exceeds 10, so no phi's
+map is strongly distorting on this problem by any ordinary standard.
+
+**one exact fact the table would otherwise hide, and it is the useful one.**
+g_lu = A g_cw exactly, for every x, with
+
+    A = [[1, -1, 0, 0], [1, 1, 0, 0], [0, 0, 1, -1], [0, 0, 1, 1]],   A^T A = 2 I
+
+so A is sqrt(2) times an orthogonal matrix, J_lu = A J_cw pointwise, the singular
+values of J_lu are exactly sqrt(2) times those of J_cw, and **the raw ratio of
+phi_lu and the raw ratio of phi_cw are identical at every point of the box.**
+verified to 7.1e-15 over 500 random points. the two raw rows above differ, 3.05
+against 2.15, only because each is averaged over its own region, X_lu against
+X_cw. **so the apparent difference between phi_lu's map and phi_cw's map is a
+difference of region and not of map at all**, and any statement about "the phi_lu
+map being more distorting" is, for those two phi, a statement about where it is
+averaged. this is what c3-f takes up.
+
+three phi is three data points and none of this is promoted to a mechanism here.
+
+
+### 5.5 the frame, the control, and where phi_ls sits
+
+measured in c3-f, which starts from 5.4's exact identity. since g_lu = A g_cw with
+A a similarity, the phi_lu image and the phi_cw image of any decision set are the
+same geometric object up to a rotation and a uniform scaling. crowding distance is
+computed per column and normalised by column range, so it is not rotation
+invariant: the two phi present the same shape to the operator in two alignments to
+the axes it measures along. that is a testable candidate and this section tests it,
+then runs the control that separates the operator from the order, then asks where
+phi_ls sits.
+
+**the instrument, and its assertion.** a front produced under one phi can be read
+in another phi's frame because the three images are constant linear images of one
+another. the frame change is checked three ways: reading a decision set in frame
+f reproduces src's own image under phi_f exactly, difference 0.000e+00 under all
+three; g_lu = A g_cw and g_ls = B g_cw hold to 0.000e+00 on all three region
+samples; and, since A^T A = 2 I, every raw distance in the lu frame must be
+exactly sqrt(2) times the same distance in the cw frame. that last is the check
+that the rotation is implemented right and it is asserted, not inspected: over all
+thirty runs the maximum relative departure of the raw image fill distance from the
+sqrt(2) factor is 4.5e-15.
+
+**the harness is a session diagnostic and is not committed**, as c3-d's was: it
+adds no module and changes no file under src/ or tests/, and this is what it would
+take to rebuild it. it imports tests/test_validation.py as a module and takes
+region_sample, in_region, fill_distance, fill_distances, solver_runs and every
+seed and size constant from it, so no region, no draw and no estimator is defined
+a second time; that import is the reason the decision-space columns here are the
+gate's own numbers rather than a second estimate of them. it adds four things.
+nearest-neighbour distances go through scipy.spatial.cKDTree rather than the
+squared-norm expansion, which is what makes 1000 draws at k = 2256 affordable and
+is checked against the expansion to 1.6e-15 and against tv.fill_distances to
+7.0e-15; scipy is not added to requirements.txt and nothing committed depends on
+it. the image of a decision set in a stated frame is
+transformed_image composed with a constant 4 x 4 matrix, A or B or the identity.
+the jacobian is the closed form of 5.4, checked against central differences. and
+the crowding distance is pymoo's own calc_crowding_distance from
+operators/survival/rank_and_crowding/metrics.py, called on a front's image and
+never reimplemented. the region areas are the closed forms of 5.5, checked against
+scipy.integrate.quad and against a monte carlo of tests/test_validation.py's own
+in_region.
+
+#### the frame test
+
+each row is one nsga-ii run. **the decision set and the region R are the run's own
+and do not move; only the frame the image is read in moves**, so a difference along
+a row is alignment and normalisation and nothing else. each cell is the fill
+distance and its percentile against 1000 uniform draws of that region read in that
+frame. the diagonal, frame = the run's own phi, is 5.3's normalised column:
+
+    run phi  seed   frame lu          frame ls          frame cw
+    lu        11    0.1013    0.5     0.1681   15.9     0.1762   13.5
+    lu        12    0.0899    0.1     0.1700   16.8     0.1744   12.9
+    lu        13    0.1021    0.5     0.1625   12.5     0.1773   14.4
+    lu        14    0.1394    4.9     0.2365   46.9     0.2475   46.0
+    lu        15    0.1140    0.8     0.1810   20.7     0.1839   16.4
+    ls        11    0.2638   46.7     0.3092   85.6     0.3120   77.9
+    ls        12    0.3077   66.7     0.2637   61.4     0.2682   52.7
+    ls        13    0.3584   81.7     0.3086   85.4     0.3211   80.7
+    ls        14    0.2960   62.8     0.2439   45.1     0.2629   48.8
+    ls        15    0.2758   52.6     0.2108   17.1     0.2211   18.0
+    cw        11    0.2865   78.1     0.2759   58.8     0.2827   59.2
+    cw        12    0.2949   80.5     0.2926   69.5     0.3002   70.7
+    cw        13    0.2561   66.6     0.2489   36.1     0.2484   30.7
+    cw        14    0.2182   44.3     0.2914   69.3     0.2973   69.3
+    cw        15    0.2633   69.2     0.2916   69.4     0.2921   65.9
+
+**the alignment hypothesis is refuted, and cleanly.** it predicts that a phi_cw
+front rotated into phi_lu's alignment should acquire phi_lu's advantage. it does
+not: the phi_cw runs read in the lu frame sit at 44.3 to 80.5, worse than in their
+own frame and nowhere near the phi_lu runs' 0.1 to 4.9. and the converse fails in
+the same direction: the phi_lu runs read in the cw frame stay at 12.9 to 46.0,
+still better than any phi_cw run in any frame. **the phi_lu advantage travels with
+the run and not with the frame.**
+
+the crowding distance itself, which is the quantity that is genuinely not rotation
+invariant, says the operator is working correctly and says nothing that splits by
+phi. pymoo's own calc_crowding_distance on the same front in each frame, over the
+finite members, with the coefficient of variation as the number a
+spread-equalising operator drives down:
+
+    run phi  seed   frame lu: inf  mean    cv     | frame ls: inf  mean    cv     | frame cw: inf  mean    cv
+    lu        11         5  0.0202  0.2810 |            5  0.0204  0.4330 |            7  0.0204  0.4703
+    lu        12         7  0.0207  0.2512 |            5  0.0204  0.3832 |            6  0.0203  0.4125
+    lu        13         6  0.0205  0.2900 |            6  0.0192  0.5387 |            7  0.0196  0.5001
+    lu        14         5  0.0201  0.3158 |            6  0.0204  0.4422 |            7  0.0208  0.4806
+    lu        15         5  0.0204  0.2678 |            5  0.0207  0.3884 |            6  0.0206  0.4058
+    ls        11         6  0.0202  0.7128 |            8  0.0202  0.3091 |            8  0.0203  0.3893
+    ls        12         6  0.0205  0.6367 |            8  0.0208  0.2404 |            8  0.0206  0.3360
+    ls        13         6  0.0198  0.6003 |            7  0.0203  0.3120 |            7  0.0204  0.3366
+    ls        14         6  0.0201  0.4111 |            7  0.0204  0.2354 |            7  0.0204  0.2627
+    ls        15         6  0.0191  0.8775 |            7  0.0199  0.4264 |            6  0.0198  0.4854
+    cw        11         6  0.0204  0.6097 |            7  0.0207  0.3114 |            8  0.0205  0.2549
+    cw        12         6  0.0202  0.4477 |            8  0.0203  0.2663 |            8  0.0206  0.2483
+    cw        13         6  0.0202  0.5827 |            7  0.0200  0.2940 |            7  0.0202  0.2954
+    cw        14         6  0.0200  0.5793 |            8  0.0200  0.3177 |            8  0.0202  0.2981
+    cw        15         6  0.0201  0.5426 |            7  0.0202  0.3043 |            8  0.0206  0.2795
+
+**the profile is alignment-sensitive, and it is alike across phi.** in every one of
+the fifteen runs the coefficient of variation is lowest in the run's own frame,
+which is the operator doing exactly what it is supposed to do and is the best
+instrument check in this document: the crowding distance really is equalised, and
+really is frame-dependent. but the diagonal values are 0.25 to 0.32 under phi_lu,
+0.24 to 0.43 under phi_ls and 0.25 to 0.30 under phi_cw, which is one behaviour and
+not three. **the operator does not equalise better under one phi than another, so
+its alignment is not what distinguishes them.**
+
+#### the control that separates operator from order
+
+random search is phi-neutral by construction: c1's sample is a pure function of the
+box, the budget and the seed, so the three phi filter one identical draw and the
+order is isolated exactly. at seed 11 that one draw yields fronts of 610, 2220 and
+1544 rows under phi_lu, phi_ls and phi_cw, and at seed 12, 622, 2253 and 1528.
+
+read at its own cardinality it shows no deficit anywhere, which 5.3 already
+carried. the measurement that decides the question is at **matched cardinality**:
+twenty uniform 100-row subsamples of each random-search front, read against the
+same k = 100 distribution nsga-ii is read against, so region, cardinality and
+comparator are all held fixed and the only difference between the two solvers is
+the solver. median over the twenty:
+
+    phi  seed   decision: fill    pct   | image: fill    pct
+    lu     11       0.0969   15.3       |     0.1528    8.2
+    lu     12       0.1070   29.4       |     0.1302    3.0
+    lu     13       0.1013   21.9       |     0.1290    2.9
+    lu     14       0.0968   14.8       |     0.1306    3.5
+    lu     15       0.0952   12.7       |     0.1195    1.4
+    ls     11       0.2253   61.2       |     0.2455   46.1
+    ls     12       0.1944   21.4       |     0.2277   31.1
+    ls     13       0.2084   39.0       |     0.2296   33.0
+    ls     14       0.1977   25.2       |     0.2125   17.9
+    ls     15       0.2275   63.2       |     0.2330   35.9
+    cw     11       0.1693   42.4       |     0.2467   29.2
+    cw     12       0.1652   35.0       |     0.2665   46.8
+    cw     13       0.1711   45.7       |     0.2549   36.8
+    cw     14       0.1730   48.7       |     0.2571   38.5
+    cw     15       0.1631   31.1       |     0.2338   18.0
+
+**at matched cardinality random search has no deficit under any phi**: 12.7 to 29.4
+under phi_lu, 21.4 to 63.2 under phi_ls, 31.1 to 48.7 under phi_cw, every one of
+the fifteen at or below the 64th percentile and thirteen of them below the
+median.
+nsga-ii at the same k on the same regions against the same comparator is at 33 to
+60, 85 to 98 and 90 to 99. **random search shows no phi split of the kind nsga-ii
+shows, so the split is the operator meeting the order and not a property of the
+phi-efficient sets that any method at fixed cardinality would inherit.**
+
+#### the dimensional check, and what the control does to it
+
+a k-point cover of a region of area |R| has a fill distance of order
+sqrt(|R| / k), so dividing by that removes region size. the three areas are
+available in closed form from b1 section 2.4's inequalities, X_cw being the unit
+square and the other two the integrals of the binding curves:
+
+    |X_lu| = |X_ls| - (16/3 - 64 ln(16/15)) = 0.310533
+    |X_ls| = (1/49)(112/3 + 64 ln(16/9))    = 1.513401
+    |X_cw| = 1 exactly
+
+against the box's area of 4 that is 7.8, 37.8 and 25.0 per cent, which is b1's "a
+twelfth, three eighths and a quarter". the closed forms agree with adaptive
+quadrature to 3.9e-16 and with a 4-million-point monte carlo of the gate's own
+in_region predicate to 7e-4.
+
+    phi   |R|        sqrt(|R|/100)   uniform mean at k=100   uniform / sqrt(|R|/k)
+    lu    0.310533   0.055725        0.1420                  2.548
+    ls    1.513401   0.123020        0.2232                  1.814
+    cw    1.000000   0.100000        0.1783                  1.783
+
+**the last column is the one that matters and it is not flat.** it is what a
+uniform draw achieves in units that have had region size divided out, so it is a
+pure measure of region shape, and a uniform draw covers X_lu 40 per cent worse for
+its area than it covers X_ls or X_cw. X_lu is a thin curved sliver between two
+conic boundaries; the other two are fat. so the comparator section 5 measures
+against is itself region-dependent, and it is weakest exactly under the phi where
+nsga-ii looks best.
+
+that is a real effect and it is not the whole effect. in units of the uniform mean
+at the same k, where 1.00 is a front that covers R exactly as well as a uniform
+100-point draw does:
+
+    phi   nsga-ii, five seeds                    mean  |  random search at k = 100          mean
+    lu    0.775 0.865 0.852 0.989 0.847         0.866  |  0.683 0.753 0.713 0.681 0.671    0.700
+    ls    1.502 1.196 1.495 1.400 1.152         1.349  |  1.009 0.871 0.934 0.886 1.019    0.944
+    cw    1.301 1.430 1.434 1.381 1.207         1.351  |  0.949 0.927 0.960 0.970 0.915    0.944
+
+and the swing from phi_lu to each of the others decomposes:
+
+    phi        nsga-ii   random search   the part the phi-neutral control carries
+    lu -> ls   +0.483    +0.243          50%
+    lu -> cw   +0.485    +0.244          50%
+
+**half of the phi swing is carried by a method that has no operator, no crowding
+distance and no population, and half is not.** the control's half is the region
+effect the shape column measures: any fixed-cardinality method looks better on
+X_lu than on X_ls or X_cw because a uniform draw of X_lu is a weaker thing to be
+compared against. the other half is nsga-ii's own, and it is what carries the
+front over the tolerance. the two halves coming out at 50 per cent under both phi,
+to three decimal places, is a coincidence of two numbers and is not read as
+anything.
+
+the gap between the solvers at the same k, the same region and the same
+comparator is +0.165 under phi_lu, +0.405 under phi_ls and +0.406 under phi_cw:
+nsga-ii covers worse than the control under every phi, and about two and a half
+times worse under the two where the gate fails.
+
+#### where phi_ls sits
+
+phi_ls is not related to the other two as they are related to each other, and this
+is exact. all three images are constant linear images of one another, because each
+phi is a constant linear map of the endpoint pair, [1] section 2. writing
+g_lu = A g_cw and g_ls = B g_cw:
+
+    A,      lu <- cw    singular values  sqrt2, sqrt2, sqrt2, sqrt2    ratio 1
+    B,      ls <- cw    singular values  2.288246 twice, 0.874032 twice  ratio 2.618034
+    A B^-1, lu <- ls    singular values  1.618034 twice, 0.618034 twice  ratio 2.618034
+
+with
+
+    A^T A = 2 I
+    B^T B = [[1, -1, 0, 0], [-1, 5, 0, 0], [0, 0, 1, -1], [0, 0, -1, 5]]
+
+**B is not a similarity and the numbers are closed-form.** B^T B is block diagonal
+with two copies of [[1, -1], [-1, 5]], whose eigenvalues are 3 +- sqrt 5, so B's
+singular values are sqrt(3 + sqrt 5) = 2.288246 and sqrt(3 - sqrt 5) = 0.874032,
+each twice, and its condition number is exactly
+
+    (3 + sqrt 5) / (3 - sqrt 5)  under the square root  =  (1 + sqrt 5)^2 / 4  =  2.618034
+
+which is the golden ratio squared. the map from the phi_ls image to the phi_lu
+image has singular values exactly phi and 1/phi and the same condition number.
+**so phi_lu and phi_cw present the same object in two alignments, while phi_ls
+presents a genuinely sheared version of it, at a fixed anisotropy of phi^2.** that
+this falls out of example 2.3's coefficient matrix, lambda = (1, 0),
+beta = (-1, 1), is a structural fact about [1]'s framework rather than about this
+problem or about pymoo, and it is recorded as v-56, reported here and
+guarded by no assertion, this session adding none to the suite.
+
+phi_ls is therefore the case any mechanism has to also explain, and the mechanisms
+this document has examined do not. its jacobian ratio is 1.42, next to phi_cw's
+1.45 and far from phi_lu's 3.97, so on 5.4's statistic it belongs with phi_cw; its
+image is the sheared one of the three, so on the closed form it belongs with
+neither; its region is the largest of the three; and its decision-space deficit
+matches phi_cw's while its image-space percentile range, 17 to 86, is the widest.
+no single one of these orders the three phi the way the finding does.
+
+#### what 5.2 to 5.5 conclude
+
+they conclude a decomposition and not a mechanism, and the honest statement of it
+is this. **section 5's finding is measured correctly, survives every control put
+to it, and is about half the size it appears.** what has been excluded is
+substantial: it is not rank-1 saturation, which fires under every phi, 5.1; it is
+not wasted front slots, which account for 2 to 11 percentile points of a gap of 50,
+5.2; it is not that nsga-ii is bad at what it optimises, since in the image space
+it is ordinary under the failing phi and exceptional under the passing one, 5.3; it
+is not anisotropy of the pullback, whose ordering is the reverse of what is needed
+and whose apparent phi_lu-versus-phi_cw difference is an artefact of averaging over
+different regions, 5.4; and it is not the alignment of the crowding distance's
+axes, which does not transfer the advantage when the frame is changed and which the
+operator handles identically under all three phi, 5.5.
+
+what has been identified is that **half the swing is region shape acting on the
+comparator, measured on a phi-neutral control that has no operator at all, and half
+is nsga-ii's own and remains without a mechanism.** the residual is a real,
+reproducible, correctly measured property of this solver on this problem, it is
+what the twelve gate failures are, and it is not explained here. **an unexplained
+phi split that is correctly measured and now bounded and halved is where phase c
+closes**, and CONTEXT.md section 10 e3 carries it forward as something e3 reports
+rather than something e3 resolves.
+
 
 ## 6. the budget trend, reported and no longer asserted
 
@@ -1084,7 +1670,11 @@ optional:
 
 what is open, and none of it is a blocker:
 
-    r-19, whether nsga-ii's spread should be measured or repaired, section 11.
+    r-19, whether nsga-ii's spread should be measured or repaired, section 11,
+        and after c3-e and c3-f it is halved and still open: sections 5.2 to 5.5
+        exclude four candidate mechanisms, attribute half the phi swing to region
+        shape acting on the comparator through a phi-neutral control, and leave
+        the other half without one.
     s-12, the status of the singular segments, unchanged by this session.
     r-18, rewritten rather than closed, section 11.
 
@@ -1112,6 +1702,27 @@ what is open, and none of it is a blocker:
           open. what c3-d adds under the same row is a second thing e2 and e3 must
           report, the rank-1 size against the population size, which is a property
           of the transformation and not of any one phi.
+          extended again in c3-e and c3-f, sections 5.2 to 5.5, and the row is
+          now smaller and sharper than it was. four candidate mechanisms are
+          excluded by direct measurement: wasted front slots, which move the
+          percentile by 2 to 11 points of a gap of 50; the pullback, since in the
+          image space nsga-ii is ordinary under the two failing phi and
+          exceptional under the passing one; the anisotropy of the map, whose
+          ordering is the reverse of what is needed and whose phi_lu against
+          phi_cw difference is an artefact of averaging over two different
+          regions, the two maps being related by an exact similarity; and the
+          alignment of the crowding distance's axes, which does not carry the
+          advantage when a front is read in another frame and which the operator
+          handles identically under all three phi. what replaces them is a
+          decomposition rather than a mechanism: at matched cardinality random
+          search, which is phi-neutral by construction, carries half the swing
+          from phi_lu to each of the other two, +0.243 and +0.244 of +0.483 and
+          +0.485 in units of the uniform mean, and nsga-ii carries the other
+          half. **so half of r-19 is region shape acting on the comparator and is
+          not about nsga-ii at all, and half is nsga-ii's own and is what the
+          twelve gate failures are.** what is open is unchanged in kind and
+          halved in size, and it is still whether e1 reports the residual or
+          whether a decision-space diversity operator belongs in the comparison.
 
     r-18  rewritten. it said the budget trend fails under phi_cw and that no
           mechanism forces improvement. the truth is stronger and is section 1: a

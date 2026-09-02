@@ -936,6 +936,39 @@ is code, and a session record block for PROGRESS.md.
     selection producing that front is crowding distance and not dominance. the
     measurement and its numbers are in the e2 paragraph above and in
     docs/c3_validation.md section 5.1.
+
+    e3 reports r-19 at its measured size and not at its apparent one, which c3-e
+    and c3-f halve, docs/c3_validation.md sections 5.2 to 5.5. the sentence e3
+    must not write is that nsga-ii covers worse than random sampling because of
+    the phi, and the reason is a control: random search is phi-neutral by
+    construction, c1's sample being a pure function of the box, the budget and the
+    seed, and at matched cardinality it carries exactly half the swing from phi_lu
+    to each of the other two, +0.243 of +0.483 and +0.244 of +0.485 in units of
+    the uniform mean at k = 100. that half is region shape acting on the
+    comparator and not a property of any solver: the closed-form areas are
+    |X_lu| = 0.310533, |X_ls| = 1.513401 and |X_cw| = 1, and in units of
+    sqrt(|R|/k) a uniform draw covers X_lu 40 per cent worse for its area than it
+    covers the other two, because X_lu is a thin curved sliver between two conic
+    boundaries and the other two are fat. **so e3 reports the residual half as
+    nsga-ii's and the other half as the regions', and reports that the residual
+    has no mechanism.** four candidates are excluded and e3 must not revive any of
+    them without new measurement: rank-1 saturation, which fires under every phi;
+    wasted front slots, worth 2 to 11 percentile points of a gap of 50; the
+    pullback, since in the image space nsga-ii is ordinary under the two failing
+    phi and exceptional under the passing one; and the alignment of the crowding
+    distance's axes, which does not transfer the advantage when a front is read in
+    another phi's frame.
+
+    e3 may use v-56 and it is the one piece of this that is about [1] rather than
+    about p1 or pymoo. the three phi images are constant linear images of one
+    another; g_lu = A g_cw with A^T A = 2 I, so examples 2.2 and 2.4 present the
+    same object up to a rotation and a uniform scaling, while g_ls = B g_cw has
+    condition number exactly (1 + sqrt 5)^2 / 4 = 2.618034, the golden ratio
+    squared, and the map between the phi_ls and phi_lu images has singular values
+    exactly phi and 1/phi. A and B contain no parameter of p1, so this holds for
+    any interval problem under these three phi, and it is the reason no statement
+    of the form "the phi_lu map is more distorting than the phi_cw map" can be
+    true: pointwise, they are the same map up to a similarity.
 ### f1 to f4: part 2
     f1  yfinance, 30 s&p 500 assets, 5 years of daily returns. two interval
         constructions compared: [min, max] over a rolling window, and

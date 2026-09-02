@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-55.
+highest number in use: v-56.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -584,3 +584,26 @@ v-55 | the reverse recovery direction is bounded by one fill distance and not by
     project diagnostic, not a paper | docs/c3_validation.md section 2.1, and
     tests/test_validation.py::test_the_reverse_distance_is_bounded_by_the_solver_fill_distance
     | c3-c | 2026-09-01
+
+v-56 | the three phi images of p1 are constant linear images of one another, and
+    exactly two of the three pairs are similarities. writing g_lu, g_ls and g_cw
+    for the four image columns of b1 section 1.1, g_lu = A g_cw and
+    g_ls = B g_cw for every x, with A = [[1,-1,0,0],[1,1,0,0],[0,0,1,-1],[0,0,1,1]]
+    and B = [[1,-1,0,0],[0,2,0,0],[0,0,1,-1],[0,0,0,2]], because each phi is a
+    constant linear map of the endpoint pair. A^T A = 2 I, so A is sqrt(2) times
+    an orthogonal matrix: the phi_lu image is a rotation and a uniform scaling of
+    the phi_cw image, the singular values of J_lu are exactly sqrt(2) times those
+    of J_cw at every point, and the two maps' singular-value ratios are identical
+    pointwise. B is not a similarity: B^T B is block diagonal with two copies of
+    [[1,-1],[-1,5]], whose eigenvalues are 3 +- sqrt 5, so B's singular values are
+    sqrt(3 + sqrt 5) = 2.288246 and sqrt(3 - sqrt 5) = 0.874032, each twice, and
+    its condition number is exactly (1 + sqrt 5)^2 / 4 = 2.618034, the golden
+    ratio squared. the map from the phi_ls image to the phi_lu image, A B^-1, has
+    singular values exactly phi and 1/phi and the same condition number. checked
+    on 500 random points of the box and on all three region samples: the two
+    identities hold to 0.000e+00 and the pointwise equality of the raw ratios to
+    7.1e-15. this is a fact about examples 2.2, 2.3 and 2.4 of [1] and not about
+    p1, since A and B do not contain the problem. **reported and not asserted: the
+    session that measured it added nothing to the suite, so no test guards this
+    row yet** | project diagnostic, not a paper | docs/c3_validation.md section
+    5.5, "where phi_ls sits" | c3-f | 2026-09-02

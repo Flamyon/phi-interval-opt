@@ -11,7 +11,7 @@ elsewhere:
     docs/answered.md    answered questions and retired risks
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-55, p-06, s-13, r-19, d-03.
+    highest numbers in use: v-56, p-06, s-13, r-19, d-03.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -22,9 +22,15 @@ project started 2026-08-30.
                         twelve of ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    c3-d, awaiting review. c3-c is done, its review evidenced
-                        by c3-d's prompt, which accepts its corrections and asks
-                        one diagnostic question about section 5. c1 is done, its
+    current subpart:    c3-f, awaiting review, and phase c closes with it. c3-c is
+                        done, its review evidenced by c3-d's prompt, which accepts
+                        its corrections and asks one diagnostic question about
+                        section 5; c3-d is done, its review evidenced by c3-e's
+                        prompt; c3-e ran and **never committed**, its session
+                        ending before it wrote, and its measurements are recorded
+                        for the first time in docs/c3_validation.md sections 5.2
+                        to 5.4 by c3-f, which also carries its own review of them
+                        in its prompt. c1 is done, its
                         review evidenced by c2's prompt; c2 is done, its review evidenced by c2-b's
                         prompt, which reverses one of its choices; c2-b is
                         done, its review evidenced by c3's prompt, which quotes
@@ -104,7 +110,10 @@ phase c, solvers
     c3  validation gate                     done, corrected in c3-b
     c3-b the gate's assertions, restated     done, corrected in c3-c
     c3-c the three corrections               done, gate fails and is asserted
-    c3-d the saturation diagnostic           awaiting review, no code changed
+    c3-d the saturation diagnostic           done, no code changed
+    c3-e the pullback diagnostic             done, no code changed, never committed
+    c3-f the frame, the control, the closed   awaiting review, no code changed
+         forms
 
 phase d, analysis
     d1  metrics_objective.py                not started
@@ -711,6 +720,44 @@ r-19 | nsga-ii's decision-space coverage of a full-dimensional efficient set is
     not decided is whether a decision-space diversity operator belongs in the
     comparison at all; that would be a change to c2 and is out of scope for a
     gate. CONTEXT.md sections 10 e2 and 10 e3 now require both to be reported.
+    **halved in c3-e and c3-f, and still open.** four candidate mechanisms are
+    now excluded by direct measurement, docs/c3_validation.md sections 5.2 to 5.5.
+    wasted front slots: reading each run's percentile at its effective cardinality
+    rather than at 100, where effective means within 0.10 of R, which is section
+    3.3's own cut, moves it by 2 to 11 points of a gap of 50 and leaves all ten
+    failing measurements at or above the 74th percentile. the pullback: measured in
+    the 2m image space with each column normalised by its range over the image of
+    R, which is what crowding distance does, nsga-ii is at the 17th to 86th and
+    31st to 71st percentile under phi_ls and phi_cw, ordinary, and at the 0.1st to
+    4.9th under phi_lu, exceptional, so it is not worse than uniform at what it
+    optimises under either failing phi. the anisotropy of the map: under the
+    column-normalised jacobian phi_lu is the anisotropic one, median singular-value
+    ratio 3.97 against 1.42 and 1.45, which is the reverse of the required
+    ordering, and the apparent phi_lu against phi_cw difference is an artefact of
+    averaging over two different regions since v-56 makes those two maps similar.
+    and the alignment of the crowding distance's axes: reading a front in another
+    phi's frame with its own decision set and its own region held fixed does not
+    transfer the advantage, phi_cw runs read in the lu frame sitting at 44 to 81
+    against the phi_lu runs' 0.1 to 4.9, while pymoo's own crowding distance is
+    equalised best in the run's own frame in all fifteen runs and to the same
+    degree under every phi.
+    what replaces them is a decomposition and not a mechanism, and it comes from
+    the control that should have been in the first framing. random search is
+    phi-neutral by construction, c1's sample being a pure function of the box, the
+    budget and the seed, so the three phi filter one identical draw. at matched
+    cardinality, twenty uniform 100-row subsamples of each random-search front read
+    against the same k = 100 distribution, it has no deficit under any phi: 13 to
+    29, 21 to 63 and 31 to 49, thirteen of the fifteen below the median, against
+    nsga-ii's 33 to 60, 85 to 98 and 90 to 99. in units of the uniform mean at the
+    same k it carries **exactly half** the swing from phi_lu to each of the other
+    two, +0.243 of +0.483 and +0.244 of +0.485, the two halves agreeing to three
+    decimals being a coincidence of two numbers and read as nothing. the control's
+    half is region shape acting on the comparator, which the closed-form areas make
+    concrete: |X_lu| = 0.310533, |X_ls| = 1.513401 and |X_cw| = 1, and in units of
+    sqrt(|R|/k) a uniform draw covers X_lu 40 per cent worse for its area than it
+    covers the other two, X_lu being a thin curved sliver and the others fat.
+    **so half of r-19 is not about nsga-ii at all, and half is nsga-ii's own and
+    still has no mechanism.** what is open is unchanged in kind and half the size.
 
 r-18 | rewritten in c3-c. as raised in c3-b this said the gate's budget trend
     failed under phi_cw for both population methods and that no mechanism in
@@ -1209,3 +1256,105 @@ format:
     728s, the same twelve gate tests at nsga-ii as c3-c left | the research chat,
     on what the phi split is if it is not the sorting, and on r-19. e1 is not
     blocked
+
+2026-09-02 | c3-e | nothing; the session ended before it wrote and **never
+    committed** | recorded here by c3-f so the gap in the log is visible rather
+    than silent. it ran three measurements and all three survive in
+    docs/c3_validation.md sections 5.2, 5.3 and 5.4, where they are marked as its.
+    **no code changed and none was proposed.** part 1, the effective cardinality:
+    a front row far from R occupies a slot without contributing coverage, so each
+    run's percentile was re-read at the number of rows within a stated distance of
+    R rather than at 100. the distance is 0.10 because that is section 3.3's own
+    cut, with 0.02, 0.05 and 0.20 beside it and an assumption-free companion, the
+    count of rows holding a non-empty voronoi cell within R. it is not the deficit:
+    the effective cardinality is 96 to 99 under phi_lu and 80 to 89 under the other
+    two, the correction buys 2 to 11 percentile points of a gap of 50, and all ten
+    failing measurements stay at or above the 74th percentile. part 2, the image
+    space: nsga-ii's fill distance against the image of R, each column normalised
+    by its range over that image as crowding distance normalises, read against
+    1000 uniform k-point draws of the same image drawn with the same generator and
+    seed so the two spaces are paired. under phi_ls and phi_cw it is at the 17th to
+    86th and 31st to 71st percentile, ordinary, against 85th to 99th in the
+    decision space; under phi_lu it is at the 0.1st to 4.9th, which the reading
+    fixed in advance did not anticipate and which is stated rather than smoothed.
+    so nsga-ii is not worse than uniform at what it optimises under either failing
+    phi. part 3, the jacobian, closed form from b1 section 1.1 and checked against
+    central differences to 7.6e-10: under the column-normalised map phi_lu is the
+    anisotropic one, median ratio 3.97 against 1.42 and 1.45, the reverse of the
+    ordering a pullback story needs, and no ratio anywhere exceeds 10 | superseded
+    by c3-f's prompt, which rereads these numbers and asks the next question
+
+2026-09-02 | c3-f | docs/c3_validation.md new sections 5.2 to 5.5 and its head
+    note, section 5's closing paragraph, sections 10 and 11; docs/verified.md v-56;
+    CONTEXT.md section 10 e3; PROGRESS.md | one diagnostic and it closes phase c.
+    **no code changed: no module added, nothing under src/ or tests/ touched, pymoo
+    unmodified, no assertion added to the suite, and no tolerance or number in
+    sections 1 to 4 moved.** it also records c3-e, which never committed. the
+    session's own prompt supplied the rereading and it is verified against c3-e's
+    tables before being acted on: the image-space percentiles really are 0.1 to 4.9
+    under phi_lu against 17 to 86 and 31 to 71 under the other two, so the anomaly
+    is phi_lu being extraordinarily good and not the other two being bad.
+    the hypothesis tested: since J_lu = A J_cw with A^T A = 2 I, the phi_lu and
+    phi_cw images are the same object up to a rotation and a uniform scaling, and
+    crowding distance is computed per column and normalised by column range, so it
+    is not rotation invariant; the candidate is that the operator favours one
+    alignment. **it is refuted.** reading each nsga-ii front in every frame with its
+    own decision set and its own region held fixed, so that only alignment moves,
+    the phi_cw runs read in the lu frame sit at 44.3 to 80.5 and the phi_lu runs
+    read in the cw frame stay at 12.9 to 46.0: **the advantage travels with the run
+    and not with the frame.** the frame change is asserted and not inspected, since
+    A^T A = 2 I forces every raw distance in the lu frame to be exactly sqrt(2)
+    times the same distance in the cw frame, and over all thirty runs the maximum
+    relative departure is 4.5e-15. pymoo's own calc_crowding_distance on the same
+    front in each frame confirms the operator works and splits nothing: the
+    coefficient of variation is lowest in the run's own frame in all fifteen runs,
+    which is the best instrument check in the document, and the diagonal values are
+    0.25 to 0.32, 0.24 to 0.43 and 0.25 to 0.30, one behaviour and not three.
+    **the control that should have been in the first framing.** random search is
+    phi-neutral by construction, c1's sample being a pure function of the box, the
+    budget and the seed, so the three phi filter one identical draw. at matched
+    cardinality, twenty uniform 100-row subsamples of each front read against the
+    same k = 100 distribution nsga-ii is read against, it has no deficit under any
+    phi: 12.7 to 29.4, 21.4 to 63.2 and 31.1 to 48.7, thirteen of fifteen below the
+    median, against nsga-ii's 33 to 60, 85 to 98 and 90 to 99. so the split is the
+    operator meeting the order and not a property of the phi-efficient sets that
+    any method at fixed cardinality would inherit.
+    **the dimensional check, added to this session on review rather than opened as
+    another.** the three region areas in closed form, |X_lu| = 0.310533,
+    |X_ls| = 1.513401 and |X_cw| = 1, agreeing with adaptive quadrature to 3.9e-16
+    and with a 4-million-point monte carlo of the gate's own in_region to 7e-4, and
+    matching b1's twelfth, three eighths and quarter. in units of sqrt(|R|/k) a
+    uniform draw covers X_lu 40 per cent worse for its area than it covers the
+    other two, so the comparator is itself region-dependent and weakest exactly
+    where nsga-ii looks best. it does not dissolve the finding, and the control is
+    what shows that: in units of the uniform mean at the same k, random search
+    carries +0.243 of nsga-ii's +0.483 swing from phi_lu to phi_ls and +0.244 of
+    its +0.485 to phi_cw, **exactly half**, the agreement to three decimals being a
+    coincidence of two numbers and read as nothing. the gap between the solvers at
+    the same k, region and comparator is +0.165, +0.405 and +0.406.
+    **where phi_ls sits, and this is the part that outlives the split.** all three
+    images are constant linear images of one another because each phi is a constant
+    linear map of the endpoint pair. g_lu = A g_cw with A^T A = 2 I, a similarity,
+    ratio exactly 1; g_ls = B g_cw with B^T B block diagonal in two copies of
+    [[1,-1],[-1,5]], eigenvalues 3 +- sqrt 5, singular values sqrt(3 + sqrt 5) and
+    sqrt(3 - sqrt 5) each twice and condition number exactly
+    (1 + sqrt 5)^2 / 4 = 2.618034, the golden ratio squared; and the phi_ls to
+    phi_lu map has singular values exactly phi and 1/phi. verified to 0.000e+00 on
+    500 random points and on all three region samples, and to 7.1e-15 for the
+    pointwise equality of phi_lu's and phi_cw's raw jacobian ratios. **so no
+    statement of the form "the phi_lu map distorts more than the phi_cw map" can be
+    true**, and 5.4's apparent difference between their raw rows is averaging over
+    two different regions. this is v-56, it contains no parameter of p1, and it is
+    reported and not asserted, this session adding nothing to the suite.
+    **what closes.** four candidate mechanisms excluded by direct measurement,
+    across c3-d, c3-e and c3-f: saturation, wasted slots, the pullback, the
+    anisotropy of the map, and the alignment of the operator's axes. what replaces
+    them is a decomposition, half the swing carried by a method with no operator
+    and half nsga-ii's own, and **the residual half has no mechanism and is not
+    given one here.** phase c closes with the split measured, bounded, halved and
+    honestly unexplained, which is what the brief asked for if it came to that.
+    the suite is unchanged because nothing in it changed: the fast run is 310
+    passed in 148.58s and the full run 782 passed and 12 failed in 899.35s, the
+    same twelve gate tests at nsga-ii as c3-c left | the research chat, on
+    whether the residual half is worth another session or whether e1 reports it
+    as measured. e1 is not blocked
