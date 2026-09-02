@@ -494,6 +494,10 @@ def test_the_crisp_level_collapses_the_three_phi_onto_the_crisp_order(name):
 
 # the separation test: the three phi give three different sets on a sample that
 # is not saturated, at every positive level of a1 part 4's sweep
+# the separation report is a large-sample diagnostic, so it is marked slow. the
+# slice check s-07 and r-08 rest on is the constructed-sample width test above,
+# which is cheap and stays in the fast run.
+@pytest.mark.slow
 @pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))
 @pytest.mark.parametrize("eps", positive_levels)
 def test_the_three_phi_separate_on_the_constructed_sample(name, eps, capsys):

@@ -524,6 +524,7 @@ def test_one_image_column_is_a_function_of_one_variable_under_ls_and_cw(phi_name
 
 
 # the corollary: the protection reaches up the order and not only to its first member
+@pytest.mark.slow
 @pytest.mark.parametrize("phi_name", ("ls", "cw"))
 def test_the_whole_low_width_tail_is_shielded_and_not_only_its_first_member(phi_name):
     # domination in the r_2 column requires a strictly smaller |x_1|, so the
@@ -556,6 +557,7 @@ def test_the_whole_low_width_tail_is_shielded_and_not_only_its_first_member(phi_
 
 
 # the same tail under phi_lu, where nothing shields it, is wiped out
+@pytest.mark.slow
 def test_the_low_width_tail_is_not_shielded_under_lu():
     # the contrast the test above needs. phi_lu's four columns all move with both
     # variables, so a member of small |x_2| carries no advantage at all, and the

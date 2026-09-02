@@ -140,6 +140,8 @@ def test_sampled_points_lie_in_the_derived_region(phi_name, include_singular):
 # test's: the relation carries no tolerance, by rule, so two points an ulp apart
 # are ordered by the rounding and the fix is to keep the test set off the
 # fixture's lattice, never to add a tolerance here.
+# a 20000-point diagnostic and not a correctness check, so it is marked slow
+@pytest.mark.slow
 @pytest.mark.parametrize("phi_name", phi_names)
 @pytest.mark.parametrize("include_singular", (False, True))
 def test_no_dense_sample_point_dominates_the_front(phi_name, include_singular):

@@ -1104,12 +1104,28 @@ phi-interval-opt/
                                 for the papers.
     docs/                       a0, a1, b1, c3 deliverables and research-chat
                                 analyses.
+        project_narrative.md    the project in plain language, written in the
+                                research chat: what is being asked, what has been
+                                established and what it cost. the human narrative
+                                kept alongside PROGRESS.md's machine state, and
+                                the two are read together: PROGRESS.md says what
+                                is open, this says what the work means.
         verified.md             every verified fact, v-nn, moved out of
                                 PROGRESS.md section 4 in a1-b.
         answered.md             answered p- and s-questions and retired risks,
                                 moved out of PROGRESS.md in a1-b. nothing is
                                 deleted there; a row is kept with the reasoning
                                 that retired it.
+        session_log.md          the session log, one line per session, moved out
+                                of PROGRESS.md section 8 in repo-clean. PROGRESS.md
+                                keeps the last three entries and a pointer here.
+        row_history.md          the history the d-rows and r-rows of PROGRESS.md
+                                had accumulated, moved out in repo-clean when
+                                those sections were returned to the row shapes
+                                section 11 requires. verbatim, nothing pruned.
+        supervisor_questions.md the full text of every open s-row, written to be
+                                answered in one sitting. PROGRESS.md section 6 is
+                                the index into it.
     src/
         interval_math.py        a2
         phi_transforms.py       a3
