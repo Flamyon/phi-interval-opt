@@ -985,6 +985,15 @@ session discipline:
     rather than absorbing the work silently, naming the session that did not
     commit and where its numbers came from; c3-f did that for c3-e, the second
     uncommitted session in a row and the reason this rule exists.
+    the same rule covers documents. **a document written outside the repository
+    is not a document of this project until it is committed and checked against
+    the deliverables**, and section 12 does not name a file that does not exist.
+    a file written in the research chat has been checked against nothing, and a
+    name in section 12's layout is read as a statement that the file is there and
+    has been checked. docs/project_narrative.md was named there for three
+    sessions while absent from disk, and the audit it could not have until it
+    arrived found eighteen items in it. where a document is planned and not yet
+    written, section 12 either says so in place or does not name it.
     the agent maintains PROGRESS.md, which holds current state and open items
     only: the subpart status, the open questions, the open risks and the session
     log, updated at the end of each session, and no specification. verified facts

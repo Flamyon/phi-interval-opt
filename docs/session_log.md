@@ -804,3 +804,63 @@ format:
     the full run is 810 passed and 12 xfailed in 752.17s, the twelve being the
     strict xfails c3-c left | the research chat, on d2 and on the narrative
     report. next is e1
+
+2026-09-02 | d2-b | docs/project_narrative.md, CONTEXT.md section 11,
+    PROGRESS.md; new tag phase-b-complete | the narrative corrected against d2's
+    audit of it, and the two gaps that audit exposed. **nothing under src/ or
+    tests/ was opened, and no phi, problem, derivation, solver, dominance
+    relation, tolerance or measured number was touched. no new claim was added to
+    the narrative: every correction names the deliverable it came from.** three
+    jobs. first, **all eighteen audit items are applied to
+    docs/project_narrative.md**, which goes 332 lines to 502. the four the
+    research chat ruled on: the phi_wu paragraph is kept and relabelled
+    pre-repository history, the third phi being (f_r, half-width) with
+    lambda = (0, 1) and beta = (-1/2, 1/2), removed before the seed commit, whose
+    own CONTEXT.md section 4 already names the correct three, and named as the
+    origin of section 11's leave-it-out rule; the five exclusions become
+    docs/c3_validation.md section 5.5's own five, saturation, wasted slots, the
+    pullback, anisotropy and alignment, the pullback being the one the narrative
+    had dropped and the one that rules out nsga-ii simply being worse, image-space
+    percentiles 0.1 to 4.9 under phi_lu against 17 to 86 and 31 to 71 under the
+    two failing phi; region size leaves the exclusion list with the
+    double-counting sentence, which had no source, and is replaced by what 5.5
+    measures, region shape as about half the effect acting on the comparator, a
+    uniform draw covering X_lu 40 per cent worse for its area, and the other half
+    nsga-ii's own, excluded as a general effect by the random-search control at
+    matched cardinality and not by argument; and map distortion is scoped, phi_lu
+    and phi_cw differing by a similarity so that no distortion claim separates
+    those two, while B is not one, condition number exactly the golden ratio
+    squared, so phi_ls is genuinely sheared, with 5.4's actual exclusion beside
+    it, the scaled jacobian ordering being the reverse of what a distortion story
+    needs. the other fourteen as reported: the phase-b tag, saturation at
+    generation three or four on p1 and dtlz2 but 13 to 21 on zdt1 with two dips,
+    46 or 47 of 50 generations and not on zdt1, X_cw and X_ls with their box
+    constraints and their excluded open segments, the 1/8 prediction exact in
+    probability and not accurate to two decimals, the containment's narrower
+    constraint after c2's amendment, the parameterized path needing no
+    confirmation, and the six dropped caveats, a1's floating-point counterpart,
+    r-11, r-12, r-13, the tolerance's 0.95 quantile with the 0.005 to 0.039
+    margin, the full minimum path with a5, e2 and e3 off it, and the 794 tests
+    with twelve failing on purpose. **the corrected file was then re-audited
+    against the same deliverables**: it introduced no new unsourceable statement,
+    and it corrected five things the first audit had not caught, the curve
+    argument attributed to a1-b where it is a1 part 3's, "four sessions" of
+    explanation where c3-d, c3-e and c3-f are three, the archive resize and its
+    factor of 16 quoted without the budget 20000 they were measured at, the
+    control's percentiles as 13 to 63 where c3-f measures 12.7 to 63.2, and the
+    tolerance as 12 to 15 per cent of the box side where section 2.3 gives 12.0,
+    14.6 and 11.6. second, **phase b is tagged**: phase-b-complete, annotated, on
+    dbd32c3, b2's commit, phase b being b1 and b2 with no addendum session and no
+    close-out session, so the commit that closed it is not ambiguous;
+    docs/phase_b_summary.md, written after the fact in repo-clean-b, is its
+    summary, and PROGRESS.md section 2 now says so. third, **CONTEXT.md section
+    11's scratchpad rule is extended to documents**, that a document written
+    outside the repository is not a document of this project until it is committed
+    and checked against the deliverables and that section 12 does not name a file
+    that does not exist; the before and after are in the session reply, and
+    PROGRESS.md's file inventory now lists docs/project_narrative.md, which
+    existed on disk and was missing from it. the fast run is 321 passed and 501
+    deselected in 115.12s and the full run is 810 passed and 12 xfailed in 1171.68s,
+    the same counts as d2 at a longer wall time, the twelve being the strict
+    xfails c3-c left | the research chat, on d2-b and on the corrected narrative.
+    next is e1

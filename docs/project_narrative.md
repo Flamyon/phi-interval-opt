@@ -6,6 +6,14 @@ memoria. it explains what each subpart was for, what it found, what went wrong a
 how that was handled. it makes no claim that is not already recorded somewhere
 else in the repository, and it names where.
 
+it was itself written in the research chat, outside the repository, and CONTEXT.md
+section 12 named it for three sessions while it was absent from disk. it was
+committed by hand in session d2 and audited against the deliverables there:
+eighteen items, four wrong, seven overstated, one unsourceable and six caveats the
+deliverables carry and this file dropped. session d2-b applied all eighteen, and
+this is that version. where this document and a deliverable could differ the
+deliverable wins, on the model of the three phase summaries.
+
 PROGRESS.md is the working state file and is read by the coding agent. this file
 is the human one.
 
@@ -23,9 +31,8 @@ empirically, how much the solutions change when phi changes.
 
 ### a0, reading the paper properly
 
-the project had been carrying a third phi, called phi_wu, that nobody had ever
-checked against costa et al. 2024. a0 read the paper claim by claim and recorded
-every statement with its example number and page.
+a0 read the paper claim by claim and recorded every statement with its example
+number and page.
 
 what it found. the condition for an automorphism to be admissible is exactly that
 its 2x2 coefficient matrix has nonzero determinant, and nothing more. the paper
@@ -33,11 +40,21 @@ names three phi that each carry a convexity notion: example 2.2 is the identity,
 giving the lower and upper bounds; example 2.3 gives the lower bound and the full
 width; example 2.4 gives the centre and the half-width. it also names a fourth,
 example 2.1, in a car-purchase illustration, which carries no convexity notion and
-is not used. phi_wu was in none of them.
+is not used. a0 section c9 establishes that the list is complete by enumerating
+every explicit automorphism in sections 2 and 3 of [1], line by line, rather than
+by skimming.
 
-what was done. phi_wu was deleted, not flagged. the third phi became example 2.3.
-the project's rule became that an unverified item is left out rather than kept
-behind a warning comment.
+**pre-repository history, and it is not a repository fact.** the project carried
+a third phi before any of this, called phi_wu in the research chat and defined
+as (f_r, half-width) with lambda = (0, 1) and beta = (-1/2, 1/2), and it was
+flagged unverified rather than left out. it was removed when a0's reading
+established that [1]'s third named example is 2.3. that happened in the research
+chat before the seed commit, which is why the repository holds no trace of it:
+the seed's own CONTEXT.md section 4 already names examples 2.2, 2.3 and 2.4 with
+the correct coefficients, so the correction is older than the first commit. the
+episode is the origin of the rule now in CONTEXT.md section 11, that an
+unverified item is left out until it is verified rather than kept behind a flag,
+and that is what it is recorded here for.
 
 a0 also confirmed the two structural facts everything downstream rests on: phi is
 applied to each interval objective separately, and a problem with m interval
@@ -55,6 +72,18 @@ changes, the image of the problem in the (centre, width) plane is a flat line
 rather than a region, and any injective map sends a monotone curve to another
 monotone curve. the three orders coincide by construction, not by result. the
 study would have measured nothing and would have looked like a null result.
+
+one caveat the deliverable carries and this account must not drop: that verdict is
+in exact arithmetic. computing phi from the endpoint pair instead, which is the
+interface CONTEXT.md then specified, makes the same degenerate construction look
+like a discovery. on zdt1 at eps = 0.05 the crisp order and phi_lu return 16
+non-dominated points and phi_ls and phi_cw return 30, and every bit of that
+difference is cancellation noise of order machine epsilon times |f| landing in a
+width column that is constant by construction. the expected symptom of a
+degenerate model is that the three phi coincide, which is easy to notice; the
+floating-point symptom is that they differ, which reads as a positive result. that
+is r-07, and a3-b below is where it was fixed.
+docs/a1_uncertainty_model.md part 1.
 
 the fix is that the width must vary independently of the centre as the decision
 variables move. a1 evaluated putting the imprecision in the coefficients and
@@ -75,12 +104,21 @@ the small two-variable problem p1 originally gave both objectives the same width
 function, which made two of the four transformed columns identical. a1-b gave them
 different width drivers and re-measured everything.
 
-what it cost: the efficient set is a two-dimensional band and not a curve, and
-a1-b established that a curve is not available at this size. two variables and two
-interval objectives make a four-objective real problem whose efficient set is
-generically two-dimensional, and forcing a curve requires the width and the centre
-to share an optimum, which is the exact case where phi_cw collapses to the crisp
-order. a curve and three genuinely different phi cannot both be had.
+the band, and it is a1's finding rather than a1-b's: the efficient set is
+two-dimensional and not a curve, and no design at this size fixes that. two
+variables and two interval objectives make a four-objective real problem whose
+efficient set is generically min(m - 1, n) = 2 dimensional, and forcing a curve
+requires the width coordinate and the centre coordinate to share an optimum in
+x_2, which is the exact case where phi_cw reproduces the crisp order. a curve and
+three distinct phi are not simultaneously available at n = 2, m = 2.
+docs/a1_uncertainty_model.md part 3.
+
+what a1-b itself cost is one property, and it is recorded rather than patched: the
+efficient set stops being a product of intervals under phi_lu and phi_ls, 13 and
+11 distinct x_2 ranges across the occupied x_1 columns against one apiece before,
+while phi_cw keeps its single range. that was the premise s-08 had been answered
+on, so b1 derives a region with a curved boundary rather than a rectangle for two
+of the three phi. docs/a1_uncertainty_model.md, a1-b section 3.
 
 ### a2 and a3, the arithmetic and the orders
 
@@ -91,8 +129,14 @@ three orders.
 
 a3 built the orders as one constructor over coefficient pairs, validating against
 the paper's determinant condition, with the three named examples as instances. it
-was built this way so that if the supervisors confirm a continuous path between
-named examples is admissible, sampling it is a loop rather than a redesign.
+was built this way because the parameterized extension needs no confirmation to be
+admissible: admissibility is exactly the determinant condition, so a family
+interpolating between two named examples is admissible by the paper's own
+definition, and sampling it at nine or eleven values would give a sensitivity
+curve rather than three isolated cases. it is an extension and not the plan, taken
+up only if the three named examples are done and time remains, and the constructor
+is what makes it a loop rather than a redesign. CONTEXT.md section 4, the
+parameterized extension, available and not required.
 
 ### a3-b, an arithmetic problem that would have corrupted every result
 
@@ -138,8 +182,26 @@ second's. applying it to the paper's own coefficient matrices:
 this matters for what the study can claim. a measured difference between phi_ls
 and either of the other two is partly a theorem and cannot be reported as evidence
 that the order matters. **the pair that carries the real signal is phi_lu against
-phi_cw.** the containments are recorded and sent to the supervisors, and nothing is
-built on them until they answer.
+phi_cw.**
+
+the constraint the containments carry is narrower than "nothing is built on them",
+and c2 amended it to say so. the project claims no result from either containment
+and b1 does not shorten a derivation with them; but a test may assert either as a
+self-check on the encoding, which c1 does on random search output and c2 on
+nsga-ii's and mopso's, because the containment holds for the non-dominated set of
+any finite point set whatever produced it, so what such a test can fail on is the
+sample, the route pairing, the column order or the dominance relation. d2 and e3
+report the two phi_ls pairs as checks on r-06's prediction and never as
+independent findings. that stands until the supervisors answer s-11, and if they
+refute the criterion the tests asserting it are deleted and no result moves,
+because none was claimed from them. docs/a_close_containment.md, the standing
+constraint.
+
+one caveat, r-11: the nesting is a theorem in real arithmetic and fails by
+rounding in doubles, one point of 1565 measured on dtlz2 at eps = 0.50. a table
+that reported those points as a finding would be reporting arithmetic, so a5
+asserts the containment as a band rather than as an equality and d2 names the
+artefact in the pair's own status field.
 
 
 ## phase b, ground truth. deriving the answer the solvers are judged against
@@ -155,8 +217,16 @@ the answer comes out as an explicit formula mapping weight vectors to points. th
 three sets:
 
     phi_lu   a region bounded by two conic arcs, x_2 between 4/5 and 4/3
-    phi_ls   the region 7 x_1 x_2 - 4 x_1 + 12 x_2 <= 16
-    phi_cw   exactly the unit square
+    phi_ls   the box 0 <= x_1 <= 4/3, 0 <= x_2 <= 4/3 cut by
+                 7 x_1 x_2 - 4 x_1 + 12 x_2 <= 16, minus the open segment
+                 { (x_1, 0) : 0 < x_1 <= 4/3 }
+    phi_cw   the closed unit square, minus the open segment
+                 { (x_1, 0) : 0 < x_1 <= 1 }
+
+the two excluded segments are reached only in the limit of a singular weight ray,
+which is the second of the two limitations below, and they are the whole of what
+the closed forms leave out. phi_lu has no singular ray at all. b1 sections 2.3
+and 2.4.
 
 all three are strictly inside the decision box, which matters because the paper's
 optimality condition has no constraint multipliers and applies only in the
@@ -182,14 +252,25 @@ agree rather than one file agreeing with itself.
 
 the undecided singular segments became a required argument with no default, so
 whoever computes a metric has to state which set they used, and b2 measured what
-the choice costs.
+the choice costs rather than arguing about it. that is r-12: with the region
+sample held fixed and the segment added on top, the igd of a fixed test front
+moves by -0.63 to +5.36 per cent at 1000 reference points and by -0.11 to +1.35
+at 20000, so the flag can flip a comparison already inside a few per cent and its
+value belongs in every table beside the seed and the point count.
+
+a second caveat belongs here and it is d1's rather than b2's, r-13: the front is
+sampled through the weight map, so its density in objective space is the
+parametrisation's and not the front's, and igd averages over reference points. its
+mitigation is a b2-b before d1 and none at all if d1 is cut; c3 is unaffected,
+measuring recovery by a hausdorff distance, which is a maximum.
+docs/phase_b_summary.md sections 3 and 6.
 
 
 ## phase c, the solvers, and where the project learned the most
 
 ### c1, random search
 
-not a competitor. slide 17 calls it the reference base, and it is the control.
+not a competitor. slide 17 calls it the "referencia base", and it is the control.
 its sample is a pure function of the box, the budget and the seed, so one sample
 can be filtered under each phi in turn and the three results then differ only
 through the order. in nsga-ii and mopso, phi drives the search as well as the
@@ -207,8 +288,9 @@ evaluation count.
 
 mopso was not reproducible: pymoo truncates an overflowing archive using a random
 generator that no seed reaches. the first fix, enlarging the archive so it never
-overflows, was wrong and was reversed — it changed the leader pool from 200 to
-6295, which changes what the algorithm does, and cost a factor of 16 in runtime.
+overflows, was wrong and was reversed — it changed the leader pool from 200 to the
+6295 rows the run returns at budget 20000, which changes what the algorithm does,
+and cost a factor of 16 in runtime at that budget.
 the second fix seeds the truncation and changes nothing about the search.
 
 c2 also established the single most reassuring fact in the project: pymoo's
@@ -233,39 +315,109 @@ decision variable, so the sample point with the smallest value of that variable 
 strictly best in that column and nothing can dominate it, whatever its other
 coordinate is. it is non-dominated in any sample containing it, and it can sit
 anywhere. no budget removes it; a bigger budget re-elects it. this was proved, and
-its expected cost predicted to two decimals what was measured.
+the prediction it carries is exact in probability rather than accurate to two
+decimals: for a uniform draw the elected point's other coordinate lies outside
+X_cw's [0, 1] with probability exactly 1/2 and its expected overhang is exactly
+1/8, at every budget. the measurement is of that constancy and not of the value.
+over 200 draws at each of four budgets the mean overhang is 0.1226, 0.1404, 0.1334
+and 0.1261, which does not move with the budget, while the median smallest |x_1|
+falls by a factor of four for every factor of four in it.
+docs/c3_validation.md section 1.3.
 
 **the tolerance was derived wrongly.** it summed two terms where only one belongs.
 correcting it made the gate tighter under two phi and looser under one, which is
-what a tolerance that has not been tuned looks like.
+what a tolerance that has not been tuned looks like. what it is, and the narrative
+owes the reader this: the 0.95 quantile of a measured fill-distance distribution,
+1000 uniform 100-point draws of the derived region, at the design-fixed front size
+of 100 and fixed in writing before the study ran. that is 0.2405, 0.2919 and
+0.2318 under the three phi, which is 12.0, 14.6 and 11.6 per cent of the box
+side. at that quantile a
+solver whose front were a uniform draw would exceed it in about one measurement in
+twenty, so one isolated failure at a margin near zero is not evidence of a defect
+while a failure concentrated in one solver across seeds and phi is, and that
+reading was fixed in advance too. docs/c3_validation.md sections 2.3 and 2.4.
 
 **what the gate now says.** every part of every derived set is reached by random
-search and by mopso, at every seed, under every phi. nsga-ii reaches it under
-phi_lu and fails at three of five seeds under each of the other two. no solver
-ever returns a point that beats the derivation. the failure is about how evenly
-nsga-ii spreads its hundred points, not about whether the pipeline is correct, so
-phase e is not blocked.
+search and by mopso, at every seed, under every phi, at both settings of the
+singular flag: sixty of sixty measurements, with margins of 0.09 to 0.25. nsga-ii
+reaches it under phi_lu at every seed and fails at three of five seeds under each
+of the other two, twelve of its thirty measurements over the tolerance and by
+0.005 to 0.039 in a box of side 2. no solver ever returns a point that beats the
+derivation, in all ninety measurements. the failure is about how evenly nsga-ii
+spreads its hundred points, not about whether the pipeline is correct, so phase e
+is not blocked.
 
-**the finding, and four sessions of trying to explain it.** at equal front size,
+those twelve are in the test suite and are meant to be. phase c closed with 794
+tests of which 782 pass and twelve fail on purpose, all of them
+test_the_derived_set_is_reached_by_the_solver at nsga-ii under phi_ls and phi_cw;
+repo-clean-b marked exactly those twelve parameter sets xfail(strict=True), so a
+thirteenth failure is a plain failure and an unexpected pass is an error, and the
+assertion itself still runs on all ninety. the suite is 822 tests after d2's 28.
+docs/phase_c_summary.md section 5, PROGRESS.md.
+
+**the finding, and three sessions of trying to explain it.** at equal front size,
 nsga-ii covers this efficient set worse than uniform random sampling does, under
-phi_ls and phi_cw but not under phi_lu. five candidate explanations were tested and
-excluded by measurement:
+phi_ls and phi_cw but not under phi_lu. c3-d, c3-e and c3-f put five candidate
+explanations to measurement and excluded all five. the list below is the one
+docs/c3_validation.md's section 5.5 closes on, in its own terms:
 
     that the non-dominated rank saturates and dominance stops selecting. it does
         saturate, under every phi, which is why it cannot explain a split between
-        them.
-    that far-away points waste front slots. they do, but not nearly enough.
+        them. section 5.1.
+    that far-away points waste front slots. they do, and more under the two
+        failing phi, but re-reading each percentile at the number of rows within
+        0.10 of the region buys 2 to 11 percentile points of a gap of 50 and
+        leaves all ten failing measurements at or above the 74th percentile. only
+        a cut that discards a third of the front moves the number, and that is
+        describing the front rather than correcting the reading of it.
+        section 5.2.
+    that nsga-ii is simply bad at what it optimises. it is not, and this is the
+        exclusion the plain account most needs, because it is what rules out
+        nsga-ii being worse rather than different. measured in the image space it
+        actually sorts and spreads in, each column normalised by its range as the
+        crowding distance normalises it, nsga-ii sits at the 17th to 86th
+        percentile of a uniform draw under phi_ls and the 31st to 71st under
+        phi_cw, which is where a uniform draw itself sits, while under phi_lu it
+        is at the 0.1st to 4.9th, better than 95 per cent of them. the deficit is
+        in the pullback. section 5.3.
+    that one map distorts more than another. under the column-scaled jacobian, the
+        map the operator works in, the ordering is the reverse of what a
+        distortion story needs: phi_lu is the anisotropic one, median
+        singular-value ratio 3.97 against phi_ls's 1.42 and phi_cw's 1.45, and no
+        ratio anywhere in the table exceeds 10. section 5.4.
     that the two phi align the same geometry differently to the operator's axes.
-        the advantage travels with the run and not with the frame.
-    that one map distorts more than another. impossible: phi_lu and phi_cw differ
-        by a rotation and a uniform scaling, so pointwise they are the same map.
-    that it is simply the size of the regions. the comparison already controls for
-        that, and adding a second correction would have double-counted.
+        the advantage travels with the run and not with the frame: a phi_cw front
+        read in phi_lu's frame sits at the 44th to 81st percentile, nowhere near
+        the phi_lu runs' 0.1 to 4.9, and the crowding distance is equalised alike
+        under all three phi, its coefficient of variation lowest in the run's own
+        frame in all fifteen runs. section 5.5.
 
-what remains is a decomposition. about half of the effect is that phi_lu's region
-is thin and curved, which makes the uniform yardstick weaker there. the other half
-is nsga-ii specifically, because random search shows no such deficit under any phi.
-that half is unexplained, and it is recorded as unexplained.
+the fourth of those needs scoping, because its short form is wrong. phi_lu and
+phi_cw differ by a similarity, A with A^T A = 2 I, so their images are the same
+object up to a rotation and a uniform scaling and no distortion claim can separate
+those two at all; the apparent gap between their raw jacobian ratios is a
+difference of the region each is averaged over and not of the map. but the map to
+phi_ls's image is not a similarity: its condition number is exactly the golden
+ratio squared, so phi_ls genuinely is a sheared version of the same object, and
+what excludes distortion there is the measurement above and not the identity.
+sections 5.4 and 5.5.
+
+what remains is a decomposition, and region size is not a term in it: the
+comparison is at equal cardinality and the dimensional check divides area out.
+what is left of the region is its shape, and it is about half the effect, acting
+on the comparator rather than on the solver. in units that have had region size
+divided out, a uniform draw covers X_lu 40 per cent worse for its area than it
+covers X_ls or X_cw, X_lu being a thin curved sliver between two conic boundaries
+and the other two fat, so the yardstick is weakest exactly where nsga-ii looks
+best. the other half is nsga-ii's own, and it is excluded as a general
+fixed-cardinality effect by the phi-neutral control rather than by argument:
+random search at the same k, on the same regions, against the same comparator sits
+between the 12.7th and the 63.2nd percentile under all three phi and shows no
+deficit anywhere,
+while nsga-ii is at 33 to 60, 85 to 98 and 90 to 99. the swing from phi_lu to each
+of the others is +0.483 and +0.485 for nsga-ii against +0.243 and +0.244 for the
+control, which is where the halves come from. that half is unexplained, and it is
+recorded as unexplained. section 5.5.
 
 **one thing found along the way that is about the framework rather than this
 project.** the three phi images of any problem are fixed linear maps of one
@@ -274,20 +426,28 @@ example 2.4 is a rotation times the square root of two, condition number exactly
 one. the map to example 2.3 has condition number exactly the golden ratio squared.
 this is offered to the supervisors for comment.
 
-**and one thing that matters for the whole approach.** after generation three or
-four, in every configuration the project runs, the non-dominated rank fills the
-entire population and dominance stops deciding anything: nsga-ii selects on spread
-alone for 46 of 50 generations. this is a cost of the transformation itself, since
-turning m interval objectives into 2m real ones pushes even a two-objective problem
-into the many-objective regime. it is the empirical form of the objection cui et
-al. raise against transformation-based methods, arrived at with the project's own
-numbers.
+**and one thing that matters for the whole approach.** in all nine problem-phi
+configurations c3-d measured, the non-dominated rank fills the entire population
+and dominance stops deciding anything. on p1 and on dtlz2 it happens at generation
+three or four, so nsga-ii selects on spread alone for 46 or 47 of its 50
+generations; on zdt1 it takes until generation 13, 13 and 21 under the three phi
+and dips back below the population size twice under phi_lu, at generations 16 and
+17, but it arrives all the same. this is a cost of the transformation itself,
+since turning m interval objectives into 2m real ones pushes even a two-objective
+problem into the many-objective regime. it is the empirical form of the objection
+cui et al. raise against transformation-based methods, arrived at with the
+project's own numbers. what orders the three problems is not the column count,
+which p1 and zdt1 share: it is the non-dominated fraction of the transformed
+image, 0.58, 0.79 and 0.55 on dtlz2 against 0.24, 0.52 and 0.47 on zdt1, and three
+problems is not enough to assert that as a law, so c3 does not.
+docs/c3_validation.md section 5.1.
 
 
 ## what the project can say so far
 
     the three phi are the paper's named examples, verified with page and example
-        numbers, and one that was not in the paper was removed.
+        numbers, and a fourth the project had been carrying, which is in none of
+        them, was removed before the repository existed.
     a constant-width uncertainty model makes the whole study vacuous, and the
         replacement was designed and measured rather than assumed.
     two of the three efficient sets are provably contained in the third, so the
@@ -296,8 +456,9 @@ numbers.
         three phi.
     the solvers recover them, random search and mopso completely, nsga-ii under
         one phi of three.
-    nsga-ii has a coverage deficit that depends on phi, half of which is
-        explained and half of which is not.
+    nsga-ii has a coverage deficit that depends on phi, half of which is region
+        shape acting on the comparator and half of which has no mechanism.
+        five candidate mechanisms were put to measurement and excluded.
     the transformation costs dominance-based selection its pressure, everywhere.
 
 none of these is the answer to the research question yet. that comes from phase e.
@@ -305,7 +466,11 @@ none of these is the answer to the research question yet. that comes from phase 
 
 ## where the project is, and what is left
 
-phase a, b and c are complete and tagged. the current subpart is d2.
+phase a, b and c are complete and tagged. phase b's tag was missing until session
+d2-b applied it: phase b closed with b2 and without a close-out session, so
+nothing tagged it at the time, docs/phase_b_summary.md was written after the fact
+in repo-clean-b, and phase-b-complete now names b2's commit. the current subpart
+is d2, built and awaiting review. PROGRESS.md.
 
     d2, the decision-space metrics. hausdorff distance, coverage, overlap and
         cross-evaluation, all computed on decision vectors, which is the one space
@@ -322,9 +487,14 @@ phase a, b and c are complete and tagged. the current subpart is d2.
         criterion external to the transformed problem and applies equally to every
         phi.
 
-off the minimum path and built only if time allows: d1, the objective-space
-metrics, which cannot compare phi against each other and carry two unresolved
-problems of their own; and d3, the plotting and table code.
+the minimum presentable path, if the calendar runs short, is a0, a1, a2, a3, a4,
+b1, b2, c1, c2, c3, d2 and e1: tier 0 only, with the decision-space metrics and
+the correctness gate, which CONTEXT.md section 8 states is a complete result and
+not a truncated one. so a5, e2 and e3 sit off that path as well as d1 and d3; a5
+is built already, and e2 and e3 are what tier 1 and the synthesis add on top of
+the minimum. d1, the objective-space metrics, is built only if time allows: it
+cannot compare phi against each other and carries r-12 and r-13, two unresolved
+problems of its own. d3 is the plotting and table code.
 
 open with the supervisors: docs/supervisor_questions.md, twelve questions in four
 parts, none of them blocking. the highest-value thing they can supply is not an
