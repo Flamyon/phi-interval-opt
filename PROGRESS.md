@@ -28,11 +28,16 @@ project started 2026-08-30.
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    d2, metrics_decision.py, not started. it is the only phase
-                        d subpart on CONTEXT.md section 8's minimum presentable
-                        path; d1 and d3 are off it and are not prerequisites for
-                        e1. **nothing open blocks d2**, section 6 and section 7
-                        below and docs/phase_c_summary.md section 5.
+    current subpart:    d2, metrics_decision.py, **built and awaiting review**. it
+                        is the only phase d subpart on CONTEXT.md section 8's
+                        minimum presentable path; d1 and d3 are off it and are not
+                        prerequisites for e1. nothing open blocked it, section 6
+                        and section 7 below and docs/phase_c_summary.md section 5,
+                        and the six rows it had to carry rather than wait on it
+                        carries: the delta with no default, the two phi_ls pairs
+                        labelled checks with the containment and r-11's rounding
+                        artefact named, the cardinality beside every metric, and
+                        one filter call per cross evaluation. next is e1.
                         c3-f is done, its review evidenced by c-close's prompt,
                         which accepts its decomposition and asks for the close-out.
                         c3-c is
@@ -71,8 +76,9 @@ project started 2026-08-30.
                         the three cover it to within the derivation's own
                         resolution. phase e starts carrying the six items of
                         docs/c3_validation.md section 10
-    phase d depends on: **no open row blocks d2**, the only phase d subpart on the
-                        minimum path. what d2 must carry rather than wait on:
+    phase d depends on: **no open row blocked d2**, the only phase d subpart on the
+                        minimum path, and it is built. what it carries rather than
+                        waits on, every row of it in src/metrics_decision.py:
                         s-12 and r-12, include_singular_segments has no default
                         and its value goes in every table beside the seed and the
                         point count, the two settings being two different
@@ -93,7 +99,7 @@ project started 2026-08-30.
                         d1 and is not needed at all if d1 is cut, and r-12, whose
                         trigger is d1 computing igd. r-19 bears on how e3 reads a
                         spread statistic, not on whether d2 can be written
-    the suite:          twelve parameter sets of
+    the suite:          822 tests after d2's 28, of which twelve parameter sets of
                         test_the_derived_set_is_reached_by_the_solver at nsga-ii
                         fail on purpose and are marked xfail(strict=True) in
                         repo-clean-b, pinned to nsga-ii under phi_ls at seeds 11,
@@ -120,13 +126,13 @@ project started 2026-08-30.
                         src/interval_math.py, src/phi_transforms.py,
                         src/problems_tier0.py, src/problems_tier1.py,
                         src/reference_fronts.py, src/random_search.py,
-                        src/runners.py
+                        src/runners.py, src/metrics_decision.py
                         docs/c3_validation.md
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
                         tests/test_problems_tier1.py, tests/test_reference_fronts.py,
                         tests/test_random_search.py, tests/test_runners.py,
-                        tests/test_validation.py
+                        tests/test_validation.py, tests/test_metrics_decision.py
                         requirements.txt, versions pinned to the venv
                         pytest.ini, holding the slow marker and nothing else.
                         repo-clean widened the marker from "runs a solver" to
@@ -168,7 +174,7 @@ docs/supervisor_questions.md.
 
 phase d, analysis
     d1  metrics_objective.py                not started, off the minimum path
-    d2  metrics_decision.py                 not started, next subpart
+    d2  metrics_decision.py                 awaiting review
     d3  reporting.py                        not started, off the minimum path
 
 CONTEXT.md section 8's minimum presentable path is a0, a1, a2, a3, a4, b1, b2,
@@ -546,50 +552,6 @@ format:
 
     date | subpart | files | outcome | next
 
-2026-09-02 | repo-clean | PROGRESS.md, CONTEXT.md section 12, pytest.ini,
-    tests/test_problems_tier1.py, tests/test_reference_fronts.py,
-    tests/test_validation.py; new docs/session_log.md and docs/row_history.md |
-    housekeeping. **nothing under src/ was opened, and no phi, problem,
-    derivation, solver, dominance relation, tolerance or measured number was
-    touched.** four jobs. first, PROGRESS.md is back to the row shapes CONTEXT.md
-    section 11 requires and 1470 lines become 735, this entry included.
-    section 8, the session log, moved whole and unchanged to
-    docs/session_log.md, this file keeping the last three entries and a
-    pointer; section 6 became a twelve-row index into
-    docs/supervisor_questions.md, which already carries the full text of every
-    s-row and is the version the supervisors read; section 7 went to risk, cost,
-    trigger, mitigation and nothing else; section 3 to decision, source, affects.
-    the history trimmed out of sections 3 and 7 is in docs/row_history.md
-    verbatim, kept whole rather than pruned: 68 of its 76 measured figures are a
-    second copy of something in docs/c3_validation.md or the session log, and the
-    eight that are not are r-15's filter timings, so the research chat can prune
-    it against the deliverables rather than take an agent's word for what was
-    duplicated. nothing was deleted and every line of the old file has a verbatim
-    home except section 6's, which is what the brief directed. second,
-    docs/project_narrative.md is entered in CONTEXT.md section 12 as the human
-    narrative kept alongside PROGRESS.md's machine state, together with the three
-    docs/ files the layout did not name; **the narrative itself has not arrived,
-    so nothing in it has been checked against the repository and the claim-by-
-    claim pass the brief asked for is still owed.** third, the fast run: it is
-    not b2 and a5 that dominate it. measured with --durations=0, of 122 seconds
-    tests/test_random_search.py is 60, tests/test_validation.py 29,
-    tests/test_reference_fronts.py 17, tests/test_problems_tier0.py 9 and
-    tests/test_problems_tier1.py 5. four tests are large-sample diagnostics
-    rather than correctness checks and are now marked slow: b2's
-    test_no_dense_sample_point_dominates_the_front at 20000 points, c3's
-    shielded-tail pair, and a5's separation report. c1's tests are the real cost
-    and are not marked, being contract checks; what makes them expensive is d-02's
-    untoleranced O(N^2) filter at the test size of 2000, which is r-15's subject
-    and a decision rather than tidying. the fast run is 310 passed in 122s before
-    and 293 passed in 76s after. fourth, pytest.ini's marker text was widened from
-    "runs a solver" to cover the new category. the full run is unchanged: 782
-    passed and 12 failed in 707.20s, the same twelve
-    test_the_derived_set_is_reached_by_the_solver at nsga-ii, three seeds under
-    phi_ls and three under phi_cw at both flag settings, which are the gate's
-    verdict and not a regression | the research chat, on d2; and on
-    docs/project_narrative.md, which repo-clean could not check because it is not
-    in the repository. phase d is not blocked
-
 2026-09-02 | repo-clean-b | tests/test_validation.py, CONTEXT.md sections 10 and
     12, PROGRESS.md, docs/verified.md, docs/answered.md, docs/c3_validation.md,
     docs/phase_c_summary.md; new docs/phase_b_summary.md; docs/row_history.md
@@ -668,3 +630,49 @@ format:
     full run is 782 passed and 12 xfailed in 879.49s, the same counts as
     repo-clean-b at a longer wall time | the research chat, on d2 and on
     docs/project_narrative.md. phase d is not blocked
+
+2026-09-02 | d2 | new src/metrics_decision.py and tests/test_metrics_decision.py;
+    CONTEXT.md line 10; PROGRESS.md | the decision-space metrics, the ones
+    comparable across phi, and the instrument CONTEXT.md section 10 e3 takes its
+    headline number from. compute_hausdorff returns both directed distances and
+    the symmetric one and they are read apart, a-to-b asking whether what was
+    found is correct and b-to-a whether what exists was found; compute_coverage
+    is asymmetric and is one call per direction; compute_overlap is the
+    delta-neighbourhood intersection over the union, which is 2|A|/(|A|+|B|)
+    whenever A is contained in B and is therefore pinned on two of the three
+    pairs; cross_evaluate filters set_a's image under a second phi through
+    src/random_search.py's non_dominated_indices and phi_image, neither
+    reimplemented, **one filter call per call and not one per pair**, r-15, whose
+    cost the module states at the sizes e1 will use, 586 to 2256 rows against
+    v-57's 66 s at n = 25000. **delta has no default**, for the reason
+    include_singular_segments has none, s-12, and it is refused if negative or
+    not finite; no comparison anywhere rounds, snaps or admits an epsilon, d-02.
+    compare_phi_on_one_sample is built on filter_one_sample_under_every_phi and
+    not on the solver runs, c-close's amendment to section 10 e3: the sample is a
+    pure function of the box, the budget and the seed, so the three sets differ
+    only through the order, and c3-f measured that a difference read off nsga-ii
+    output is confounded with nsga-ii's own phi-conditional coverage. **every
+    returned pair carries a status field**, check or finding, so a table built
+    from the return value cannot present either phi_ls pair as a measured
+    difference: the note names r-06's containment, r-11's rounding artefact with
+    its one point of 1565 and s-11's status, and the violation count is None on
+    the phi_lu against phi_cw pair so that a zero there cannot be read as
+    agreement. 28 tests: the three set-geometry functions on identical, disjoint
+    and strictly nested sets by hand, both directed distances against an explicit
+    pair loop, coverage asymmetric on a constructed case, coverage and overlap
+    non-decreasing over nine deltas, b2's efficient set at distance zero from
+    itself under both flag settings and bounded by a subsample's fill distance
+    computed by loop, the containment as a unit test of cross_evaluate with
+    s-11's status cited in place, the three index sets shown to index one array,
+    the labelling, no mutation, and the shape and delta refusals. **one
+    documentation correction**: CONTEXT.md's line 10, "nothing has been built
+    yet. this is subpart zero.", is deleted as false by three phases and nothing
+    replaces it; the before and after are in the session reply. **the narrative
+    check owed since repo-clean is done**, docs/project_narrative.md having
+    arrived in the repository committed by hand: eighteen items reported in the
+    session reply, four wrong, seven overstated, one unsourceable and six caveats
+    the deliverables carry and the narrative drops, and **nothing in that file
+    was corrected**. the fast run is 321 passed and 501 deselected in 77.25s and
+    the full run is 810 passed and 12 xfailed in 752.17s, the twelve being the
+    strict xfails c3-c left | the research chat, on d2 and on the narrative
+    report. next is e1

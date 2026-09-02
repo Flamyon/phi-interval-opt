@@ -758,3 +758,49 @@ format:
     full run is 782 passed and 12 xfailed in 879.49s, the same counts as
     repo-clean-b at a longer wall time | the research chat, on d2 and on
     docs/project_narrative.md. phase d is not blocked
+
+2026-09-02 | d2 | new src/metrics_decision.py and tests/test_metrics_decision.py;
+    CONTEXT.md line 10; PROGRESS.md | the decision-space metrics, the ones
+    comparable across phi, and the instrument CONTEXT.md section 10 e3 takes its
+    headline number from. compute_hausdorff returns both directed distances and
+    the symmetric one and they are read apart, a-to-b asking whether what was
+    found is correct and b-to-a whether what exists was found; compute_coverage
+    is asymmetric and is one call per direction; compute_overlap is the
+    delta-neighbourhood intersection over the union, which is 2|A|/(|A|+|B|)
+    whenever A is contained in B and is therefore pinned on two of the three
+    pairs; cross_evaluate filters set_a's image under a second phi through
+    src/random_search.py's non_dominated_indices and phi_image, neither
+    reimplemented, **one filter call per call and not one per pair**, r-15, whose
+    cost the module states at the sizes e1 will use, 586 to 2256 rows against
+    v-57's 66 s at n = 25000. **delta has no default**, for the reason
+    include_singular_segments has none, s-12, and it is refused if negative or
+    not finite; no comparison anywhere rounds, snaps or admits an epsilon, d-02.
+    compare_phi_on_one_sample is built on filter_one_sample_under_every_phi and
+    not on the solver runs, c-close's amendment to section 10 e3: the sample is a
+    pure function of the box, the budget and the seed, so the three sets differ
+    only through the order, and c3-f measured that a difference read off nsga-ii
+    output is confounded with nsga-ii's own phi-conditional coverage. **every
+    returned pair carries a status field**, check or finding, so a table built
+    from the return value cannot present either phi_ls pair as a measured
+    difference: the note names r-06's containment, r-11's rounding artefact with
+    its one point of 1565 and s-11's status, and the violation count is None on
+    the phi_lu against phi_cw pair so that a zero there cannot be read as
+    agreement. 28 tests: the three set-geometry functions on identical, disjoint
+    and strictly nested sets by hand, both directed distances against an explicit
+    pair loop, coverage asymmetric on a constructed case, coverage and overlap
+    non-decreasing over nine deltas, b2's efficient set at distance zero from
+    itself under both flag settings and bounded by a subsample's fill distance
+    computed by loop, the containment as a unit test of cross_evaluate with
+    s-11's status cited in place, the three index sets shown to index one array,
+    the labelling, no mutation, and the shape and delta refusals. **one
+    documentation correction**: CONTEXT.md's line 10, "nothing has been built
+    yet. this is subpart zero.", is deleted as false by three phases and nothing
+    replaces it; the before and after are in the session reply. **the narrative
+    check owed since repo-clean is done**, docs/project_narrative.md having
+    arrived in the repository committed by hand: eighteen items reported in the
+    session reply, four wrong, seven overstated, one unsourceable and six caveats
+    the deliverables carry and the narrative drops, and **nothing in that file
+    was corrected**. the fast run is 321 passed and 501 deselected in 77.25s and
+    the full run is 810 passed and 12 xfailed in 752.17s, the twelve being the
+    strict xfails c3-c left | the research chat, on d2 and on the narrative
+    report. next is e1

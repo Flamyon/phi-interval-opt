@@ -7,8 +7,6 @@ the running state of the project, what is done, what is decided, what is open, a
 what happened in each session, lives in PROGRESS.md. do not put state here and do
 not put specification there.
 
-nothing has been built yet. this is subpart zero.
-
 
 ## 1. what this project is
 
