@@ -902,6 +902,28 @@ is code, and a session record block for PROGRESS.md.
     supervisors. if they refute it the instruction is removed and all three pairs
     are reported alike; nothing else in the project depends on it.
 
+    **the phi_lu against phi_cw comparison is made on random search output**, and
+    that is c-close's amendment. src/random_search.py's
+    filter_one_sample_under_every_phi draws one uniform sample of the box,
+    evaluates it once and filters it under each phi in turn, so the three fronts
+    differ only through the order: sample_decision_space takes no phi and the
+    sample is a pure function of the box, the budget and the seed, which makes the
+    search identical by construction and not by care at the call site. no other
+    solver in this project has that property. in nsga-ii and mopso phi drives the
+    search as well as the ordering, the population surviving generation one being
+    already phi's, so a difference between two of their runs is a difference of
+    orders and of trajectories at once. c3-f made that concrete rather than
+    cautionary: at matched cardinality nsga-ii's coverage of the derived region is
+    phi-conditional and random search's is not, docs/c3_validation.md section 5.5,
+    so a difference between recovered sets measured on nsga-ii output is confounded
+    with nsga-ii's own phi-conditional behaviour and cannot be reported as a
+    property of the order. **the population methods are reported separately, as a
+    question about how solvers behave under each order and not as the phi
+    comparison, with the coverage deficit and the rank-1 saturation stated beside
+    them.** c1's control is therefore the instrument carrying the study's main
+    result rather than a baseline to beat, which is what slide 17 asked for it and
+    what src/random_search.py's own module comment says it is for.
+
     e3 must report the c3-c finding, r-19, with its numbers, and must not report
     it as a result about phi. for a full-dimensional efficient set nsga-ii's
     decision-space coverage is worse than uniform random sampling of that set at
@@ -1024,6 +1046,17 @@ session discipline:
     work is committed directly to main, one commit per subpart, the message
     prefixed with the subpart id. no branches. a session that is rejected in
     review is reverted.
+    a session commits whatever it has established before starting any run
+    expected to take more than a few minutes, and again at its end. **a
+    measurement that exists only in a scratchpad is not a result of this
+    project**: the scratchpad is not in the repository, is not reviewed and does
+    not survive the session, so a number that lives only there has to be
+    regenerated to be used and cannot be checked against the run that produced
+    it. the rule is about cost and about evidence at once. where a session ends
+    without committing, the next session records the gap in the session log
+    rather than absorbing the work silently, naming the session that did not
+    commit and where its numbers came from; c3-f did that for c3-e, which is the
+    second uncommitted session in a row and the reason this rule exists.
     the agent maintains PROGRESS.md, which holds current state and open items
     only: the subpart status, the open questions, the open risks and the session
     log, updated at the end of each session, and no specification. verified facts

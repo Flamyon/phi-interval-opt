@@ -18,11 +18,20 @@ project started 2026-08-30.
 
 ## 1. where the project stands
 
-    current phase:      c, solvers. phase c is complete. its gate does not pass:
-                        twelve of ninety reverse measurements exceed the corrected
+    current phase:      d, analysis. **phase c is complete and tagged
+                        phase-c-complete**, closed out in
+                        docs/phase_c_summary.md. its gate does not pass: twelve of
+                        ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    c3-f, awaiting review, and phase c closes with it. c3-c is
+    current subpart:    d2, metrics_decision.py, not started. it is the only phase
+                        d subpart on CONTEXT.md section 8's minimum presentable
+                        path; d1 and d3 are off it and are not prerequisites for
+                        e1. **nothing open blocks d2**, section 6 and section 7
+                        below and docs/phase_c_summary.md section 5.
+                        c3-f is done, its review evidenced by c-close's prompt,
+                        which accepts its decomposition and asks for the close-out.
+                        c3-c is
                         done, its review evidenced by c3-d's prompt, which accepts
                         its corrections and asks one diagnostic question about
                         section 5; c3-d is done, its review evidenced by c3-e's
@@ -58,6 +67,24 @@ project started 2026-08-30.
                         the three cover it to within the derivation's own
                         resolution. phase e starts carrying the six items of
                         docs/c3_validation.md section 10
+    phase d depends on: **no open row blocks d2**, the only phase d subpart on the
+                        minimum path. what d2 must carry rather than wait on:
+                        s-12 and r-12, include_singular_segments has no default
+                        and its value goes in every table beside the seed and the
+                        point count, the two settings being two different
+                        reference objects; r-11 and r-06, the phi_lu inside phi_ls
+                        containment is exact in real arithmetic and fails by
+                        rounding in doubles, one point of 1565 measured, so d2
+                        reports that pair as a check with the artefact named and
+                        never as a finding; s-11, which is what makes that pair a
+                        check rather than a finding, and if the supervisors refute
+                        the criterion the instruction is removed and all three
+                        pairs are reported alike; and r-16, cardinality is printed
+                        beside every metric. **d1, if it is built, does have two
+                        prerequisites**: r-13, whose mitigation is a b2-b before
+                        d1 and is not needed at all if d1 is cut, and r-12, whose
+                        trigger is d1 computing igd. r-19 bears on how e3 reads a
+                        spread statistic, not on whether d2 can be written
     the suite:          twelve tests fail on purpose, all
                         test_the_derived_set_is_reached_by_the_solver at nsga-ii,
                         and the count is recorded so a later session can see
@@ -69,7 +96,8 @@ project started 2026-08-30.
                         docs/a4b_dominance_tolerance.md,
                         docs/a_close_containment.md, docs/phase_a_summary.md,
                         docs/b1_phi_efficient_sets.md,
-                        docs/verified.md, docs/answered.md
+                        docs/verified.md, docs/answered.md,
+                        docs/phase_c_summary.md, docs/supervisor_questions.md
                         papers/new_preference_order_relationships_paper.txt
                         papers/Presentacion_optimizacion_intervalar.txt
                         papers/zitzler_deb_thiele_2000_comparison.pdf
@@ -112,13 +140,25 @@ phase c, solvers
     c3-c the three corrections               done, gate fails and is asserted
     c3-d the saturation diagnostic           done, no code changed
     c3-e the pullback diagnostic             done, no code changed, never committed
-    c3-f the frame, the control, the closed   awaiting review, no code changed
+    c3-f the frame, the control, the closed   done, no code changed
          forms
+    c-close phase c close-out                done, no code changed
+
+phase c is complete, tagged phase-c-complete. its close-out document is
+docs/phase_c_summary.md and the accumulated supervisor questions are
+docs/supervisor_questions.md.
 
 phase d, analysis
-    d1  metrics_objective.py                not started
-    d2  metrics_decision.py                 not started
-    d3  reporting.py                        not started
+    d1  metrics_objective.py                not started, off the minimum path
+    d2  metrics_decision.py                 not started, next subpart
+    d3  reporting.py                        not started, off the minimum path
+
+CONTEXT.md section 8's minimum presentable path is a0, a1, a2, a3, a4, b1, b2,
+c1, c2, c3, d2, e1: tier 0 only, with the decision-space metrics and the
+correctness gate. **d2 is the only phase d subpart on it.** d1 and d3 are built if
+the calendar allows and are not prerequisites for e1. that is also where two open
+risks go quiet: r-13 says its mitigation is "to be done in a b2-b before d1, and
+not at all if d1 is cut", and r-12's trigger is d1 computing igd.
 
 phase e, experiments
     e1  tier 0 run                          not started
@@ -1358,3 +1398,73 @@ format:
     same twelve gate tests at nsga-ii as c3-c left | the research chat, on
     whether the residual half is worth another session or whether e1 reports it
     as measured. e1 is not blocked
+
+2026-09-02 | c-close | CONTEXT.md sections 10 e3 and 11; new
+    docs/phase_c_summary.md and docs/supervisor_questions.md; PROGRESS.md | the
+    phase c close-out. **no measurement was run and no mechanism was proposed.
+    no code changed: nothing under src/ or tests/ touched, no phi, problem,
+    derivation, solver, dominance relation or tolerance moved, and the two new
+    documents cite session deliverables and add no claim of their own.**
+    three changes outside the two new documents. **CONTEXT.md section 11 gains a
+    commit rule**, prompted by c3-e ending without committing and its numbers
+    surviving only in a scratchpad, the second uncommitted session in a row: a
+    session commits whatever it has established before starting any run expected
+    to take more than a few minutes, and again at its end; a measurement that
+    exists only in a scratchpad is not a result of this project, since the
+    scratchpad is not in the repository, is not reviewed and does not survive the
+    session; and where a session ends without committing, the next session
+    records the gap in the session log rather than absorbing the work silently,
+    as c3-f did for c3-e. **CONTEXT.md section 10 e3 gains the instruction that
+    the phi_lu against phi_cw comparison is made on random search output**,
+    through src/random_search.py's filter_one_sample_under_every_phi, which is
+    the amendment c3-f's control forces: random search is phi-neutral by
+    construction, sample_decision_space taking no phi and the sample being a pure
+    function of the box, the budget and the seed, while nsga-ii's coverage of the
+    derived region is phi-conditional at matched cardinality, so a difference
+    between recovered sets measured on nsga-ii output is confounded with
+    nsga-ii's own behaviour and is not evidence about the order. the population
+    methods are reported separately with the coverage deficit and the saturation
+    beside them. c1 is therefore the instrument carrying the study's main result
+    and not a baseline to beat, which is what its own module comment always said
+    it was for and what slide 17 asked for it. **PROGRESS.md moves phase c to
+    complete and the current subpart to d2**, with d1 and d3 marked off
+    CONTEXT.md section 8's minimum presentable path, and records what phase d
+    depends on: no open row blocks d2, which must carry s-12 and r-12 through
+    include_singular_segments having no default, r-11 and r-06 through naming the
+    doubles artefact in the phi_lu against phi_ls pair, s-11 through reporting
+    that pair as a check and not a finding, and r-16 through printing cardinality
+    beside every metric; d1, if it is built at all, does have two prerequisites,
+    r-13's b2-b and r-12's igd trigger.
+    **docs/phase_c_summary.md** is the close-out, on docs/phase_a_summary.md's
+    model and for the same two readers. it states what phase c built, the gate's
+    verdict in one section, and four findings each bounded by what it does not
+    say: the protected extreme and its shielded-chain corollary, proved; rank 1
+    saturating by generation three or four under every phi and on both tier 1
+    benchmarks, stated as a cost of the transformation taking m interval
+    objectives to 2m real ones and as the empirical form of the objection [7]
+    raises against transformation methods; v-56's exact linear relations with the
+    observation that A and B carry no parameter of p1; and nsga-ii's coverage
+    deficit at its true scope, half attributable to X_lu's shape making the
+    uniform comparator weaker there and the remainder unexplained after five
+    named exclusions, saturation, effective cardinality, the pullback, map
+    anisotropy and region size. **the exclusions are the work and the document
+    says so.**
+    **docs/supervisor_questions.md** is the accumulated list written to be
+    answered in one sitting: s-01 to s-12, each as question, working assumption
+    and what depends on the answer, with s-11 and s-12 first because they are the
+    two that change a number in the memoria. one correction to the brief, which
+    asked for s-12 and s-13 on the singular segments: **s-13 is closed**, and
+    closed by b1's derivation rather than by the supervisors, so it appears as
+    context under s-12 with the reason it is not being asked, and the document
+    says explicitly that s-12 is untouched by it. v-56 is included as part e, a
+    result offered for comment and not a question, with two consistency checks
+    against s-11: dominance is preserved by an entrywise non-negative map and not
+    by an arbitrary invertible one, and the per-objective blocks of A and B both
+    carry a negative entry, which is exactly why phi_lu and phi_cw are nested in
+    neither direction while both sit inside phi_ls. the document closes by
+    pointing out that supplying any of [1]'s pdf, [26], [9], [31], [10], [7] or
+    [8] would close more open rows than any answer on the page.
+    the suite is unchanged because nothing in it changed: the full run is 782
+    passed and 12 failed in 694.42s, **the same twelve gate tests at nsga-ii as
+    c3-c left, which are the gate's stated verdict and not a regression**.
+    tagged phase-c-complete | the research chat, on d2. phase d is not blocked
