@@ -660,6 +660,16 @@ later session can see whether it moved.
 
 c3-b saw this and called it a tolerance question. it is not.
 
+before and after, moved here from CONTEXT.md section 10 e3 in repo-clean-b and
+unchanged: c3-b read the same numbers as a question about how to read the gate's
+tolerance and wrote that "nsga-ii returns exactly a hundred points and covers the
+derived region less well than a uniform hundred-point draw of it does in
+twenty-two of its thirty measurements", then kept the looser tolerance so that
+the gate would not be "a gate on nsga-ii's spread operator". c3-c derives the
+tolerance correctly, finds the same effect at twelve of ninety measurements
+rather than twenty-two, finds it under two phi and not under three, and reports
+it as a finding with the gate left failing.
+
 nsga-ii returns exactly 100 rows, which is exactly the k the tolerance's
 distribution is measured at, so the comparison is at equal cardinality and needs
 no correction. where each run's fill distance sits in the distribution of 1000

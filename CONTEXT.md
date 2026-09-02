@@ -582,24 +582,18 @@ is code, and a session record block for PROGRESS.md.
     that is the published anchor. it is not a statement about the whole efficient
     set and must not be treated as one: what the efficient set is, under each of the
     three phi, is derived in b1.
-    the paper's words for the property at that point are "a strict minimum". that
-    is not one of the three names definition 3.1 gives, which are strong or strict
-    optimal solution, optimal solution and weak optimal solution, and a0
-    transcribes no sentence of [1] identifying the two. so p0's comment gives the
-    paper's words and says that the paper does not name the concept there. the
-    mapping to definition 3.1(1) is plausible, ≦_phi being the relation both use,
-    but it is an inference and it is p-06 for b1, not a fact the code asserts.
+    p0's comment gives the paper's own words for the property at that point, "a
+    strict minimum", and says that the paper does not identify it with any of
+    definition 3.1's three names. the mapping to definition 3.1(1) is an inference
+    and is p-06, never a fact the code asserts. docs/a0_framework.md, "the
+    conclusion the paper states, and the phi it is stated under".
     problem p1, two variables, two interval objectives, smooth, with an efficient
     set of positive extent in the decision space. smoothness is a design
     requirement: it is what keeps the hypotheses of example 3.9 satisfiable under
     every phi. its concrete form comes from a1.
-    that set is a two-dimensional band and not a curve, and a1 establishes that a
-    curve is not available: two variables and two interval objectives give a
-    four-objective real problem on a two-dimensional decision space, whose
-    efficient set is generically two-dimensional, and forcing it down to a curve
-    requires the width and centre coordinates to share an optimum, which is
-    exactly the case where phi_cw reproduces the crisp order. a curve and three
-    distinct phi cannot both be had at this size.
+    that set is a two-dimensional band and not a curve, and a curve and three
+    distinct phi are not both available at this size. the argument is
+    docs/a1_uncertainty_model.md part 3; accepting the band is s-08.
     bounds are explicit and are not the unit box. p0's anchor point sits at the
     origin and needs a box containing negative values.
     tests: the bounds contain p0's anchor point; the width of p1 varies
@@ -670,13 +664,10 @@ is code, and a session record block for PROGRESS.md.
             sample, applies phi per interval objective, returns the non-dominated
             subset as objective values and the matching decision vectors, one result
             per seed.
-    phi arrives by name and not as a callable, corrected in c2 against d-02, which
-    made the phi_fn this line used to specify impossible: a phi record carries two
-    routes, of_endpoints and of_centre_radius, and which one applies is fixed by the
-    problem's declared representation, so a bare callable cannot be paired with a
-    problem without the caller doing the pairing, which is the crossing a3-b
-    removed. the record is looked up in phi_registry, as src/reference_fronts.py
-    does it. the same correction applies to c2 below.
+    phi arrives by name and not as a callable, and the record is looked up in
+    phi_registry, as src/reference_fronts.py does it. the same applies to c2 below.
+    this line specified a phi_fn until c2 corrected it against d-02, which made a
+    bare callable unpairable with a problem; docs/session_log.md, c1 and c2.
     why the separation matters: one uniform sample can be filtered under each phi in
     turn, and the resulting fronts then differ only through the order, because the
     search was identical. in nsga-ii and mopso, phi drives the search as well as the
@@ -704,48 +695,35 @@ is code, and a session record block for PROGRESS.md.
     what "unmodified" excludes, and what it does not. pymoo's algorithms are used
     as published, with no operator, survival rule, sorting or archiving policy
     replaced. a subclass that seeds a generator pymoo leaves uncontrolled, while
-    delegating every decision back to pymoo, is not a modification of the
-    algorithm: it changes which random draws occur and not what the algorithm does
-    with them. c2-b's SeededArchiveMopso is that and nothing more, calling pymoo's
-    own _update_archive and reinstalling the archive it returns with the same
-    uniform choice without replacement drawn from the algorithm's own seeded
-    generator, at pymoo's own archive size. the resize it replaced was a
-    modification, because the archive is mopso's leader pool and changing its size
-    changes what the search does. d-03.
+    delegating every decision back to pymoo, is not a modification: it changes
+    which random draws occur and not what the algorithm does with them. c2-b's
+    SeededArchiveMopso is that and nothing more; the resize it replaced was a
+    modification, because the archive is mopso's leader pool and its size changes
+    what the search does. d-03, v-51, docs/session_log.md, c2-b.
 
 ### c3: validation gate
     output: docs/c3_validation.md and tests/test_validation.py.
     runs all three solvers on every tier 0 problem under every phi for which b1
     closed, and checks recovery of the known efficient set within a stated
     tolerance, per seed. recovery is measured by hausdorff distance in the
-    decision space and never by igd. hausdorff is a maximum over the two sets and
-    is insensitive to how densely the reference front is sampled; igd is an
-    average over reference points, so it weights a densely sampled region more
-    heavily, and b2 samples through b1's weight map, whose density in objective
-    space is the parametrisation's and not the front's. r-13.
+    decision space and never by igd, hausdorff being a maximum over the two sets
+    and insensitive to the reference front's sampling density where igd is not.
+    r-13.
     a gate, not a report. if it fails, phase e does not start and the failure is
-    diagnosed first. c3-c adds what "first" means, because the gate has now
-    failed: phase e starts after the diagnosis and only if the diagnosis shows
-    the failure is not about whether the derivation and the solvers agree about
-    where the efficient set is. the two things that settle that are whether any
-    solver returns a point beating the derivation and whether the failing
-    solver's front lies on and around the derived set; if either goes the other
-    way, phase e does not start. record the tolerance and why it was chosen.
-    what the gate asserts, and what it only reports. c3-c, superseding c3-b.
+    diagnosed first. what "first" means: phase e starts after the diagnosis and
+    only if the diagnosis shows the failure is not about whether the derivation
+    and the solvers agree about where the efficient set is. the two things that
+    settle that are whether any solver returns a point beating the derivation and
+    whether the failing solver's front lies on and around the derived set; if
+    either goes the other way, phase e does not start. record the tolerance and
+    why it was chosen. added in c3-c, docs/c3_validation.md section 4.
+    what the gate asserts, and what it only reports.
     the forward direction, solver to reference, is reported and is never
-    asserted, and the reason is a proposition and not an observation, v-54.
-    under phi_cw the image columns are (c_1, r_1, c_2, r_2) and under phi_ls
-    they are (c_1 - r_1, 2 r_1, c_2 - r_2, 2 r_2), so each carries a column
-    that is a (rho x_1^2 + delta) with a > 0, a strictly increasing function of
-    |x_1| alone. in any finite candidate set the member of strictly smallest
-    |x_1| is therefore the strict minimiser of that column and no member can
-    dominate it, whatever its x_2; the same holds for smallest |x_2| through the
-    second column. under phi_lu every column is c -+ r and moves with both
-    variables, so no such member exists. the corollary is the one that matters:
-    domination in that column requires a strictly smaller |x_1|, so the member of
-    j-th smallest |x_1| can be dominated only by one of the j - 1 below it, and
-    the whole low-|x_1| tail is shielded while its x_2 ranges over the whole box.
-    the overhang of that tail past the derived set is the forward floor.
+    asserted. the reason is a proposition and not an observation: under phi_ls
+    and phi_cw the whole low-|x_1| tail of any finite candidate set is shielded
+    from domination while its x_2 ranges over the box, and the overhang of that
+    tail past the derived set is a floor no solver can clear. under phi_lu no
+    such member exists. v-54, docs/c3_validation.md section 1.
     so the gate asserts, pass or fail, both directions of the pipeline:
         reference to solver, the hausdorff distance from the derived set to the
         recovered set, within the derived tolerance, per solver, phi, seed and
@@ -759,48 +737,35 @@ is code, and a session record block for PROGRESS.md.
         region, with the distribution of the excess. this is the quality measure
         and it is exact: it is algebraic, it needs no sample, and a point outside
         the region is not efficient whatever any sample says. it replaces the
-        count of front points dominated by b2's reference front, which depends on
-        b2's sampling density and is biased downward at every finite reference
-        size: on one run it runs from 9 per cent at 250 reference rows to 31 per
-        cent at 16000 while the exact answer is 46. that count is kept for one
-        run at several reference sizes, so the bias is quantified once, and
-        nowhere else.
+        sampled count of front points dominated by b2's reference front, which is
+        biased downward at every finite reference size, docs/c3_validation.md
+        section 3.2. that count is kept for one run at several reference sizes,
+        so the bias is quantified once, and nowhere else.
         the forward hausdorff, per configuration, with the note that it carries
         the floor above and is not a quality measure.
         the budget trend, on both measures, at the gate budget against four times
-        it, for all three solvers. it is reported and never asserted, and the
-        proposition above is the reason: a larger budget elects a new protected
-        member of smaller |x_1| at an x_2 no better placed, so no monotone trend
-        in budget is a property either population method has under phi_ls or
-        phi_cw. restricting the assertion to phi_lu is refused as well, phi_lu
-        being exactly the phi where the mechanism is absent.
+        it, for all three solvers. it is reported and never asserted, for all
+        three solvers and not restricted to phi_lu. r-18,
+        docs/c3_validation.md section 6.
         the front cardinality beside every number, r-16.
     the tolerance, and it is derived before the runs and never adjusted after
-    them. the reverse direction is the supremum over reference points of the
-    distance to the recovered set; every reference point lies in the derived
-    region R, so that supremum is at most sup over y in R of dist(y, recovered
-    set), the fill distance of the recovered set with respect to R, and the
-    reference sample enters only through being a subset of R. **its own
-    resolution is therefore not part of this tolerance**, and even between two
-    subsets of R with fill distances h_A and h_B the two-sided bound is
-    max(h_A, h_B) and never their sum. v-55. so the tolerance is the fill
-    distance of a design-sized front alone, estimated as a distribution: the
-    fill distance with respect to R of a uniform 100-point draw of R, over at
-    least 200 independent draws, read at an upper quantile stated and justified
-    before the study is run. 100 is the smallest front size the design fixes in
-    advance. the distribution is reported and not only the quantile.
+    them. it is the fill distance of a design-sized front alone, with the
+    reference sample's own resolution playing no part in it: the fill distance
+    with respect to the derived region R of a uniform 100-point draw of R, over
+    at least 200 independent draws, read at an upper quantile stated and
+    justified before the study is run. 100 is the smallest front size the design
+    fixes in advance. the distribution is reported and not only the quantile. the
+    derivation, including why the two-sided bound between two subsets of R is a
+    max and never a sum, is v-55 and docs/c3_validation.md section 2.
     what c3-c's own failure was diagnosed as is r-19, and section 10 e3 carries
     what e3 must do with it.
     the gate also reports one number that is not a recovery check: the count of
     points in the phi_lu non-dominated set that are not in the phi_ls one, over
-    every tier 0 problem and every run it filters. that containment is exact in
-    real arithmetic, docs/a_close_containment.md, so in doubles the count is a
-    violation of an identity and is by definition numerical noise in the
-    pipeline. it is reported as such, as a diagnostic of the arithmetic and never
-    as a result about phi. this instruction does not depend on the containment
-    result being new or being confirmed by anyone: a violation of an exact
-    statement is noise whichever way s-11 is answered, and the project builds
-    nothing else on the result meanwhile.
+    every tier 0 problem and every run it filters. the containment is exact in
+    real arithmetic, so in doubles the count is a violation of an identity and is
+    reported as numerical noise in the pipeline, as a diagnostic of the arithmetic
+    and never as a result about phi. the instruction holds whichever way s-11 is
+    answered. docs/a_close_containment.md.
 
 ### d1: metrics_objective.py
         compute_hv(front, reference_point)
@@ -816,11 +781,10 @@ is code, and a session record block for PROGRESS.md.
     the supervisors.
     all three metrics move with the number of rows a front carries, and the three
     solvers return very different numbers: nsga-ii exactly its population, mopso at
-    most its archive, random search whatever is non-dominated. c2-b measured one
-    fixed front of 610 rows subsampled uniformly at random: igd 0.1303, 0.0851,
-    0.0551, 0.0357, 0.0221 and 0.0201 at 25, 50, 100, 200, 500 and 610 rows, and
-    hypervolume 4.6845 to 5.1665 over the same sizes, from cardinality alone on the
-    same points from the same search. so d1 must state, and every table must
+    most its archive, random search whatever is non-dominated. the effect is larger
+    than the differences a solver comparison would be reporting, measured in c2-b
+    on one fixed front subsampled uniformly at random, v-52. so d1 must state, and
+    every table must
     carry, the cardinality each metric was computed at, and a metric compared
     across solvers is computed at a common cardinality reached by a selection rule
     stated in advance. the recommended rule is a uniform random subsample, at a
@@ -867,16 +831,12 @@ is code, and a session record block for PROGRESS.md.
     where dominance-based selection has no pressure and the solver's front is a
     spread and not a convergence result. this is a property of the transformation,
     which takes m interval objectives to 2m real ones, and it is the empirical form
-    of the objection [7] raises against transformation methods. c3-d measured it,
-    docs/c3_validation.md section 5.1: on p1 rank 1 holds about 170 of the 200
-    sorted candidates from generation three or four onwards under every phi, on
-    dtlz2_interval's six columns it saturates at generation 3 or 4 and sits at 135
-    to 170, and on zdt1_interval's four columns it saturates at generation 13 to 21
-    and sits at 100 to 144. the column count is not on its own what orders those
-    three, since p1 also transforms to four columns and saturates as fast as dtlz2
-    does, which is why e2 measures the number per configuration rather than
-    predicting it. the number is read out of the algorithm's state through a pymoo
-    callback; pymoo is not modified.
+    of the objection [7] raises against transformation methods. c3-d measured it on
+    p1 and on both tier 1 benchmarks and found that the column count does not on
+    its own order them, which is why e2 measures the number per configuration
+    rather than predicting it; the series are docs/c3_validation.md section 5.1.
+    the number is read out of the algorithm's state through a pymoo callback;
+    pymoo is not modified.
 
 ### e3: results synthesis
     the part 1 answer: how much the efficient sets differ across phi, measured in
@@ -888,9 +848,8 @@ is code, and a session record block for PROGRESS.md.
     one comparison of the three carries the signal and two do not, and e3 says so
     rather than reporting all three alike. phi_ls's non-dominated set contains
     both of the others, ND_lu and ND_cw inside ND_ls, exactly and for every
-    problem: docs/a_close_containment.md derives both from one criterion, that
-    phi_B = M phi_A with M entrywise non-negative and invertible makes
-    phi_A-dominance imply phi_B-dominance. so on the phi_ls against phi_lu pair
+    problem, and both follow from one criterion on the map between two
+    automorphisms, docs/a_close_containment.md. so on the phi_ls against phi_lu pair
     and on the phi_ls against phi_cw pair, one direction of every coverage and
     overlap statistic is fixed before a solver is run, and a difference measured
     there is in part a theorem and must not be reported as evidence that the
@@ -902,40 +861,27 @@ is code, and a session record block for PROGRESS.md.
     supervisors. if they refute it the instruction is removed and all three pairs
     are reported alike; nothing else in the project depends on it.
 
-    **the phi_lu against phi_cw comparison is made on random search output**, and
-    that is c-close's amendment. src/random_search.py's
-    filter_one_sample_under_every_phi draws one uniform sample of the box,
-    evaluates it once and filters it under each phi in turn, so the three fronts
-    differ only through the order: sample_decision_space takes no phi and the
-    sample is a pure function of the box, the budget and the seed, which makes the
-    search identical by construction and not by care at the call site. no other
-    solver in this project has that property. in nsga-ii and mopso phi drives the
-    search as well as the ordering, the population surviving generation one being
-    already phi's, so a difference between two of their runs is a difference of
-    orders and of trajectories at once. c3-f made that concrete rather than
-    cautionary: at matched cardinality nsga-ii's coverage of the derived region is
-    phi-conditional and random search's is not, docs/c3_validation.md section 5.5,
-    so a difference between recovered sets measured on nsga-ii output is confounded
-    with nsga-ii's own phi-conditional behaviour and cannot be reported as a
-    property of the order. **the population methods are reported separately, as a
-    question about how solvers behave under each order and not as the phi
-    comparison, with the coverage deficit and the rank-1 saturation stated beside
-    them.** c1's control is therefore the instrument carrying the study's main
-    result rather than a baseline to beat, which is what slide 17 asked for it and
-    what src/random_search.py's own module comment says it is for.
+    **the phi_lu against phi_cw comparison is made on random search output**,
+    through src/random_search.py's filter_one_sample_under_every_phi, which draws
+    one uniform sample of the box, evaluates it once and filters it under each phi
+    in turn, so the three fronts differ only through the order. no other solver in
+    this project has that property: in nsga-ii and mopso phi drives the search as
+    well as the ordering, and c3-f measured the consequence, that at matched
+    cardinality nsga-ii's coverage of the derived region is phi-conditional and
+    random search's is not, docs/c3_validation.md section 5.5. **the population
+    methods are reported separately, as a question about how solvers behave under
+    each order and not as the phi comparison, with the coverage deficit and the
+    rank-1 saturation stated beside them.** c1's control is therefore the
+    instrument carrying the study's main result rather than a baseline to beat,
+    which is what slide 17 asked for it. c-close's amendment,
+    docs/session_log.md.
 
     e3 must report the c3-c finding, r-19, with its numbers, and must not report
     it as a result about phi. for a full-dimensional efficient set nsga-ii's
     decision-space coverage is worse than uniform random sampling of that set at
-    equal cardinality, under phi_ls and phi_cw and not under phi_lu. before and
-    after: c3-b read the same numbers as a question about how to read the gate's
-    tolerance and wrote that "nsga-ii returns exactly a hundred points and covers
-    the derived region less well than a uniform hundred-point draw of it does in
-    twenty-two of its thirty measurements", then kept the looser tolerance so
-    that the gate would not be "a gate on nsga-ii's spread operator"; c3-c
-    derives the tolerance correctly, finds the same effect at twelve of ninety
-    measurements rather than twenty-two, finds it under two phi and not under
-    three, and reports it as a finding with the gate left failing. the numbers e3
+    equal cardinality, under phi_ls and phi_cw and not under phi_lu. how c3-b read
+    the same numbers as a tolerance question, and why c3-c reads them as a finding
+    with the gate left failing, is docs/c3_validation.md section 5. the numbers e3
     carries: nsga-ii's fill distance with respect to the derived region sits at
     the 85th to the 99th percentile of 1000 uniform 100-point draws under phi_ls
     and phi_cw, worse than the uniform mean in all ten measurements, and at the
@@ -973,13 +919,11 @@ is code, and a session record block for PROGRESS.md.
     covers the other two, because X_lu is a thin curved sliver between two conic
     boundaries and the other two are fat. **so e3 reports the residual half as
     nsga-ii's and the other half as the regions', and reports that the residual
-    has no mechanism.** four candidates are excluded and e3 must not revive any of
-    them without new measurement: rank-1 saturation, which fires under every phi;
-    wasted front slots, worth 2 to 11 percentile points of a gap of 50; the
-    pullback, since in the image space nsga-ii is ordinary under the two failing
-    phi and exceptional under the passing one; and the alignment of the crowding
-    distance's axes, which does not transfer the advantage when a front is read in
-    another phi's frame.
+    has no mechanism.** four candidates are excluded by direct measurement and e3
+    must not revive any of them without new measurement: rank-1 saturation, wasted
+    front slots, the pullback, and the alignment of the crowding distance's axes.
+    each exclusion and the numbers that made it are docs/c3_validation.md
+    sections 5.2 to 5.5.
 
     e3 may use v-56 and it is the one piece of this that is about [1] rather than
     about p1 or pymoo. the three phi images are constant linear images of one
@@ -1119,10 +1063,10 @@ phi-interval-opt/
         session_log.md          the session log, one line per session, moved out
                                 of PROGRESS.md section 8 in repo-clean. PROGRESS.md
                                 keeps the last three entries and a pointer here.
-        row_history.md          the history the d-rows and r-rows of PROGRESS.md
-                                had accumulated, moved out in repo-clean when
-                                those sections were returned to the row shapes
-                                section 11 requires. verbatim, nothing pruned.
+        phase_a_summary.md      the close-out of each phase, written for a reader
+        phase_b_summary.md      who did not follow the sessions. they repeat no
+        phase_c_summary.md      derivation and state no new result; where one and
+                                a deliverable could differ the deliverable wins.
         supervisor_questions.md the full text of every open s-row, written to be
                                 answered in one sitting. PROGRESS.md section 6 is
                                 the index into it.

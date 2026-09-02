@@ -165,3 +165,19 @@ r-17 | retired in c3-c, and retired by a correction to the tolerance rather than
     where it belongs, in docs/c3_validation.md section 2.3, as a property of the
     fixture rather than as a risk about a number
 
+r-04 | retired in b1, and filed here in repo-clean-b: the row stated its own
+    retirement while still sitting in PROGRESS.md section 7, which CONTEXT.md
+    section 11 does not allow. as raised in a0 this said example 3.9's hypotheses
+    fail at p0's anchor x = 0, and b1 found the failure wider than the row
+    stated: the differentiability hypothesis fails under all three phi, p0's
+    first half-width being |x|, and theorem 3.3 refuses phi-convexity under
+    phi_lu and phi_ls as well | realised. p0's efficient set is not reachable
+    from the optimality conditions under any phi, and under phi_cw they hold and
+    are vacuous, the first image coordinate being identically zero | fired in b1
+    | the mitigation this row named worked for the anchor. example 3.8 statement
+    3 makes x = 0 an optimal solution under all three phi, so the published
+    conclusion is recovered and the procedure is validated before p1, and the
+    sets come from definition 3.1 applied directly. the consequence is that p0 is
+    a smoke test and not a b2 fixture, docs/b1_phi_efficient_sets.md section 7.4,
+    and the row retires with that reasoning
+

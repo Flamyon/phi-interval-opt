@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-56.
+highest number in use: v-57.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -607,3 +607,21 @@ v-56 | the three phi images of p1 are constant linear images of one another, and
     session that measured it added nothing to the suite, so no test guards this
     row yet** | project diagnostic, not a paper | docs/c3_validation.md section
     5.5, "where phi_ls sits" | c3-f | 2026-09-02
+
+v-57 | the cost of a sweep, measured in c2-b on one seed at pop_size 100,
+    uncontended, with the c2-b archive. per run at budget 5000 over p1, zdt1 and
+    dtlz2 under all three phi: nsga-ii 0.33 to 0.50 s, mopso 1.13 to 3.21 s,
+    random search 1.69 to 2.06 s. c2's figures for the same table, 2.7 to 34.2 s
+    for mopso, were the resize's and were measured with three processes running;
+    both changes matter and the resize's is the larger. at budget 20000 on p1
+    under phi_lu: nsga-ii about 2 s, mopso 11.71 s, random search 46 to 54 s, the
+    last being the filter and not the search. random_search.non_dominated_indices
+    alone, on uniform rows: n = 5000 takes 2.27 s at 2m = 4 and 2.40 s at
+    2m = 6; n = 25000 takes 66.19 s and 78.06 s; n = 50000 takes 381.04 s and
+    396.01 s. peak resident memory over those six is 44, 49, 94, 88, 119 and 144
+    MiB against a 33 MiB baseline, so time and not memory is the constraint.
+    **measured in c2-b and filed here in repo-clean-b, not measured there**: the
+    numbers were carried in PROGRESS.md's r-15 row, which is not where a measured
+    fact belongs | project diagnostic, not a paper | scratchpad timings over
+    src/runners.py and src/random_search.py; r-15 | c2-b, filed in repo-clean-b |
+    2026-09-01

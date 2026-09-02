@@ -21,9 +21,9 @@ where the detail is, so this document does not become a second copy of it:
     git log                  one commit per subpart, with its full session record
     docs/supervisor_questions.md   the open questions, written to be answered
     docs/phase_a_summary.md  phase a's close-out, on the same model
-
-phase b has no summary document: b1 is itself a document,
-docs/b1_phi_efficient_sets.md, and b2 encodes it.
+    docs/phase_b_summary.md  phase b's, written after the fact in repo-clean-b.
+                             phase b's own detail is b1, which is itself a
+                             document, docs/b1_phi_efficient_sets.md
 
 
 ## 1. what phase c built
