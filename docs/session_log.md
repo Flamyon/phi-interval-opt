@@ -725,3 +725,36 @@ format:
     12 xfailed in 554.76s, with no failures** | the research chat, on d2, on
     docs/project_narrative.md, and on the two section 1-to-12 proposals. phase d
     is not blocked
+
+2026-09-02 | repo-clean-c | CONTEXT.md sections 5 and 11, PROGRESS.md | third and
+    last housekeeping pass. **nothing under src/ or tests/ was opened, and no
+    phi, problem, derivation, solver, dominance relation, tolerance or measured
+    number was touched. no new claim was added anywhere.** the two proposals
+    repo-clean-b flagged and did not act on are now taken. first, **CONTEXT.md
+    section 5's two tolerance-rejection paragraphs become one line each**
+    pointing at docs/a4b_dominance_tolerance.md, the measurement at parts 1.5
+    and 1.6 and pymoo's no-op epsilon at part 3; the rule itself, one dominance
+    relation and no tolerance, and the exactness-by-evaluation-order paragraph
+    are unchanged, and both arguments survive in full in the deliverable that
+    measured them. second, **section 11's three anecdotes become three clauses**,
+    one on each rule's own line: a1's three unwritten width variants, c2's
+    reproducibility grid never overflowing mopso's archive, and c3-e's
+    uncommitted session, which was already a clause and is only tightened. the
+    full stories are in docs/session_log.md at c2-b and at c-close and, for the
+    first, in docs/a1_uncertainty_model.md section 1 rather than in the log.
+    section 5 goes 79 lines to 70 and section 11's evidence rules 25 to 20.
+    third, two corrections to PROGRESS.md against the files themselves: the
+    header said docs/verified.md holds v-01 to v-46 where it holds v-01 to v-57,
+    which is what the same header's highest-numbers line already said; and
+    **r-15 is added to the phase d dependency list**, its trigger naming d2
+    filtering large sets repeatedly and its mitigation ruling out pymoo's
+    NonDominatedSorting as a speed-up, so the list d2 must respect is six rows
+    and not four. fourth, **the narrative check is still owed and still could
+    not be done**: docs/project_narrative.md did not arrive with this session's
+    brief either and is not in the repository, so nothing in it has been checked
+    against anything, while CONTEXT.md section 12 has named it since repo-clean.
+    that entry is the one thing in the docs/ inventory that does not correspond
+    to a file. the fast run is 293 passed and 501 deselected in 94.51s and the
+    full run is 782 passed and 12 xfailed in 879.49s, the same counts as
+    repo-clean-b at a longer wall time | the research chat, on d2 and on
+    docs/project_narrative.md. phase d is not blocked

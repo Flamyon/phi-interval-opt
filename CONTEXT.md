@@ -287,20 +287,11 @@ one dominance relation, everywhere, and no tolerance anywhere.
     phi is applied once to that, per section 4 and the no-round-trip rule in
     section 10. the arithmetic error that a tolerance would have had to cover is
     not committed in the first place.
-    a tolerance was measured before it was rejected. docs/a4b_dominance_tolerance.md
-    finds a clean band eleven decades wide at p1's magnitudes and shows it
-    narrowing by one decade per decade of centre magnitude, with no clean
-    tolerance at all by |c| = 1e12, and finds that scaling per column by that
-    column's own size is worse than not scaling, the noise in a width column
-    being proportional to the centre it was subtracted out of. this is the
-    reasoning behind d-02 and it is not reopened without a measurement.
-    pymoo 0.6.2 could not be given a tolerance even if one were wanted. its
-    NonDominatedSorting takes an epsilon argument which computes F - epsilon and
-    ranks that; subtracting the same number from every entry of every row is a
-    translation, and dominance is translation invariant, so the argument cannot
-    change a front. verified in a4-b, and nsga-ii's default survival passes
-    epsilon=None in any case. so pymoo compares raw doubles exactly, which is the
-    project's rule, and the two agree by construction rather than by patching.
+    a tolerance was measured before it was rejected, in
+    docs/a4b_dominance_tolerance.md parts 1.5 and 1.6; that is the reasoning
+    behind d-02 and it is not reopened without a measurement.
+    pymoo 0.6.2 could not be given a tolerance even if one were wanted, its
+    epsilon argument being a no-op, in docs/a4b_dominance_tolerance.md part 3.
 
 
 ## 6. what theory the project uses, and from where
@@ -963,16 +954,11 @@ evidence rules, before everything else:
     supervisors. it is not resolved by choosing the convenient reading.
     a candidate design that is evaluated and rejected is written out in full in
     the deliverable that rejects it, together with its rejection reason. a
-    candidate recorded only by name cannot be re-examined: a1 named three width
-    variants without giving their forms, and a1-b could not tell whether the
-    variant it was asked about was among them, so it had to measure one from
-    scratch.
-    a test that guards a branch must demonstrate the branch was entered. c2's
-    reproducibility grid ran at a budget where mopso's archive never overflowed,
-    so the truncation it was written to put under a seed was never called: it
-    asserted a property it could not observe and would have passed with the defect
-    present. counting the guarded operation is the instrument, and c2-b's test
-    counts the truncation calls and fails if the count is zero.
+    candidate recorded only by name cannot be re-examined; a1 named three width
+    variants without their forms and a1-b had to measure one from scratch.
+    a test that guards a branch must demonstrate the branch was entered, by
+    counting the guarded operation; c2's reproducibility grid ran at a budget
+    where mopso's archive never overflowed and never called the truncation.
 
 session discipline:
     one subpart per session, in the phase order of section 8.
@@ -999,8 +985,8 @@ session discipline:
     it. the rule is about cost and about evidence at once. where a session ends
     without committing, the next session records the gap in the session log
     rather than absorbing the work silently, naming the session that did not
-    commit and where its numbers came from; c3-f did that for c3-e, which is the
-    second uncommitted session in a row and the reason this rule exists.
+    commit and where its numbers came from; c3-f did that for c3-e, the second
+    uncommitted session in a row and the reason this rule exists.
     the agent maintains PROGRESS.md, which holds current state and open items
     only: the subpart status, the open questions, the open risks and the session
     log, updated at the end of each session, and no specification. verified facts
