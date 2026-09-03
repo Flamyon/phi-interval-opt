@@ -873,6 +873,24 @@ is code, and a session record block for PROGRESS.md.
     the plots, and a short written record of what was run.
     e2 does not start until c3 has passed and e1 is reviewed.
 
+    e1 asserts that the hypervolume reference point dominates every front it
+    scores, and fails on a front it does not dominate rather than scoring it.
+    moocore's hypervolume, which pymoo's HV delegates to, clips at the reference
+    point instead of refusing: a front row lying beyond the point in some column
+    contributes nothing there and the number still comes back looking like a
+    hypervolume, measured in d1 and recorded at v-59, the rows (0, 1) and (3, 0.5)
+    against the point (2, 2) giving 2.0, which is (0, 1)'s box alone. so a point
+    that does not dominate the whole front silently discards part of it, and two
+    solvers scored against one such point are compared on different subsets of
+    their own output, which is a failure a solver comparison cannot survive and
+    cannot see. d1 does what d1 can, making the point an argument and returning
+    the rule that produced it from derive_reference_point; the assertion is e1's,
+    because the front and the point meet there and nowhere earlier.
+    reference_front_nadir puts the point on the reference front's own extremes, so
+    a solver row beyond any of them is clipped, and where a front is scored against
+    a point derived from a reference front the margin rule is the one that leaves
+    the assertion room to hold.
+
     e2 reports the rank-1 size against the population size for every configuration
     it runs, because a configuration in which rank 1 fills the survivor slots is one
     where dominance-based selection has no pressure and the solver's front is a
@@ -982,6 +1000,25 @@ is code, and a session record block for PROGRESS.md.
     any interval problem under these three phi, and it is the reason no statement
     of the form "the phi_lu map is more distorting than the phi_cw map" can be
     true: pointwise, they are the same map up to a similarity.
+
+    e3 states which igd it reports and why, the two available answering different
+    questions. pymoo's IGD, which d1's compute_igd delegates to, averages over the
+    reference points the distance to the nearest front point, so it asks how much
+    of the reference front was covered; [2]'s M_1^*, definition 6 equation (17) on
+    printed page 181, averages over the front the distance to the nearest
+    reference point, so it asks how close what was found is to the reference.
+    neither is the other's approximation and neither dominates: a front converging
+    tightly onto one region of the reference front scores well on the second and
+    badly on the first, and a front spread thinly over all of it scores the other
+    way. d1 measured the two directions and they are v-59, the front (0, 0) and
+    (10, 10) against the single reference point (0, 0) giving 0.0 while the
+    transposed call gives 7.0710678118654755, which is sqrt(200) / 2. what d1
+    computes and e1 tables is pymoo's, the coverage direction, which is also the
+    direction b2-b's reference density and r-13 are about, an average over
+    reference points being what lets an uneven reference bias the number. e3 names
+    it as the coverage direction and never as [2]'s M_1^*, and a statement about
+    how close a solver got is made on d2's decision-space metrics, where the
+    project's own answer lives, and not by reading this number backwards.
 ### f1 to f4: part 2
     f1  yfinance, 30 s&p 500 assets, 5 years of daily returns. two interval
         constructions compared: [min, max] over a rolling window, and

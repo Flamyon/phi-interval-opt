@@ -961,3 +961,63 @@ format:
     settled. 52 tests added, all in the fast run. the fast run is 422 passed and
     507 deselected in 129.68s and the full run is 917 passed and 12 xfailed in
     922.89s | the research chat, on d1; then d3 or e1
+2026-09-03 | d3 | new src/reporting.py and tests/test_reporting.py; CONTEXT.md
+    sections 10 e1 and 10 e3; PROGRESS.md | the last instrument before the
+    experiments, and the point at which a restriction that holds in the code has
+    to still hold in the artefact. **the two blocks are the content and not the
+    layout**: the objective-space metrics and the decision-space ones are written
+    with different columns and each under the restriction it is read subject to,
+    in the file itself and not in a caption, because a reader holding the csv
+    alone has neither module in front of them. the objective block says that these
+    compare solvers under one fixed phi and never rank phi and that all three move
+    with the cardinality; the decision block says that these are the ones the
+    decision space makes comparable across phi and that a row whose status is
+    check has one direction fixed by a containment before any solver ran. **a row
+    lacking a required field is refused with the field named and nothing is
+    written**, which is one test per field per block, sixteen and seventeen of
+    them: the seed count, the budget, the cardinality and a median with an
+    interquartile range everywhere; the reference size, the sampling mode,
+    include_singular_segments and the hypervolume reference point with the rule
+    that produced it on an objective row, r-12, r-13 and s-12; delta, the scale of
+    the decision box, the pair's status and d2's note and violation count on a
+    decision row, r-06 and r-11. a blank cell is refused as a missing one, a field
+    the block has no column for is refused because the value would not reach the
+    file at all, and a metric is refused in the wrong block, so a hypervolume
+    cannot be written under a line saying the numbers below it are comparable
+    across phi. **the labels are not re-declared**: check and finding are imported
+    from d2, the two reference-point rules from d1 and the two sampling modes from
+    b2, so a table cannot state a name the module producing the number does not
+    have. **the artefact is evidence and not a picture of one**: values are
+    written with repr, which is the shortest text that reads back as the same
+    double, read_metrics_table reads a table back to the values that were written
+    and the same results written twice give the same bytes.
+    containment_violations is the one field that may be empty, and its emptiness
+    is d2's None, the pair no containment covers, so a zero cannot be read there
+    as agreement. **every figure carries the budget, the seed count and the
+    cardinality of each series inside the figure**, in the legend entry and never
+    in a filename; plot_fronts takes its column pairs as an argument and chooses
+    none of its own; plot_decision_sets draws b1 section 2.4's closed-form region
+    behind the recovered sets where the problem is p1, in one grey with a line
+    style per phi so that a region never takes a series colour, and the three
+    boundaries are transcribed from b1 and checked in the tests against b1's own
+    inequalities from the other side, as tests/test_reference_fronts.py checks
+    b2's sampled points. no metric is computed in the module and no pixel is
+    asserted in its tests. **plot_convergence is not built and nothing was added
+    to c2**: src/runners.py returns a SearchResult of the seed, the budget, the
+    final front and its decision vectors, pymoo's history is not requested from
+    minimize, and adding the recording is a change to c2 and was not this
+    session's; the module carries no stub that would look like one. **d1's two
+    pymoo findings are filed where they will be needed**, both with before and
+    after blocks in the session reply: CONTEXT.md section 10 e1 now requires e1 to
+    assert that the hypervolume reference point dominates every front it scores
+    and to fail rather than let moocore clip, v-59's rows (0, 1) and (3, 0.5)
+    against the point (2, 2) giving 2.0, which is the first row's box alone; and
+    CONTEXT.md section 10 e3 now requires e3 to state that the igd it reports is
+    pymoo's coverage direction, the average over the reference points, and not
+    [2]'s M_1^*, definition 6 equation (17), the average over the front, v-59's
+    0.0 against the transposed call's 7.0710678118654755. **d1 moves to done**,
+    its review evidenced by this session's prompt, which reads d1 as amended, asks
+    d3 to render what d1 and d2 produce and asks for those two findings to be
+    recorded. 66 tests added, all in the fast run. the fast run is 488 passed and
+    507 deselected in 105.85s and the full run is 983 passed and 12 xfailed in
+    586.75s | the research chat, on d3; then e1

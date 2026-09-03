@@ -28,28 +28,40 @@ project started 2026-08-30.
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    d1, metrics_objective.py, **built and awaiting review**.
-                        the three objective-space metrics, valid for comparing
-                        solvers under one fixed phi and never for ranking phi,
-                        which is written into the module and into every table's
-                        instruction. pymoo's own indicators where pymoo has one,
-                        HV and IGD, both left unnormalised; pymoo has none for the
-                        spread this project means, so compute_spread is M_3^* of
-                        [2] definition 6 equation (19), v-58, the euclidean norm
-                        of the per-column ranges. every reference is an argument
-                        and none is built inside a metric: the hypervolume point
-                        comes from derive_reference_point with the rule named, and
-                        the igd reference from igd_reference with the mode, the
-                        flag, the seed and the size travelling beside the front,
-                        r-13 and s-12. r-16's truncation is implemented once, as
-                        truncate_to_common_cardinality, uniform at a stated seed,
-                        with common_cardinality taken across phi and not per phi.
-                        what pymoo does that its name would not say is measured
-                        and recorded rather than worked around, v-59. before it,
-                        b2-b and d2 are done, their review evidenced by this
-                        session's prompt, which reads b2-b's correction as the
-                        reference d1 must use and d2's shape as settled. next is
-                        d3 or e1.
+    current subpart:    d3, reporting.py, **built and awaiting review**. the
+                        tables and the figures e1, e2 and e3 produce, and the
+                        point at which a restriction holding in the code has to
+                        still hold in the artefact. the objective-space and the
+                        decision-space metrics go into two blocks with different
+                        columns, each under the restriction it is read subject to,
+                        written in the file and not in a caption, so a reader
+                        holding the csv alone cannot make a comparison the metrics
+                        do not support. **a row lacking a required field is
+                        refused and the field is named**: the seed count, the
+                        budget, the cardinality and a median with an interquartile
+                        range on every row; the reference size, the sampling mode,
+                        include_singular_segments and the hypervolume reference
+                        point with the rule that produced it on an objective row,
+                        r-12, r-13 and s-12; delta, the scale of the decision box
+                        and the pair's status on a decision row, r-06 and r-11.
+                        no metric is computed there and the labels are not
+                        re-declared, check and finding coming from d2, the
+                        reference-point rules from d1 and the sampling modes from
+                        b2. every figure carries the budget, the seed count and
+                        the cardinality of each series inside the figure and never
+                        in a filename, and plot_decision_sets draws b1 section
+                        2.4's closed-form region behind the recovered sets where
+                        the problem is p1. **plot_convergence is not built**:
+                        src/runners.py records no per-generation history, a
+                        SearchResult carrying the final front alone, and adding
+                        the recording is a change to c2 and was not this
+                        session's. **d1 moves to done**, its review evidenced by
+                        this session's prompt, which reads d1 as amended, asks d3
+                        to render what d1 and d2 produce and asks for d1's two
+                        pymoo findings to be recorded where e1 and e3 will need
+                        them; b2-b and d2 moved to done in d1 on d1's prompt,
+                        which reads b2-b's correction as the reference d1 must use
+                        and d2's shape as settled. next is e1.
                         c3-f is done, its review evidenced by c-close's prompt,
                         which accepts its decomposition and asks for the close-out.
                         c3-c is
@@ -118,7 +130,7 @@ project started 2026-08-30.
                         returns rather than on the call site. r-19 bears on how e3
                         reads a spread statistic, not on whether d2 can be
                         written
-    the suite:          929 tests after d1's 52, of which twelve parameter sets of
+    the suite:          995 tests after d3's 66, of which twelve parameter sets of
                         test_the_derived_set_is_reached_by_the_solver at nsga-ii
                         fail on purpose and are marked xfail(strict=True) in
                         repo-clean-b, pinned to nsga-ii under phi_ls at seeds 11,
@@ -148,14 +160,14 @@ project started 2026-08-30.
                         src/problems_tier0.py, src/problems_tier1.py,
                         src/reference_fronts.py, src/random_search.py,
                         src/runners.py, src/metrics_decision.py,
-                        src/metrics_objective.py
+                        src/metrics_objective.py, src/reporting.py
                         docs/c3_validation.md
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
                         tests/test_problems_tier1.py, tests/test_reference_fronts.py,
                         tests/test_random_search.py, tests/test_runners.py,
                         tests/test_validation.py, tests/test_metrics_decision.py,
-                        tests/test_metrics_objective.py
+                        tests/test_metrics_objective.py, tests/test_reporting.py
                         requirements.txt, versions pinned to the venv
                         pytest.ini, holding the slow marker and nothing else.
                         repo-clean widened the marker from "runs a solver" to
@@ -200,19 +212,23 @@ docs/phase_c_summary.md and the accumulated supervisor questions are
 docs/supervisor_questions.md.
 
 phase d, analysis
-    d1  metrics_objective.py                awaiting review, off the minimum path
+    d1  metrics_objective.py                done, off the minimum path
     d2  metrics_decision.py                 done
-    d3  reporting.py                        not started, off the minimum path
+    d3  reporting.py                        awaiting review, off the minimum path
 
 CONTEXT.md section 8's minimum presentable path is a0, a1, a2, a3, a4, b1, b2,
 c1, c2, c3, d2, e1: tier 0 only, with the decision-space metrics and the
-correctness gate. **d2 is the only phase d subpart on it.** d1 and d3 are built if
-the calendar allows and are not prerequisites for e1. **d1 is built**, so r-12's
-and r-13's triggers have both fired rather than gone quiet: it computes igd
+correctness gate. **d2 is the only phase d subpart on it.** d1 and d3 were built
+as the calendar allowed and are not prerequisites for e1. **d1 is built**, so
+r-12's and r-13's triggers have both fired rather than gone quiet: it computes igd
 against b2-b's corrected reference and states include_singular_segments on every
 reference it builds, both values travelling on the record igd_reference returns.
 r-16's trigger fired with them and its mitigation is code and no longer a
-recommendation.
+recommendation. **d3 is built**, so the recording those three mitigations require
+is enforced where the numbers leave the process: a table whose row omits the mode,
+the flag, the reference size, the reference point with its rule, the cardinality,
+the budget, the seed count, delta, the box scale or a phi pair's status is refused
+with the field named, and nothing is written.
 
 phase e, experiments
     e1  tier 0 run                          not started
@@ -458,7 +474,10 @@ r-11 | the phi_lu inside phi_ls nesting is a theorem in real arithmetic and fail
     which is r-06's trigger as well.
     mitigation: v-46 states the exact result and the measured size of the
     artefact, a5's test asserts the containment as a band and not as an equality,
-    and d2 reports the pair as a check on r-06 with the artefact named.
+    and d2 reports the pair as a check on r-06 with the artefact named. d3 refuses
+    a decision-space row that omits the pair's status, so a check cannot reach a
+    table looking like a finding, and it writes d2's absent violation count as an
+    empty cell, so the pair no containment covers cannot show a zero there.
 
 r-12 | the reference front with the singular segments and the one without are two
     different objects, so igd against one is not comparable with igd against the
@@ -473,7 +492,7 @@ r-12 | the reference front with the singular segments and the one without are tw
     in every table beside the seed and the point count, and where two solvers
     land within a few per cent e1 reports the metric both ways. d1 carries it on
     the record igd_reference returns, so it travels with the front and not with
-    the call site.
+    the call site, and d3 refuses an objective-space row that omits it.
 
 r-13 | b2's reference front is sampled through b1's weight map, so its density in
     objective space is the parametrisation's and not the front's, and igd is an
@@ -493,7 +512,8 @@ r-13 | b2's reference front is sampled through b1's weight map, so its density i
     subsamples by farthest-point selection in objective space, which changes which
     points are kept and not the derivation; d1, built, computes igd against that
     mode and records it in every table beside the seed, the point count and the
-    singular flag, CONTEXT.md section 10 d1, on the record igd_reference returns.
+    singular flag, CONTEXT.md section 10 d1, on the record igd_reference returns,
+    and d3 refuses an objective-space row that omits the mode.
     tests/test_metrics_objective.py reproduces the ranking flip at reduced size,
     so d1 fails loudly if the reason for the correction ever stops holding. c3, d2 and the dominance checks state the
     dirichlet mode and are unaffected, measuring a hausdorff distance, two counts
@@ -543,7 +563,8 @@ r-16 | every objective-space metric moves with the number of rows a solver
     common_cardinality takes the smallest front over the whole comparison and not
     per phi; the truncation is for the objective-space metrics only, d2's being
     set-geometry measures computed on the full recovered sets. the second rule,
-    cardinality printed beside every metric, is kept as well and not instead.
+    cardinality printed beside every metric, is kept as well and not instead, and
+    d3 enforces it in the artefact: a row without a cardinality is not written.
 
 r-18 | no monotone trend in budget is a property either population method has
     under phi_ls or phi_cw: v-54's mechanism protects the offending points, a
@@ -599,66 +620,6 @@ commit message and in its docs/ deliverable.
 format:
 
     date | subpart | files | outcome | next
-
-2026-09-02 | d2-b | docs/project_narrative.md, CONTEXT.md section 11,
-    PROGRESS.md; new tag phase-b-complete | the narrative corrected against d2's
-    audit of it, and the two gaps that audit exposed. **nothing under src/ or
-    tests/ was opened, and no phi, problem, derivation, solver, dominance
-    relation, tolerance or measured number was touched. no new claim was added to
-    the narrative: every correction names the deliverable it came from.** three
-    jobs. first, **all eighteen audit items are applied to
-    docs/project_narrative.md**, which goes 332 lines to 502. the four the
-    research chat ruled on: the phi_wu paragraph is kept and relabelled
-    pre-repository history, the third phi being (f_r, half-width) with
-    lambda = (0, 1) and beta = (-1/2, 1/2), removed before the seed commit, whose
-    own CONTEXT.md section 4 already names the correct three, and named as the
-    origin of section 11's leave-it-out rule; the five exclusions become
-    docs/c3_validation.md section 5.5's own five, saturation, wasted slots, the
-    pullback, anisotropy and alignment, the pullback being the one the narrative
-    had dropped and the one that rules out nsga-ii simply being worse, image-space
-    percentiles 0.1 to 4.9 under phi_lu against 17 to 86 and 31 to 71 under the
-    two failing phi; region size leaves the exclusion list with the
-    double-counting sentence, which had no source, and is replaced by what 5.5
-    measures, region shape as about half the effect acting on the comparator, a
-    uniform draw covering X_lu 40 per cent worse for its area, and the other half
-    nsga-ii's own, excluded as a general effect by the random-search control at
-    matched cardinality and not by argument; and map distortion is scoped, phi_lu
-    and phi_cw differing by a similarity so that no distortion claim separates
-    those two, while B is not one, condition number exactly the golden ratio
-    squared, so phi_ls is genuinely sheared, with 5.4's actual exclusion beside
-    it, the scaled jacobian ordering being the reverse of what a distortion story
-    needs. the other fourteen as reported: the phase-b tag, saturation at
-    generation three or four on p1 and dtlz2 but 13 to 21 on zdt1 with two dips,
-    46 or 47 of 50 generations and not on zdt1, X_cw and X_ls with their box
-    constraints and their excluded open segments, the 1/8 prediction exact in
-    probability and not accurate to two decimals, the containment's narrower
-    constraint after c2's amendment, the parameterized path needing no
-    confirmation, and the six dropped caveats, a1's floating-point counterpart,
-    r-11, r-12, r-13, the tolerance's 0.95 quantile with the 0.005 to 0.039
-    margin, the full minimum path with a5, e2 and e3 off it, and the 794 tests
-    with twelve failing on purpose. **the corrected file was then re-audited
-    against the same deliverables**: it introduced no new unsourceable statement,
-    and it corrected five things the first audit had not caught, the curve
-    argument attributed to a1-b where it is a1 part 3's, "four sessions" of
-    explanation where c3-d, c3-e and c3-f are three, the archive resize and its
-    factor of 16 quoted without the budget 20000 they were measured at, the
-    control's percentiles as 13 to 63 where c3-f measures 12.7 to 63.2, and the
-    tolerance as 12 to 15 per cent of the box side where section 2.3 gives 12.0,
-    14.6 and 11.6. second, **phase b is tagged**: phase-b-complete, annotated, on
-    dbd32c3, b2's commit, phase b being b1 and b2 with no addendum session and no
-    close-out session, so the commit that closed it is not ambiguous;
-    docs/phase_b_summary.md, written after the fact in repo-clean-b, is its
-    summary, and PROGRESS.md section 2 now says so. third, **CONTEXT.md section
-    11's scratchpad rule is extended to documents**, that a document written
-    outside the repository is not a document of this project until it is committed
-    and checked against the deliverables and that section 12 does not name a file
-    that does not exist; the before and after are in the session reply, and
-    PROGRESS.md's file inventory now lists docs/project_narrative.md, which
-    existed on disk and was missing from it. the fast run is 321 passed and 501
-    deselected in 115.12s and the full run is 810 passed and 12 xfailed in 1171.68s,
-    the same counts as d2 at a longer wall time, the twelve being the strict
-    xfails c3-c left | the research chat, on d2-b and on the corrected narrative.
-    next is e1
 
 2026-09-02 | b2-b | src/reference_fronts.py; tests/test_reference_fronts.py and
     the four call sites in tests/test_validation.py, tests/test_runners.py,
@@ -756,3 +717,64 @@ format:
     settled. 52 tests added, all in the fast run. the fast run is 422 passed and
     507 deselected in 129.68s and the full run is 917 passed and 12 xfailed in
     922.89s | the research chat, on d1; then d3 or e1
+
+2026-09-03 | d3 | new src/reporting.py and tests/test_reporting.py; CONTEXT.md
+    sections 10 e1 and 10 e3; PROGRESS.md | the last instrument before the
+    experiments, and the point at which a restriction that holds in the code has
+    to still hold in the artefact. **the two blocks are the content and not the
+    layout**: the objective-space metrics and the decision-space ones are written
+    with different columns and each under the restriction it is read subject to,
+    in the file itself and not in a caption, because a reader holding the csv
+    alone has neither module in front of them. the objective block says that these
+    compare solvers under one fixed phi and never rank phi and that all three move
+    with the cardinality; the decision block says that these are the ones the
+    decision space makes comparable across phi and that a row whose status is
+    check has one direction fixed by a containment before any solver ran. **a row
+    lacking a required field is refused with the field named and nothing is
+    written**, which is one test per field per block, sixteen and seventeen of
+    them: the seed count, the budget, the cardinality and a median with an
+    interquartile range everywhere; the reference size, the sampling mode,
+    include_singular_segments and the hypervolume reference point with the rule
+    that produced it on an objective row, r-12, r-13 and s-12; delta, the scale of
+    the decision box, the pair's status and d2's note and violation count on a
+    decision row, r-06 and r-11. a blank cell is refused as a missing one, a field
+    the block has no column for is refused because the value would not reach the
+    file at all, and a metric is refused in the wrong block, so a hypervolume
+    cannot be written under a line saying the numbers below it are comparable
+    across phi. **the labels are not re-declared**: check and finding are imported
+    from d2, the two reference-point rules from d1 and the two sampling modes from
+    b2, so a table cannot state a name the module producing the number does not
+    have. **the artefact is evidence and not a picture of one**: values are
+    written with repr, which is the shortest text that reads back as the same
+    double, read_metrics_table reads a table back to the values that were written
+    and the same results written twice give the same bytes.
+    containment_violations is the one field that may be empty, and its emptiness
+    is d2's None, the pair no containment covers, so a zero cannot be read there
+    as agreement. **every figure carries the budget, the seed count and the
+    cardinality of each series inside the figure**, in the legend entry and never
+    in a filename; plot_fronts takes its column pairs as an argument and chooses
+    none of its own; plot_decision_sets draws b1 section 2.4's closed-form region
+    behind the recovered sets where the problem is p1, in one grey with a line
+    style per phi so that a region never takes a series colour, and the three
+    boundaries are transcribed from b1 and checked in the tests against b1's own
+    inequalities from the other side, as tests/test_reference_fronts.py checks
+    b2's sampled points. no metric is computed in the module and no pixel is
+    asserted in its tests. **plot_convergence is not built and nothing was added
+    to c2**: src/runners.py returns a SearchResult of the seed, the budget, the
+    final front and its decision vectors, pymoo's history is not requested from
+    minimize, and adding the recording is a change to c2 and was not this
+    session's; the module carries no stub that would look like one. **d1's two
+    pymoo findings are filed where they will be needed**, both with before and
+    after blocks in the session reply: CONTEXT.md section 10 e1 now requires e1 to
+    assert that the hypervolume reference point dominates every front it scores
+    and to fail rather than let moocore clip, v-59's rows (0, 1) and (3, 0.5)
+    against the point (2, 2) giving 2.0, which is the first row's box alone; and
+    CONTEXT.md section 10 e3 now requires e3 to state that the igd it reports is
+    pymoo's coverage direction, the average over the reference points, and not
+    [2]'s M_1^*, definition 6 equation (17), the average over the front, v-59's
+    0.0 against the transposed call's 7.0710678118654755. **d1 moves to done**,
+    its review evidenced by this session's prompt, which reads d1 as amended, asks
+    d3 to render what d1 and d2 produce and asks for those two findings to be
+    recorded. 66 tests added, all in the fast run. the fast run is 488 passed and
+    507 deselected in 105.85s and the full run is 983 passed and 12 xfailed in
+    586.75s | the research chat, on d3; then e1
