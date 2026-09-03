@@ -15,7 +15,7 @@ elsewhere:
                         the full text of every open s-row. section 6 is the index
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-57, p-06, s-13, r-19, d-03.
+    highest numbers in use: v-59, p-06, s-13, r-19, d-03.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
@@ -28,28 +28,28 @@ project started 2026-08-30.
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    b2-b, the reference front's density, **built and awaiting
-                        review**. r-13's mitigation, built before d1 and not with
-                        it: sampling_mode has no default and its farthest-point
-                        setting oversamples through b1's map by ten and subsamples
-                        by farthest-point selection in objective space. the bias it
-                        removes is measured in docs/b2b_reference_density.md and is
-                        decision-relevant, two fronts of equal fill distance being
-                        ranked in opposite orders by the two references. the
-                        derivation, b1's map, the region inequalities and
-                        src/problems_tier0.py were not touched, and the c3 gate,
-                        d2 and the dominance checks state the dirichlet mode and
-                        keep every number they published. before it,
-                        d2, metrics_decision.py, **built and awaiting review**. it
-                        is the only phase d subpart on CONTEXT.md section 8's
-                        minimum presentable path; d1 and d3 are off it and are not
-                        prerequisites for e1. nothing open blocked it, section 6
-                        and section 7 below and docs/phase_c_summary.md section 5,
-                        and the six rows it had to carry rather than wait on it
-                        carries: the delta with no default, the two phi_ls pairs
-                        labelled checks with the containment and r-11's rounding
-                        artefact named, the cardinality beside every metric, and
-                        one filter call per cross evaluation. next is e1.
+    current subpart:    d1, metrics_objective.py, **built and awaiting review**.
+                        the three objective-space metrics, valid for comparing
+                        solvers under one fixed phi and never for ranking phi,
+                        which is written into the module and into every table's
+                        instruction. pymoo's own indicators where pymoo has one,
+                        HV and IGD, both left unnormalised; pymoo has none for the
+                        spread this project means, so compute_spread is M_3^* of
+                        [2] definition 6 equation (19), v-58, the euclidean norm
+                        of the per-column ranges. every reference is an argument
+                        and none is built inside a metric: the hypervolume point
+                        comes from derive_reference_point with the rule named, and
+                        the igd reference from igd_reference with the mode, the
+                        flag, the seed and the size travelling beside the front,
+                        r-13 and s-12. r-16's truncation is implemented once, as
+                        truncate_to_common_cardinality, uniform at a stated seed,
+                        with common_cardinality taken across phi and not per phi.
+                        what pymoo does that its name would not say is measured
+                        and recorded rather than worked around, v-59. before it,
+                        b2-b and d2 are done, their review evidenced by this
+                        session's prompt, which reads b2-b's correction as the
+                        reference d1 must use and d2's shape as settled. next is
+                        d3 or e1.
                         c3-f is done, its review evidenced by c-close's prompt,
                         which accepts its decomposition and asks for the close-out.
                         c3-c is
@@ -109,12 +109,16 @@ project started 2026-08-30.
                         filtering large sets repeatedly and whose mitigation
                         rules out the one speed-up available, pymoo's
                         NonDominatedSorting, as a decision against CONTEXT.md
-                        section 5. **d1, if it is built, does have two
-                        prerequisites**: r-13, whose mitigation is a b2-b before
-                        d1 and is not needed at all if d1 is cut, and r-12, whose
-                        trigger is d1 computing igd. r-19 bears on how e3 reads a
-                        spread statistic, not on whether d2 can be written
-    the suite:          877 tests after b2-b's 55, of which twelve parameter sets of
+                        section 5. **d1's two prerequisites were met before it
+                        was built**: r-13's mitigation is b2-b, and d1 computes
+                        igd against that reference and nothing else, and r-12's
+                        trigger, d1 computing igd, has fired with
+                        include_singular_segments stated on every reference d1
+                        builds. both values travel on the record igd_reference
+                        returns rather than on the call site. r-19 bears on how e3
+                        reads a spread statistic, not on whether d2 can be
+                        written
+    the suite:          929 tests after d1's 52, of which twelve parameter sets of
                         test_the_derived_set_is_reached_by_the_solver at nsga-ii
                         fail on purpose and are marked xfail(strict=True) in
                         repo-clean-b, pinned to nsga-ii under phi_ls at seeds 11,
@@ -143,13 +147,15 @@ project started 2026-08-30.
                         src/interval_math.py, src/phi_transforms.py,
                         src/problems_tier0.py, src/problems_tier1.py,
                         src/reference_fronts.py, src/random_search.py,
-                        src/runners.py, src/metrics_decision.py
+                        src/runners.py, src/metrics_decision.py,
+                        src/metrics_objective.py
                         docs/c3_validation.md
                         tests/conftest.py, tests/test_interval_math.py,
                         tests/test_phi_transforms.py, tests/test_problems_tier0.py,
                         tests/test_problems_tier1.py, tests/test_reference_fronts.py,
                         tests/test_random_search.py, tests/test_runners.py,
-                        tests/test_validation.py, tests/test_metrics_decision.py
+                        tests/test_validation.py, tests/test_metrics_decision.py,
+                        tests/test_metrics_objective.py
                         requirements.txt, versions pinned to the venv
                         pytest.ini, holding the slow marker and nothing else.
                         repo-clean widened the marker from "runs a solver" to
@@ -174,7 +180,7 @@ fact in repo-clean-b. b2-b came after the tag and during phase d, r-13's
 mitigation being a prerequisite for d1 and for nothing else.
     b1  phi-efficient sets, derivation      done
     b2  reference_fronts.py                 done
-    b2-b the reference front's density       awaiting review
+    b2-b the reference front's density       done
 
 phase c, solvers
     c1  random_search.py                    done
@@ -194,17 +200,19 @@ docs/phase_c_summary.md and the accumulated supervisor questions are
 docs/supervisor_questions.md.
 
 phase d, analysis
-    d1  metrics_objective.py                not started, off the minimum path
-    d2  metrics_decision.py                 awaiting review
+    d1  metrics_objective.py                awaiting review, off the minimum path
+    d2  metrics_decision.py                 done
     d3  reporting.py                        not started, off the minimum path
 
 CONTEXT.md section 8's minimum presentable path is a0, a1, a2, a3, a4, b1, b2,
 c1, c2, c3, d2, e1: tier 0 only, with the decision-space metrics and the
 correctness gate. **d2 is the only phase d subpart on it.** d1 and d3 are built if
-the calendar allows and are not prerequisites for e1. that is where r-12's trigger
-goes quiet, d1 computing igd. r-13's does not go quiet any more: its mitigation
-was built in b2-b rather than deferred with d1, so if d1 is built it computes igd
-against the corrected reference, and if it is cut nothing is owed.
+the calendar allows and are not prerequisites for e1. **d1 is built**, so r-12's
+and r-13's triggers have both fired rather than gone quiet: it computes igd
+against b2-b's corrected reference and states include_singular_segments on every
+reference it builds, both values travelling on the record igd_reference returns.
+r-16's trigger fired with them and its mitigation is code and no longer a
+recommendation.
 
 phase e, experiments
     e1  tier 0 run                          not started
@@ -463,7 +471,9 @@ r-12 | the reference front with the singular segments and the one without are tw
     has no singular ray at all, b1 section 2.3, so the flag is a no-op there.
     mitigation: include_singular_segments has no default, the value is recorded
     in every table beside the seed and the point count, and where two solvers
-    land within a few per cent e1 reports the metric both ways.
+    land within a few per cent e1 reports the metric both ways. d1 carries it on
+    the record igd_reference returns, so it travels with the front and not with
+    the call site.
 
 r-13 | b2's reference front is sampled through b1's weight map, so its density in
     objective space is the parametrisation's and not the front's, and igd is an
@@ -481,9 +491,11 @@ r-13 | b2's reference front is sampled through b1's weight map, so its density i
     mitigation: built in b2-b and no longer a plan. sampling_mode has no default
     and its farthest-point setting oversamples by ten through the same map and
     subsamples by farthest-point selection in objective space, which changes which
-    points are kept and not the derivation; d1 computes igd against that mode and
-    records it in every table beside the seed, the point count and the singular
-    flag, CONTEXT.md section 10 d1. c3, d2 and the dominance checks state the
+    points are kept and not the derivation; d1, built, computes igd against that
+    mode and records it in every table beside the seed, the point count and the
+    singular flag, CONTEXT.md section 10 d1, on the record igd_reference returns.
+    tests/test_metrics_objective.py reproduces the ranking flip at reduced size,
+    so d1 fails loudly if the reason for the correction ever stops holding. c3, d2 and the dominance checks state the
     dirichlet mode and are unaffected, measuring a hausdorff distance, two counts
     and a relation. docs/b2b_reference_density.md.
 
@@ -525,10 +537,12 @@ r-16 | every objective-space metric moves with the number of rows a solver
     on cardinality alone.
     trigger: d1 computing hypervolume, igd or spread for more than one solver,
     and e1 or e3 tabling them side by side.
-    mitigation: d1 implements one of two rules c2-b measured and neither builds.
-    the recommendation is to report every metric at a common truncated
-    cardinality, the truncation a uniform random subsample at a stated seed and
-    the common size the smallest front in the comparison; the second rule,
+    mitigation: built in d1 and no longer a recommendation.
+    truncate_to_common_cardinality is the one implementation, a uniform random
+    subsample at a stated seed returning a subsequence of its input, and
+    common_cardinality takes the smallest front over the whole comparison and not
+    per phi; the truncation is for the objective-space metrics only, d2's being
+    set-geometry measures computed on the full recovered sets. the second rule,
     cardinality printed beside every metric, is kept as well and not instead.
 
 r-18 | no monotone trend in budget is a property either population method has
@@ -585,52 +599,6 @@ commit message and in its docs/ deliverable.
 format:
 
     date | subpart | files | outcome | next
-
-2026-09-02 | d2 | new src/metrics_decision.py and tests/test_metrics_decision.py;
-    CONTEXT.md line 10; PROGRESS.md | the decision-space metrics, the ones
-    comparable across phi, and the instrument CONTEXT.md section 10 e3 takes its
-    headline number from. compute_hausdorff returns both directed distances and
-    the symmetric one and they are read apart, a-to-b asking whether what was
-    found is correct and b-to-a whether what exists was found; compute_coverage
-    is asymmetric and is one call per direction; compute_overlap is the
-    delta-neighbourhood intersection over the union, which is 2|A|/(|A|+|B|)
-    whenever A is contained in B and is therefore pinned on two of the three
-    pairs; cross_evaluate filters set_a's image under a second phi through
-    src/random_search.py's non_dominated_indices and phi_image, neither
-    reimplemented, **one filter call per call and not one per pair**, r-15, whose
-    cost the module states at the sizes e1 will use, 586 to 2256 rows against
-    v-57's 66 s at n = 25000. **delta has no default**, for the reason
-    include_singular_segments has none, s-12, and it is refused if negative or
-    not finite; no comparison anywhere rounds, snaps or admits an epsilon, d-02.
-    compare_phi_on_one_sample is built on filter_one_sample_under_every_phi and
-    not on the solver runs, c-close's amendment to section 10 e3: the sample is a
-    pure function of the box, the budget and the seed, so the three sets differ
-    only through the order, and c3-f measured that a difference read off nsga-ii
-    output is confounded with nsga-ii's own phi-conditional coverage. **every
-    returned pair carries a status field**, check or finding, so a table built
-    from the return value cannot present either phi_ls pair as a measured
-    difference: the note names r-06's containment, r-11's rounding artefact with
-    its one point of 1565 and s-11's status, and the violation count is None on
-    the phi_lu against phi_cw pair so that a zero there cannot be read as
-    agreement. 28 tests: the three set-geometry functions on identical, disjoint
-    and strictly nested sets by hand, both directed distances against an explicit
-    pair loop, coverage asymmetric on a constructed case, coverage and overlap
-    non-decreasing over nine deltas, b2's efficient set at distance zero from
-    itself under both flag settings and bounded by a subsample's fill distance
-    computed by loop, the containment as a unit test of cross_evaluate with
-    s-11's status cited in place, the three index sets shown to index one array,
-    the labelling, no mutation, and the shape and delta refusals. **one
-    documentation correction**: CONTEXT.md's line 10, "nothing has been built
-    yet. this is subpart zero.", is deleted as false by three phases and nothing
-    replaces it; the before and after are in the session reply. **the narrative
-    check owed since repo-clean is done**, docs/project_narrative.md having
-    arrived in the repository committed by hand: eighteen items reported in the
-    session reply, four wrong, seven overstated, one unsourceable and six caveats
-    the deliverables carry and the narrative drops, and **nothing in that file
-    was corrected**. the fast run is 321 passed and 501 deselected in 77.25s and
-    the full run is 810 passed and 12 xfailed in 752.17s, the twelve being the
-    strict xfails c3-c left | the research chat, on d2 and on the narrative
-    report. next is e1
 
 2026-09-02 | d2-b | docs/project_narrative.md, CONTEXT.md section 11,
     PROGRESS.md; new tag phase-b-complete | the narrative corrected against d2's
@@ -733,3 +701,58 @@ format:
     passed and 507 deselected in 166.42s and the full run is 865 passed and 12
     xfailed in 1268.75s | the research chat, on b2-b; then d1 if it is built, or
     e1
+
+2026-09-03 | d1 | new src/metrics_objective.py and tests/test_metrics_objective.py;
+    CONTEXT.md section 10 b2 and section 10 d1; docs/verified.md; PROGRESS.md |
+    the three objective-space metrics and the truncation that makes them
+    comparable across solvers. **they never rank phi**: each phi maps the same
+    problem into a different space on a different scale, so the restriction is in
+    the module head and in CONTEXT.md section 10 d1, and the metrics comparable
+    across phi remain d2's. **pymoo's indicators where pymoo has one, not
+    reimplemented**: compute_hv is pymoo.indicators.hv.HV and compute_igd is
+    pymoo.indicators.igd.IGD, both left unnormalised so the reference this module
+    is handed is the one the indicator is given. what they do that their names
+    would not say is measured and reported rather than worked around, v-59:
+    moocore's hypervolume clips at the reference point rather than refusing, the
+    rows (0, 1) and (3, 0.5) against (2, 2) giving 2.0, so a row beyond the point
+    is discarded silently; pymoo's igd averages over the reference points and not
+    over the front, 0.0 against 7.0710678118654755 on the transposed call, which
+    is the direction r-13 is about. **pymoo has no indicator for the spread this
+    project means**: its SpacingIndicator is a spread of nearest-neighbour
+    cityblock distances normalised by n, 0.649519052838329 where the same
+    quantity normalised by n - 1 is 0.75, and no paper in scope defines it, so
+    compute_spread is M_3^* of [2] definition 6 equation (19), printed page 181,
+    read from the rendered page as a5 read zdt1, v-58: the euclidean norm of the
+    per-column ranges, larger being wider. its limitation is asserted and not
+    hidden, that it reads the extremes of each column and nothing between them,
+    and whether d1 should also carry [2]'s distribution metric M_2^*, which needs
+    a neighbourhood parameter the fixed signature has no room for, is left to the
+    research chat. **every reference is an argument and none is built inside a
+    metric**: derive_reference_point takes the rule by name,
+    reference_front_nadir or reference_front_nadir_plus_range_tenth, and returns
+    the rule beside the point; igd_reference returns the front with the mode, the
+    flag, the seed and the size on the record, r-13 and s-12; and no parameter of
+    any of the six entry points has a default, asserted by inspect over all of
+    them and not by reading. **r-16 is code and no longer a recommendation**:
+    truncate_to_common_cardinality is the one uniform random subsample at a
+    stated seed, bitwise reproducible and a subsequence of its input, and
+    common_cardinality takes the smallest front over the whole comparison and not
+    per phi. **b2-b's headline is a regression test at reduced size**: 400
+    reference points against 2000 and a 60-point mirror pair allocated 45 against
+    15 in place of 200 and 150 against 50. the fill distance against an
+    independent covering draw and the corrected reference both prefer the
+    sparse-favouring front under phi_ls, 0.345423 against 0.462182, and under
+    phi_cw, 0.212935 against 0.280172, while the drawn reference prefers the
+    other; under phi_lu the oversampled half is also the half the front needs
+    more points in and all three agree, which is section 6.3's 31 of 32 and its
+    16 of 16, reproduced. v-52's cardinality effect is reproduced the same way,
+    igd 0.1101, 0.0735, 0.0534 and 0.0306 and hypervolume 4.3008, 4.5243, 4.6390
+    and 4.7228 at 25, 50, 100 and 290 rows of one fixed random-search front.
+    **CONTEXT.md section 10 b2's signature line was wrong on both entry points**,
+    missing include_singular_segments and sampling_mode on efficient_set and on
+    reference_front, and is corrected with a note that neither has a default.
+    b2-b and d2 move to done, their review evidenced by this session's prompt,
+    which reads b2-b's correction as the reference d1 must use and d2's shape as
+    settled. 52 tests added, all in the fast run. the fast run is 422 passed and
+    507 deselected in 129.68s and the full run is 917 passed and 12 xfailed in
+    922.89s | the research chat, on d1; then d3 or e1

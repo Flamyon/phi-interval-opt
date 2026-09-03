@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-57.
+highest number in use: v-59.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -625,3 +625,46 @@ v-57 | the cost of a sweep, measured in c2-b on one seed at pop_size 100,
     fact belongs | project diagnostic, not a paper | scratchpad timings over
     src/runners.py and src/random_search.py; r-15 | c2-b, filed in repo-clean-b |
     2026-09-01
+
+v-58 | the extent metric M_3^* of [2] is
+    M_3^*(Y') = sqrt( sum_{i=1}^{n} max{ ||p'_i - q'_i||^* ; p', q' in Y' } ),
+    the maximum over pairs of the ith coordinate difference summed over the n
+    objectives and square-rooted, so it is the euclidean norm of the vector of
+    per-column ranges. the paper's own reading of it, on the same page: "the
+    functions M_3 and M_3^* use the maximum extent in each dimension to estimate
+    the range to which the front spreads out. in the case of two objectives, this
+    equals the distance of the two outer solutions", so larger is wider. it is
+    one of the three functions of definition 6, the other two being M_1^*,
+    equation (17), the average over the front of the distance to the nearest
+    point of the reference set, and M_2^*, equation (18), a count of sigma^*
+    niches which takes a neighbourhood parameter. note that M_1^* averages over
+    the front and igd averages over the reference, so they are the two directions
+    of one construction and not the same number | [2] zitzler, deb and thiele,
+    evolutionary computation 8(2) (2000) 173-195,
+    papers/zitzler_deb_thiele_2000_comparison.pdf | section 5, definition 6,
+    equations (17), (18) and (19), printed page 181, read from the rendered page
+    as v-44 was: the formulas are set in bitmap math fonts and text extraction
+    drops them | d1 | 2026-09-03
+
+v-59 | what pymoo 0.6.2's three indicators do, measured against hand-computed
+    cases in d1 rather than read off their names. pymoo.indicators.hv.HV with
+    ref_point given and zero_to_one at its default False passes the point through
+    unnormalised and delegates to moocore's hypervolume, which clips at the
+    reference point rather than refusing: the rows (0, 1) and (3, 0.5) against the
+    point (2, 2) give 2.0, which is (0, 1)'s box alone, so a row lying beyond the
+    point in some column contributes nothing there and no error is raised.
+    pymoo.indicators.igd.IGD with norm_by_dist at its default False delegates to
+    moocore's igd and averages over the reference points and not over the front:
+    the front (0, 0), (10, 10) against the single reference point (0, 0) gives
+    0.0 and the transposed call gives 7.0710678118654755, which is
+    sqrt(200) / 2. that is the direction docs/b2b_reference_density.md section 1
+    states and the opposite of [2]'s M_1^*, v-58.
+    pymoo.indicators.spacing.SpacingIndicator computes a spread of the
+    nearest-neighbour distances in the cityblock metric normalised by the number
+    of points and not by one less: on the four rows (0, 3), (1, 1), (2, 0.5) and
+    (4, 0) it returns 0.649519052838329, against 0.75 for the same quantity
+    normalised by n - 1. no paper in scope defines that quantity, which is why
+    compute_spread is v-58's M_3^* and not this | project diagnostic, not a paper
+    | pymoo 0.6.2 source, indicators/hv/__init__.py, indicators/igd.py,
+    indicators/distance_indicator.py and indicators/spacing.py, with the numbers
+    reproduced in tests/test_metrics_objective.py | d1 | 2026-09-03

@@ -906,3 +906,58 @@ format:
     passed and 507 deselected in 166.42s and the full run is 865 passed and 12
     xfailed in 1268.75s | the research chat, on b2-b; then d1 if it is built, or
     e1
+
+2026-09-03 | d1 | new src/metrics_objective.py and tests/test_metrics_objective.py;
+    CONTEXT.md section 10 b2 and section 10 d1; docs/verified.md; PROGRESS.md |
+    the three objective-space metrics and the truncation that makes them
+    comparable across solvers. **they never rank phi**: each phi maps the same
+    problem into a different space on a different scale, so the restriction is in
+    the module head and in CONTEXT.md section 10 d1, and the metrics comparable
+    across phi remain d2's. **pymoo's indicators where pymoo has one, not
+    reimplemented**: compute_hv is pymoo.indicators.hv.HV and compute_igd is
+    pymoo.indicators.igd.IGD, both left unnormalised so the reference this module
+    is handed is the one the indicator is given. what they do that their names
+    would not say is measured and reported rather than worked around, v-59:
+    moocore's hypervolume clips at the reference point rather than refusing, the
+    rows (0, 1) and (3, 0.5) against (2, 2) giving 2.0, so a row beyond the point
+    is discarded silently; pymoo's igd averages over the reference points and not
+    over the front, 0.0 against 7.0710678118654755 on the transposed call, which
+    is the direction r-13 is about. **pymoo has no indicator for the spread this
+    project means**: its SpacingIndicator is a spread of nearest-neighbour
+    cityblock distances normalised by n, 0.649519052838329 where the same
+    quantity normalised by n - 1 is 0.75, and no paper in scope defines it, so
+    compute_spread is M_3^* of [2] definition 6 equation (19), printed page 181,
+    read from the rendered page as a5 read zdt1, v-58: the euclidean norm of the
+    per-column ranges, larger being wider. its limitation is asserted and not
+    hidden, that it reads the extremes of each column and nothing between them,
+    and whether d1 should also carry [2]'s distribution metric M_2^*, which needs
+    a neighbourhood parameter the fixed signature has no room for, is left to the
+    research chat. **every reference is an argument and none is built inside a
+    metric**: derive_reference_point takes the rule by name,
+    reference_front_nadir or reference_front_nadir_plus_range_tenth, and returns
+    the rule beside the point; igd_reference returns the front with the mode, the
+    flag, the seed and the size on the record, r-13 and s-12; and no parameter of
+    any of the six entry points has a default, asserted by inspect over all of
+    them and not by reading. **r-16 is code and no longer a recommendation**:
+    truncate_to_common_cardinality is the one uniform random subsample at a
+    stated seed, bitwise reproducible and a subsequence of its input, and
+    common_cardinality takes the smallest front over the whole comparison and not
+    per phi. **b2-b's headline is a regression test at reduced size**: 400
+    reference points against 2000 and a 60-point mirror pair allocated 45 against
+    15 in place of 200 and 150 against 50. the fill distance against an
+    independent covering draw and the corrected reference both prefer the
+    sparse-favouring front under phi_ls, 0.345423 against 0.462182, and under
+    phi_cw, 0.212935 against 0.280172, while the drawn reference prefers the
+    other; under phi_lu the oversampled half is also the half the front needs
+    more points in and all three agree, which is section 6.3's 31 of 32 and its
+    16 of 16, reproduced. v-52's cardinality effect is reproduced the same way,
+    igd 0.1101, 0.0735, 0.0534 and 0.0306 and hypervolume 4.3008, 4.5243, 4.6390
+    and 4.7228 at 25, 50, 100 and 290 rows of one fixed random-search front.
+    **CONTEXT.md section 10 b2's signature line was wrong on both entry points**,
+    missing include_singular_segments and sampling_mode on efficient_set and on
+    reference_front, and is corrected with a note that neither has a default.
+    b2-b and d2 move to done, their review evidenced by this session's prompt,
+    which reads b2-b's correction as the reference d1 must use and d2's shape as
+    settled. 52 tests added, all in the fast run. the fast run is 422 passed and
+    507 deselected in 129.68s and the full run is 917 passed and 12 xfailed in
+    922.89s | the research chat, on d1; then d3 or e1

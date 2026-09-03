@@ -637,10 +637,17 @@ is code, and a session record block for PROGRESS.md.
 
 ### b2: reference_fronts.py
     encodes b1's closed forms.
-        efficient_set(problem, phi_name, n_points): the analytic set, sampled.
-        reference_front(problem, phi_name, n_points): that set pushed through phi
+        efficient_set(problem, phi_name, n_points, include_singular_segments,
+            sampling_mode, seed): the analytic set, sampled.
+        reference_front(problem, phi_name, n_points, include_singular_segments,
+            sampling_mode, params, seed): that set pushed through phi
             per interval objective, returned as a (k, 2m) array in exactly the
             coordinates the solvers produce.
+        neither include_singular_segments nor sampling_mode has a default: the
+            flag names which set the reference is, s-12 and r-12, and the mode
+            names how evenly that set is sampled, dirichlet or farthest_point,
+            r-13 and docs/b2b_reference_density.md. section 10 d1 is where the
+            two values are required to appear in a table.
     tests: every sampled point satisfies condition (15) numerically with the weights
     b1 recorded; no point of a dense random sample dominates any point of the
     reference front. the second test is the one that catches a wrong derivation.
@@ -760,10 +767,40 @@ is code, and a session record block for PROGRESS.md.
         compute_hv(front, reference_point)
         compute_igd(front, reference_front)
         compute_spread(front)
+        derive_reference_point(rows, rule), returning the rule with the point
+        igd_reference(problem, phi_name, n_points, include_singular_segments,
+            sampling_mode, params, seed), returning the front with those values
+        common_cardinality(fronts)
+        truncate_to_common_cardinality(front, n_keep, seed)
+    pymoo's indicators are used where pymoo has one and are not reimplemented:
+    compute_hv is pymoo.indicators.hv.HV and compute_igd is
+    pymoo.indicators.igd.IGD, both left unnormalised, so the reference point and
+    the reference front this module is handed are the ones the indicator is given.
+    pymoo has no indicator for the spread this project means; its SpacingIndicator
+    is a quantity none of the papers in scope defines, and CONTEXT.md section 11's
+    evidence rule does not admit a definition from a library. so compute_spread is
+    M_3^*, definition 6 equation (19) on printed page 181 of zitzler, deb and
+    thiele, evolutionary computation 8(2) (2000) 173-195,
+    papers/zitzler_deb_thiele_2000_comparison.pdf, the paper a5 took zdt1 from,
+    numbered [2] in docs/verified.md and transcribed there at v-58: the euclidean
+    norm of the per-column ranges, which that page describes as the range the
+    front spreads out over. larger is wider.
+    it reads the extremes of each column and nothing between them, so it measures
+    extent and not evenness; the same definition's distribution metric is M_2^*,
+    equation (18), and it takes a neighbourhood parameter this signature has no
+    room for. whether d1 should also carry M_2^* is the research chat's and is not
+    decided here.
     valid only for comparing solvers under a fixed phi. they must never rank phi,
     and every table carrying them carries that restriction in writing.
     the hypervolume reference point is in 2m dimensions, fixed per phi, and stated
-    in every table. exact hypervolume in six dimensions is expensive; if runtime
+    in every table. it is an argument and is never derived inside a metric, the
+    same front against two points being two numbers, and moocore's hypervolume
+    clips at the point rather than refusing, so a point that fails to dominate a
+    row drops that row's contribution silently. derive_reference_point takes the
+    rows and the rule by name, reference_front_nadir or
+    reference_front_nadir_plus_range_tenth, and returns the rule beside the point,
+    so what a table carries is a rule and not 2m numbers from nowhere.
+    exact hypervolume in six dimensions is expensive; if runtime
     becomes a problem, record it and raise it rather than silently switching to an
     approximation.
     igd is reported for tier 0 only unless a tier 1 reference front is agreed with
@@ -793,12 +830,16 @@ is code, and a session record block for PROGRESS.md.
     every table must
     carry, the cardinality each metric was computed at, and a metric compared
     across solvers is computed at a common cardinality reached by a selection rule
-    stated in advance. the recommended rule is a uniform random subsample, at a
-    stated seed, to the smallest front in the comparison: it is the only selection
-    that does not itself optimise one of the three metrics, a crowding-distance
-    selection being a spread rule reported beside spread. r-16.
+    stated in advance. the rule is a uniform random subsample, at a stated seed,
+    to the smallest front in the comparison: it is the only selection that does
+    not itself optimise one of the three metrics, a crowding-distance selection
+    being a spread rule reported beside spread. r-16. it is implemented once, as
+    truncate_to_common_cardinality, taking the target cardinality and the seed as
+    arguments and returning a subsequence of its input, so that every caller
+    truncates the same way and a table's numbers are reproducible from the seed.
     two additions to that rule. the common cardinality is shared across phi and is
-    not computed per phi. the smallest front in a comparison is systematically
+    not computed per phi, which is what common_cardinality takes over every front
+    of the comparison at once. the smallest front in a comparison is systematically
     phi_lu's, ND_lu being contained in ND_ls, docs/a_close_containment.md, so
     truncating each phi to its own smallest would put a phi-dependent selection
     inside the one comparison the study exists to make.
