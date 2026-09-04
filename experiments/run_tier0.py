@@ -1329,6 +1329,7 @@ def record_measured(path, budgets):
         lines.extend(record_measured_budget(path, budget))
         lines.append("")
     lines.extend(record_noise_floor(path))
+    lines.extend(record_cross_evaluation(path, budgets[0]))
     return lines + [""]
 
 
@@ -1356,6 +1357,27 @@ def record_noise_floor(path):
     return lines + markdown_table(("problem", "phi_a", "metric", "n_evals",
                                    "cardinality_a", "cardinality_b", "median", "q1",
                                    "q3"), floor)
+
+
+# the cross evaluation and the symmetric hausdorff, at the reported budget
+def record_cross_evaluation(path, budget):
+    # the third comparable metric of CONTEXT.md section 5 step 5: what a decision
+    # maker committed to one order would keep of the set recovered under another.
+    # it needs no common scale between the two image spaces and no tolerance, and
+    # it is in no other section, so it is here rather than only in the file.
+    lines = ["", "### cross evaluation and distance, at budget {}".format(budget),
+             "", "cross_a_under_b is the fraction of the set recovered under phi_a "
+             "that survives non-dominated filtering under phi_b, which is what a "
+             "decision maker committed to phi_b would keep of phi_a's answer. the "
+             "hausdorff distance is symmetric and is in the decision space. "
+             "neither moves with delta.", ""]
+    rows = [row for row in decision_rows_at(path, budget)
+            if row["metric"] in ("cross_a_under_b", "cross_b_under_a",
+                                 "hausdorff_symmetric")
+            and row["phi_a"] != row["phi_b"]]
+    return lines + markdown_table(("problem", "phi_a", "phi_b", "status", "metric",
+                                   "cardinality_a", "cardinality_b", "median", "q1",
+                                   "q3"), rows)
 
 
 # the record's instrument-error section, the calibration's own number
