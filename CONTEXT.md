@@ -33,19 +33,32 @@ the same problem under different phi, and measures what changes.
     interval problem, do the recovered efficient sets change? by how much, measured
     in which space, and under what conditions?
 
-    part 2: applying an external criterion that is the same for every phi, namely
-    out-of-sample portfolio performance, which phi gives better results?
+    part 2: on problems that are interval-valued at source, stated as such in a
+    published paper with no imprecision added by us, does the same change appear,
+    measured the same way?
 
-the supervisors' phrasing is the part 2 form: "which phi gives better results".
-that question cannot be answered inside part 1, and the reason is structural, not
-a matter of effort. each phi sends the problem into a different image space with
-different coordinates and a different scale. hypervolume computed under two
-different phi are volumes measured in two different spaces; ranking them would be
-a category error. part 1 therefore measures change, in the decision space, which is
-common to every phi. part 2 supplies the external criterion that makes "better"
-mean something.
+part 2 was an out-of-sample portfolio comparison until the supervisors' meeting of
+2026-09-04, docs/meeting_2026_09_04.md and docs/plan_after_meeting.md. its subject
+is now the interval-native test problems of [16]. **the portfolio application is
+future work**, which is where slide 21 of the supervisors' own presentation places
+it, "posibles lineas de investigacion futuras".
 
-nothing in part 1 may be written up as evidence that one phi is superior.
+one consequence of the change has to be stated because it removes something the
+old part 2 supplied. out-of-sample performance was an external criterion, the same
+for every phi, and it was what made "which phi gives better results" a well-posed
+question. **the new part 2 supplies no such criterion and does not try to.** it
+asks the part 1 question again on problems nobody adapted. so the restriction
+below now holds over the whole project and not over part 1 alone.
+
+the supervisors' phrasing is "which phi gives better results". that question
+cannot be answered by this project, and the reason is structural, not a matter of
+effort. each phi sends the problem into a different image space with different
+coordinates and a different scale. hypervolume computed under two different phi
+are volumes measured in two different spaces; ranking them would be a category
+error. the project therefore measures change, in the decision space, which is
+common to every phi.
+
+nothing in this project may be written up as evidence that one phi is superior.
 
 the paper is explicit that the semantics of a problem are carried by the
 coefficients of phi and that those coefficients are chosen by a decision maker.
@@ -56,8 +69,25 @@ must not appear in any sentence presented as a result.
 
 ## 3. papers in scope
 
-five papers, no others. the bracketed numbers are the supervisors' own bibliography
-numbering, so they are not consecutive. do not renumber them.
+**the corpus is open.** it was five papers and no others until the supervisors'
+meeting of 2026-09-04, whose fifth decision lifts every previous exclusion: every
+paper is in papers/, search freely, bring in better material, revisit what was
+closed off. docs/meeting_2026_09_04.md, docs/plan_after_meeting.md section e.
+
+what an open corpus does not relax is section 11's evidence rule, which it makes
+more valuable rather than less. a five-paper corpus is self-policing, since a
+claim's source can be checked by reading all five; an open one is not, and the
+number of places a number could have come from is now the number of places a
+wrong number could have come from. every claim is still sourced to a paper by
+section, example or equation number, or to a project deliverable by name and
+section, and anything unverified is still left out rather than flagged and kept.
+
+the bracketed numbers below are the supervisors' own bibliography numbering, so
+they are not consecutive. do not renumber them. a paper the project brings in
+itself takes the next number that cannot collide with theirs and says that it did.
+
+the pdfs are in papers/. the summaries in papers/resumed/ are reference only and
+never a substitute for a paper; where the two disagree the paper wins.
 
 [1] costa, osuna-gomez and chalco-cano, 2024. "new preference order relationships
     and their application to multiobjective interval and fuzzy interval
@@ -77,18 +107,26 @@ numbering, so they are not consecutive. do not renumber them.
     it rather than ignoring it.
 
 [8] zhang et al. 2025, interval evolutionary algorithm with decay, imoea-dra.
-    literature/Evolutionary Algorithm (Alternative Baseline).md
+    swarm and evolutionary computation 93 (2025) 101853. papers/8-*.pdf
     second comparison reference, and the methodological template for extending a
     crisp benchmark into an interval benchmark.
 
-[9] ishibuchi and tanaka 1990, center-width decomposition.
-    literature/Center-Width Decomposition.md
+[9] ishibuchi and tanaka 1990, "multiobjective programming in optimization of the
+    interval objective function", european journal of operational research 48
+    (1990) 219-225. papers/9-*.pdf
     the original center-width formulation. in the framework of [1] it is the
     automorphism of example 2.4. cited for provenance; the operative definition
     used by the code is the one in [1].
+    **it holds four order relations and a fifth, not one**, and only definition
+    3.4 has been used. definitions 3.1 and 3.3 are example 2.2, definition 3.4 is
+    example 2.4, equation (4.1) defines a further admissible automorphism, and
+    definition 3.2 defines a width-seeking order that no example of [1] names.
+    docs/plan_after_meeting.md section c2 places each against the containment
+    criterion. note that the paper's a_w is the half-width, by its own equation
+    (4.6).
 
-[10] stefanini et al. 2025, gh-differentiability calculus.
-    literature/gH-differentiability calculus for interval analysis.md
+[10] stefanini et al. 2025, gh-differentiability calculus. information sciences
+    691 (2025) 121601. papers/10-*.pdf
     the gh-difference, for interval arithmetic, and a computable regularity
     criterion for gh-differentiability in terms of the midpoint and radius
     functions. the exact theorem number and statement are transcribed in b1 from
@@ -102,6 +140,35 @@ numbering, so they are not consecutive. do not renumber them.
     the two papers use different definitions. do not import formulas from those
     slides. slides 17, 18 and 19, which define this project's work, do not mention
     gh-differentiability at all.
+
+[13] wen et al. 2026, two-stage evolutionary algorithm for uncertain constrained
+    multi-objective problems with interval-valued objective. information sciences
+    741 (2026) 123217. papers/13-*.pdf
+    a third comparison reference of the same kind as [7] and [8], from the same
+    group, and a third source for p-04.
+
+[14], [15] serban 2025 and serban, costea and ferrara, portfolio selection under
+    interval analysis. papers/14-*.pdf and papers/15-*.pdf
+    the portfolio application is future work, section 2, and these are what the
+    memoria's future-work section cites so that it names a study rather than
+    gestures at one. nothing in the project's results depends on them.
+
+[16] mondal, ghosh and kim, "newton method for multiobjective optimization
+    problems of interval-valued maps". papers/Newton Method for Multiobjective
+    Optimization Problems of Interval-Valued Maps.pdf
+    **the source of part 2's problems.** its appendix a lists twenty
+    multiobjective test problems that are interval-valued at source, i-bk1
+    through i-comet, each with its objectives and its variable bounds. the
+    project takes those problems and adds no uncertainty to them. **it does not
+    take the method**: this project does not invent or implement an algorithm,
+    section 1, and f1's prompt says so in terms.
+    the number 16 is the project's own and not the supervisors': [11] is not on
+    disk and may be occupied in their bibliography, of which 12 to 15 are, so 16
+    is the next number that cannot collide.
+
+    a duplicate on disk, recorded so it is not mistaken for a second source:
+    papers/12-*.pdf is the same paper as [7], same title, journal, volume and
+    article number.
 
 
 ## 4. phi, as defined in [1]
@@ -155,13 +222,33 @@ two consequences the project depends on, both from the paper and not assumed:
 
 these three are the experiment variable. they are the three named examples of [1]
 that are each identified with a convexity notion, and the project implements them
-and nothing else. they are not the only named examples in the paper: example 2.1,
-the car-purchase illustration, is a further named phi with fully explicit
+and nothing else today. they are not the only named examples in the paper: example
+2.1, the car-purchase illustration, is a further named phi with fully explicit
 coefficients, verified in a0. it carries no convexity notion and no optimality
-condition and it is not part of the experiment. an automorphism satisfying the
-determinant condition but not named in the paper is not added to the experiment on
-the project's own initiative; if one is ever wanted, it is proposed in the research
-chat with a reason and recorded as a decision first.
+condition and it is not part of the experiment.
+
+**a further phi may be searched for**, which the supervisors authorised at the
+meeting of 2026-09-04, subject to the framework's conditions. what that changes and
+what it does not:
+
+    it does not change the two-step route. a phi is proposed in the research chat
+    with a reason, and it is added only after a decision row records the addition.
+    the proposal and the addition are two steps and this file's licence to correct
+    itself covers neither.
+
+    it does change the stopping condition, because admissibility is the
+    determinant condition and nothing else, so the family is infinite and "search
+    for more" does not terminate on its own. **the primary filter is the
+    containment criterion**: if a candidate's per-objective coefficient matrix is
+    phi_B = M phi_A with M entrywise non-negative and invertible for some phi_A
+    already in the registry, then ND_B is contained in ND_A, one direction of every
+    coverage and overlap statistic between the two is fixed before a solver runs,
+    and the candidate is a check and not a finding. in centre and half-width
+    coordinates this says that any phi with four non-negative coefficients is a
+    refinement of example 2.4 and carries nothing new, so a genuinely new order
+    must carry a sign change relative to every registry member.
+    docs/a_close_containment.md for the criterion, s-11 for its status, and
+    docs/plan_after_meeting.md section c for the candidates and the verdicts.
 
 note the second coordinate of phi_ls is the full width and the second coordinate of
 phi_cw is the half-width. they are not the same quantity and the difference is not
@@ -351,8 +438,13 @@ what the project does not do:
     cover, or prove anything. if a derivation does not close using the published
     results as they stand, it stops and goes to the research chat. it is not
     patched with an invented condition. that boundary is the division of work with
-    the supervisors and it is the only theoretical restriction in the project.
-    use optimality theory from any paper outside the five of section 3.
+    the supervisors and it is **the only theoretical restriction in the project**.
+
+    the second restriction that stood here, forbidding optimality theory from any
+    paper outside the five of section 3, is removed: the corpus is open since the
+    meeting of 2026-09-04 and section 3 says so. what replaces it is nothing at
+    all, because the positive list above is the whole of what the project uses and
+    a result added to it is added by name, number and page like every other.
 
 
 ## 7. division of work
@@ -403,11 +495,20 @@ phase e, experiments.
     e2  tier 1 run
     e3  results synthesis
 
-phase f, part 2, portfolio application.
-    f1  data and interval construction
-    f2  optimization under the selected phi
-    f3  backtest against markowitz, equal-weight, risk parity
-    f4  write-up
+phase f, part 2, the interval-native problems. **rewritten on 2026-09-04**; the
+identifiers are kept and the subjects changed, docs/plan_after_meeting.md
+section a2.
+    f1  reading pass over [16], with the gate. document, not code.
+    f2  problems_native.py
+    f3  the native run, plus its derivation where one is available
+    f4  part 2 write-up
+
+phase g, the write-up. **new on 2026-09-04.** it is work and not something that
+happens afterwards.
+    g1  the results document
+    g2  the figure set
+    g3  the latex memoria
+    g4  the presentation
 
 ordering rules that are not negotiable:
     a0 precedes a3 and b1.
@@ -417,33 +518,69 @@ ordering rules that are not negotiable:
     valid argument before b2 exists.
     c3 gates phase e. if the solvers do not recover the tier 0 sets, no tier 1
     result is trustworthy and none is produced.
-    e2 precedes f2, because the phi carried into part 2 is chosen on part 1's
-    evidence.
+    f1 gates f2. the application proceeds only on an example that passes f1's five
+    criteria, and if none passes, f4 is written in the fallback form and f2 and f3
+    do not run.
+    **e2 precedes f3.** extending the validated instrument to standard benchmarks
+    is what licenses applying it where no reference exists at all, so running the
+    native problems on an instrument calibrated but never extended asserts a
+    generality that has not been tested. if e2 is cut from the calendar, f2 and f3
+    are cut with it. this replaces the old rule that e2 precedes f2 because the phi
+    carried into part 2 was chosen on part 1's evidence; part 2 now runs all three.
+    g1 precedes g3, and g2 precedes g3 and g4. the memoria is not a second place
+    where results are decided and it is not where a figure is first drawn.
 
-parallelizable: a0 and a1 with each other; a2 with both.
+parallelizable: a0 and a1 with each other; a2 with both. f1 with e1 and e2, being
+a document session that reads a paper and runs nothing.
 
 minimum presentable path if the calendar runs short: a0, a1, a2, a3, a4, b1, b2,
-c1, c2, c3, d2, e1. tier 0 only, with the decision-space metrics and the
-correctness gate. that is a complete result, not a truncated one: the solvers were
-validated against known answers and the effect of phi was measured where it is
-measurable. dropping c3 or d2 instead would produce a longer report saying less.
+c1, c2, c3, d2, e1, plus e3, g1, g3 and g4, which are artefacts and not
+experiments. tier 0 only, with the decision-space metrics and the correctness
+gate. that is a complete result, not a truncated one: the solvers were validated
+against known answers and the effect of phi was measured where it is measurable.
+dropping c3 or d2 instead would produce a longer report saying less.
+
+**stages are dropped from the end and never from the middle**, so that the story
+ends early rather than acquiring a hole. the cut order is: the optional sessions
+first, then f3 and f2, then e2 and with it f2 and f3 whatever the calendar says.
+e1, e3, g1, g3 and g4 are never cut. docs/plan_after_meeting.md section g2 states
+what each of the four artefacts loses at each cut.
 
 
 ## 9. out of scope
 
-    sections 4 and 5 of [1], the fuzzy branch, and fuzzy sets and alpha-level
-        decomposition generally. step 1 of slide 18 reads "formular el problema
-        intervalar (o difuso)", so the fuzzy branch is offered as an alternative
-        and not required. the project takes the interval branch. this is a scope
-        decision and not a claim that the fuzzy branch is unimportant.
+**the paper-level exclusions are lifted**, by the fifth decision of the meeting of
+2026-09-04. what stood here was:
+
     riemannian manifolds (bhat and iqbal).
     quasi-newton and newton methods for interval problems (upadhyay).
     quasidifferentiable optimization (laha et al.).
     any paper outside the five of section 3.
 
+none of those four stands. the newton exclusion in particular is reversed twice
+over: [16] is a newton paper for multiobjective interval-valued maps and it is now
+the source of part 2's problems.
+
+what remains out of scope is one implementation choice and one boundary, and
+neither is a statement about a paper:
+
+    sections 4 and 5 of [1], the fuzzy branch, and fuzzy sets and alpha-level
+        decomposition generally, **for implementation**. step 1 of slide 18 reads
+        "formular el problema intervalar (o difuso)", so the fuzzy branch is
+        offered as an alternative and not required. the project takes the interval
+        branch. this is a scope decision and not a claim that the fuzzy branch is
+        unimportant, and it does not stop the project reading or citing anything
+        there: proposition 5.1 has been read and transcribed, v-24, and is treated
+        as a prediction to check and never as a result the project asserts.
+    **implementing an algorithm.** this project takes existing solvers and
+        measures what changes when the order changes, section 1. it does not
+        implement the newton method of [16], and f1's specification says so in
+        terms so that reading that paper does not become planning it. that changes
+        only if a later session argues for it and a decision row records the
+        argument.
+
 for what theory is used and from where, see section 6, which is positive and
-complete. nothing about sections 2 and 3 of [1], or about [9] or [10], belongs on
-this list.
+complete.
 
 
 ## 10. subpart specifications
@@ -609,6 +746,24 @@ is code, and a session record block for PROGRESS.md.
     tests: the crisp limit reproduces the published zdt1 and dtlz2 values; the dtlz2
     sphere identity holds at non-uniform decision vectors and not only at uniform
     ones; step 1's independence condition holds.
+
+    **a5 as built shares one width function across all of a problem's objectives**,
+    r_1 = r_2 for zdt1 and r_1 = r_2 = r_3 for dtlz2, so under examples 2.3 and 2.4
+    the image carries duplicate columns and the transformed problem has three
+    effective objectives where zdt1 has four and four where dtlz2 has six. under
+    example 2.2 there is no duplication. this is the redundancy a1-b removed from
+    p1 and it is **phi-dependent**, so the study's headline comparison, example 2.2
+    against example 2.4, is on tier 1 a comparison between problems of different
+    transformed dimension, and the measured difference confounds the order with the
+    dimension. docs/plan_after_meeting.md section b4 prices it and recommends
+    correcting it in **a5-b**, giving each objective its own width driver as p1 has:
+    zdt1 r_1 on x_30 and r_2 on x_29, dtlz2 r_1, r_2 and r_3 on x_12, x_11 and x_10,
+    every driver keeping the form a1 part 4 argued for. a5-b re-runs a1 part 4's
+    slice sweep on the new forms, because r-08 is exactly the risk that a new width
+    form passes every uniform statistic and still gives example 2.4 the crisp
+    efficient set on the slice, and s-07 says the slice check is what catches it.
+    a5-b precedes e2. it does not answer s-09, which asks about scaling and not
+    about drivers.
 
 ### b1: analytic derivation of the phi-efficient sets
     output: docs/b1_phi_efficient_sets.md. paper and pencil with symbolic
@@ -871,7 +1026,35 @@ is code, and a session record block for PROGRESS.md.
 ### e1, e2: experimental runs
     e1 is tier 0, e2 is tier 1. each produces raw results under results/, the tables,
     the plots, and a short written record of what was run.
-    e2 does not start until c3 has passed and e1 is reviewed.
+    e2 does not start until c3 has passed and e1 is reviewed, and not until a5-b
+    has corrected the shared width driver, section 10 a5.
+
+    **the number-provenance rule, and it binds e1, e2, f3 and all of phase g.**
+    every number and every figure that reaches the results document, the memoria or
+    the presentation comes from a generated file under results/. **no number is
+    typed.** a number reaches the memoria as an \input of a generated fragment or
+    as a named cell of a generated csv, and the memoria names the file and the key.
+    this costs each experimental session one extra emit and it costs the memoria
+    nothing, since d3's tables already refuse a row omitting the seed count, the
+    budget, the cardinality, the median with its interquartile range, the reference
+    size, the sampling mode, include_singular_segments, the hypervolume reference
+    point with its rule, delta, the box scale or a pair's status. what the rule adds
+    is that the number in the pdf and the number in the csv are one object and not
+    two that agreed on the day one was copied. it is cheap now and expensive later.
+
+    **e1 and e2 also compute the two registered measurements of
+    docs/plan_after_meeting.md section f4**, m-1 the tail-survival lift and m-2 the
+    overhang, from artefacts they already produce. both were fixed before either ran
+    so that neither is available afterwards as an explanation of what they returned.
+
+    **the central pair table is two tables and not one**, and its columns are fixed
+    in docs/plan_after_meeting.md section b3: table 1 exact and p1 only, table 2
+    measured and every problem including p1, and p1's presence in both is what makes
+    the instrument's error a number rather than a caveat. table 2 carries a
+    same-phi seed-to-seed noise floor beside every cross-phi number, without which a
+    benchmark row where no truth exists cannot be read at all, and its delta is
+    stated as a fraction of the box diameter as well as an absolute value, a fixed
+    absolute delta meaning different things in a 2-box and a 30-box.
 
     e1 asserts that the hypervolume reference point dominates every front it
     scores, and fails on a front it does not dominate rather than scoring it.
@@ -908,8 +1091,11 @@ is code, and a session record block for PROGRESS.md.
     decision space, with variance across seeds, and under which imprecision levels
     the difference appears or vanishes. plus the solver comparison under each fixed
     phi, with random search as the reference.
-    also selects the phi carried into part 2 and states the criterion for that
-    selection explicitly, since part 1 cannot rank phi on quality.
+    **it no longer selects a phi to carry into part 2.** it did while part 2 was
+    the portfolio application, where an external criterion would have made the
+    selection meaningful; part 2 is now the interval-native problems and runs all
+    three phi, so there is nothing to select and no criterion to state. section 2
+    and docs/plan_after_meeting.md section a2.
     one comparison of the three carries the signal and two do not, and e3 says so
     rather than reporting all three alike. phi_ls's non-dominated set contains
     both of the others, ND_lu and ND_cw inside ND_ls, exactly and for every
@@ -1019,21 +1205,106 @@ is code, and a session record block for PROGRESS.md.
     it as the coverage direction and never as [2]'s M_1^*, and a statement about
     how close a solver got is made on d2's decision-space metrics, where the
     project's own answer lives, and not by reading this number backwards.
-### f1 to f4: part 2
-    f1  yfinance, 30 s&p 500 assets, 5 years of daily returns. two interval
-        constructions compared: [min, max] over a rolling window, and
-        [mean - std, mean + std] over a rolling window.
-    f2  portfolio optimization under the selected phi, nsga-ii.
-    f3  backtest against markowitz, equal-weight and risk parity, out of sample.
-        metrics: sharpe ratio, maximum drawdown, turnover, compute time.
-    f4  write-up. this is where "which phi is better" is answered, because
-        out-of-sample performance is external to the transformed problem and the
-        same criterion applies to every phi.
+### f1 to f4: part 2, the interval-native problems
+    rewritten on 2026-09-04. the identifiers are kept and the subjects changed.
+    what stood here was the portfolio application: yfinance and 30 s&p 500 assets
+    at f1, optimization under one selected phi at f2, an out-of-sample backtest
+    against markowitz, equal-weight and risk parity at f3, and at f4 the answer to
+    "which phi is better", which out-of-sample performance would have made a
+    well-posed question. **that is future work**, which is where slide 21 of the
+    supervisors' presentation places it, and [14] and [15] are what the memoria's
+    future-work section cites. the full prompt for each subpart below is
+    docs/plan_after_meeting.md section d.
+
+    f1  reading pass over [16]. output docs/f1_interval_native_reading.md. **no
+        code and no implementation**, and the newton method itself is not read for
+        implementation, section 9.
+        transcribes, each located by number and page: the paper's problem class and
+        efficiency concepts with their relation to [1] definition 3.1; **every test
+        problem of appendix a**, twenty of them, with n, m, every objective in the
+        paper's notation and the variable bounds; the worked example of section 5
+        with its table number, so a recovered solution can be checked against a
+        published point; the source appendix a cites for its problems.
+        then **the gate**, five criteria stated before any example is seen and a
+        verdict per example on each, with an overall pass or fail: the dimension
+        and the 2m column count; whether the phi-efficient set is derivable in
+        closed form and **by which published result**, named by theorem or example
+        number; whether the three phi separate, **checked near the efficient set
+        and not on a uniform sample**, per r-08 and s-07, which this session can
+        only specify and not run, so the criterion is marked not checkable without
+        a run and that is not a pass; whether any image column is a function of a
+        strict subset of the decision variables, per v-54, with the free variables
+        and what is known of the efficient set's projection onto them; and whether
+        the problem is genuinely interval-valued at source rather than a crisp
+        problem with a band added.
+        ambiguities are reported and not resolved. the session ends with twenty
+        verdicts and a recommendation of one example, or with the statement that
+        none passes.
+
+    f2  problems_native.py. the example f1 passed, in a4's and a5's interface,
+        including representation and the no-round-trip rule. **no uncertainty is
+        added and no width function is written**: the intervals are the paper's.
+        tests: the objective values reproduce the paper's own at any point the
+        paper prints one, section 5's table being the source; a1's diagnostic runs
+        on the union bounding box of the three efficient sets and asserts the three
+        phi separate there, which is f1's criterion 3 discharged as an assertion.
+
+    f3  the native run, and the derivation where f1 says one is available. all
+        three solvers, all three phi, the same seeds and budget as e1 and e2, the
+        decision-space metrics, the number-provenance rule of section 10 e1, and
+        the derived set drawn behind the recovered ones where a derivation exists.
+        a closed-form derivation, if attempted, follows b1's route exactly and stops
+        rather than patching, section 6.
+
+    f4  part 2 write-up: what the method finds on a problem nobody adapted, and the
+        answer to the objection [7] raises against transformation-based methods.
+        **if f1's gate passes nothing, f4 is written in the fallback form instead**
+        and f2 and f3 do not run: what the paper's examples are, why each does or
+        does not serve as a test problem for this method, and what a study using
+        them would need. what that costs the paper and the presentation is written
+        down in docs/plan_after_meeting.md section d2, before the reading rather
+        than after it.
+
+### g1 to g4: the write-up
+    new on 2026-09-04. the four artefacts due on 25 september are a paper-like
+    write-up with results, a latex memoria, the code repository and a short
+    presentation with no implementation detail. the repository is the other eleven
+    phases; these four subparts are the other three artefacts. **they are work and
+    not something that happens afterwards**, and every one of them is bound by the
+    number-provenance rule of section 10 e1.
+
+    g1  the results document. the shape of docs/meeting_2026_09_04.md but reporting
+        measurements rather than plans. it holds section b3's two central tables and
+        every finding under the disposition docs/plan_after_meeting.md section a1
+        gives it, and it is the memoria's source: the memoria is not a second place
+        where a result is decided.
+
+    g2  the figure set. one script under experiments/ regenerating every figure the
+        memoria and the presentation use, into results/figures/, from the run
+        artefacts under results/ and from nothing else. no figure is drawn by hand
+        and no figure is produced inside a memoria build. every figure carries the
+        budget, the seed count and the cardinality of each series inside the figure
+        and never in a filename, as d3 requires.
+
+    g3  the latex memoria. every number arrives as an \input of a generated
+        fragment or as a named csv cell, with the file and the key named. its
+        expected length and its language are not in the meeting record and are
+        email-today items, docs/plan_after_meeting.md section h3; both change the
+        document's structure and both have to be settled before drafting starts.
+
+    g4  the presentation. it carries the claim, one or two figures and the numbers.
+        **it carries nothing about pymoo, seeds, tolerances, test suites,
+        cardinality rules, reference-front sampling modes or subpart identifiers.**
+        its claim sentence is g3's, word for word, and its figures are g2's.
 
 
 ## 11. working rules
 
-evidence rules, before everything else:
+evidence rules, before everything else. **the corpus is open since 2026-09-04 and
+that raises the value of these rules rather than relaxing them**: with five papers
+a claim's source could be checked by reading all five, and with an open corpus the
+number of places a number could have come from is the number of places a wrong
+number could have come from. section 3.
     a coefficient, a number, a theorem statement or a section reference enters the
     project only from a paper read in this project and recorded with its location,
     in a0, in b1, or in a code comment. not from a prompt, not from a summary alone,
@@ -1122,8 +1393,11 @@ code style, no exceptions:
 dependencies:
     numpy, pymoo, matplotlib, pandas at runtime; pytest for development. one
     requirements.txt with a comment separating the two groups.
-    nothing else without approval in the research chat. yfinance is added at f1 and
-    not before.
+    nothing else without approval in the research chat. **yfinance is no longer
+    wanted**: it was to be added at f1 for the portfolio construction, and part 2
+    is now the interval-native problems of [16], which need nothing beyond numpy.
+    if the phase g memoria build wants a latex toolchain, that is a system
+    dependency and not a python one and it does not go in requirements.txt.
 
 
 ## 12. repository layout
@@ -1131,11 +1405,20 @@ dependencies:
 phi-interval-opt/
     CONTEXT.md                  this file. specification.
     PROGRESS.md                 state, decisions, open questions, session log.
-    papers/                     source pdfs and extracted text. a0 and b1 read here.
-    literature/                 paper summaries. reference only, never a substitute
-                                for the papers.
+    papers/                     source pdfs and extracted text. **the corpus, and
+                                it is open**: every paper is here, section 3.
+        resumed/                paper summaries. reference only, never a substitute
+                                for the papers. **this is the directory this file
+                                used to call literature/**, which does not exist.
     docs/                       a0, a1, b1, c3 deliverables and research-chat
                                 analyses.
+        plan_after_meeting.md   the plan after the supervisors' meeting of
+                                2026-09-04: the claim, the ordered path, what phase
+                                e must report to be comparable with p1, the phi
+                                stopping condition, the interval-native gate and
+                                its fallback, the scope diffs, the registered
+                                prediction and the calendar.
+        meeting_2026_09_04.md   the document written for that meeting.
         project_narrative.md    the project in plain language, written in the
                                 research chat: what is being asked, what has been
                                 established and what it cost. the human narrative
@@ -1169,13 +1452,21 @@ phi-interval-opt/
         metrics_objective.py    d1
         metrics_decision.py     d2
         reporting.py            d3
+        problems_native.py      f2, planned and not yet written
     experiments/
         run_tier0.py            e1
         run_tier1.py            e2
+        run_native.py           f3, planned and not yet written
+        make_figures.py         g2, planned and not yet written
     tests/
         conftest.py             import path setup
         one test file per src module, named test_<module>.py
         test_validation.py      c3
     results/
         tier0/  tier1/  part2/
+        figures/                g2's output. every figure in the memoria and the
+                                presentation is here and is regenerated by
+                                experiments/make_figures.py, section 10 e1's
+                                number-provenance rule.
+        meeting/                the figures written for the 2026-09-04 meeting.
     requirements.txt

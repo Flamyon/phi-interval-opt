@@ -35,6 +35,36 @@ p-05 was narrowed in a3 but is still open and stays in PROGRESS.md.
 
 ## answered questions from section 6, questions only the supervisors can answer
 
+s-08 | answered as assumed at the supervisors' meeting of 2026-09-04, and filed
+    here in plan-after-meeting. the question was whether to accept p1's
+    two-dimensional efficient band or change p1's shape, a curve and three
+    distinct phi not being available together at two variables and two interval
+    objectives, docs/a1_uncertainty_model.md part 3. the working assumption was to
+    accept the band. **the meeting's first decision accepts part 1's results as
+    they stand and retracts nothing**, and the band is what b1 derived and what
+    docs/meeting_2026_09_04.md section 4.3 presented, including the closed-form
+    boundary a4 predicted: two conic arcs for example 2.2, one for example 2.3 and
+    none for example 2.4, whose set is the unit square minus one open edge. the
+    band is also what makes the coverage finding r-19 measurable at all, covering
+    a two-dimensional region being a question a hundred points can answer badly.
+    docs/b1_phi_efficient_sets.md sections 2.2 and 2.4.
+
+s-05 | **moot** since the supervisors' meeting of 2026-09-04, and filed here in
+    plan-after-meeting. the question was whether CONTEXT.md section 9's exclusion
+    of section 5 of [1] stands, given that section 5 holds proposition 5.1, which
+    relates two of the three phi this project implements. the working assumption
+    was that the exclusion stands for implementation and that proposition 5.1 is a
+    prediction to check and never a result the project asserts. **the meeting's
+    fifth decision lifts every paper-level exclusion**, so the question no longer
+    has a subject: proposition 5.1 may be read and cited like any other published
+    result, and it has already been read and transcribed, v-24. what is retained
+    is not an exclusion but a working rule, and it is the same rule that has
+    always applied: the project does not assert an interval analogue of a fuzzy
+    proposition without deriving it, and the analogue it has, s-11's containment
+    criterion, was derived independently and is not a corollary of proposition
+    5.1. CONTEXT.md section 9 as rewritten, docs/a0_framework.md and its a0-b
+    addendum.
+
 s-13 | closed in c3-b, and closed by the derivation rather than by the
     supervisors. as raised in c3 this said that two points returned by a solver
     under phi_cw, (1.42192, -0.00039) from random search at seed 15 and
@@ -71,6 +101,20 @@ every other s-row is still marked "not yet asked" and stays in PROGRESS.md.
 
 
 ## retired risks
+
+r-03 | retired in plan-after-meeting, 2026-09-04, and retired because its premise
+    disappeared rather than because it was mitigated. as raised in a0 the row said
+    that the pdf of [1] was not in the repository and that the extracted text
+    lacked its reference list and two glyphs, so section 3's provenance claims and
+    [1]'s own citations could not be resolved. **the pdf is in papers/**, arriving
+    with the whole corpus at the supervisors' meeting of 2026-09-04, and it
+    carries its reference list. the row's own mitigation was "obtain the pdf",
+    and it has been obtained. what the row leaves behind is not a risk but three
+    reading tasks that are now possible for the first time: p-01, which wanted
+    [1]'s notation and its references [7], [9], [23], [26] and [31]; p-06, which
+    wanted whether [1] identifies its "strict minimum" with one of definition
+    3.1's names; and the third part of s-11, whether the containment criterion is
+    published, which [1]'s own [9], [26] and [31] are where it would sit.
 
 r-07 | closed in a3-b, its premise removed rather than mitigated. as raised in a1
     this said that computing an image coordinate as f_u - f_l is unsafe when the

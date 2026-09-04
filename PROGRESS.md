@@ -15,13 +15,29 @@ elsewhere:
                         the full text of every open s-row. section 6 is the index
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-59, p-06, s-13, r-19, d-03.
+    highest numbers in use: v-59, p-06, s-13, r-21, d-06, and x-02 for the
+    registered predictions of section 9, which is new.
     numbering continues across those files and numbers are never reused.
 
 project started 2026-08-30.
 
 ## 1. where the project stands
 
+    the meeting:        the supervisors' meeting of 2026-09-04 happened.
+                        **its decisions are in docs/meeting_2026_09_04.md and the
+                        plan they produced is docs/plan_after_meeting.md**, which
+                        is the document to read before the next session. five
+                        things changed: part 1 is accepted as a controlled test on
+                        adapted problems and nothing is retracted; phase e proceeds
+                        as specified; more phi may be searched for subject to the
+                        framework's conditions; **part 2 is no longer the portfolio
+                        application but the interval-native problems of [16]**, with
+                        the portfolio recorded as future work; and **the corpus is
+                        open**, every paper being in papers/ and every previous
+                        paper-level exclusion lifted. four artefacts are due on
+                        25 september: a paper-like results document, a latex
+                        memoria, the code repository and a short presentation with
+                        no implementation detail
     current phase:      d, analysis. **phase c is complete and tagged
                         phase-c-complete**, closed out in
                         docs/phase_c_summary.md. its gate does not pass: twelve of
@@ -184,13 +200,47 @@ phase a, formulation. complete, tagged phase-a-complete.
     a2  interval_math.py                    done
     a3  phi_transforms.py                   done
     a4  problems_tier0.py                   done
-    a5  problems_tier1.py                   done
+    a5  problems_tier1.py                   done, corrected in a5-b
+    a5-b tier 1 width drivers                **new, not started**. a5 shares one
+                                            width function across a problem's
+                                            objectives, so under examples 2.3 and
+                                            2.4 the image carries duplicate columns
+                                            and the transformed problem has three
+                                            effective objectives where zdt1 has four
+                                            and four where dtlz2 has six, while
+                                            under example 2.2 it has all of them.
+                                            the duplication is phi-dependent, so the
+                                            headline comparison on tier 1 confounds
+                                            the order with the transformed
+                                            dimension. a5-b gives each objective its
+                                            own driver as p1 has and re-runs a1 part
+                                            4's slice sweep on the new forms.
+                                            CONTEXT.md section 10 a5,
+                                            docs/plan_after_meeting.md section b4.
+                                            **precedes e2**
 
 phase b, ground truth. complete, tagged phase-b-complete in d2-b, the tag naming
 b2's commit; its close-out document is docs/phase_b_summary.md, written after the
 fact in repo-clean-b. b2-b came after the tag and during phase d, r-13's
 mitigation being a prerequisite for d1 and for nothing else.
     b1  phi-efficient sets, derivation      done
+    b1-b the closed form along the path      **new, not started, optional**. the
+         phi_t from example 2.4 to 2.2       one-parameter family
+                                            [[1, -(1-t)], [1, 1]] in centre and
+                                            half-width coordinates has determinant
+                                            1 + (1-t)^2 > 0, so it is admissible by
+                                            [1]'s own condition at every t; on p1
+                                            every member has convex image
+                                            coordinates and constant diagonal
+                                            hessians, so b1's route closes with t
+                                            carried as a symbol and the overlap with
+                                            X_cw becomes a function of t rather than
+                                            three numbers. one session, no runs, and
+                                            it strengthens the calibration rather
+                                            than the exploration.
+                                            docs/plan_after_meeting.md section c3.
+                                            **first optional session, taken only if
+                                            two scheduled sessions finish early**
     b2  reference_fronts.py                 done
     b2-b the reference front's density       done
 
@@ -231,15 +281,37 @@ the budget, the seed count, delta, the box scale or a phi pair's status is refus
 with the field named, and nothing is written.
 
 phase e, experiments
-    e1  tier 0 run                          not started
-    e2  tier 1 run                          not started
-    e3  results synthesis                   not started
+    e1  tier 0 run                          not started. **next session**
+    e2  tier 1 run                          not started, waits on a5-b and on e1
+    e3  results synthesis                   not started. its subject is unchanged
+                                            except that it no longer selects a phi
+                                            to carry into part 2, part 2 now running
+                                            all three
 
-phase f, part 2
-    f1  data and interval construction      not started
-    f2  optimization under selected phi     not started
-    f3  backtest                            not started
-    f4  write-up                            not started
+phase f, part 2. **every subpart rewritten on 2026-09-04, identifiers kept and
+subjects changed**, CONTEXT.md section 10 f1 to f4 and docs/plan_after_meeting.md
+section a2. what they were: f1 yfinance and 30 s&p 500 assets, f2 portfolio
+optimization under the selected phi, f3 an out-of-sample backtest against
+markowitz, equal-weight and risk parity, f4 the answer to "which phi is better".
+the portfolio application is future work, where slide 21 of the supervisors'
+presentation places it.
+    f1  reading pass over [16], with the      not started. document only. **runs in
+        gate                                  parallel with e1 and e2** and gates f2
+    f2  problems_native.py                    not started, waits on f1 passing an
+                                              example
+    f3  the native run, plus its derivation   not started, waits on f2 and on e2
+    f4  part 2 write-up                       not started, waits on f3, or on f1
+                                              alone in the fallback form
+
+phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
+25 september; the fourth is the repository itself.
+    g1  the results document                not started, waits on e1 and e3
+    g2  the figure set                      not started, can start on e1's output
+    g3  the latex memoria                   not started, waits on g1 and g2, and on
+                                            the two email-today items of
+                                            docs/plan_after_meeting.md section h3
+    g4  the presentation                    not started, waits on g3's frozen claim
+                                            sentence and g2's figures
 
 ## 3. decisions
 
@@ -278,6 +350,38 @@ d-03, 2026-09-01, proposed in c2, reversed in c2-b before it was taken, and
     section 10 c2 needs a clause for the one override, which only the research
     chat can write
 
+d-04, 2026-09-04, taken at the supervisors' meeting | **part 2's subject changes
+    from the portfolio application to the interval-native test problems of [16],
+    and the corpus is open**: every paper is in papers/ and the paper-level
+    exclusions of CONTEXT.md section 9 are lifted | the meeting of 2026-09-04,
+    decisions 4 and 5, docs/meeting_2026_09_04.md;
+    docs/plan_after_meeting.md sections a2 and e | CONTEXT.md sections 2, 3, 4, 6,
+    8, 9, 10 e3, 10 f1 to f4, 11 and 12; f1 to f4, rewritten in place; e3, which no
+    longer selects a phi; r-03, which retires; s-05, which is moot; p-01, p-02,
+    p-04, p-05 and p-06, which become answerable
+
+d-05, 2026-09-04, proposed in this session and awaiting the research chat |
+    **a5's shared width function is replaced by one driver per objective**, zdt1
+    r_1 on x_30 and r_2 on x_29, dtlz2 r_1, r_2 and r_3 on x_12, x_11 and x_10,
+    each keeping the functional form a1 part 4 argued for | the duplication is
+    phi-dependent, so the transformed problem has four effective objectives under
+    example 2.2 and three under example 2.4 on zdt1, and six against four on dtlz2,
+    which confounds the study's headline pair with the transformed dimension;
+    a1-b measured the analogous correction on p1, where phi_cw's efficient set was
+    bit-identical either way while phi_ls moved from 1271 to 1505 grid points;
+    docs/plan_after_meeting.md section b4 | a5, corrected in a5-b; a1 part 4, whose
+    slice sweep is re-run on the new forms per r-08 and s-07; e2, which does not
+    start before a5-b. **nothing already built is re-run**: e2 has not started, b1
+    does not cover tier 1 and c3's gate is tier 0 only. it does not answer s-09
+
+d-06, 2026-09-04, closed at the meeting | **the deliverable format is four
+    artefacts**: a paper-like results document, a latex memoria, the code
+    repository, and a short presentation with no implementation detail | the
+    meeting of 2026-09-04 | phase g, new; CONTEXT.md sections 8 and 10 g1 to g4;
+    the number-provenance rule now binding e1, e2, f3 and phase g, CONTEXT.md
+    section 10 e1. **still unstated and blocking g3**: the memoria's expected
+    length and its language, docs/plan_after_meeting.md section h3
+
 ## 4. verified facts
 
 moved to docs/verified.md in session a1-b. the number is kept in place so that
@@ -293,15 +397,27 @@ format: p-nn | question | owner subpart | status
 
 p-01 | what letter and typeface does [1] use for the automorphism class and the
     beta row vector, and what works are its [7], [9], [23], [26] and [31]? | a0,
-    then b1 | open, needs the pdf of [1]
+    then b1 | **open and now answerable**: the pdf of [1] is in papers/ since
+    2026-09-04 and it carries its reference list. it stops being a wait and becomes
+    a reading task, and resolving [1]'s own [9], [26] and [31] is what would settle
+    the third part of s-11
 
 p-02 | does ishibuchi and tanaka 1990, [9], state the centre-width comparison in
-    the same coefficients as example 2.4 of [1]? | b1 | open, needs the paper and
-    not literature/Center-Width Decomposition.md
+    the same coefficients as example 2.4 of [1]? | b1 | **open, and substantively
+    answered from the paper, which is in papers/ since 2026-09-04**: definition
+    3.4, equations (3.11) and (3.12), a_c <= b_c and a_w <= b_w for minimisation,
+    with a_w the half-width by the paper's own equation (4.6), a_R = a_L + 2 a_w.
+    docs/plan_after_meeting.md section c2. **the row stays open** because that
+    reading was made while surveying papers/ and not in a session that recorded
+    printed page numbers, which the evidence rule requires; the session that does
+    so closes it, and it should also record definitions 3.1, 3.2, 3.3 and equation
+    (4.1), which are three further order relations the project has never looked at
 
 p-04 | does any construction in [7] or [8] drive the interval width from the
-    decision vector rather than by a constant band? | e3 | open, needs the two
-    papers themselves, which are not in papers/. the owner moves from a5 to e3 in
+    decision vector rather than by a constant band? | e3 | **open and now
+    answerable**: both pdfs are in papers/ since 2026-09-04, and [13] is a third
+    source of the same kind. the paragraph below was written when they were absent
+    and its contingency no longer applies. the owner moves from a5 to e3 in
     a-close, which is the date the row was missing: [7] and [8] are comparison
     references, CONTEXT.md section 3, and the first place the project has to say
     anything about them is e3's synthesis, where the memoria answers the direct-
@@ -313,7 +429,10 @@ p-04 | does any construction in [7] or [8] drive the interval width from the
 
 p-05 | under which numbered definition does [10] state the gh-difference, and
     under which theorem number the midpoint-radius regularity criterion? | b1,
-    then b2 | open and now realised. b1 needed the criterion and had to cite it as
+    then b2 | **open and now answerable**: [10]'s pdf is in papers/ since
+    2026-09-04. this is the one unverified number in b1's derivation and it can be
+    closed by a reading session before the memoria cites it. what follows is the
+    row as it stood. b1 needed the criterion and had to cite it as
     "theorem 34" from literature/gH-differentiability calculus for interval
     analysis.md with the number unverified, [10] not being in papers/. the outcome
     of the check is not in doubt for p1, every function involved being a
@@ -322,7 +441,8 @@ p-05 | under which numbered definition does [10] state the gh-difference, and
 
 p-06 | does [1] anywhere identify the "strict minimum" it asserts at x = 0 for the
     worked function after example 3.9 with one of definition 3.1's three named
-    concepts? | b1 | open. the paper's words are "a strict minimum", which is not
+    concepts? | b1 | **open and now answerable** with [1]'s pdf, in papers/ since
+    2026-09-04, and wanted before the memoria prints p0's status. the paper's words are "a strict minimum", which is not
     one of the three names, and a0 found no sentence joining them. definition
     3.1(1) is the plausible reading, being the only one stated through the same
     relation, but a4-b demoted it from a claim to an inference in both
@@ -331,9 +451,26 @@ p-06 | does [1] anywhere identify the "strict minimum" it asserts at x = 0 for t
 ## 6. questions only the supervisors can answer
 
 each carries the working assumption the project proceeds on. none blocks work.
-all twelve are open and none has been asked yet. if an answer differs from the
-assumption, record it as a decision in section 3 and list the subparts that have
-to change.
+**nine are open after the meeting of 2026-09-04.** none of the nine was asked at
+that meeting, which spent its time on direction rather than on readings; they are
+still worth asking and docs/supervisor_questions.md is still the version to send.
+if an answer differs from the assumption, record it as a decision in section 3 and
+list the subparts that have to change.
+
+what the meeting settled: **s-08 is answered as assumed** and retires, decision 1
+accepting part 1's results as they stand and the two-dimensional band being what
+b1 derived and what the meeting document presented; **s-05 is moot**, the
+paper-level exclusions of CONTEXT.md section 9 having been lifted, so proposition
+5.1 may be read and cited like any other published result, the retained working
+rule being only that the project does not assert an interval analogue of a fuzzy
+proposition without deriving it. both are in docs/answered.md with the reasoning.
+**s-11 gains a project-side reading task rather than an answer**: its third part,
+whether the criterion is published, is no longer unanswerable inside the project
+now that [1]'s pdf and its reference list are in papers/, and section c2 of
+docs/plan_after_meeting.md has already found that ishibuchi and tanaka's
+proposition 4.1 agrees with the criterion on a case the criterion decides.
+**s-09 is untouched by decision d-05**: distinct width drivers and per-objective
+scaling are independent choices.
 
 **docs/supervisor_questions.md is the version the supervisors read** and holds
 the full text of every row: the question, the working assumption, what depends on
@@ -362,10 +499,6 @@ s-04 | should CONTEXT.md section 2 record that [1]'s conclusion does compare two
     1 may not rank phi is about what this study can measure and [1]'s criterion
     is structural | docs/supervisor_questions.md s-04, docs/verified.md v-23
 
-s-05 | does CONTEXT.md section 9's exclusion of section 5 of [1] stand, given
-    that it holds proposition 5.1 | it stands for implementation; proposition 5.1
-    is a prediction to be checked and never a result the project asserts |
-    docs/supervisor_questions.md s-05, docs/a0_framework.md a0-b addendum
 
 s-06 | should make_phi carry (centre, half_width), the second image coordinate
     being lost at constant or near-zero width if computed as f_u - f_l | both,
@@ -378,10 +511,6 @@ s-07 | should the step 1 degeneracy check run on the slice where the efficient
     against the stronger check, which a4 built as a test and a5 repeats |
     docs/supervisor_questions.md s-07, docs/a1_uncertainty_model.md part 2
 
-s-08 | accept p1's two-dimensional efficient band, or change p1's shape | accept
-    the band; it gives spread and coverage two dimensions of structure and b1
-    delivered the closed-form boundary a4 predicted | docs/supervisor_questions.md
-    s-08, docs/b1_phi_efficient_sets.md sections 2.2 and 2.4
 
 s-09 | one absolute half-width for every tier 1 objective, or one scaled per
     objective | keep the common absolute width as the closest reading of slide 19
@@ -421,13 +550,6 @@ r-02 | [9] of [1], where the order relations on C that (3) decomposes are
     mitigation: (3) states the relation fully in terms of phi_i and the order on
     R^2, so nothing is missing today; research chat if b1 needs more.
 
-r-03 | the pdf of [1] is not in the repository and the extracted text lacks its
-    reference list and two glyphs.
-    cost: section 3's provenance claims and [1]'s own citations cannot be
-    resolved.
-    trigger: already realised in a0.
-    mitigation: obtain the pdf; p-01 and p-02.
-
 r-05 | example 2.1 shows the class permits different coefficients per objective,
     which none of the three implemented phi use.
     cost: nothing for the experiment; a reviewer may ask why one 2x2 map is fixed
@@ -461,9 +583,12 @@ r-09 | a1's width driver rule was derived from two benchmarks and one tier 0
     design and has not been tested outside them.
     cost: a tier 1 or portfolio problem built on it could still be degenerate in
     a way not yet seen.
-    trigger: f1 constructing interval returns, a different kind of problem.
+    trigger: **f2 building an interval-native problem from [16]**, a different
+    kind of problem, and a5-b's new width drivers. the trigger read "f1
+    constructing interval returns" while part 2 was the portfolio application.
     mitigation: treat it as a working rule and not a result, and run the full a1
-    diagnostic including the slice check on every new problem before use.
+    diagnostic including the slice check on every new problem before use. f1's
+    criterion 3 records it per example and f2 discharges it as an assertion.
 
 r-11 | the phi_lu inside phi_ls nesting is a theorem in real arithmetic and fails
     by rounding in doubles, one point of 1565 measured on dtlz2 at eps = 0.50.
@@ -603,9 +728,91 @@ r-19 | nsga-ii's decision-space coverage of a full-dimensional efficient set is
     measurements, the five exclusions and the control are docs/c3_validation.md
     sections 3, 4 and 5.
 
-r-17 | retired in c3-c, r-10 in a3, r-01 in a4, r-07 in a3-b and r-04 in b1,
-    the last filed in repo-clean-b. all five are in docs/answered.md with the
-    reasoning that retired them.
+r-20 | a5's shared width function makes the transformed problem's effective
+    column count phi-dependent: zdt1 has four under example 2.2 and three under
+    examples 2.3 and 2.4, dtlz2 six against four.
+    cost: the study's headline pair on tier 1, example 2.2 against example 2.4,
+    then compares problems of different transformed dimension, and the measured
+    difference confounds the order with the dimension. no caption separates them
+    afterwards. p1 does not have the defect, a1-b having removed it, so the
+    calibration and the benchmarks are not built on the same terms.
+    trigger: e2 producing any tier 1 pair number, and g1 or g3 reporting one.
+    mitigation: d-05, a5-b, which gives each objective its own driver before e2
+    runs. if d-05 is not taken, every tier 1 table carries the effective column
+    count per phi and the memoria states the confound in writing.
+    docs/plan_after_meeting.md section b4.
+
+r-21 | f1's gate may pass no example of [16], the paper not having been read and
+    its examples not having been chosen for this purpose.
+    cost: known in advance rather than discovered. the claim loses its third
+    clause and becomes a two-stage claim; the answer to [7]'s objection reverts
+    from a result to an argument; the presentation loses one slide and its
+    strongest closing sentence.
+    trigger: f1's verdict table.
+    mitigation: the fallback is written before the reading and not after it,
+    docs/plan_after_meeting.md section d2: part 2 becomes the reading result, what
+    the twenty problems are, why each does or does not serve, and what a study
+    using them would need. f4 has a form for that case and f2 and f3 do not run.
+
+r-17 | retired in c3-c, r-10 in a3, r-01 in a4, r-07 in a3-b, r-04 in b1 and
+    **r-03 in this session**, the pdf of [1] having arrived in papers/. all six
+    are in docs/answered.md with the reasoning that retired them.
+
+## 9. registered predictions
+
+new section, opened 2026-09-04. a prediction is registered **before** the run that
+could confirm it, with both of its measurements fixed at registration, so that
+neither is available afterwards as an explanation of whatever the run returned. a
+row is never edited after registration; an outcome is a new line under it and a
+correction is a new row.
+
+format: x-nn | the prediction | the condition | the confirming measurement | the
+refuting measurement | status
+
+x-01 | **the protected-minimiser effect.** for any finite candidate set S, the
+    member minimising an image column g_k strictly over S is dominated by no
+    member of S, since domination requires being no worse in every column. where
+    g_k is a function of a strict subset T_k of the decision variables, that
+    member's coordinates outside T_k are unconstrained by its protection, so it
+    lies outside the phi-efficient set with a probability bounded away from zero
+    at every budget.
+    | the effect appears at a pair (problem, phi) **exactly when** some column has
+    a non-empty free set F_k and the phi-efficient set's projection onto F_k is a
+    proper subset of the box's, of positive co-measure. **not** that the
+    minimiser be interior: dtlz2's width is minimised at x_n = 0, on a face. the
+    general form reproduces v-54's two measured constants on p1 under example 2.4
+    exactly, probability 1/2 and expected overhang 1/8, which is the check that
+    the generalisation is the right one. derived analytically from the a5 forms:
+    **present on p1 under examples 2.3 and 2.4 and absent under example 2.2;
+    present on zdt1 under all three, the draft's "not under phi_lu" being refuted
+    there because zdt1's own f_1 = x_1 is separable and the shared half-width
+    depends on x_30 alone, so free sets are non-empty under every phi; present on
+    dtlz2 under examples 2.3 and 2.4 and absent under example 2.2, whose only
+    free-set column omits x_2, a variable the efficient set does not constrain**;
+    and present on any interval-native problem satisfying the same condition,
+    which f1 records per example under its criterion 4.
+    docs/plan_after_meeting.md sections f2 and f3.
+    | **m-1, the tail-survival lift.** per problem, phi and column k with F_k
+    non-empty: random search's uniform box sample at budget 5000 at each of the
+    five seeds, filtered under phi, ordered ascending by g_k; s_30 is the fraction
+    of the thirty smallest that survive, c = |front| / 5000 is the chance rate,
+    L = s_30 / c, reported per seed with median and interquartile range.
+    predicted L >= 3 where the condition says present; L <= 1.5, taken as the
+    maximum over all columns, where it says absent.
+    | **m-2, the overhang.** per seed, the argmin of g_k, with the distance from
+    its F_k-coordinates to b1 section 2.4's closed form for p1, to
+    {x_2 = ... = x_29 = 0} for zdt1 and to {x_3 = ... = x_11 = 1/2} for dtlz2.
+    predicted median strictly positive where present and exactly zero where
+    absent, and **on p1 under example 2.4 the mean over seeds equals 1/8 to within
+    the seed spread**. 1/8 is derived and not fitted, so a measured mean that is
+    not 1/8 within the seed spread refutes the mechanism as stated, and the
+    response is to withdraw the generalisation and not to adjust the constant.
+    | registered 2026-09-04, before e1 and e2. **what is not evidence either way,
+    written down so it cannot be offered later**: that the efficient sets differ
+    more under one phi than another; that nsga-ii covers X_cw worse than X_lu;
+    that the outside fraction is higher under examples 2.3 and 2.4. all three are
+    already established, all three have other explanations on record, and none of
+    them is m-1 or m-2
 
 ## 8. session log
 
@@ -717,6 +924,60 @@ format:
     settled. 52 tests added, all in the fast run. the fast run is 422 passed and
     507 deselected in 129.68s and the full run is 917 passed and 12 xfailed in
     922.89s | the research chat, on d1; then d3 or e1
+
+2026-09-04 | plan-after-meeting | new docs/plan_after_meeting.md; CONTEXT.md
+    sections 2, 3, 4, 6, 8, 9, 10 a5, 10 e1, 10 e3, 10 f1 to f4, 10 g1 to g4, 11
+    and 12; PROGRESS.md; docs/answered.md | **planning only, no code, no
+    experiment, no new module**, and nothing was implemented: no phi was added to
+    the registry, a5's width functions were not changed and the newton method was
+    not touched. the session after the supervisors' meeting of 2026-09-04.
+    **the single claim, defended**: the choice of order relation is not a
+    modelling detail, and moving between two of the framework's own named orders
+    replaces most of the optimal set, calibrated exactly on p1 at 10.3 per cent of
+    the union shared, reproduced on standard benchmarks and persisting on problems
+    that are interval-valued at source. every other finding got a disposition and
+    none is left floating.
+    **the arc is the plan's spine**: read the framework, build a controlled
+    problem answerable exactly, validate the measurement against that known
+    answer, extend it to standard benchmarks, apply it to problems interval-valued
+    at source. p1 is the calibration and not a toy, being the only place the
+    measurement can be checked at all; the interval-native problems are the ending
+    and not a fallback.
+    **a defect not raised at the meeting**: a5 shares one width function across a
+    problem's objectives, so the transformed problem's effective column count is
+    **phi-dependent**, four against three on zdt1 and six against four on dtlz2,
+    which confounds the study's headline pair with the transformed dimension.
+    r-20, d-05, a5-b, and it precedes e2. **nothing already built is re-run.**
+    **the phi search got a stopping condition** in the framework's own terms: the
+    containment criterion, which in centre and half-width coordinates says any phi
+    with four non-negative coefficients is a refinement of example 2.4 and carries
+    nothing new, so a new order must carry a sign change. applied to [9], now in
+    papers/: definitions 3.1 and 3.3 are example 2.2, definition 3.4 is example
+    2.4 with a_w the half-width, equation (4.1)'s order is **excluded as a check**
+    with M = [[1, 0], [1/2, 1/2]] against example 2.2, which [9]'s own proposition
+    4.1 independently confirms, and definition 3.2's width-seeking order is
+    **admitted** and nested with none of the three. the recommendation is neither:
+    it is b1-b, the closed form along the path from example 2.4 to example 2.2 on
+    p1, one session and no runs, which strengthens the calibration where a fourth
+    phi would extend the exploration.
+    **the prediction was corrected before it was registered**, x-01. the draft was
+    already proved by b1 section 2.4 and by v-54, and two facts in it were wrong:
+    delta is 1/8 since d-01, and the condition is a strict subset with a unique
+    minimiser and not an interior one. the general form reproduces v-54's 1/2 and
+    1/8 exactly, and analytically from the a5 forms it is **refuted for zdt1**,
+    whose separable f_1 = x_1 gives example 2.2 a free-set column too, and
+    **confirmed for dtlz2**, whose only free-set column under example 2.2 omits a
+    variable the efficient set does not constrain. m-1 and m-2 are fixed now.
+    **scope**: eleven CONTEXT.md scope statements superseded with before and after
+    blocks, the four paper-level exclusions of section 9 lifted, the evidence rule
+    restated and strengthened rather than relaxed. r-03 retires, s-05 is moot,
+    s-08 is answered, and p-01, p-02, p-04, p-05 and p-06 all become answerable
+    because [1], [7], [8], [9] and [10] are now on disk.
+    **the calendar**: e1 next, f1 beside it, a5-b, e2, f2, e3, f3, then g1, g2, g3
+    and g4, with delivery on 25 september and a cut order that drops stages from
+    the end and never from the middle. two email-today items, the memoria's length
+    and its language, both blocking g3. no test was run and none was changed; the
+    suite is unchanged at 995 | the research chat, on this plan; then e1
 
 2026-09-03 | d3 | new src/reporting.py and tests/test_reporting.py; CONTEXT.md
     sections 10 e1 and 10 e3; PROGRESS.md | the last instrument before the

@@ -3,6 +3,19 @@
 session c-close, 2026-09-02, at the end of phase c. this is the accumulated list,
 written to be answered in one sitting rather than one at a time.
 
+**status after the meeting of 2026-09-04, added in plan-after-meeting.** none of
+these was asked at that meeting, which spent its time on direction rather than on
+readings, so this page is still the version to send. two rows have since left
+PROGRESS.md and are kept here only so the page reads whole: **s-08 is answered as
+assumed**, the meeting's first decision accepting part 1's results as they stand,
+and **s-05 is moot**, its fifth decision lifting the paper-level exclusions that
+row was about. both are in docs/answered.md with the reasoning. **s-11's third
+part is no longer unanswerable inside the project**: the pdf of [1] is in papers/
+with its reference list, and docs/plan_after_meeting.md section c2 has already
+found that ishibuchi and tanaka's proposition 4.1 agrees with the criterion on a
+case the criterion decides. **s-09 is untouched by the tier 1 width correction
+d-05**, distinct drivers and per-objective scaling being independent choices.
+
 **none of these blocks work.** every one carries the assumption the project is
 proceeding on, and the project has proceeded. what an answer changes is stated
 under each. where an answer agrees with the assumption, the row retires and
