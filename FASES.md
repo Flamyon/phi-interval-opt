@@ -26,8 +26,24 @@ la decisión de cómo entra la imprecisión, se elige imprecisión en el objetiv
 
 define p1 (caja [-0.5,1.5]^2, dos centros cuadráticos, semianchura rho·x_2^2 + delta) y la forma de tier 1, F_i = [f_i - r_i, f_i + r_i], con el caso crisp como eps = 0 exacto.
 
-variante de anchuras distintas por objetivo, medida y
-descartada.
+a1 rechaza tres variantes de anchuras distintas por objetivo, y las tres llevan
+las dos semianchuras como funciones de la misma variable x_2 y opuestas en ella,
+lo que hace incomparables todos los pares de puntos con x_2 distinto y devuelve
+la caja entera bajo phi_ls y phi_cw. ese motivo de rechazo no alcanza a la
+variante que a1-b mide después.
+
+### a1-b anchuras distintas por objetivo, medida y adoptada
+
+docs/a1_uncertainty_model.md, apéndice a1-b.
+
+la variante que a1 no consideró: r_1 = rho·x_2^2 + delta y r_2 = rho·x_1^2 + delta,
+las dos semianchuras no monótonas en variables distintas en lugar de opuestas en
+una sola. medida y **adoptada**. es la forma que lleva src/problems_tier0.py y
+sobre la que descansa entera la derivación de b1. bajo las anchuras idénticas de
+a1 las dos columnas de anchura del problema transformado eran la misma función y
+una de las cuatro no aportaba nada a la dominancia. sobre la rejilla de a1 el
+conjunto eficiente de phi_cw resultó idéntico bit a bit, 961 puntos con el mismo
+conjunto de índices, mientras phi_lu pasó de 527 a 460 y phi_ls de 1271 a 1505.
 
 ### a2 aritmética intervalar
 

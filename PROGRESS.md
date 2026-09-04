@@ -307,9 +307,9 @@ phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
 25 september; the fourth is the repository itself.
     g1  the results document                not started, waits on e1 and e3
     g2  the figure set                      not started, can start on e1's output
-    g3  the latex memoria                   not started, waits on g1 and g2, and on
-                                            the two email-today items of
-                                            docs/plan_after_meeting.md section h3
+    g3  the latex memoria                   not started, waits on g1 and g2. the
+                                            two email-today items are answered and
+                                            are d-07: english, short and applied
     g4  the presentation                    not started, waits on g3's frozen claim
                                             sentence and g2's figures
 
@@ -381,6 +381,36 @@ d-06, 2026-09-04, closed at the meeting | **the deliverable format is four
     the number-provenance rule now binding e1, e2, f3 and phase g, CONTEXT.md
     section 10 e1. **still unstated and blocking g3**: the memoria's expected
     length and its language, docs/plan_after_meeting.md section h3
+
+d-07, 2026-09-04, closed | **the memoria is in english, and it is short and
+    applied.** it does not re-derive the framework, does not restate the theory of
+    [1] beyond what a reader needs to follow the application, and does not carry
+    the derivations at length: it cites the papers and shows what applying them
+    produced, the problems, the measured results, the tables and the figures. the
+    derivations stay in docs/b1_phi_efficient_sets.md and the other deliverables
+    and are cited from the memoria rather than reproduced in it, which is the
+    normal arrangement for an applied write-up and is what keeps the memoria short
+    without losing anything. **the consequence, decided here rather than
+    discovered in g3**: the containment result, v-56's exact linear relations and
+    the rank-1 saturation cannot each carry a full section in a short applied
+    document. the containment and v-56 become one compact section of structural
+    observations in the body, not an appendix, because both are guards on how the
+    claim may be phrased and a guard a reader meets after the claim has already
+    been read is not a guard; the saturation stays where
+    docs/plan_after_meeting.md section a1 put it, beside the nsga-ii coverage
+    deficit, because it is a measurement about the transformation and not a
+    structural fact about the orders | the two email-today items of
+    docs/plan_after_meeting.md section h3, answered | g3, which can now be drafted
+    and whose structure this fixes; g1, whose results document prioritises
+    accordingly, the claim of plan section a1 being the spine and everything else
+    compressed against it; CONTEXT.md section 10 g3; **it closes what d-06 left
+    open and blocking**. no translation step is scheduled and no spanish
+    terminology has to be fixed, which removes the risk plan section h3 raised,
+    that one spanish word would be used for the half-width and the full width,
+    which CONTEXT.md section 4 and section 10 a2 forbid in english for a reason
+    that does not change with the language. **the length is settled as a shape and
+    not as a page range**: no page count was given, and if one is wanted it is a
+    second question and not this decision
 
 ## 4. verified facts
 

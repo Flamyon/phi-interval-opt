@@ -1287,10 +1287,26 @@ is code, and a session record block for PROGRESS.md.
         and never in a filename, as d3 requires.
 
     g3  the latex memoria. every number arrives as an \input of a generated
-        fragment or as a named csv cell, with the file and the key named. its
-        expected length and its language are not in the meeting record and are
-        email-today items, docs/plan_after_meeting.md section h3; both change the
-        document's structure and both have to be settled before drafting starts.
+        fragment or as a named csv cell, with the file and the key named.
+        **it is in english, and it is short and applied**, d-07: it does not
+        re-derive the framework, does not restate the theory of [1] beyond what a
+        reader needs to follow the application, and does not carry the derivations
+        at length. it cites the papers and shows what applying them produced, the
+        problems, the measured results, the tables and the figures; the derivations
+        stay in docs/b1_phi_efficient_sets.md and the other deliverables and are
+        cited from here rather than reproduced. no translation step is scheduled
+        and no spanish terminology has to be fixed, which removes the risk
+        docs/plan_after_meeting.md section h3 raised.
+        **what the shortness costs, decided and not discovered**: the containment,
+        v-56's exact linear relations and the rank-1 saturation cannot each carry a
+        full section. the containment and v-56 are one compact section of
+        structural observations **in the body and not an appendix**, both being
+        guards on how the claim may be phrased and a guard met after the claim has
+        been read being no guard; the saturation stays beside the nsga-ii coverage
+        deficit where docs/plan_after_meeting.md section a1 puts it, being a
+        measurement about the transformation and not a structural fact about the
+        orders. the claim of that section's a1 is the spine and everything else is
+        compressed against it, which is also how g1 prioritises.
 
     g4  the presentation. it carries the claim, one or two figures and the numbers.
         **it carries nothing about pymoo, seeds, tolerances, test suites,

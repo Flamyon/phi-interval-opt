@@ -493,10 +493,11 @@ def save_raw_runs(root, key, results):
 # reads one configuration back from disk as the results that were written
 def load_raw_runs(path):
     with np.load(path) as arrays:
-        return [SearchResult(seed=int(seed), n_evals=int(n_evals),
-                             front=arrays["front_{}".format(seed)],
-                             decision_vectors=arrays["decision_vectors_{}".format(seed)])
-                for seed, n_evals in zip(arrays["seeds"], arrays["n_evals"])]
+        return [SearchResult(
+            seed=int(seed), n_evals=int(n_evals),
+            front=arrays["front_{}".format(seed)],
+            decision_vectors=arrays["decision_vectors_{}".format(seed)])
+            for seed, n_evals in zip(arrays["seeds"], arrays["n_evals"])]
 
 
 # writes every configuration's raw arrays and the manifest that names them
@@ -1130,9 +1131,9 @@ def summary_row(key, value, source):
     return {"key": key, "value": value, "source": source}
 
 
-# the run parameters and counts, as the keys the record reads its prose from
-def summary_rows(settings, runs, tables, points, elapsed):
-    rows = [summary_row("seeds", " ".join(str(seed) for seed in settings["seeds"]),
+# the run parameters, one key each, as the record reads them back
+def summary_parameters(settings):
+    return [summary_row("seeds", " ".join(str(seed) for seed in settings["seeds"]),
                         "run parameter"),
             summary_row("n_seeds", len(settings["seeds"]), "run parameter"),
             summary_row("budgets", " ".join(str(budget)
@@ -1148,24 +1149,40 @@ def summary_rows(settings, runs, tables, points, elapsed):
             summary_row("hv_reference_rule", hv_rule, "run parameter"),
             summary_row("dependence_points", dependence_points, "run parameter"),
             summary_row("dependence_seed", dependence_seed, "run parameter"),
-            summary_row("tail_rank_count", tail_rank_count, "run parameter"),
-            summary_row("n_configurations", len(runs), "the run grid"),
-            summary_row("n_runs", sum(len(value) for value in runs.values()),
-                        "the run grid"),
-            summary_row("wall_seconds", elapsed, "the run grid")]
+            summary_row("tail_rank_count", tail_rank_count, "run parameter")]
+
+
+# each problem's box scale and the absolute delta the fraction gives on it
+def summary_scales():
+    rows = []
     for problem_name in problem_names:
         problem = problem_registry[problem_name]
         rows.append(summary_row("box_scale_{}".format(problem_name),
                                 box_diameter(problem), "the problem's bounds"))
         rows.append(summary_row("delta_{}".format(problem_name),
                                 problem_delta(problem), "run parameter"))
-    for name, path in sorted(tables.items()):
-        rows.append(summary_row("table_{}".format(name), path.name, "written here"))
+    return rows
+
+
+# the tables written and whether each problem and phi was scored a hypervolume
+def summary_artefacts(tables, points):
+    rows = [summary_row("table_{}".format(name), path.name, "written here")
+            for name, path in sorted(tables.items())]
     for key in sorted(points):
-        point, scorable, reason = points[key]
+        _, scorable, reason = points[key]
         rows.append(summary_row("hypervolume_scored_{}_{}".format(*key), scorable,
                                 reason or "the point dominates every scored row"))
     return rows
+
+
+# the run parameters and counts, as the keys the record reads its prose from
+def summary_rows(settings, runs, tables, points, elapsed):
+    counts = [summary_row("n_configurations", len(runs), "the run grid"),
+              summary_row("n_runs", sum(len(value) for value in runs.values()),
+                          "the run grid"),
+              summary_row("wall_seconds", elapsed, "the run grid")]
+    return (summary_parameters(settings) + counts + summary_scales()
+            + summary_artefacts(tables, points))
 
 
 # the gap between p1's exact pair statistic and the measured one, per pair and metric
@@ -1309,26 +1326,36 @@ def record_measured(path, budgets):
              "independent uniform samples share no point.", ""]
     for budget in budgets:
         lines.extend(["### budget {}".format(budget), ""])
-        rows = [row for row in decision_rows_at(path, budget)
-                if row["metric"] in ("coverage_a_in_b", "coverage_b_in_a", "overlap")
-                and row["phi_a"] != row["phi_b"]]
-        lines.extend(markdown_table(("problem", "phi_a", "phi_b", "status", "metric",
-                                     "cardinality_a", "cardinality_b", "median",
-                                     "q1", "q3", "delta", "box_scale"), rows))
+        lines.extend(record_measured_budget(path, budget))
         lines.append("")
-    lines.extend(["### the noise floor", "",
-                  "one phi against itself at two seeds, so no order difference can "
-                  "appear in it; a cross-phi number that does not exceed it is not "
-                  "evidence of anything, docs/plan_after_meeting.md section b1. it "
-                  "is a row and not a column because d3's decision block has no "
-                  "column for it and widening d3 is another subpart's file.", ""])
+    lines.extend(record_noise_floor(path))
+    return lines + [""]
+
+
+# the cross-phi rows of table 2 at one budget, both deltas together
+def record_measured_budget(path, budget):
+    rows = [row for row in decision_rows_at(path, budget)
+            if row["metric"] in ("coverage_a_in_b", "coverage_b_in_a", "overlap")
+            and row["phi_a"] != row["phi_b"]]
+    return markdown_table(("problem", "phi_a", "phi_b", "status", "metric",
+                           "cardinality_a", "cardinality_b", "median", "q1", "q3",
+                           "delta", "box_scale"), rows)
+
+
+# the same-phi seed-to-seed rows of table 2, and what they are for
+def record_noise_floor(path):
+    lines = ["### the noise floor", "",
+             "one phi against itself at two seeds, so no order difference can "
+             "appear in it; a cross-phi number that does not exceed it is not "
+             "evidence of anything, docs/plan_after_meeting.md section b1. it is a "
+             "row and not a column because d3's decision block has no column for it "
+             "and widening d3 is another subpart's file.", ""]
     floor = [row for row in decision_rows_at(path)
              if row["phi_a"] == row["phi_b"] and row["metric"] in
              ("coverage_a_in_b", "coverage_b_in_a", "overlap")]
-    lines.extend(markdown_table(("problem", "phi_a", "metric", "n_evals",
-                                 "cardinality_a", "cardinality_b", "median", "q1",
-                                 "q3"), floor))
-    return lines + [""]
+    return lines + markdown_table(("problem", "phi_a", "metric", "n_evals",
+                                   "cardinality_a", "cardinality_b", "median", "q1",
+                                   "q3"), floor)
 
 
 # the record's instrument-error section, the calibration's own number
@@ -1371,6 +1398,21 @@ def record_solvers(path, points):
              "where they exist:".format(hv_rule), ""]
     lines.extend(markdown_table(("key", "value", "source"), points))
     return lines + [""]
+
+
+# the objective-space block of the solver table, at one budget
+def record_objective_metrics(path, budget):
+    lines = ["", "the objective-space metrics at budget {}; the same rows at the "
+             "convergence budget are in the same file. every row is a median with "
+             "its interquartile range over the seeds, at the cardinality stated "
+             "beside it, and a ratio taken across two phi here is a ratio of "
+             "volumes in two different spaces and means nothing."
+             .format(budget), ""]
+    rows = [row for row in read_metrics_table(path)[objective_block]
+            if row["n_evals"] == budget]
+    return lines + markdown_table(
+        ("problem", "phi", "solver", "metric", "cardinality", "reference_size",
+         "include_singular_segments", "median", "q1", "q3"), rows)
 
 
 # the record's registered measurements, m-1 and m-2 of x-01
@@ -1442,13 +1484,15 @@ def record_figures(paths, root):
              "p1 alone: they are the plane b1's derived regions live in, drawn "
              "behind the recovered sets, and p0 has one decision variable. the "
              "paths are relative to the run's output root, results/tier0.", ""]
+    # sorted, and not in the order they were drawn, so that the list a run writes
+    # and the list a rebuild reads off the directory are one list.
     lines.extend("- {}".format(path.relative_to(root).as_posix())
-                 for path in paths)
+                 for path in sorted(paths))
     return lines + [""]
 
 
-# what this session settled that the plan did not, and what e1 refuses to do
-def record_closing():
+# the overlap convention and the noise floor's label, decided in this session
+def record_closing_conventions():
     return [
         "## 10. what this run settled that the plan did not", "",
         "*d2's overlap is not the shared fraction of the union.* "
@@ -1467,7 +1511,12 @@ def record_closing():
         "block has none; widening d3 is another subpart's file. a same-phi row "
         "carries no order difference by construction, so labelling it a finding "
         "would be worse than labelling it a check, and its note says which kind of "
-        "check it is.", "",
+        "check it is.", ""]
+
+
+# the hypervolume point and the two deltas, decided in this session
+def record_closing_instruments():
+    return [
         "*the hypervolume reference point is derived once per problem and phi "
         "across both budgets,* so that the convergence check compares two "
         "hypervolumes of one measurement rather than two numbers against two "
@@ -1493,7 +1542,12 @@ def record_closing():
         "*delta was fixed before the run at one twentieth of the box diameter* and "
         "was not tuned afterwards; the sweep in section 8 is what the numbers do at "
         "other values, emitted so that the movement is a measured artefact rather "
-        "than a caveat.", "",
+        "than a caveat.", ""]
+
+
+# what this session settled that the plan did not, and what e1 refuses to do
+def record_closing():
+    return record_closing_conventions() + record_closing_instruments() + [
         "## 11. what e1 does not do", "",
         "e1 does not interpret. it does not read the registered measurements "
         "against their thresholds, does not say whether the instrument's error is "
@@ -1515,9 +1569,9 @@ def write_record(record_path, root, tables, paths, budget):
     lines.extend(record_solvers(tables["3_solvers"],
                                 [row for row in summary
                                  if row["key"].startswith("hypervolume_scored")]))
-    lines.extend(record_registered(read_table(root / "registered_measurements_summary.csv"),
-                                   root / "registered_measurements_summary.csv",
-                                   budget))
+    lines.extend(record_objective_metrics(tables["3_solvers"], budget))
+    registered = root / "registered_measurements_summary.csv"
+    lines.extend(record_registered(read_table(registered), registered, budget))
     lines.extend(record_free_sets(read_table(root / "free_sets.csv")))
     lines.extend(record_delta_sweep(delta_sweep_summary(root, budget), budget))
     lines.extend(record_figures(paths, root))
@@ -1694,6 +1748,29 @@ def run(output_root, record_path, settings):
     return tables
 
 
+# the tables of a run already on disk, by the names save_table gives them
+def artefact_tables(root):
+    return {name: root / "table_{}.csv".format(name)
+            for name in ("1_exact_p1", "2_measured", "3_solvers")}
+
+
+# the figures of a run already on disk, in the order the record lists them
+def artefact_figures(root):
+    return sorted((root / "figures").glob("*.png"))
+
+
+# the record rebuilt from the artefacts of a run, without re-running anything
+def rebuild_record(output_root, record_path, budget):
+    # the raw results and the tables are re-readable without re-running, so the
+    # record they are read into is too. this is how a change to the record's prose
+    # reaches the document without spending the grid again, and it is also the
+    # check that every number in the record does come out of a file: nothing of
+    # the run is in memory here.
+    root = Path(output_root)
+    return write_record(Path(record_path), root, artefact_tables(root),
+                        artefact_figures(root), budget)
+
+
 # the run parameters as the command line states them
 def parse_arguments(argv):
     parser = argparse.ArgumentParser(description="e1, the tier 0 run")
@@ -1706,6 +1783,8 @@ def parse_arguments(argv):
         gate_budget, gate_budget * convergence_multiple))
     parser.add_argument("--pop-size", type=int, default=gate_pop_size)
     parser.add_argument("--reference-points", type=int, default=reference_points)
+    parser.add_argument("--record-only", action="store_true",
+                        help="rebuild the record from artefacts already written")
     return parser.parse_args(argv)
 
 
@@ -1715,7 +1794,11 @@ def main(argv=None):
     settings = run_settings([int(seed) for seed in arguments.seeds.split(",")],
                             [int(budget) for budget in arguments.budgets.split(",")],
                             arguments.pop_size, arguments.reference_points)
-    run(arguments.output_root, arguments.record, settings)
+    if arguments.record_only:
+        rebuild_record(arguments.output_root, arguments.record,
+                       settings["budgets"][0])
+    else:
+        run(arguments.output_root, arguments.record, settings)
     announce("done, record at {}".format(arguments.record))
 
 

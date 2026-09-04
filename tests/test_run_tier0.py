@@ -246,3 +246,16 @@ def test_the_raw_arrays_read_back_as_the_runs_that_were_written(tmp_path):
     assert all(result.front.shape[1] == 2 * 2 for result in results)
     assert all(result.front.shape[0] == result.decision_vectors.shape[0]
                for result in results)
+
+
+@pytest.mark.slow
+def test_the_record_rebuilds_from_the_artefacts_alone(tmp_path):
+    # the record is the run's numbers read back out of the run's files, so it must
+    # be reproducible from those files with nothing of the run in memory. this is
+    # also what lets the record's prose be corrected without spending the grid
+    # again.
+    root = small_run(tmp_path / "run")
+    first = (root / "record.md").read_text(encoding="utf-8")
+    e1.main(["--output-root", str(root), "--record", str(root / "again.md"),
+             "--budgets", "200,400", "--record-only"])
+    assert (root / "again.md").read_text(encoding="utf-8") == first
