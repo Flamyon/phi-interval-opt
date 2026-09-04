@@ -38,74 +38,36 @@ project started 2026-08-30.
                         25 september: a paper-like results document, a latex
                         memoria, the code repository and a short presentation with
                         no implementation detail
-    current phase:      d, analysis. **phase c is complete and tagged
+    current phase:      e, experiments. **phase d is built**, d1, d2 and d3 all
+                        done, and phase c is complete and tagged
                         phase-c-complete**, closed out in
                         docs/phase_c_summary.md. its gate does not pass: twelve of
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    d3, reporting.py, **built and awaiting review**. the
-                        tables and the figures e1, e2 and e3 produce, and the
-                        point at which a restriction holding in the code has to
-                        still hold in the artefact. the objective-space and the
-                        decision-space metrics go into two blocks with different
-                        columns, each under the restriction it is read subject to,
-                        written in the file and not in a caption, so a reader
-                        holding the csv alone cannot make a comparison the metrics
-                        do not support. **a row lacking a required field is
-                        refused and the field is named**: the seed count, the
-                        budget, the cardinality and a median with an interquartile
-                        range on every row; the reference size, the sampling mode,
-                        include_singular_segments and the hypervolume reference
-                        point with the rule that produced it on an objective row,
-                        r-12, r-13 and s-12; delta, the scale of the decision box
-                        and the pair's status on a decision row, r-06 and r-11.
-                        no metric is computed there and the labels are not
-                        re-declared, check and finding coming from d2, the
-                        reference-point rules from d1 and the sampling modes from
-                        b2. every figure carries the budget, the seed count and
-                        the cardinality of each series inside the figure and never
-                        in a filename, and plot_decision_sets draws b1 section
-                        2.4's closed-form region behind the recovered sets where
-                        the problem is p1. **plot_convergence is not built**:
-                        src/runners.py records no per-generation history, a
-                        SearchResult carrying the final front alone, and adding
-                        the recording is a change to c2 and was not this
-                        session's. **d1 moves to done**, its review evidenced by
-                        this session's prompt, which reads d1 as amended, asks d3
-                        to render what d1 and d2 produce and asks for d1's two
-                        pymoo findings to be recorded where e1 and e3 will need
-                        them; b2-b and d2 moved to done in d1 on d1's prompt,
-                        which reads b2-b's correction as the reference d1 must use
-                        and d2's shape as settled. next is e1.
-                        c3-f is done, its review evidenced by c-close's prompt,
-                        which accepts its decomposition and asks for the close-out.
-                        c3-c is
-                        done, its review evidenced by c3-d's prompt, which accepts
-                        its corrections and asks one diagnostic question about
-                        section 5; c3-d is done, its review evidenced by c3-e's
-                        prompt; c3-e ran and **never committed**, its session
-                        ending before it wrote, and its measurements are recorded
-                        for the first time in docs/c3_validation.md sections 5.2
-                        to 5.4 by c3-f, which also carries its own review of them
-                        in its prompt. c1 is done, its
-                        review evidenced by c2's prompt; c2 is done, its review evidenced by c2-b's
-                        prompt, which reverses one of its choices; c2-b is
-                        done, its review evidenced by c3's prompt, which quotes
-                        its findings into CONTEXT.md sections 10 c2, 10 d1 and 11;
-                        c3 is done, corrected in c3-b, its review evidenced by
-                        c3-b's prompt, which reverses its forward assertion; and
-                        c3-b is done, its review evidenced by c3-c's prompt, which
-                        corrects three things c3-b left: the missing proposition
-                        behind the forward floor, the sampled quality measure, and
-                        the tolerance; and c3-c is done, its review evidenced by
-                        c3-d's prompt. b1 and b2 are done and
-                        phase b is complete and, since d2-b, tagged
-                        phase-b-complete at b2's commit, its close-out
-                        docs/phase_b_summary.md. phase a is complete: a0, a0-b,
-                        a1, a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all
-                        done and docs/phase_a_summary.md is the close-out
-                        document
+    current subpart:    e1, the tier 0 run, **run and awaiting review**.
+                        experiments/run_tier0.py, tests/test_run_tier0.py,
+                        docs/e1_tier0_run.md and results/tier0/. all three solvers,
+                        all three phi, p0 and p1, at five seeds, at budget 5000
+                        with the whole grid repeated at 20000 as the convergence
+                        check. **the calibration stopped being a derivation and
+                        became a measurement**: p1 is in table 1 exact and in
+                        table 2 measured, and the difference between its two rows
+                        is the instrument's error, which is 0.161 on the headline
+                        coverage at budget 5000 and 0.110 at 20000, every quantity
+                        of the pair moving toward its exact value as the budget
+                        rises. **the record is generated and no number in it is
+                        typed**, which is the number-provenance rule holding by
+                        construction. what the session decided beyond the plan is
+                        in the session log and in the record's section 10: d2's
+                        overlap is not the union share and the two differ by
+                        0.084 exactly on the headline pair; the noise floor is a
+                        row; and the tolerance is not needed on random search's
+                        one filtered sample, so every pair is also reported at
+                        delta zero. d3 is done, its review evidenced by this
+                        session's prompt, which asks for every table through
+                        save_metrics_table and every figure through reporting.
+                        d1 and d2 are done
     blocked on:         nothing, and that is a decision and not an absence. the
                         gate fails in twelve of ninety, all nsga-ii, three seeds
                         under phi_ls and three under phi_cw and none under phi_lu,
@@ -281,7 +243,14 @@ the budget, the seed count, delta, the box scale or a phi pair's status is refus
 with the field named, and nothing is written.
 
 phase e, experiments
-    e1  tier 0 run                          not started. **next session**
+    e1  tier 0 run                          **run and awaiting review.**
+                                            experiments/run_tier0.py,
+                                            tests/test_run_tier0.py,
+                                            docs/e1_tier0_run.md and
+                                            results/tier0/. the whole grid at 5000
+                                            and again at 20000, three tables, 18
+                                            figures, and the record generated so
+                                            that no number in it is typed
     e2  tier 1 run                          not started, waits on a5-b and on e1
     e3  results synthesis                   not started. its subject is unchanged
                                             except that it no longer selects a phi
@@ -858,102 +827,54 @@ format:
 
     date | subpart | files | outcome | next
 
-2026-09-02 | b2-b | src/reference_fronts.py; tests/test_reference_fronts.py and
-    the four call sites in tests/test_validation.py, tests/test_runners.py,
-    tests/test_random_search.py and tests/test_metrics_decision.py; new
-    docs/b2b_reference_density.md; CONTEXT.md section 10 d1; PROGRESS.md | r-13's
-    mitigation, built before d1 rather than deferred with it. **sampling_mode has
-    no default**, for the reason include_singular_segments has none: dirichlet is
-    the draw as b2 built it and farthest_point is the same draw at ten times the
-    size subsampled to n_points by greedy farthest-point selection in objective
-    space, and the two are two reference objects. the selection is in objective
-    space because that is where igd averages; it is made at the derivation's own
-    parameters, delta translating the image and moving no distance in it, so the
-    caller's delta does not move which rows are kept; the singular segment is a
-    linspace on a one-dimensional set and is not selected. **the derivation is
-    untouched**: every kept point is still x(w) at a drawn w, the kept front is a
-    subsequence of the oversample and a test walks it through, and b1 section 2.4's
-    inequalities are still nowhere in src/. the factor ten is measured and not
-    chosen, the coefficient of variation of the nearest-neighbour spacing of a
-    1000-point front falling from 0.74, 1.13 and 1.42 at factor 1 to 0.12, 0.16 and
-    0.20 at ten and 0.11, 0.11 and 0.12 at forty, ten taking at least 94 per cent
-    of the available reduction at a quarter of forty's cost. **the bias is
-    decision-relevant and r-13 is not retired**: on one fixed random-search front
-    igd differs by 5.07 to 30.41 per cent between the two references and still by
-    5.07, 12.73 and 26.20 at 20000 reference points, where r-12's flag difference
-    on the same front falls from 4.30 to 0.55; the allocation minimising igd puts
-    25 points of 200 more in the oversampled half under the dirichlet reference
-    than under the corrected one, under every phi and both flags; 31 of 32 mirror
-    pairs under phi_ls and phi_cw are ranked in opposite orders by the two
-    references, with the density-free fill distance agreeing with the corrected
-    one; and one pair of equal fill distance, 0.080595 against 0.080788 under
-    phi_lu, is preferred one way by 22 per cent and the other by 3. everything was
-    measured under both settings of the flag, r-12. 55 tests added, the mode
-    parametrised into every b2 test that can afford it, the mode's own two being
-    the subsequence check and the nearest-neighbour spread comparison, which is
-    asserted as a comparison and never against a number; the 20000-point extreme
-    test stays in the dirichlet mode, the selection costing 189 s at that size, and
-    a companion test asserts the same convergence for the other mode at 200 and
-    2000. the four call sites outside b2 state dirichlet explicitly with the reason
-    at each, so docs/c3_validation.md's numbers are unchanged. the fast run is 370
-    passed and 507 deselected in 166.42s and the full run is 865 passed and 12
-    xfailed in 1268.75s | the research chat, on b2-b; then d1 if it is built, or
-    e1
-
-2026-09-03 | d1 | new src/metrics_objective.py and tests/test_metrics_objective.py;
-    CONTEXT.md section 10 b2 and section 10 d1; docs/verified.md; PROGRESS.md |
-    the three objective-space metrics and the truncation that makes them
-    comparable across solvers. **they never rank phi**: each phi maps the same
-    problem into a different space on a different scale, so the restriction is in
-    the module head and in CONTEXT.md section 10 d1, and the metrics comparable
-    across phi remain d2's. **pymoo's indicators where pymoo has one, not
-    reimplemented**: compute_hv is pymoo.indicators.hv.HV and compute_igd is
-    pymoo.indicators.igd.IGD, both left unnormalised so the reference this module
-    is handed is the one the indicator is given. what they do that their names
-    would not say is measured and reported rather than worked around, v-59:
-    moocore's hypervolume clips at the reference point rather than refusing, the
-    rows (0, 1) and (3, 0.5) against (2, 2) giving 2.0, so a row beyond the point
-    is discarded silently; pymoo's igd averages over the reference points and not
-    over the front, 0.0 against 7.0710678118654755 on the transposed call, which
-    is the direction r-13 is about. **pymoo has no indicator for the spread this
-    project means**: its SpacingIndicator is a spread of nearest-neighbour
-    cityblock distances normalised by n, 0.649519052838329 where the same
-    quantity normalised by n - 1 is 0.75, and no paper in scope defines it, so
-    compute_spread is M_3^* of [2] definition 6 equation (19), printed page 181,
-    read from the rendered page as a5 read zdt1, v-58: the euclidean norm of the
-    per-column ranges, larger being wider. its limitation is asserted and not
-    hidden, that it reads the extremes of each column and nothing between them,
-    and whether d1 should also carry [2]'s distribution metric M_2^*, which needs
-    a neighbourhood parameter the fixed signature has no room for, is left to the
-    research chat. **every reference is an argument and none is built inside a
-    metric**: derive_reference_point takes the rule by name,
-    reference_front_nadir or reference_front_nadir_plus_range_tenth, and returns
-    the rule beside the point; igd_reference returns the front with the mode, the
-    flag, the seed and the size on the record, r-13 and s-12; and no parameter of
-    any of the six entry points has a default, asserted by inspect over all of
-    them and not by reading. **r-16 is code and no longer a recommendation**:
-    truncate_to_common_cardinality is the one uniform random subsample at a
-    stated seed, bitwise reproducible and a subsequence of its input, and
-    common_cardinality takes the smallest front over the whole comparison and not
-    per phi. **b2-b's headline is a regression test at reduced size**: 400
-    reference points against 2000 and a 60-point mirror pair allocated 45 against
-    15 in place of 200 and 150 against 50. the fill distance against an
-    independent covering draw and the corrected reference both prefer the
-    sparse-favouring front under phi_ls, 0.345423 against 0.462182, and under
-    phi_cw, 0.212935 against 0.280172, while the drawn reference prefers the
-    other; under phi_lu the oversampled half is also the half the front needs
-    more points in and all three agree, which is section 6.3's 31 of 32 and its
-    16 of 16, reproduced. v-52's cardinality effect is reproduced the same way,
-    igd 0.1101, 0.0735, 0.0534 and 0.0306 and hypervolume 4.3008, 4.5243, 4.6390
-    and 4.7228 at 25, 50, 100 and 290 rows of one fixed random-search front.
-    **CONTEXT.md section 10 b2's signature line was wrong on both entry points**,
-    missing include_singular_segments and sampling_mode on efficient_set and on
-    reference_front, and is corrected with a note that neither has a default.
-    b2-b and d2 move to done, their review evidenced by this session's prompt,
-    which reads b2-b's correction as the reference d1 must use and d2's shape as
-    settled. 52 tests added, all in the fast run. the fast run is 422 passed and
-    507 deselected in 129.68s and the full run is 917 passed and 12 xfailed in
-    922.89s | the research chat, on d1; then d3 or e1
+2026-09-04 | e1 | new experiments/run_tier0.py, tests/test_run_tier0.py and
+    docs/e1_tier0_run.md; new results/tier0/, holding 36 raw npz files with their
+    manifest, twelve csv artefacts and eighteen figures; tests/conftest.py, which
+    now puts experiments/ on the path; FASES.md, a1 corrected and an e1 entry
+    added; CONTEXT.md section 10 g3; PROGRESS.md | **the calibration measured.**
+    all three solvers, all three phi, p0 and p1, at seeds 11 to 15, at budget 5000
+    with the whole grid repeated at 20000 as the convergence check: 36
+    configurations, 180 runs, 5554 s of wall clock. three tables, all through d3's
+    save_metrics_table. **the record is generated**: every number in it is read
+    back out of a file the run wrote and the file and the key are named beside it,
+    so the number-provenance rule of CONTEXT.md section 10 e1 holds by
+    construction rather than by care, and --record-only rebuilds the record from
+    the artefacts with nothing of the run in memory.
+    **the instrument's error, which is what p1 exists to give.** on the pair
+    nested in neither direction and at delta zero, the exact 0.394710 measures
+    0.555932 at budget 5000 and 0.504177 at 20000; the exact 0.122571 measures
+    0.221859 and 0.182152; the exact overlap 0.187054 measures 0.315349 and
+    0.265889. every one moves toward its exact value when the budget is
+    quadrupled, and the residual at 20000 is the count-for-measure bias and the
+    recovered-for-derived overhang together. the containment shows in the
+    measurement exactly: coverage of X_lu in X_ls and of X_cw in X_ls is 1.000000
+    at both deltas and both budgets.
+    **three things the plan and the schema did not meet on, decided here and
+    written into the record.** d2's compute_overlap is the two covered counts over
+    the two cardinalities and tends to twice the shared measure over the sum, not
+    to the shared measure over the union: 0.187054 against 0.103177 on the
+    headline pair, so table 1 carries d2's convention and exact_regions_p1.csv
+    carries both under separate keys, and plan section b1's identification of the
+    two is wrong. the noise floor is a row and not a column, labelled a check,
+    d3's decision block having no column for it. and **the tolerance is not needed
+    on the instrument that carries the result**: the three sets of one comparison
+    are index sets over one array, so at delta zero the coverage is the exact
+    shared count, and every pair is reported at delta zero as well as at one
+    twentieth of the box diameter. the sweep says the second is far too generous
+    at two variables, coverage of X_lu in X_cw running 0.556, 0.625, 0.726, 0.931,
+    0.997, 1.000 across box fractions 0, 0.01, 0.02, 0.05, 0.1 and 0.2; it was
+    fixed before the run and was not tuned after it.
+    **no hypervolume is scored on p0**, one image column being constant under
+    every phi, so no point can strictly dominate a row and every box has zero
+    thickness; on p1 the point is derived once per phi across both budgets and
+    every front was asserted to lie strictly inside it before being scored, and
+    none was refused.
+    **m-1 and m-2 computed and not read**, x-01 being e3's to read. two
+    corrections recorded: FASES.md's a1 entry said the distinct-width variant was
+    measured and discarded when a1-b measured and adopted it, and d-07 closes the
+    two email-blocking items of plan section h3. 18 tests added. the full run is
+    1001 passed and 12 xfailed in 739.10s | the research chat, on e1; then e3, and
+    a5-b before e2
 
 2026-09-04 | plan-after-meeting | new docs/plan_after_meeting.md; CONTEXT.md
     sections 2, 3, 4, 6, 8, 9, 10 a5, 10 e1, 10 e3, 10 f1 to f4, 10 g1 to g4, 11

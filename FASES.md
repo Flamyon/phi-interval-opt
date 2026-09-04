@@ -190,8 +190,46 @@ cerrada de b1 sección 2.4. plot_convergence no se construyó: runners.py no gua
 historia por generación.
 
 
+## fase e — experimentos
+
+### e1 tirada tier 0
+
+experiments/run_tier0.py, tests/test_run_tier0.py, docs/e1_tier0_run.md.
+
+los tres solvers, los tres phi, p0 y p1, sobre la lista de semillas, con
+presupuesto 5000 y una comprobación de convergencia por problema a 20000, que es
+la rejilla entera repetida. escribe los resultados crudos en results/tier0/, tres
+tablas por save_metrics_table, dieciocho figuras por reporting y el registro, que
+**se genera**: cada número del registro se lee de vuelta de un archivo que la
+tirada escribió, que es la regla de procedencia de CONTEXT.md sección 10 e1.
+
+tabla 1 exacta, solo p1: las áreas de las regiones de b1 sección 2.4 integradas en
+forma cerrada, que reproducen las publicadas. tabla 2 medida, los dos problemas y
+los dos presupuestos, sobre la muestra única filtrada de la búsqueda aleatoria,
+con el suelo de ruido semilla a semilla del mismo phi al lado. tabla 3 los
+solvers. **la diferencia entre la fila de p1 en la tabla 1 y en la tabla 2 es el
+error del instrumento, medido una vez y solo aquí**: en el par libre en ambas
+direcciones y a delta cero, la cobertura exacta 0.394710 se mide 0.555932 a
+presupuesto 5000 y 0.504177 a 20000, y las tres cantidades del par se acercan a su
+valor exacto al cuadruplicar el presupuesto.
+
+tres cosas que el plan no había decidido. compute_overlap de d2 no es la fracción
+compartida de la unión sino el coeficiente de dice, 0.187054 frente a 0.103177 en
+el par de cabecera, así que la tabla 1 lleva la convención de d2 y
+exact_regions_p1.csv lleva las dos. el suelo de ruido es una fila y no una
+columna, porque el bloque de decisión de d3 no tiene columna para él. y **la
+tolerancia no hace falta en el instrumento que lleva el resultado**: los tres
+conjuntos de una comparación son conjuntos de índices sobre un mismo array, así
+que a delta cero la cobertura es el recuento compartido exacto, y cada par se
+reporta a delta cero además de a un veinteavo del diámetro de la caja.
+
+m-1 y m-2, las dos medidas registradas en x-01 antes de la tirada, se calculan
+aquí. e1 no las interpreta; eso es e3.
+
+
 ## estado
 
 fases a, b y c completas. d1, d2 y d3 construidos; d3 pendiente de
-revisión. 995 tests, con doce parámetros en xfail estricto que fijan el hallazgo
-de c3. lo siguiente es e1,
+revisión. e1 tirado y pendiente de revisión. 1013 tests, con doce parámetros en
+xfail estricto que fijan el hallazgo de c3. lo siguiente es e3 sobre la salida de
+e1, y a5-b antes de e2,

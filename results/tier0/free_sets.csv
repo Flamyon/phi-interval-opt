@@ -1,0 +1,25 @@
+problem,phi,column,depends_on,free_set,free_set_size,constant_column
+p0,lu,0,0,,0,False
+p0,lu,1,0,,0,False
+p0,lu,2,,0,1,True
+p0,lu,3,0,,0,False
+p0,ls,0,0,,0,False
+p0,ls,1,0,,0,False
+p0,ls,2,,0,1,True
+p0,ls,3,0,,0,False
+p0,cw,0,,0,1,True
+p0,cw,1,0,,0,False
+p0,cw,2,0,,0,False
+p0,cw,3,0,,0,False
+p1,lu,0,0 1,,0,False
+p1,lu,1,0 1,,0,False
+p1,lu,2,0 1,,0,False
+p1,lu,3,0 1,,0,False
+p1,ls,0,0 1,,0,False
+p1,ls,1,1,0,1,False
+p1,ls,2,0 1,,0,False
+p1,ls,3,0,1,1,False
+p1,cw,0,0 1,,0,False
+p1,cw,1,1,0,1,False
+p1,cw,2,0 1,,0,False
+p1,cw,3,0,1,1,False

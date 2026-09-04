@@ -1089,16 +1089,23 @@ def front_figures(root, runs, budget):
     return paths
 
 
-# one solver's decision sets under the three phi pooled over the seeds
-def pooled_sets(runs, problem_name, solver, budget):
+# one solver's decision sets under the three phi, at one seed, largest first
+def single_seed_sets(runs, problem_name, solver, budget, seed_index=0):
+    # one seed and not the five pooled, and the three ordered by decreasing size.
+    # both are about what the figure shows rather than about what was measured:
+    # five seeds of random search put twenty thousand points on the plane and bury
+    # b1's derived boundaries under them, and drawing the sets in the registry's
+    # order hides X_lu entirely, ND_lu sitting inside ND_ls. the legend carries the
+    # seed count and the cardinality of each series, so nothing is concealed by
+    # either choice, and every number is in the tables and not in the figure.
     sets = []
     for phi_name in phi_names:
-        results = runs[(problem_name, solver, phi_name, budget)]
+        result = runs[(problem_name, solver, phi_name, budget)][seed_index]
         sets.append(PlottedSet(
             label="phi_{}".format(phi_name), problem_name=problem_name,
-            phi_name=phi_name, n_seeds=len(results), n_evals=results[0].n_evals,
-            points=np.concatenate([result.decision_vectors for result in results])))
-    return sets
+            phi_name=phi_name, n_seeds=1, n_evals=result.n_evals,
+            points=result.decision_vectors))
+    return sorted(sets, key=lambda item: -len(item.points))
 
 
 # the recovered decision sets over b1's derived regions, one figure per solver
@@ -1110,7 +1117,7 @@ def decision_figures(root, runs, budgets):
         for solver in solver_names:
             path = figure_root(root) / "decision_sets_p1_{}_{}.png".format(solver,
                                                                           budget)
-            plot_decision_sets(pooled_sets(runs, "p1", solver, budget),
+            plot_decision_sets(single_seed_sets(runs, "p1", solver, budget),
                                "p1, {}, the three phi over b1's derived regions"
                                .format(solver), path)
             paths.append(path)
@@ -1505,7 +1512,12 @@ def record_figures(paths, root):
              "image and never in the filename. the decision-space figures exist for "
              "p1 alone: they are the plane b1's derived regions live in, drawn "
              "behind the recovered sets, and p0 has one decision variable. the "
-             "paths are relative to the run's output root, results/tier0.", ""]
+             "decision-space figures are drawn at the first seed of the list and "
+             "with the three sets in decreasing order of size, because five seeds "
+             "pooled bury the derived boundaries and the registry's order hides "
+             "X_lu under X_ls; both are drawing choices and the legend states the "
+             "seed count and the cardinality of every series. the paths are "
+             "relative to the run's output root, results/tier0.", ""]
     # sorted, and not in the order they were drawn, so that the list a run writes
     # and the list a rebuild reads off the directory are one list.
     lines.extend("- {}".format(path.relative_to(root).as_posix())
@@ -1781,6 +1793,22 @@ def artefact_figures(root):
     return sorted((root / "figures").glob("*.png"))
 
 
+# every configuration of a run already on disk, read back from its raw arrays
+def artefact_runs(root, settings):
+    return {(problem_name, solver, phi_name, budget):
+            load_raw_runs(raw_path(root, (problem_name, solver, phi_name, budget)))
+            for problem_name in problem_names
+            for solver in solver_names
+            for phi_name in phi_names
+            for budget in settings["budgets"]}
+
+
+# the figures redrawn from the raw arrays, without re-running anything
+def rebuild_figures(output_root, settings):
+    root = Path(output_root)
+    return all_figures(root, artefact_runs(root, settings), settings)
+
+
 # the record rebuilt from the artefacts of a run, without re-running anything
 def rebuild_record(output_root, record_path, budget):
     # the raw results and the tables are re-readable without re-running, so the
@@ -1807,6 +1835,9 @@ def parse_arguments(argv):
     parser.add_argument("--reference-points", type=int, default=reference_points)
     parser.add_argument("--record-only", action="store_true",
                         help="rebuild the record from artefacts already written")
+    parser.add_argument("--figures-only", action="store_true",
+                        help="redraw the figures from the raw arrays, then the "
+                             "record")
     return parser.parse_args(argv)
 
 
@@ -1816,7 +1847,11 @@ def main(argv=None):
     settings = run_settings([int(seed) for seed in arguments.seeds.split(",")],
                             [int(budget) for budget in arguments.budgets.split(",")],
                             arguments.pop_size, arguments.reference_points)
-    if arguments.record_only:
+    if arguments.figures_only:
+        rebuild_figures(arguments.output_root, settings)
+        rebuild_record(arguments.output_root, arguments.record,
+                       settings["budgets"][0])
+    elif arguments.record_only:
         rebuild_record(arguments.output_root, arguments.record,
                        settings["budgets"][0])
     else:

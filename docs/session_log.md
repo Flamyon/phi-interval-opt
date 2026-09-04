@@ -1021,3 +1021,143 @@ format:
     recorded. 66 tests added, all in the fast run. the fast run is 488 passed and
     507 deselected in 105.85s and the full run is 983 passed and 12 xfailed in
     586.75s | the research chat, on d3; then e1
+
+2026-09-04 | plan-after-meeting | new docs/plan_after_meeting.md; CONTEXT.md
+    sections 2, 3, 4, 6, 8, 9, 10 a5, 10 e1, 10 e3, 10 f1 to f4, 10 g1 to g4, 11
+    and 12; PROGRESS.md; docs/answered.md | **planning only, no code, no
+    experiment, no new module**, and nothing was implemented: no phi was added to
+    the registry, a5's width functions were not changed and the newton method was
+    not touched. the session after the supervisors' meeting of 2026-09-04.
+    **the single claim, defended**: the choice of order relation is not a
+    modelling detail, and moving between two of the framework's own named orders
+    replaces most of the optimal set, calibrated exactly on p1 at 10.3 per cent of
+    the union shared, reproduced on standard benchmarks and persisting on problems
+    that are interval-valued at source. every other finding got a disposition and
+    none is left floating.
+    **the arc is the plan's spine**: read the framework, build a controlled
+    problem answerable exactly, validate the measurement against that known
+    answer, extend it to standard benchmarks, apply it to problems interval-valued
+    at source. p1 is the calibration and not a toy, being the only place the
+    measurement can be checked at all; the interval-native problems are the ending
+    and not a fallback.
+    **a defect not raised at the meeting**: a5 shares one width function across a
+    problem's objectives, so the transformed problem's effective column count is
+    **phi-dependent**, four against three on zdt1 and six against four on dtlz2,
+    which confounds the study's headline pair with the transformed dimension.
+    r-20, d-05, a5-b, and it precedes e2. **nothing already built is re-run.**
+    **the phi search got a stopping condition** in the framework's own terms: the
+    containment criterion, which in centre and half-width coordinates says any phi
+    with four non-negative coefficients is a refinement of example 2.4 and carries
+    nothing new, so a new order must carry a sign change. applied to [9], now in
+    papers/: definitions 3.1 and 3.3 are example 2.2, definition 3.4 is example
+    2.4 with a_w the half-width, equation (4.1)'s order is **excluded as a check**
+    with M = [[1, 0], [1/2, 1/2]] against example 2.2, which [9]'s own proposition
+    4.1 independently confirms, and definition 3.2's width-seeking order is
+    **admitted** and nested with none of the three. the recommendation is neither:
+    it is b1-b, the closed form along the path from example 2.4 to example 2.2 on
+    p1, one session and no runs, which strengthens the calibration where a fourth
+    phi would extend the exploration.
+    **the prediction was corrected before it was registered**, x-01. the draft was
+    already proved by b1 section 2.4 and by v-54, and two facts in it were wrong:
+    delta is 1/8 since d-01, and the condition is a strict subset with a unique
+    minimiser and not an interior one. the general form reproduces v-54's 1/2 and
+    1/8 exactly, and analytically from the a5 forms it is **refuted for zdt1**,
+    whose separable f_1 = x_1 gives example 2.2 a free-set column too, and
+    **confirmed for dtlz2**, whose only free-set column under example 2.2 omits a
+    variable the efficient set does not constrain. m-1 and m-2 are fixed now.
+    **scope**: eleven CONTEXT.md scope statements superseded with before and after
+    blocks, the four paper-level exclusions of section 9 lifted, the evidence rule
+    restated and strengthened rather than relaxed. r-03 retires, s-05 is moot,
+    s-08 is answered, and p-01, p-02, p-04, p-05 and p-06 all become answerable
+    because [1], [7], [8], [9] and [10] are now on disk.
+    **the calendar**: e1 next, f1 beside it, a5-b, e2, f2, e3, f3, then g1, g2, g3
+    and g4, with delivery on 25 september and a cut order that drops stages from
+    the end and never from the middle. two email-today items, the memoria's length
+    and its language, both blocking g3. no test was run and none was changed; the
+    suite is unchanged at 995 | the research chat, on this plan; then e1
+
+2026-09-04 | e1 | new experiments/run_tier0.py, tests/test_run_tier0.py and
+    docs/e1_tier0_run.md; new results/tier0/, holding 36 raw npz files with their
+    manifest, twelve csv artefacts and eighteen figures; tests/conftest.py, which
+    now puts experiments/ on the path; FASES.md, a1 corrected and an e1 entry
+    added; CONTEXT.md section 10 g3; PROGRESS.md | **the calibration measured.**
+    all three solvers, all three phi, p0 and p1, at seeds 11 to 15, at budget 5000
+    with the whole grid repeated at 20000 as the convergence check: 36
+    configurations, 180 runs, 5554 s of wall clock. three tables, all through d3's
+    save_metrics_table. **the record is generated**: every number in it is read
+    back out of a file the run wrote and the file and the key are named beside it,
+    so the number-provenance rule of CONTEXT.md section 10 e1 holds by
+    construction rather than by care, and --record-only rebuilds the record from
+    the artefacts with nothing of the run in memory.
+    **the instrument's error, which is what p1 exists to give.** on the pair
+    nested in neither direction and at delta zero, the exact 0.394710 measures
+    0.555932 at budget 5000 and 0.504177 at 20000; the exact 0.122571 measures
+    0.221859 and 0.182152; the exact overlap 0.187054 measures 0.315349 and
+    0.265889. every one moves toward its exact value when the budget is
+    quadrupled, and the residual at 20000 is the count-for-measure bias and the
+    recovered-for-derived overhang together. the containment shows in the
+    measurement exactly: coverage of X_lu in X_ls and of X_cw in X_ls is 1.000000
+    at both deltas and both budgets.
+    **three things the plan and the schema did not meet on, decided here and
+    written into the record.** d2's compute_overlap is the two covered counts over
+    the two cardinalities and tends to twice the shared measure over the sum, not
+    to the shared measure over the union: 0.187054 against 0.103177 on the
+    headline pair, so table 1 carries d2's convention and exact_regions_p1.csv
+    carries both under separate keys, and plan section b1's identification of the
+    two is wrong. the noise floor is a row and not a column, labelled a check,
+    d3's decision block having no column for it. and **the tolerance is not needed
+    on the instrument that carries the result**: the three sets of one comparison
+    are index sets over one array, so at delta zero the coverage is the exact
+    shared count, and every pair is reported at delta zero as well as at one
+    twentieth of the box diameter. the sweep says the second is far too generous
+    at two variables, coverage of X_lu in X_cw running 0.556, 0.625, 0.726, 0.931,
+    0.997, 1.000 across box fractions 0, 0.01, 0.02, 0.05, 0.1 and 0.2; it was
+    fixed before the run and was not tuned after it.
+    **no hypervolume is scored on p0**, one image column being constant under
+    every phi, so no point can strictly dominate a row and every box has zero
+    thickness; on p1 the point is derived once per phi across both budgets and
+    every front was asserted to lie strictly inside it before being scored, and
+    none was refused.
+    **m-1 and m-2 computed and not read**, x-01 being e3's to read. two
+    corrections recorded: FASES.md's a1 entry said the distinct-width variant was
+    measured and discarded when a1-b measured and adopted it, and d-07 closes the
+    two email-blocking items of plan section h3. 18 tests added. the full run is
+    1001 passed and 12 xfailed in 739.10s | the research chat, on e1; then e3, and
+    a5-b before e2
+
+## the review chain, moved out of PROGRESS.md section 1 in e1
+
+the current-subpart entry of PROGRESS.md section 1 had accumulated the
+review evidence of every subpart before it, which is history and not
+current state, so CONTEXT.md section 11 says to move it rather than to
+shorten the row. it is moved here unchanged, and PROGRESS.md section 1 now
+carries the current subpart alone.
+
+    c3-f is done, its review evidenced by c-close's prompt,
+    which accepts its decomposition and asks for the close-out.
+    c3-c is
+    done, its review evidenced by c3-d's prompt, which accepts
+    its corrections and asks one diagnostic question about
+    section 5; c3-d is done, its review evidenced by c3-e's
+    prompt; c3-e ran and **never committed**, its session
+    ending before it wrote, and its measurements are recorded
+    for the first time in docs/c3_validation.md sections 5.2
+    to 5.4 by c3-f, which also carries its own review of them
+    in its prompt. c1 is done, its
+    review evidenced by c2's prompt; c2 is done, its review evidenced by c2-b's
+    prompt, which reverses one of its choices; c2-b is
+    done, its review evidenced by c3's prompt, which quotes
+    its findings into CONTEXT.md sections 10 c2, 10 d1 and 11;
+    c3 is done, corrected in c3-b, its review evidenced by
+    c3-b's prompt, which reverses its forward assertion; and
+    c3-b is done, its review evidenced by c3-c's prompt, which
+    corrects three things c3-b left: the missing proposition
+    behind the forward floor, the sampled quality measure, and
+    the tolerance; and c3-c is done, its review evidenced by
+    c3-d's prompt. b1 and b2 are done and
+    phase b is complete and, since d2-b, tagged
+    phase-b-complete at b2's commit, its close-out
+    docs/phase_b_summary.md. phase a is complete: a0, a0-b,
+    a1, a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all
+    done and docs/phase_a_summary.md is the close-out
+    document

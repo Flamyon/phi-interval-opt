@@ -1,0 +1,29 @@
+key,value,source
+seeds,11 12 13 14 15,run parameter
+n_seeds,5,run parameter
+budgets,5000 20000,run parameter
+pop_size,100,run parameter
+delta_box_fraction,0.05,run parameter
+reference_points,1000,run parameter
+reference_sampling_mode,farthest_point,run parameter
+reference_seed,20260901,run parameter
+hv_reference_rule,reference_front_nadir_plus_range_tenth,run parameter
+dependence_points,512,run parameter
+dependence_seed,20260905,run parameter
+tail_rank_count,30,run parameter
+n_configurations,36,the run grid
+n_runs,180,the run grid
+wall_seconds,5554.201069116592,the run grid
+box_scale_p0,2.0,the problem's bounds
+delta_p0,0.1,run parameter
+box_scale_p1,2.8284271247461903,the problem's bounds
+delta_p1,0.14142135623730953,run parameter
+table_1_exact_p1,table_1_exact_p1.csv,written here
+table_2_measured,table_2_measured.csv,written here
+table_3_solvers,table_3_solvers.csv,written here
+hypervolume_scored_p0_cw,False,"no hypervolume is scored: image columns [0] are constant over every row, so the margin rule adds no thickness there, the point cannot strictly dominate any row and every row's box has zero volume. the point is recorded because the other metrics' rows state the one the configuration would have been scored against"
+hypervolume_scored_p0_ls,False,"no hypervolume is scored: image columns [2] are constant over every row, so the margin rule adds no thickness there, the point cannot strictly dominate any row and every row's box has zero volume. the point is recorded because the other metrics' rows state the one the configuration would have been scored against"
+hypervolume_scored_p0_lu,False,"no hypervolume is scored: image columns [2] are constant over every row, so the margin rule adds no thickness there, the point cannot strictly dominate any row and every row's box has zero volume. the point is recorded because the other metrics' rows state the one the configuration would have been scored against"
+hypervolume_scored_p1_cw,True,the point dominates every scored row
+hypervolume_scored_p1_ls,True,the point dominates every scored row
+hypervolume_scored_p1_lu,True,the point dominates every scored row
