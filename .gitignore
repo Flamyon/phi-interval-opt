@@ -1,3 +1,4 @@
+claude_reset.py
 *.txt
 !papers/*.txt
 # Byte-compiled / optimized / DLL files
