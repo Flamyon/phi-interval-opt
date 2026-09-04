@@ -1125,6 +1125,55 @@ format:
     1001 passed and 12 xfailed in 739.10s | the research chat, on e1; then e3, and
     a5-b before e2
 
+2026-09-04 | a5-b | src/problems_tier1.py; tests/test_problems_tier1.py;
+    docs/a1_uncertainty_model.md, appendix a5-b; CONTEXT.md sections 10 a5, 10 e2
+    and 10 g1; FASES.md; PROGRESS.md | **the tier 1 width defect corrected, and
+    e2 unblocked.** every objective of zdt1 and dtlz2 shared one width function,
+    so under examples 2.3 and 2.4 the image carried duplicate columns and the
+    transformed problem had three effective objectives where zdt1 has four and
+    four where dtlz2 has six, with none of it under example 2.2. the redundancy
+    was phi-dependent and the study's headline pair is exactly those two orders.
+    each objective now has its own driver, zdt1 r_1 on x_30 and r_2 on x_29,
+    dtlz2 r_1, r_2 and r_3 on x_12, x_11 and x_10, **with the functional form of
+    every half-width unchanged**: the drivers were chosen so that a1 part 4's
+    argument applies to each verbatim, x_29 and x_30 entering zdt1's g linearly
+    with the same slope 9/29 and x_10, x_11 and x_12 entering dtlz2's g
+    quadratically with the same interior optimum. no variable carrying a centre
+    may drive a width, which excludes x_1 on zdt1 and x_1 and x_2 on dtlz2.
+    **non-coincidence is checked as a property and not as a count.** the 2m image
+    columns are linear combinations of the 2m base functions with pairwise
+    distinct coefficient vectors, and that follows from [1]'s determinant
+    condition alone, so it holds for every admissible phi and not only the three
+    in the registry; coincidence would therefore require a linear dependence among
+    the base functions, and one full-rank witness matrix at written-out points
+    rules it out, at smallest-to-largest singular value ratios of 8.4e-03 and
+    4.1e-03. **the certificate is shown to have power**: rebuilt on a5's shared
+    width it returns rank 3 and rank 4, which are exactly the effective column
+    counts the defect predicts.
+    **a1 part 4's slice sweep was re-run and both forms pass**, on all four of
+    a1's conditions at every level: three distinct sets, none the crisp set,
+    phi_lu not collapsed onto phi_ls, none saturating. no form was adjusted at any
+    point. the slice gained one axis per new driver, which the change forces since
+    a1's slice pins x_29, x_10 and x_11, so a middle arm was run -- a5's shared
+    width on the new slice -- to isolate the form change from the slice change.
+    **the harness is a1's**: a1's script was a throwaway and is not in the
+    repository, and at side 61 on a1's own slice it reproduces every fraction of
+    both published tables exactly, which is what makes this a re-run. the
+    correction's signature is visible in the middle arm: on one slice, giving each
+    objective its own driver raises zdt1's phi_ls fraction from 0.0468 to 0.3745
+    and its phi_cw from 0.0356 to 0.2844 while phi_lu barely moves, which is the
+    duplicate column being removed and is as phi-dependent as the defect was.
+    **two decisions from the research chat recorded and applied**, d-08 and d-09:
+    delta zero is the headline value everywhere and a positive delta appears only
+    where two different samples are compared; and the overlap reported is jaccard,
+    named jaccard, computed alongside dice rather than by changing compute_overlap.
+    **x-01's outcome recorded without waiting for e3**: m-2 confirmed, m-1
+    withdrawn as an instrument for conflating protection with being a good point,
+    and the 1/8 measurement inconclusive at five seeds and re-registered as x-02 at
+    twenty. 12 tests added. the fast run is 515 passed and 514 deselected in
+    265.56s and the full run is 1017 passed and 12 xfailed in 1376.97s | the
+    research chat, on a5-b; then e2
+
 ## the review chain, moved out of PROGRESS.md section 1 in e1
 
 the current-subpart entry of PROGRESS.md section 1 had accumulated the

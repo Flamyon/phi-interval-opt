@@ -1141,3 +1141,242 @@ no fix is proposed here, per the session brief. the choice between the redundant
 column and the non-rectangular efficient set is the research chat's, and it
 should be made knowing that s-08 was answered on a premise the modification
 removes.
+
+
+## a5-b, one width driver per objective on tier 1
+
+appended 2026-09-04, session a5-b. part 4 gave every objective of a benchmark the
+same half-width function. this section replaces that with one driver per
+objective, checks that no two image columns coincide, and re-runs part 4's slice
+sweep on the new forms. it changes no centre, no box, no imprecision level and
+nothing in p1.
+
+
+### 1. the defect, as a statement about functions
+
+part 4's forms were
+
+    zdt1     r_1(x) = r_2(x) = eps ((x_30 - 1/2)^2 + 1/20)
+    dtlz2    r_1(x) = r_2(x) = r_3(x) = eps x_12
+
+so under example 2.3 the image columns 2r_1 and 2r_2 were one function written
+twice, and under example 2.4 r_1 and r_2 were. under example 2.2 they were not:
+its two image coordinates are c - r and c + r, which differ wherever r is
+non-zero whichever objective they belong to. **the duplication is therefore
+phi-dependent**, and the transformed problem had four effective objectives under
+example 2.2 and three under example 2.4 on zdt1, six against four on dtlz2.
+docs/plan_after_meeting.md section b4 prices that: the study's headline
+comparison is exactly example 2.2 against example 2.4, so a difference measured
+across it would have confounded the order with the dimension of the transformed
+problem, and no caption separates them afterwards.
+
+stated as a property rather than as a count, which is what makes it checkable:
+the 2m image columns of any phi are fixed linear combinations of the 2m base
+functions c_1, ..., c_m, r_1, ..., r_m, and part 4's forms made those base
+functions **linearly dependent**, r_1 - r_2 being identically zero. that one
+dependence is the whole defect.
+
+
+### 2. the new forms, and why they are part 4's forms
+
+    zdt1     r_1(x) = eps ((x_30 - 1/2)^2 + 1/20)
+             r_2(x) = eps ((x_29 - 1/2)^2 + 1/20)
+    dtlz2    r_1(x) = eps x_12,  r_2(x) = eps x_11,  r_3(x) = eps x_10
+
+**the functional form of each half-width is part 4's, unchanged.** only which
+decision variable each objective reads has moved, and the drivers were chosen so
+that part 4's argument for the form applies to each of them verbatim rather than
+having to be re-made:
+
+    zdt1     g = 1 + 9 (sum_{i=2}^{30} x_i) / 29 runs over every variable from
+             x_2 on, so x_29 and x_30 both enter it, linearly and with the same
+             slope 9/29. part 4's argument is that g's optimum in the driver sits
+             on the face 0, so a half-width linear in the driver is either aligned
+             with g, which hands phi_cw the crisp order, or opposed to it, which
+             hands every phi the whole slice; a quadratic half-width has its
+             optimum at the interior point 1/2 and the trade-off resolves in the
+             interior. that argument reads x_29 exactly as it reads x_30.
+
+    dtlz2    g = sum_{i=3}^{12} (x_i - 1/2)^2 runs over x_M, that is x_3 to x_12,
+             so x_10, x_11 and x_12 all enter it quadratically with the same
+             interior optimum at 1/2. part 4's argument is that g is already
+             quadratic in the driver with an interior optimum, so a half-width
+             linear in it, optimum at 0, already differs from g's and no extra
+             curvature is wanted. that argument reads x_10 and x_11 exactly as it
+             reads x_12.
+
+what could not be a driver, and it is the same rule in both problems: a variable
+that carries a centre. x_1 is [2]'s f_1 and is the first centre of zdt1; x_1 and
+x_2 are [3]'s two angles and appear in all three centres of dtlz2. a half-width
+driven by one of them would move with the centres rather than independently of
+them, which is the degeneracy of CONTEXT.md section 5 step 1 and the thing part 2
+of this document rejected the coefficient construction for.
+
+**s-09 is untouched.** it asks whether the half-width should be one absolute
+quantity per objective or one scaled per objective; distinct drivers and
+per-objective scaling are independent choices, and every objective here still
+carries the same absolute form.
+
+
+### 3. the check that no two image columns coincide, and it is not a sample
+
+the argument is in two steps and only the second is computed.
+
+*symbolically.* src/phi_transforms.py's centre-radius route applies to each
+objective the matrix
+
+    [ lam_1 + lam_2    lam_2 - lam_1  ]
+    [ beta_1 + beta_2  beta_2 - beta_1 ]
+
+whose determinant is 2 (lam_1 beta_2 - lam_2 beta_1), twice [1]'s own, so it is
+non-zero exactly when the coefficient pair is admissible. every image column is
+therefore a linear combination of the base functions with a known coefficient
+vector. two columns belonging to different objectives have disjoint support and
+their vectors differ because an invertible matrix has no zero row; the two
+columns of one objective carry the two rows of that matrix, which differ because
+an invertible matrix has no repeated row. **so the 2m coefficient vectors are
+pairwise distinct for every admissible phi**, which is a statement about [1]'s
+admissibility condition and not about these two benchmarks.
+
+*the one computed step.* if two columns with distinct coefficient vectors were
+equal as functions, their difference would be a non-zero linear combination of
+the base functions vanishing identically, that is a linear dependence among them.
+so everything reduces to whether c_1, ..., c_m, r_1, ..., r_m are linearly
+independent, and that is settled by a matrix of those functions evaluated at
+stated points being of full rank. a full-rank matrix proves independence
+outright; it is a witness and not a sample, and no number of extra points would
+strengthen it. the points are written out in tests/test_problems_tier1.py.
+
+    problem   base functions   rank   smallest singular value / largest
+    zdt1      4                4      8.4e-03
+    dtlz2     6                6      4.1e-03
+
+the ratios sit thirteen orders of magnitude above double precision, so the rank
+verdict is not a rounding artefact.
+
+**the certificate has power, which is checked rather than asserted.** rebuilt on
+part 4's shared width, the same points give
+
+    problem   base functions   rank   effective columns
+    zdt1      4                3      three where four were expected
+    dtlz2     6                4      four where six were expected
+
+which are exactly the effective column counts docs/plan_after_meeting.md section
+b4 states from the algebra. the certificate detects the defect it was written to
+exclude.
+
+
+### 4. part 4's slice sweep, re-run
+
+**the slice had to gain axes, and that is forced by the change and not a choice
+about it.** part 4 fixed the whole tail and gridded two axes: for zdt1 x_1 and
+x_30 with x_2 ... x_29 = 0, which is [2]'s crisp Pareto set with the width driver
+freed; for dtlz2 x_1 and x_12 with x_2 = 0.5 and x_3 ... x_11 = 0.5, which is
+[3]'s. that slice pins every new driver, x_29 at 0 and x_10, x_11 at 0.5, so on
+it the new forms would have constant half-widths on all but the first objective
+and the sweep would be measuring the old problem. the slice therefore gains one
+axis per driver.
+
+so three arms are reported, and the middle one is what makes the comparison a
+comparison.
+
+**arm 1, part 4's slice with part 4's shared width, at side 61.** part 4's script
+was a throwaway and is not in the repository, so the only evidence that this
+harness is part 4's procedure is that it returns part 4's numbers. it does, to
+the four decimals part 4 printed, at side 61 and at no other side tested:
+
+    zdt1, x_2..x_29 = 0, x_1 and x_30 gridded, 3721 points
+       eps    lu frac  ls frac  cw frac      published
+       0.05    0.1105   0.5281   0.5082      0.1105  0.5281  0.5082
+       0.10    0.1435   0.5284   0.5082      0.1435  0.5284  0.5082
+       0.25    0.3701   0.5286   0.5082      0.3701  0.5286  0.5082
+       0.50    0.4700   0.5286   0.5082      0.4700  0.5286  0.5082
+       1.00    0.5133   0.5286   0.5082      0.5133  0.5286  0.5082
+
+    dtlz2, x_2 = 0.5, x_3..x_11 = 0.5, x_1 and x_12 gridded, 3721 points
+       eps    lu frac  ls frac  cw frac      published
+       0.02    0.1121   0.5560   0.5082      0.1121  0.5560  0.5082
+       0.05    0.1814   0.5907   0.5082      0.1814  0.5907  0.5082
+       0.10    0.2706   0.6353   0.5082      0.2706  0.6353  0.5082
+       0.25    0.4964   0.7482   0.5082      0.4964  0.7482  0.5082
+       0.50    0.8517   0.9258   0.5082      0.8517  0.9258  0.5082
+
+the side matters and is recorded because the fractions move with it: phi_lu's
+zdt1 fraction at eps = 0.10 is 0.2441, 0.1435, 0.1392 and 0.0769 at sides 32, 61,
+64 and 128. arm 1's numbers are comparable with part 4's and arms 2 and 3 with
+each other; arm 1 is never comparable with arm 3.
+
+**arms 2 and 3, the same new slice, the two width forms.** zdt1 grids x_1, x_30
+and x_29 at side 15, 3375 points, with x_2 ... x_28 = 0. dtlz2 grids x_1, x_12,
+x_11 and x_10 at side 8, 4096 points, with x_2 = 0.5 and x_3 ... x_9 = 0.5.
+
+    zdt1                lu frac  ls frac  cw frac  lu==ls  cw==crisp
+       eps 0.05  shared  0.0267   0.0468   0.0356  False   False
+                 own     0.0234   0.3745   0.2844  False   False
+       eps 0.10  shared  0.0308   0.0468   0.0356  False   False
+                 own     0.0240   0.3745   0.2844  False   False
+       eps 0.25  shared  0.0385   0.0468   0.0356  False   False
+                 own     0.0462   0.3745   0.2844  False   False
+       eps 0.50  shared  0.0391   0.0471   0.0356  False   False
+                 own     0.1567   0.3745   0.2844  False   False
+
+    dtlz2               lu frac  ls frac  cw frac  lu==ls  cw==crisp
+       eps 0.05  shared  0.0259   0.0391   0.0254  False   False
+                 own     0.0508   0.3101   0.1309  False   False
+       eps 0.10  shared  0.0283   0.0410   0.0254  False   False
+                 own     0.0547   0.3223   0.1309  False   False
+       eps 0.25  shared  0.0371   0.0469   0.0254  False   False
+                 own     0.0977   0.4133   0.1309  False   False
+       eps 0.50  shared  0.0547   0.0557   0.0254  False   False
+                 own     0.2305   0.5647   0.1309  False   False
+
+driver extents on the same slices, the quantity part 4 printed beside the
+fractions:
+
+    zdt1     lu x_30 [0.00, 0.93] and cw x_30 [0.00, 0.50] under both forms
+    dtlz2    lu x_12 [0.00, 1.00] under both; cw x_12 [0.00, 0.43] shared and
+             [0.00, 0.57] with its own driver
+
+
+### 5. the verdict, per problem and per phi
+
+**both forms pass, at every level of part 4's sweep.** the four conditions are
+part 4's own and they were fixed before the sweep ran.
+
+    condition                              zdt1              dtlz2
+    the three phi give three distinct sets  passes, 4 of 4    passes, 4 of 4
+    none of them is the crisp set           passes, 4 of 4    passes, 4 of 4
+    phi_lu is not collapsed onto phi_ls     passes, 4 of 4    passes, 4 of 4
+    none of them is the whole slice         passes, 4 of 4    passes, 4 of 4
+
+the rejected linear half-width of part 4 failed the middle two at every level,
+which is what the conditions are for. no form was adjusted at any point: the
+forms were fixed by the argument of section 2 before the sweep was run, and had
+one failed, the session's instruction was to stop and report rather than to tune.
+
+**what the sweep also shows, and it is the correction's own signature.** on the
+same slice, giving each objective its own driver raises the phi_ls and phi_cw
+fractions several-fold at every level -- zdt1's phi_ls from 0.0468 to 0.3745 and
+its phi_cw from 0.0356 to 0.2844, dtlz2's phi_ls from 0.0391 to 0.3101 and its
+phi_cw from 0.0254 to 0.1309 at eps = 0.05 -- while phi_lu moves comparatively
+little. that is the duplicate column being removed, seen from the other side:
+under examples 2.3 and 2.4 the shared width gave those two phi one width column
+instead of m, dominance was correspondingly easier to establish, and fewer points
+survived. under example 2.2 no column was ever duplicated, which is why phi_lu is
+the one that barely moves. **the effect is exactly as phi-dependent as the defect
+was**, and it is the reason a1-b's measurement on p1 -- phi_cw bit-identical,
+phi_ls moving from 1271 to 1505 grid points -- does not transfer as a size
+estimate: p1 had two objectives and one redundant column, and tier 1 under the
+old forms had m width columns collapsed to one.
+
+phi_cw's fraction is constant in eps on both problems and under both forms, as it
+was in part 4's own tables. that is structural and not a defect: eps scales every
+width column by one positive factor, phi_cw's image is (c_i, r_i), and the
+componentwise order between two points is unchanged by scaling one coordinate by
+a positive constant, so phi_cw's non-dominated set on a fixed sample does not
+depend on eps at all above zero. phi_ls's fraction is also constant on zdt1 with
+its own drivers, at 0.3745 across all four levels, and this is **not** the same
+statement: its image is (c_i - r_i, 2 r_i), whose first coordinate mixes eps in,
+so no invariance argument covers it and the constancy is a measured fact about
+this slice and not a property. on dtlz2 the same fraction moves, from 0.3101 to
+0.5647, which is what shows the zdt1 constancy is not structural.

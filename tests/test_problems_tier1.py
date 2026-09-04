@@ -4,8 +4,9 @@ import numpy as np
 import pytest
 
 from phi_transforms import phi_registry
-from problems_tier1 import (crisp_level, dtlz2_interval, epsilon_levels,
-                            problem_registry, zdt1_interval)
+from problems_tier1 import (crisp_level, dtlz2_interval, dtlz2_width_drivers,
+                            epsilon_levels, problem_registry, zdt1_interval,
+                            zdt1_width_drivers)
 
 # the positive levels of docs/a1_uncertainty_model.md part 4. eps = 0 is the
 # degenerate baseline and is tested separately, since under it the three phi
@@ -25,6 +26,19 @@ dtlz2_side = 12
 zdt1_jitter = 0.01
 dtlz2_jitter = 0.02
 sample_seed = 20260831
+# a5-b's slice sweep, the re-run of docs/a1_uncertainty_model.md part 4. 61 points
+# per free axis is a1's own resolution, recovered in a5-b by reproducing every
+# published fraction of a1's two tables exactly at that side and at no other; the
+# slice grids fewer axes there, so the two sides differ and the point counts are
+# comparable rather than equal.
+a1_slice_side = 61
+sweep_slice_side = {"zdt1_interval": 15, "dtlz2_interval": 8}
+# the margin the independence certificate's smallest singular value must clear,
+# relative to its largest. it is not a tolerance on a comparison, d-02: nothing
+# here compares two objective rows. it is the distance from the rank verdict to
+# machine precision, and the measured ratios are 8.4e-03 for zdt1 and 4.1e-03 for
+# dtlz2, thirteen orders above it.
+certificate_margin = 1e-6
 
 
 # the non-dominated index set of a population of objective rows, usual pareto relation.
@@ -358,23 +372,29 @@ def test_zdt1_reproduces_the_published_values():
     assert centre_2 == pytest.approx([1.0, 0.5, 0.0, 2.0])
 
 
-# zdt1's half-width is a1 part 4's quadratic in x_n, at three hand-checked points
+# zdt1's half-width is a1 part 4's quadratic, now once per objective on its driver
 def test_zdt1_half_width_matches_a1_part_4():
-    # docs/a1_uncertainty_model.md part 4: r = eps ((x_n - 1/2)^2 + 1/20), one
-    # function for both objectives. hand-computed at eps = 0.5:
-    #   x_n = 0.0   0.5 (0.25 + 0.05) = 0.150
-    #   x_n = 0.5   0.5 (0.00 + 0.05) = 0.025, the strictly positive minimum
-    #   x_n = 1.0   0.5 (0.25 + 0.05) = 0.150
-    # the minimum is interior, at x_n = 1/2, which is the whole reason the form
-    # is quadratic here: [2]'s g is linear in x_n with its optimum on the face
-    # x_n = 0, and a1 part 4 measured the linear half-width collapsing phi_lu
-    # onto phi_ls and phi_cw onto the crisp order.
+    # docs/a1_uncertainty_model.md part 4 with a5-b's drivers:
+    # r_i = eps ((x_{driver(i)} - 1/2)^2 + 1/20), driver(1) = 30, driver(2) = 29.
+    # **the form is a1 part 4's unchanged**; what a5-b moved is which variable
+    # each objective reads, so the hand-computed values are a1's own:
+    #   driver = 0.0   0.5 (0.25 + 0.05) = 0.150
+    #   driver = 0.5   0.5 (0.00 + 0.05) = 0.025, the strictly positive minimum
+    #   driver = 1.0   0.5 (0.25 + 0.05) = 0.150
+    # the minimum is interior, at the driver's 1/2, which is the whole reason the
+    # form is quadratic here: [2]'s g is linear in each of x_29 and x_30 with its
+    # optimum on the face 0, and a1 part 4 measured the linear half-width
+    # collapsing phi_lu onto phi_ls and phi_cw onto the crisp order.
+    # this test asserted r_1 == r_2 until a5-b, which was the defect and not a
+    # property: it is now asserted that the two are driven apart.
     x = np.zeros((3, zdt1_interval.n_vars))
-    x[:, -1] = [0.0, 0.5, 1.0]
+    x[:, zdt1_width_drivers[0]] = [0.0, 0.5, 1.0]
+    x[:, zdt1_width_drivers[1]] = [0.5, 1.0, 0.0]
     (_, radius_1), (_, radius_2) = zdt1_interval.evaluate(x, {"eps": 0.5})
     assert radius_1 == pytest.approx([0.15, 0.025, 0.15])
-    assert np.array_equal(radius_1, radius_2)
-    assert np.all(radius_1 > 0.0)
+    assert radius_2 == pytest.approx([0.025, 0.15, 0.15])
+    assert not np.array_equal(radius_1, radius_2)
+    assert np.all(radius_1 > 0.0) and np.all(radius_2 > 0.0)
 
 
 # dtlz2's centres reproduce the published values of [3] at non-uniform points
@@ -428,19 +448,26 @@ def test_dtlz2_sphere_identity_at_non_uniform_vectors():
     assert np.sum(np.square(centres), axis=-1) == pytest.approx(np.ones(200))
 
 
-# dtlz2's half-width is a1 part 4's linear function of x_n
+# dtlz2's half-width is a1 part 4's linear form, now once per objective
 def test_dtlz2_half_width_matches_a1_part_4():
-    # docs/a1_uncertainty_model.md part 4: r = eps x_n, one function for all
-    # three objectives. linear and not quadratic because [3]'s g is already
-    # quadratic in x_n with an interior optimum at x_n = 1/2, so a half-width
-    # whose optimum is at 0 already differs from it; the quadratic form would put
-    # the two optima together and give back the crisp order under phi_cw.
+    # docs/a1_uncertainty_model.md part 4 with a5-b's drivers: r_i = eps
+    # x_{driver(i)}, driver(1) = 12, driver(2) = 11, driver(3) = 10. linear and
+    # not quadratic because [3]'s g is already quadratic in each of x_10, x_11
+    # and x_12 with an interior optimum at 1/2, so a half-width whose optimum is
+    # at 0 already differs from it; the quadratic form would put the two optima
+    # together and give back the crisp order under phi_cw.
+    # this test asserted r_1 == r_2 == r_3 until a5-b, which was the defect.
     x = np.full((3, dtlz2_interval.n_vars), 0.5)
-    x[:, -1] = [0.0, 0.5, 1.0]
+    x[:, dtlz2_width_drivers[0]] = [0.0, 0.5, 1.0]
+    x[:, dtlz2_width_drivers[1]] = [1.0, 0.0, 0.5]
+    x[:, dtlz2_width_drivers[2]] = [0.5, 1.0, 0.0]
     radii = [radius for _, radius in dtlz2_interval.evaluate(x, {"eps": 0.25})]
     assert radii[0] == pytest.approx([0.0, 0.125, 0.25])
-    for radius in radii[1:]:
-        assert np.array_equal(radius, radii[0])
+    assert radii[1] == pytest.approx([0.25, 0.0, 0.125])
+    assert radii[2] == pytest.approx([0.125, 0.25, 0.0])
+    for first in range(len(radii)):
+        for second in range(first + 1, len(radii)):
+            assert not np.array_equal(radii[first], radii[second]), (first, second)
 
 
 # the width varies within a centre bin, which is CONTEXT.md section 5 step 1's condition
@@ -593,3 +620,321 @@ def test_phi_lu_is_the_sensitive_order_and_phi_cw_is_the_stable_one(name):
     reference = sets_of(name, positive_levels[0])["cw"]
     for eps in positive_levels[1:]:
         assert sets_of(name, eps)["cw"] == reference, eps
+
+
+# a5-b, and the reason the check below is symbolic and not a sample.
+#
+# what has to be proved. no two of the 2m image columns of a problem coincide as
+# functions, under any of the three phi. that is the property a5 as built did not
+# have: with one width function per problem, r_1 and r_2 were the same function,
+# so under example 2.3 the columns 2r_1 and 2r_2 were one column written twice
+# and under example 2.4 r_1 and r_2 were. the transformed problem then had three
+# effective objectives where it appeared to have four, and four where it appeared
+# to have six, and the count depended on which phi was applied.
+#
+# why a sample cannot prove it. finding two columns that differ at some sampled
+# points shows they differ there and says nothing about the rest of the box; and
+# a sample that found no difference would not prove coincidence either. what is
+# wanted is a statement about the functions, so the argument is about the
+# functions.
+#
+# the argument, in two steps.
+#
+# first, symbolically. src/phi_transforms.py's centre-radius route applies to
+# each objective i the matrix
+#     [ lam_1 + lam_2   lam_2 - lam_1  ]
+#     [ beta_1 + beta_2 beta_2 - beta_1 ]
+# to the pair (c_i, r_i), and its determinant is 2 (lam_1 beta_2 - lam_2 beta_1),
+# twice [1]'s own, so it is non-zero exactly when the pair is admissible. so each
+# image column is a fixed linear combination of the 2m base functions
+# c_1, ..., c_m, r_1, ..., r_m, with a known coefficient vector. two columns of
+# different objectives have disjoint support, and their coefficient vectors are
+# distinct because an invertible matrix has no zero row; the two columns of one
+# objective have the two rows of that matrix as their coefficient vectors, and
+# those are distinct because an invertible matrix has no repeated row. **so the
+# 2m coefficient vectors are pairwise distinct for every admissible phi**, which
+# is a statement about [1]'s admissibility condition and not about these two
+# problems.
+#
+# second, the one thing that is not symbolic. if two columns with distinct
+# coefficient vectors were equal as functions, their difference would be a
+# non-zero linear combination of c_1, ..., c_m, r_1, ..., r_m vanishing
+# identically, that is a linear dependence among the base functions. so the whole
+# question reduces to: **are the 2m base functions linearly independent?** under
+# a5 as built they were not, r_1 - r_2 being identically zero, and that single
+# dependence is the entire defect. the certificate below settles the question the
+# way linear independence is settled: a matrix of the 2m functions evaluated at
+# stated points, of full rank. a full-rank matrix proves independence outright,
+# and it is a witness and not a sample -- one such matrix suffices and no number
+# of extra points would strengthen it.
+#
+# the points are written out below rather than drawn, so the certificate is the
+# same object on every run and can be checked by hand.
+
+
+# the 2m base functions c_1..c_m, r_1..r_m of one problem at stated points
+def base_function_values(problem, x, eps):
+    pairs = problem.evaluate(x, {"eps": eps})
+    return np.stack([centre for centre, _ in pairs] + [radius for _, radius in pairs],
+                    axis=-1)
+
+
+# zdt1's witness points: eight decision vectors, written out and not drawn
+def zdt1_witness_points():
+    # the four coordinates that matter are x_1, which is c_1; any tail variable
+    # that is not a driver, here x_2, which moves g and therefore c_2 alone; and
+    # the two drivers x_30 and x_29. everything else is zero, so the vectors sit
+    # on and near [2]'s crisp Pareto set where the efficient set lives.
+    x = np.zeros((8, zdt1_interval.n_vars))
+    x[:, 0] = [0.0, 0.25, 0.5, 0.75, 1.0, 0.125, 0.375, 0.625]
+    x[:, 1] = [0.0, 0.0, 0.25, 0.5, 0.75, 1.0, 0.5, 0.25]
+    x[:, zdt1_width_drivers[1]] = [0.0, 0.25, 0.5, 0.75, 1.0, 0.5, 0.0, 1.0]
+    x[:, zdt1_width_drivers[0]] = [1.0, 0.0, 0.75, 0.25, 0.5, 0.125, 1.0, 0.0]
+    return x
+
+
+# dtlz2's witness points: twelve decision vectors, written out and not drawn
+def dtlz2_witness_points():
+    # x_1 and x_2 are [3]'s two angles and move the three centres; x_3 is a tail
+    # variable that is not a driver and moves 1 + g; x_12, x_11 and x_10 are the
+    # three drivers. the rest sit at 0.5, which is [3]'s own Pareto value for the
+    # tail.
+    x = np.full((12, dtlz2_interval.n_vars), 0.5)
+    x[:, 0] = np.linspace(0.0, 1.0, 12)
+    x[:, 1] = np.linspace(1.0, 0.0, 12)
+    x[:, 2] = np.linspace(0.0, 0.5, 12)
+    x[:, dtlz2_width_drivers[2]] = np.tile([0.0, 0.25, 0.75, 1.0], 3)
+    x[:, dtlz2_width_drivers[1]] = np.tile([1.0, 0.5, 0.0, 0.25], 3)
+    x[:, dtlz2_width_drivers[0]] = np.tile([0.25, 1.0, 0.5, 0.0], 3)
+    return x
+
+
+witness_points = {"zdt1_interval": zdt1_witness_points,
+                  "dtlz2_interval": dtlz2_witness_points}
+
+
+# the rank of a value matrix and how far that verdict sits from machine precision
+def independence_certificate(values):
+    singular = np.linalg.svd(values, compute_uv=False)
+    return int(np.linalg.matrix_rank(values)), float(singular[-1] / singular[0])
+
+
+# the 2m base functions are linearly independent, which is a5-b's whole point
+@pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))
+@pytest.mark.parametrize("eps", positive_levels)
+def test_the_base_functions_are_linearly_independent(name, eps):
+    # the second step of the argument above. full rank proves independence, and
+    # with the coefficient vectors pairwise distinct for every admissible phi it
+    # proves that no two image columns coincide, under any phi and not only the
+    # three in the registry.
+    problem = problem_registry[name]
+    values = base_function_values(problem, witness_points[name](), eps)
+    rank, ratio = independence_certificate(values)
+    assert rank == 2 * problem.n_obj
+    assert ratio > certificate_margin, ratio
+
+
+# the certificate fails on a5's shared width function, which is why it is here
+@pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))
+def test_the_certificate_rejects_the_shared_width_a5_b_replaced(name):
+    # CONTEXT.md section 11: a test that guards a branch must demonstrate the
+    # branch was entered. a certificate that passed whatever it was handed would
+    # be no certificate, so a5's own construction is rebuilt here, one width
+    # function repeated across the objectives, and it must fail. the rank it
+    # returns is the effective column count docs/plan_after_meeting.md section b4
+    # states: three where zdt1 appears to have four and four where dtlz2 appears
+    # to have six.
+    problem = problem_registry[name]
+    values = base_function_values(problem, witness_points[name](), 0.10)
+    shared = np.copy(values)
+    for objective in range(1, problem.n_obj):
+        shared[:, problem.n_obj + objective] = shared[:, problem.n_obj]
+    rank, _ = independence_certificate(shared)
+    assert rank == 2 * problem.n_obj - (problem.n_obj - 1)
+    assert rank < 2 * problem.n_obj
+
+
+# every objective's half-width is driven by its own decision variable
+@pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))
+def test_each_objective_has_its_own_width_driver(name):
+    # a5-b. moving one driver moves that objective's half-width and no other's,
+    # and moves no centre at all except through g, which is what makes the m
+    # width columns m different functions. the drivers are distinct indices and
+    # none of them is x_1 or, on dtlz2, x_2: those carry the centres.
+    problem = problem_registry[name]
+    drivers = {"zdt1_interval": zdt1_width_drivers,
+               "dtlz2_interval": dtlz2_width_drivers}[name]
+    assert len(set(drivers)) == problem.n_obj
+    assert all(driver >= problem.n_obj for driver in drivers)
+    base = witness_points[name]()
+    radii = [radius for _, radius in problem.evaluate(base, {"eps": 0.25})]
+    for moved, driver in enumerate(drivers):
+        x = np.copy(base)
+        # 0.5 is the driver value at which zdt1's quadratic half-width is
+        # stationary, so the move is made from it to a value that is not, which
+        # is where a difference has to appear if the driver is read at all.
+        x[:, driver] = 0.9
+        after = [radius for _, radius in problem.evaluate(x, {"eps": 0.25})]
+        assert not np.array_equal(after[moved], radii[moved]), moved
+        for other in range(problem.n_obj):
+            if other != moved:
+                assert np.array_equal(after[other], radii[other]), (moved, other)
+
+
+# a5-b's slice sweep, the re-run of docs/a1_uncertainty_model.md part 4.
+#
+# what a1 part 4's slice was and why it has to change. a1 fixed the whole tail and
+# gridded two axes: for zdt1 x_1 and x_30 with x_2 ... x_29 = 0, which is [2]'s
+# crisp Pareto set with the width driver freed; for dtlz2 x_1 and x_12 with
+# x_2 = 0.5 and x_3 ... x_11 = 0.5, which is [3]'s. a5-b gives the second and
+# third objectives their own drivers, and a1's slice pins every one of them: x_29
+# at 0 on zdt1 and x_10, x_11 at 0.5 on dtlz2. run on a1's slice the new forms
+# would have constant half-widths on all but the first objective, so the slice
+# gains one axis per new driver. **that is forced by the change and is not a
+# choice about it**: a slice that froze the new drivers would measure the old
+# problem.
+#
+# so three arms are reported, and the middle one is what makes the comparison a
+# comparison. arm 1 is a1's own slice with a5's shared width, which reproduces
+# a1's published table exactly at side 61 and is the check that this harness is
+# a1's procedure and not a new one. arm 2 is a5's shared width on the new slice
+# and arm 3 is a5-b's drivers on the same slice, so the two differ in the width
+# form alone and the added axes cancel between them.
+#
+# the fractions move with the grid resolution -- a5-b measured phi_lu's zdt1
+# fraction at 0.2441, 0.1435 and 0.0769 for sides 32, 61 and 128 at one eps -- so
+# arm 1's numbers are comparable with a1's and arms 2 and 3 with each other, and
+# never arm 1 with arm 3.
+
+
+# a1 part 4's own slice, the crisp Pareto set with the single width driver freed
+def a1_slice(name, side):
+    axis = np.linspace(0.0, 1.0, side)
+    first, driver = np.meshgrid(axis, axis, indexing="ij")
+    problem = problem_registry[name]
+    fill = 0.0 if name == "zdt1_interval" else 0.5
+    x = np.full((side * side, problem.n_vars), fill)
+    x[:, 0] = first.ravel()
+    x[:, -1] = driver.ravel()
+    return x
+
+
+# the same slice with one axis per width driver, which a5-b's forms require
+def sweep_slice(name, side):
+    problem = problem_registry[name]
+    drivers = {"zdt1_interval": zdt1_width_drivers,
+               "dtlz2_interval": dtlz2_width_drivers}[name]
+    axes = np.meshgrid(*[np.linspace(0.0, 1.0, side)] * (1 + len(drivers)),
+                       indexing="ij")
+    fill = 0.0 if name == "zdt1_interval" else 0.5
+    x = np.full((side ** (1 + len(drivers)), problem.n_vars), fill)
+    x[:, 0] = axes[0].ravel()
+    for driver, values in zip(drivers, axes[1:]):
+        x[:, driver] = values.ravel()
+    return x
+
+
+# the shared-width image of a problem, a5 as built, for the sweep's middle arm
+def shared_width_image(problem, x, record, eps):
+    # a5's construction rebuilt from a5-b's: every objective takes the first
+    # objective's half-width, which is what one width function per problem meant.
+    # nothing in src/ is changed to produce it and it exists only here.
+    pairs = problem.evaluate(x, {"eps": eps})
+    shared = tuple((centre, pairs[0][1]) for centre, _ in pairs)
+    columns = []
+    for pair in shared:
+        first, second = record.of_centre_radius(*pair)
+        columns.extend((first, second))
+    return np.stack(columns, axis=-1)
+
+
+# the crisp and three phi non-dominated sets on a stated slice, either width form
+def slice_sets(problem, x, eps, shared=False):
+    pairs = problem.evaluate(x, {"eps": eps})
+    sets = {}
+    for name, record in phi_registry.items():
+        image = (shared_width_image(problem, x, record, eps) if shared
+                 else phi_image(problem, x, record, {"eps": eps}))
+        sets[name] = non_dominated_indices(image)
+    crisp = np.stack([centre for centre, _ in pairs], axis=-1)
+    sets["crisp"] = non_dominated_indices(crisp)
+    return sets
+
+
+# one row of a1 part 4's slice table: the three fractions, the two flags, the extents
+def sweep_row(x, sets, drivers, total):
+    fractions = " ".join("{} {:.4f}".format(k, len(sets[k]) / total)
+                         for k in ("lu", "ls", "cw"))
+    flags = "lu==ls {} cw==crisp {}".format(sets["lu"] == sets["ls"],
+                                            sets["cw"] == sets["crisp"])
+    extents = " ".join(
+        "{} x_{} [{:.2f},{:.2f}]".format(k, driver + 1,
+                                         np.min(x[sorted(sets[k]), driver]),
+                                         np.max(x[sorted(sets[k]), driver]))
+        for k in ("lu", "cw") for driver in drivers[:1])
+    return "  {}  {}  {}".format(fractions, flags, extents)
+
+
+# a5-b's forms separate the three phi on the slice where the efficient set lives
+@pytest.mark.slow
+@pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))
+def test_the_new_width_forms_pass_a1_part_4_s_slice_sweep(name, capsys):
+    # this is the check r-08 and s-07 exist for, and it is the risk a5-b actually
+    # carries: a1 measured a zdt1 width that passed every uniform-sample statistic
+    # and still handed phi_cw the crisp efficient set on the slice where the
+    # solutions live. so the new forms are checked on and near the efficient
+    # region and not on a uniform draw of the box.
+    # the verdict, per problem and per phi, is the four conditions below, and they
+    # are a1 part 4's own: three distinct sets, none of them the crisp set,
+    # phi_lu not collapsed onto phi_ls, and none of them the whole slice. the
+    # rejected linear form of a1 part 4 failed the middle two at every level.
+    problem = problem_registry[name]
+    drivers = {"zdt1_interval": zdt1_width_drivers,
+               "dtlz2_interval": dtlz2_width_drivers}[name]
+    x = sweep_slice(name, sweep_slice_side[name])
+    lines = ["{} sweep slice, {} points, {} axes".format(name, len(x), 1 + len(drivers))]
+    for eps in positive_levels:
+        shared = slice_sets(problem, x, eps, shared=True)
+        distinct = slice_sets(problem, x, eps, shared=False)
+        lines.append("  eps {}".format(eps))
+        lines.append("    a5 shared  " + sweep_row(x, shared, drivers, len(x)))
+        lines.append("    a5-b own   " + sweep_row(x, distinct, drivers, len(x)))
+        for key in ("lu", "ls", "cw"):
+            assert distinct[key] != distinct["crisp"], (eps, key)
+            assert 0.0 < len(distinct[key]) / len(x) < 1.0, (eps, key)
+        assert len({distinct["lu"], distinct["ls"], distinct["cw"]}) == 3, eps
+        assert distinct["lu"] != distinct["ls"], eps
+    with capsys.disabled():
+        print("\n".join(lines))
+
+
+# the harness reproduces a1 part 4's published table on a1's own slice
+@pytest.mark.slow
+@pytest.mark.parametrize("name", sorted(problem_registry), ids=sorted(problem_registry))
+def test_the_sweep_harness_reproduces_a1_part_4(name, capsys):
+    # arm 1, and it is what makes the re-run a re-run. a1's script was a throwaway
+    # and is not in the repository, so the only evidence that this harness is a1's
+    # procedure is that it returns a1's numbers: with a5's shared width, on a1's
+    # two-axis slice, at side 61, every fraction of both published tables comes
+    # back to the four decimals a1 printed. the levels below are a1's own, which
+    # for zdt1 include 1.00 and for dtlz2 begin at 0.02, and are not this
+    # project's sweep.
+    problem = problem_registry[name]
+    published = {
+        "zdt1_interval": {0.05: (0.1105, 0.5281, 0.5082), 0.10: (0.1435, 0.5284, 0.5082),
+                          0.25: (0.3701, 0.5286, 0.5082), 0.50: (0.4700, 0.5286, 0.5082),
+                          1.00: (0.5133, 0.5286, 0.5082)},
+        "dtlz2_interval": {0.02: (0.1121, 0.5560, 0.5082), 0.05: (0.1814, 0.5907, 0.5082),
+                           0.10: (0.2706, 0.6353, 0.5082), 0.25: (0.4964, 0.7482, 0.5082),
+                           0.50: (0.8517, 0.9258, 0.5082)},
+    }[name]
+    x = a1_slice(name, a1_slice_side)
+    lines = ["{} a1's slice, {} points, side {}".format(name, len(x), a1_slice_side)]
+    for eps, expected in published.items():
+        sets = slice_sets(problem, x, eps, shared=True)
+        measured = tuple(round(len(sets[k]) / len(x), 4) for k in ("lu", "ls", "cw"))
+        lines.append("    eps {:<5} measured {} published {}".format(eps, measured,
+                                                                    expected))
+        assert measured == expected, (eps, measured, expected)
+    with capsys.disabled():
+        print("\n".join(lines))

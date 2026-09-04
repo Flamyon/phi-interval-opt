@@ -84,6 +84,34 @@ src/problems_tier1.py.
 
 zdt1 y dtlz2 como problemas intervalares, en forma centro-semianchura desde el principio y sin construir ningún extremo. barrido de imprecisión con el caso crisp (eps = 0) como línea base degenerada.
 
+### a5-b un driver de anchura por objetivo
+
+src/problems_tier1.py, tests/test_problems_tier1.py,
+docs/a1_uncertainty_model.md apéndice a5-b.
+
+a5 daba a todos los objetivos de un problema la misma función de semianchura, así
+que bajo los ejemplos 2.3 y 2.4 la imagen llevaba columnas duplicadas: zdt1 tenía
+tres objetivos efectivos donde parece tener cuatro y dtlz2 cuatro donde parece
+tener seis, y bajo el ejemplo 2.2 ninguno. **la duplicación es phi-dependiente** y
+la comparación de cabecera del estudio es exactamente ese par, así que la
+diferencia medida habría confundido el orden con la dimensión del problema
+transformado. cada objetivo lleva ahora su propio driver, zdt1 r_1 en x_30 y r_2
+en x_29, dtlz2 r_1, r_2 y r_3 en x_12, x_11 y x_10, **con la forma funcional de
+cada semianchura sin tocar**, de modo que el argumento de a1 parte 4 se hereda en
+vez de rehacerse.
+
+la no-coincidencia se comprueba como propiedad y no como recuento: las 2m columnas
+de la imagen son combinaciones lineales de las 2m funciones base con vectores de
+coeficientes distintos dos a dos, cosa que se sigue solo de la condición de
+determinante de [1], así que una coincidencia exigiría una dependencia lineal
+entre las funciones base, y una matriz testigo de rango completo la descarta. la
+anchura compartida de a5 falla el mismo certificado con rango 3 y rango 4.
+
+el barrido de rodajas de a1 parte 4 se repitió sobre una rodaja que recorre todos
+los drivers: **las dos formas pasan las cuatro condiciones en todos los niveles**,
+y el arnés reproduce exactamente las dos tablas publicadas por a1 sobre la rodaja
+de a1, que es lo que lo convierte en una repetición y no en un experimento nuevo.
+
 
 ## fase b — verdad de referencia
 
@@ -230,6 +258,6 @@ aquí. e1 no las interpreta; eso es e3.
 ## estado
 
 fases a, b y c completas. d1, d2 y d3 construidos; d3 pendiente de
-revisión. e1 tirado y pendiente de revisión. 1013 tests, con doce parámetros en
-xfail estricto que fijan el hallazgo de c3. lo siguiente es e3 sobre la salida de
-e1, y a5-b antes de e2,
+revisión. e1 tirado y pendiente de revisión; a5-b hecho y pendiente de revisión,
+que era lo que bloqueaba e2. doce parámetros en xfail estricto fijan el hallazgo
+de c3. lo siguiente es e2 sobre las formas nuevas, y e3 sobre la salida de e1,

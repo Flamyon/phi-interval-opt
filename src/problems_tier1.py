@@ -17,6 +17,30 @@
 # centres are the f_i of [2] and [3] exactly, so the crisp benchmark is not a
 # limit that is approached but the exact eps = 0 member of the family.
 #
+# one width driver per objective, a5-b and d-05. a5 as built gave every objective
+# of a problem the same half-width function, r_1 = r_2 for zdt1 and
+# r_1 = r_2 = r_3 for dtlz2, and that made two of the four image columns of zdt1
+# the same function under examples 2.3 and 2.4, and three of the six of dtlz2.
+# the duplication is **phi-dependent**: it is absent under example 2.2, whose two
+# image coordinates are c - r and c + r and are distinct wherever r is non-zero,
+# and present under the other two, whose second coordinate is the width alone. so
+# the transformed problem had four effective objectives under example 2.2 and
+# three under example 2.4 on zdt1, six against four on dtlz2, and the study's
+# headline comparison is exactly that pair. a difference measured across it would
+# have confounded the order with the dimension of the transformed problem, and no
+# caption separates them afterwards. docs/plan_after_meeting.md section b4.
+# each objective now drives its half-width with its own decision variable, which
+# is what a1-b did for p1: zdt1 takes x_30 and x_29, dtlz2 takes x_12, x_11 and
+# x_10. **the form of each half-width is unchanged**, so the change inherits a1
+# part 4's reasoning rather than needing new reasoning, and every driver sits in
+# that problem's g exactly as the original driver did. why that matters per
+# problem is written above each half-width function below.
+# what this buys, stated as the property and not as the intention: no two image
+# columns coincide as functions, under any of the three phi and for either
+# problem. the argument is symbolic and is in tests/test_problems_tier1.py above
+# the certificate that carries it. it is *not* that the columns happen to differ
+# on a sample.
+#
 # sources for the crisp objectives, both read in this session.
 # [2] e. zitzler, k. deb and l. thiele, "comparison of multiobjective
 #     evolutionary algorithms: empirical results", evolutionary computation
@@ -89,6 +113,19 @@ zdt1_n_obj = 2
 # pair, which is the form docs/a1_uncertainty_model.md part 4 constructs it in.
 zdt1_representation = "centre_radius"
 
+# one width driver per objective, a5-b: r_1 is driven by x_30 and r_2 by x_29,
+# written as indices into the decision vector and in objective order.
+# why these two and not any other pair. a1 part 4's argument for the quadratic
+# form is about where the driver sits in [2]'s g, and both of these sit in it the
+# same way: g = 1 + 9 (sum_{i=2}^{30} x_i)/29 runs over every variable from x_2
+# on, so x_29 and x_30 both enter it, linearly and with the same slope 9/29. the
+# argument therefore applies to x_29 verbatim and needs no new reasoning, which
+# is the whole reason the pair is taken from the tail rather than from anywhere
+# else. x_1 could not be a driver: it is [2]'s f_1 and is the centre of the first
+# objective, so a half-width driven by it would be a function of that centre
+# alone, which is the degeneracy of CONTEXT.md section 5 step 1.
+zdt1_width_drivers = (zdt1_n_vars - 1, zdt1_n_vars - 2)
+
 
 # zdt1's centres and half-widths, [2] equation (7) with a1 part 4's half-width
 def evaluate_zdt1(x, params=None):
@@ -107,16 +144,18 @@ def evaluate_zdt1(x, params=None):
     centre_1 = np.copy(columns[0])
     g = 1.0 + 9.0 * np.sum(np.stack(columns[1:], axis=-1), axis=-1) / (zdt1_n_vars - 1)
     centre_2 = g * (1.0 - np.sqrt(centre_1 / g))
-    half_width = zdt1_half_width(columns[-1], eps)
-    return ((centre_1, half_width), (centre_2, half_width))
+    radii = [zdt1_half_width(columns[driver], eps) for driver in zdt1_width_drivers]
+    return ((centre_1, radii[0]), (centre_2, radii[1]))
 
 
-# zdt1's half-width, quadratic in the last decision variable
-def zdt1_half_width(x_n, eps):
-    # docs/a1_uncertainty_model.md part 4, "the form":
-    #     r_1(x) = r_2(x) = eps * ( (x_n - 1/2)^2 + 1/20 )
-    # one function of x_n = x_30 for both objectives, and the same array is
-    # returned for both, the two half-widths being one function and not two.
+# zdt1's half-width, quadratic in the decision variable that drives it
+def zdt1_half_width(x_driver, eps):
+    # docs/a1_uncertainty_model.md part 4, "the form", with a5-b's one driver per
+    # objective:
+    #     r_i(x) = eps * ( (x_{driver(i)} - 1/2)^2 + 1/20 )
+    # driver(1) = 30 and driver(2) = 29, zdt1_width_drivers above. the **form** is
+    # a1 part 4's unchanged and only which variable it reads has moved, so a1's
+    # argument for it carries over rather than being re-made.
     # why quadratic here and linear in dtlz2, which is a1 part 4's reason and not
     # an inconsistency. [2]'s g is linear in x_n with slope 9/(n_vars - 1) and
     # its optimum in x_n sits on the face x_n = 0, so a half-width linear in x_n
@@ -127,14 +166,14 @@ def zdt1_half_width(x_n, eps):
     # the whole slice above eps = 0.2. a quadratic half-width has its optimum at
     # the interior point x_n = 1/2, different from g's, and the trade-off then
     # resolves in the interior.
-    # the + 1/20 keeps the half-width strictly positive at x_n = 1/2, so no
+    # the + 1/20 keeps the half-width strictly positive at the driver's 1/2, so no
     # interval degenerates there. unlike p1's delta it is not a dyadic rational
     # and does not need to be: a4-b's dyadic argument is about the endpoint round
     # trip, and this module performs none.
     # at eps = 0 this is 0.0 times a finite non-negative number, which is exactly
     # 0.0 in ieee arithmetic. the crisp half-width is a product and never a
     # difference, so it is exactly zero and not a cancellation residue.
-    return eps * (np.square(x_n - 0.5) + 0.05)
+    return eps * (np.square(x_driver - 0.5) + 0.05)
 
 
 # zdt1's decision box, the unit cube of [2] equation (7)
@@ -152,6 +191,18 @@ dtlz2_n_obj = 3
 
 # dtlz2's representation, the same centre and half-width pair as zdt1's
 dtlz2_representation = "centre_radius"
+
+# one width driver per objective, a5-b: r_1 is driven by x_12, r_2 by x_11 and
+# r_3 by x_10, written as indices into the decision vector and in objective order.
+# why these three. a1 part 4's argument for the linear form is about where the
+# driver sits in [3]'s g, and all three sit in it identically: g = sum_{i=3}^{12}
+# (x_i - 1/2)^2 runs over x_M, that is x_3 to x_12, so x_10, x_11 and x_12 all
+# enter it quadratically with the same interior optimum at 1/2. the argument
+# applies to each verbatim. x_1 and x_2 could not be drivers: they are the angles
+# of [3]'s equation (9) and appear in every centre, so a half-width driven by one
+# of them would move with the centres rather than independently of them, which is
+# the degeneracy of CONTEXT.md section 5 step 1.
+dtlz2_width_drivers = (dtlz2_n_vars - 1, dtlz2_n_vars - 2, dtlz2_n_vars - 3)
 
 
 # dtlz2's centres and half-widths, [3] equation (9) with a1 part 4's half-width
@@ -177,16 +228,18 @@ def evaluate_dtlz2(x, params=None):
     centre_1 = scale * np.cos(angle_1) * np.cos(angle_2)
     centre_2 = scale * np.cos(angle_1) * np.sin(angle_2)
     centre_3 = scale * np.sin(angle_1)
-    half_width = dtlz2_half_width(columns[-1], eps)
-    return ((centre_1, half_width), (centre_2, half_width), (centre_3, half_width))
+    radii = [dtlz2_half_width(columns[driver], eps) for driver in dtlz2_width_drivers]
+    return ((centre_1, radii[0]), (centre_2, radii[1]), (centre_3, radii[2]))
 
 
-# dtlz2's half-width, linear in the last decision variable
-def dtlz2_half_width(x_n, eps):
-    # docs/a1_uncertainty_model.md part 4, "the form":
-    #     r_1(x) = r_2(x) = r_3(x) = eps * x_n
-    # one function of x_n = x_12 for all three objectives, and the same array is
-    # returned for all three.
+# dtlz2's half-width, linear in the decision variable that drives it
+def dtlz2_half_width(x_driver, eps):
+    # docs/a1_uncertainty_model.md part 4, "the form", with a5-b's one driver per
+    # objective:
+    #     r_i(x) = eps * x_{driver(i)}
+    # driver(1) = 12, driver(2) = 11 and driver(3) = 10, dtlz2_width_drivers
+    # above. the **form** is a1 part 4's unchanged and only which variable it
+    # reads has moved.
     # why linear here and quadratic in zdt1, which is a1 part 4's reason. [3]'s
     # g is already quadratic in x_n with an interior optimum at x_n = 1/2, so a
     # half-width linear in x_n, whose optimum is at 0, already differs from it
@@ -194,9 +247,9 @@ def dtlz2_half_width(x_n, eps):
     # added: a half-width of the form (x_n - 1/2)^2 would put the width's optimum
     # exactly on g's and reintroduce the alignment that makes phi_cw reproduce
     # the crisp order, which is the failure a1 part 4 measured on zdt1.
-    # x_n >= 0 on the box, so this is non-negative, and at eps = 0 it is exactly
-    # 0.0, a product and never a difference, as in zdt1_half_width.
-    return eps * x_n
+    # the driver is >= 0 on the box, so this is non-negative, and at eps = 0 it is
+    # exactly 0.0, a product and never a difference, as in zdt1_half_width.
+    return eps * x_driver
 
 
 # dtlz2's decision box, the unit cube of [3] equation (9)

@@ -38,36 +38,44 @@ project started 2026-08-30.
                         25 september: a paper-like results document, a latex
                         memoria, the code repository and a short presentation with
                         no implementation detail
-    current phase:      e, experiments. **phase d is built**, d1, d2 and d3 all
+    current phase:      e, experiments, with one phase a correction taken out of
+                        order because e2 waits on it. **phase d is built**, d1,
+                        d2 and d3 all
                         done, and phase c is complete and tagged
                         phase-c-complete**, closed out in
                         docs/phase_c_summary.md. its gate does not pass: twelve of
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    e1, the tier 0 run, **run and awaiting review**.
-                        experiments/run_tier0.py, tests/test_run_tier0.py,
-                        docs/e1_tier0_run.md and results/tier0/. all three solvers,
-                        all three phi, p0 and p1, at five seeds, at budget 5000
-                        with the whole grid repeated at 20000 as the convergence
-                        check. **the calibration stopped being a derivation and
-                        became a measurement**: p1 is in table 1 exact and in
-                        table 2 measured, and the difference between its two rows
-                        is the instrument's error, which is 0.161 on the headline
-                        coverage at budget 5000 and 0.110 at 20000, every quantity
-                        of the pair moving toward its exact value as the budget
-                        rises. **the record is generated and no number in it is
-                        typed**, which is the number-provenance rule holding by
-                        construction. what the session decided beyond the plan is
-                        in the session log and in the record's section 10: d2's
-                        overlap is not the union share and the two differ by
-                        0.084 exactly on the headline pair; the noise floor is a
-                        row; and the tolerance is not needed on random search's
-                        one filtered sample, so every pair is also reported at
-                        delta zero. d3 is done, its review evidenced by this
-                        session's prompt, which asks for every table through
-                        save_metrics_table and every figure through reporting.
-                        d1 and d2 are done
+    current subpart:    a5-b, one width driver per tier 1 objective, **done and
+                        awaiting review**. src/problems_tier1.py and
+                        tests/test_problems_tier1.py, with the write-up appended to
+                        docs/a1_uncertainty_model.md. it unblocks e2. every
+                        objective of zdt1 and dtlz2 shared one width function, so
+                        under examples 2.3 and 2.4 the image carried duplicate
+                        columns and the transformed problem had three effective
+                        objectives where zdt1 has four and four where dtlz2 has
+                        six, while example 2.2 had all of them: the redundancy was
+                        phi-dependent and the study's headline pair is exactly
+                        those two orders. each objective now has its own driver,
+                        with **the functional form of every half-width unchanged**,
+                        so a1 part 4's argument carries over rather than being
+                        re-made. what the correction buys is checked as a property
+                        and not as a count: the 2m image columns are linear
+                        combinations of the 2m base functions with pairwise
+                        distinct coefficient vectors, that following from [1]'s
+                        determinant condition alone, so coincidence would need a
+                        linear dependence among the base functions, and one
+                        full-rank witness matrix rules it out. a5's shared width
+                        fails the same certificate at rank 3 and rank 4, which is
+                        the effective column count the defect predicts. a1 part 4's
+                        slice sweep was re-run on a slice that grids every driver
+                        and **both forms pass all four conditions at every level**;
+                        the harness reproduces a1's own two published tables
+                        exactly at side 61, which is what makes it a re-run.
+                        e1 is done, its review evidenced by this session's prompt,
+                        which reads e1's record, records what e1 found about x-01
+                        and takes two decisions from e1's artefacts
     blocked on:         nothing, and that is a decision and not an absence. the
                         gate fails in twelve of ninety, all nsga-ii, three seeds
                         under phi_ls and three under phi_cw and none under phi_lu,
@@ -163,28 +171,23 @@ phase a, formulation. complete, tagged phase-a-complete.
     a3  phi_transforms.py                   done
     a4  problems_tier0.py                   done
     a5  problems_tier1.py                   done, corrected in a5-b
-    a5-b tier 1 width drivers                **new, not started**. a5 shares one
-                                            width function across a problem's
-                                            objectives, so under examples 2.3 and
-                                            2.4 the image carries duplicate columns
-                                            and the transformed problem has three
-                                            effective objectives where zdt1 has four
-                                            and four where dtlz2 has six, while
-                                            under example 2.2 it has all of them.
-                                            the duplication is phi-dependent, so the
-                                            headline comparison on tier 1 confounds
-                                            the order with the transformed
-                                            dimension. a5-b gives each objective its
-                                            own driver as p1 has and re-runs a1 part
-                                            4's slice sweep on the new forms.
-                                            CONTEXT.md section 10 a5,
-                                            docs/plan_after_meeting.md section b4.
-                                            **precedes e2**
-
-phase b, ground truth. complete, tagged phase-b-complete in d2-b, the tag naming
-b2's commit; its close-out document is docs/phase_b_summary.md, written after the
-fact in repo-clean-b. b2-b came after the tag and during phase d, r-13's
-mitigation being a prerequisite for d1 and for nothing else.
+    a5-b tier 1 width drivers                **done and awaiting review.** each
+                                            objective now drives its half-width
+                                            with its own decision variable, zdt1
+                                            r_1 on x_30 and r_2 on x_29, dtlz2
+                                            r_1, r_2 and r_3 on x_12, x_11 and
+                                            x_10, every form a1 part 4's unchanged.
+                                            no two image columns coincide under any
+                                            admissible phi, by a symbolic argument
+                                            with one full-rank witness matrix; a5's
+                                            shared width fails the same certificate
+                                            at rank 3 and rank 4. a1 part 4's slice
+                                            sweep was re-run and **both forms pass
+                                            on all four conditions at every level**,
+                                            on a harness that reproduces a1's own
+                                            published tables exactly.
+                                            docs/a1_uncertainty_model.md a5-b,
+                                            CONTEXT.md section 10 a5, d-05
     b1  phi-efficient sets, derivation      done
     b1-b the closed form along the path      **new, not started, optional**. the
          phi_t from example 2.4 to 2.2       one-parameter family
@@ -329,7 +332,8 @@ d-04, 2026-09-04, taken at the supervisors' meeting | **part 2's subject changes
     longer selects a phi; r-03, which retires; s-05, which is moot; p-01, p-02,
     p-04, p-05 and p-06, which become answerable
 
-d-05, 2026-09-04, proposed in this session and awaiting the research chat |
+d-05, 2026-09-04, proposed in plan-after-meeting, taken in the research chat,
+    **implemented in a5-b** |
     **a5's shared width function is replaced by one driver per objective**, zdt1
     r_1 on x_30 and r_2 on x_29, dtlz2 r_1, r_2 and r_3 on x_12, x_11 and x_10,
     each keeping the functional form a1 part 4 argued for | the duplication is
@@ -380,6 +384,40 @@ d-07, 2026-09-04, closed | **the memoria is in english, and it is short and
     that does not change with the language. **the length is settled as a shape and
     not as a page range**: no page count was given, and if one is wanted it is a
     second question and not this decision
+
+d-08, 2026-09-04, closed in the research chat | **delta is zero, and delta zero
+    is the headline value everywhere; a positive delta is reported only where two
+    different samples are compared and it is structurally required**, which is the
+    seed-to-seed noise floor and the population solvers' own pairs | the headline
+    instrument filters one sample under the three phi, so the three sets are index
+    sets over one array and two decision vectors are bitwise identical or they are
+    different points, which makes delta zero exact rather than a limit; it removes
+    the tuning risk instead of managing it, e1 having measured the reported
+    coverage of X_lu in X_cw at 0.556, 0.625, 0.726, 0.931, 0.997 and 1.000 across
+    box fractions 0 to 0.2, so any positive delta reports a choice; and a
+    box-fraction delta means something different at thirty variables than at two,
+    distances scaling with the square root of the dimension, so a fraction fixed on
+    p1's 2-box would go vacuous on zdt1 without anyone noticing |
+    CONTEXT.md sections 10 e2 and 10 g1; e2, which reports at delta zero; g1 and
+    g3, whose tables carry it; e1's artefacts already carry both, its table 2
+    having a delta column with a zero row and a positive row for every pair, so
+    **nothing of e1 is re-run**
+
+d-09, 2026-09-04, closed in the research chat | **the overlap reported is jaccard
+    and is named jaccard, and it is computed alongside dice rather than by changing
+    compute_overlap** | d2's compute_overlap is the two covered counts over the two
+    cardinalities, which is dice; docs/meeting_2026_09_04.md section 4.3's 0.103177
+    is the shared measure over the union, which is jaccard; both are correct, they
+    are different functionals, and docs/plan_after_meeting.md section b1 conflated
+    them by naming compute_overlap as the measured counterpart of the second. the
+    exact values on p1's headline pair are 0.187054 and 0.103177, e1's
+    exact_regions_p1.csv | CONTEXT.md sections 10 e2 and 10 g1; e2 and g1, whose
+    tables lead with coverage, which is directional and is the same functional in
+    both tables, and name the convention of any overlap they print; **d2 is not
+    changed**, compute_overlap keeping its meaning and e1's artefacts keeping
+    theirs. what remains open and is not this decision: e1's measured table carries
+    dice only, so a measured jaccard on tier 0 needs one recomputation from e1's
+    stored sets, which is e3's or g1's to do and is not a re-run of e1
 
 ## 4. verified facts
 
@@ -576,7 +614,13 @@ r-08 | a construction can pass every width-versus-centre statistic on a uniform
     trigger: already realised for zdt1 with half-width eps*x_n,
     docs/a1_uncertainty_model.md part 2.
     mitigation: a1's width driver rule plus the slice check of s-07, built as a
-    test in a4 and repeated in a5.
+    test in a4 and repeated in a5. **the trigger fired a second time in a5-b**,
+    which changed both tier 1 width forms and therefore had to re-run the check
+    rather than inherit it: both forms pass all four of a1 part 4's conditions at
+    every level, on a slice that grids every driver, and the harness reproduces a1
+    part 4's published tables exactly on a1's own slice, docs/a1_uncertainty_model.md
+    a5-b sections 4 and 5. the risk stays open because it is about any future
+    width form and not about these two.
 
 r-09 | a1's width driver rule was derived from two benchmarks and one tier 0
     design and has not been tested outside them.
@@ -813,6 +857,56 @@ x-01 | **the protected-minimiser effect.** for any finite candidate set S, the
     already established, all three have other explanations on record, and none of
     them is m-1 or m-2
 
+    **outcome, recorded 2026-09-04 from e1's artefacts and not waiting for e3.**
+    the row above is unchanged, as registration requires; this is the line under
+    it.
+    **m-2 is confirmed.** the overhang is exactly zero at every pair where the
+    free set is empty and non-zero where it is not, which is what the condition
+    predicts, on both problems and all three phi.
+    docs/e1_tier0_run.md section 6, results/tier0/registered_measurements.csv.
+    **m-1 has failed as an instrument and is withdrawn.** it orders a sample by an
+    image column and measures whether the smallest members survive the filter,
+    which conflates being protected with being a genuinely good point: under
+    example 2.2 the image columns are the real objectives, so a member extreme in
+    one of them survives for ordinary reasons and not because anything shielded
+    it. e1 measured a lift of 8.22 on p1 under example 2.2, where the prediction
+    says at most 1.5 because the effect is absent there, and 1.65 to 2.27 on the
+    columns where it is present, where the prediction says at least 3. those are
+    the same non-discrimination seen from both sides and not two separate misses.
+    **the mechanism stands and the instrument does not.** m-1 is not reinterpreted
+    and its thresholds are not adjusted: fixing both before the run is exactly
+    what made the failure visible, and that is the result.
+    **the 1/8 measurement is inconclusive and is not confirming.** e1 measured a
+    mean overhang of 0.163 with a standard error of 0.094 against a predicted
+    0.125 on p1 under example 2.4. 0.125 lies inside that spread and so does zero,
+    so the measurement separates the prediction from nothing at five seeds. it is
+    re-registered at x-02 rather than read.
+
+x-02 | **the 1/8 overhang constant, re-registered at a seed count that can decide
+    it.** section f2 of docs/plan_after_meeting.md derives the expected overhang
+    of the protected member on p1 under example 2.4 from the general form, as the
+    mean distance from a uniform x_2 on [-1/2, 3/2] to the projection [0, 1], and
+    that is 1/8. the constant is derived and not fitted.
+    | unchanged from x-01: the same problem, the same phi, the same column, the
+    same estimator. **what changes is the seed count and nothing else**, from five
+    to twenty. the reason is arithmetic and was computed before the re-run: the
+    per-seed overhang has a standard deviation near 0.16, so five seeds give a
+    standard error near 0.072 and twenty give near 0.036, which halves it and puts
+    1/8 outside the interval around zero. random search at budget 5000 is the
+    cheapest thing in the project and this is the only measurement that needs the
+    extra seeds, so they are spent here and nowhere else.
+    | **the confirming measurement**: the mean overhang over twenty seeds lies
+    within one standard error of 1/8, and zero does not.
+    | **the refuting measurement**: the mean over twenty seeds is further from 1/8
+    than its standard error, or the interval around it still contains zero. in the
+    first case the mechanism as stated in section f2 is wrong and the response is
+    to withdraw the generalisation and not to adjust the constant; in the second
+    the measurement is inconclusive again and no seed count will fix it, which
+    would itself retire the measurement.
+    | registered 2026-09-04, after e1 and before the twenty-seed run. **m-1 is not
+    carried into it**: it is withdrawn at x-01's outcome line above and is not
+    re-registered in any form
+
 ## 8. session log
 
 the last three entries only. **the whole log, unchanged and in order, is in
@@ -826,6 +920,55 @@ commit message and in its docs/ deliverable.
 format:
 
     date | subpart | files | outcome | next
+
+2026-09-04 | a5-b | src/problems_tier1.py; tests/test_problems_tier1.py;
+    docs/a1_uncertainty_model.md, appendix a5-b; CONTEXT.md sections 10 a5, 10 e2
+    and 10 g1; FASES.md; PROGRESS.md | **the tier 1 width defect corrected, and
+    e2 unblocked.** every objective of zdt1 and dtlz2 shared one width function,
+    so under examples 2.3 and 2.4 the image carried duplicate columns and the
+    transformed problem had three effective objectives where zdt1 has four and
+    four where dtlz2 has six, with none of it under example 2.2. the redundancy
+    was phi-dependent and the study's headline pair is exactly those two orders.
+    each objective now has its own driver, zdt1 r_1 on x_30 and r_2 on x_29,
+    dtlz2 r_1, r_2 and r_3 on x_12, x_11 and x_10, **with the functional form of
+    every half-width unchanged**: the drivers were chosen so that a1 part 4's
+    argument applies to each verbatim, x_29 and x_30 entering zdt1's g linearly
+    with the same slope 9/29 and x_10, x_11 and x_12 entering dtlz2's g
+    quadratically with the same interior optimum. no variable carrying a centre
+    may drive a width, which excludes x_1 on zdt1 and x_1 and x_2 on dtlz2.
+    **non-coincidence is checked as a property and not as a count.** the 2m image
+    columns are linear combinations of the 2m base functions with pairwise
+    distinct coefficient vectors, and that follows from [1]'s determinant
+    condition alone, so it holds for every admissible phi and not only the three
+    in the registry; coincidence would therefore require a linear dependence among
+    the base functions, and one full-rank witness matrix at written-out points
+    rules it out, at smallest-to-largest singular value ratios of 8.4e-03 and
+    4.1e-03. **the certificate is shown to have power**: rebuilt on a5's shared
+    width it returns rank 3 and rank 4, which are exactly the effective column
+    counts the defect predicts.
+    **a1 part 4's slice sweep was re-run and both forms pass**, on all four of
+    a1's conditions at every level: three distinct sets, none the crisp set,
+    phi_lu not collapsed onto phi_ls, none saturating. no form was adjusted at any
+    point. the slice gained one axis per new driver, which the change forces since
+    a1's slice pins x_29, x_10 and x_11, so a middle arm was run -- a5's shared
+    width on the new slice -- to isolate the form change from the slice change.
+    **the harness is a1's**: a1's script was a throwaway and is not in the
+    repository, and at side 61 on a1's own slice it reproduces every fraction of
+    both published tables exactly, which is what makes this a re-run. the
+    correction's signature is visible in the middle arm: on one slice, giving each
+    objective its own driver raises zdt1's phi_ls fraction from 0.0468 to 0.3745
+    and its phi_cw from 0.0356 to 0.2844 while phi_lu barely moves, which is the
+    duplicate column being removed and is as phi-dependent as the defect was.
+    **two decisions from the research chat recorded and applied**, d-08 and d-09:
+    delta zero is the headline value everywhere and a positive delta appears only
+    where two different samples are compared; and the overlap reported is jaccard,
+    named jaccard, computed alongside dice rather than by changing compute_overlap.
+    **x-01's outcome recorded without waiting for e3**: m-2 confirmed, m-1
+    withdrawn as an instrument for conflating protection with being a good point,
+    and the 1/8 measurement inconclusive at five seeds and re-registered as x-02 at
+    twenty. 12 tests added. the fast run is 515 passed and 514 deselected in
+    265.56s and the full run is 1017 passed and 12 xfailed in 1376.97s | the
+    research chat, on a5-b; then e2
 
 2026-09-04 | e1 | new experiments/run_tier0.py, tests/test_run_tier0.py and
     docs/e1_tier0_run.md; new results/tier0/, holding 36 raw npz files with their
@@ -929,64 +1072,3 @@ format:
     the end and never from the middle. two email-today items, the memoria's length
     and its language, both blocking g3. no test was run and none was changed; the
     suite is unchanged at 995 | the research chat, on this plan; then e1
-
-2026-09-03 | d3 | new src/reporting.py and tests/test_reporting.py; CONTEXT.md
-    sections 10 e1 and 10 e3; PROGRESS.md | the last instrument before the
-    experiments, and the point at which a restriction that holds in the code has
-    to still hold in the artefact. **the two blocks are the content and not the
-    layout**: the objective-space metrics and the decision-space ones are written
-    with different columns and each under the restriction it is read subject to,
-    in the file itself and not in a caption, because a reader holding the csv
-    alone has neither module in front of them. the objective block says that these
-    compare solvers under one fixed phi and never rank phi and that all three move
-    with the cardinality; the decision block says that these are the ones the
-    decision space makes comparable across phi and that a row whose status is
-    check has one direction fixed by a containment before any solver ran. **a row
-    lacking a required field is refused with the field named and nothing is
-    written**, which is one test per field per block, sixteen and seventeen of
-    them: the seed count, the budget, the cardinality and a median with an
-    interquartile range everywhere; the reference size, the sampling mode,
-    include_singular_segments and the hypervolume reference point with the rule
-    that produced it on an objective row, r-12, r-13 and s-12; delta, the scale of
-    the decision box, the pair's status and d2's note and violation count on a
-    decision row, r-06 and r-11. a blank cell is refused as a missing one, a field
-    the block has no column for is refused because the value would not reach the
-    file at all, and a metric is refused in the wrong block, so a hypervolume
-    cannot be written under a line saying the numbers below it are comparable
-    across phi. **the labels are not re-declared**: check and finding are imported
-    from d2, the two reference-point rules from d1 and the two sampling modes from
-    b2, so a table cannot state a name the module producing the number does not
-    have. **the artefact is evidence and not a picture of one**: values are
-    written with repr, which is the shortest text that reads back as the same
-    double, read_metrics_table reads a table back to the values that were written
-    and the same results written twice give the same bytes.
-    containment_violations is the one field that may be empty, and its emptiness
-    is d2's None, the pair no containment covers, so a zero cannot be read there
-    as agreement. **every figure carries the budget, the seed count and the
-    cardinality of each series inside the figure**, in the legend entry and never
-    in a filename; plot_fronts takes its column pairs as an argument and chooses
-    none of its own; plot_decision_sets draws b1 section 2.4's closed-form region
-    behind the recovered sets where the problem is p1, in one grey with a line
-    style per phi so that a region never takes a series colour, and the three
-    boundaries are transcribed from b1 and checked in the tests against b1's own
-    inequalities from the other side, as tests/test_reference_fronts.py checks
-    b2's sampled points. no metric is computed in the module and no pixel is
-    asserted in its tests. **plot_convergence is not built and nothing was added
-    to c2**: src/runners.py returns a SearchResult of the seed, the budget, the
-    final front and its decision vectors, pymoo's history is not requested from
-    minimize, and adding the recording is a change to c2 and was not this
-    session's; the module carries no stub that would look like one. **d1's two
-    pymoo findings are filed where they will be needed**, both with before and
-    after blocks in the session reply: CONTEXT.md section 10 e1 now requires e1 to
-    assert that the hypervolume reference point dominates every front it scores
-    and to fail rather than let moocore clip, v-59's rows (0, 1) and (3, 0.5)
-    against the point (2, 2) giving 2.0, which is the first row's box alone; and
-    CONTEXT.md section 10 e3 now requires e3 to state that the igd it reports is
-    pymoo's coverage direction, the average over the reference points, and not
-    [2]'s M_1^*, definition 6 equation (17), the average over the front, v-59's
-    0.0 against the transposed call's 7.0710678118654755. **d1 moves to done**,
-    its review evidenced by this session's prompt, which reads d1 as amended, asks
-    d3 to render what d1 and d2 produce and asks for those two findings to be
-    recorded. 66 tests added, all in the fast run. the fast run is 488 passed and
-    507 deselected in 105.85s and the full run is 983 passed and 12 xfailed in
-    586.75s | the research chat, on d3; then e1

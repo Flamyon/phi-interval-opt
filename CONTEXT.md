@@ -747,23 +747,46 @@ is code, and a session record block for PROGRESS.md.
     sphere identity holds at non-uniform decision vectors and not only at uniform
     ones; step 1's independence condition holds.
 
-    **a5 as built shares one width function across all of a problem's objectives**,
-    r_1 = r_2 for zdt1 and r_1 = r_2 = r_3 for dtlz2, so under examples 2.3 and 2.4
-    the image carries duplicate columns and the transformed problem has three
-    effective objectives where zdt1 has four and four where dtlz2 has six. under
-    example 2.2 there is no duplication. this is the redundancy a1-b removed from
-    p1 and it is **phi-dependent**, so the study's headline comparison, example 2.2
-    against example 2.4, is on tier 1 a comparison between problems of different
-    transformed dimension, and the measured difference confounds the order with the
-    dimension. docs/plan_after_meeting.md section b4 prices it and recommends
-    correcting it in **a5-b**, giving each objective its own width driver as p1 has:
-    zdt1 r_1 on x_30 and r_2 on x_29, dtlz2 r_1, r_2 and r_3 on x_12, x_11 and x_10,
-    every driver keeping the form a1 part 4 argued for. a5-b re-runs a1 part 4's
-    slice sweep on the new forms, because r-08 is exactly the risk that a new width
-    form passes every uniform statistic and still gives example 2.4 the crisp
-    efficient set on the slice, and s-07 says the slice check is what catches it.
+    **one width driver per objective, corrected in a5-b, d-05.** a5 as built shared
+    one width function across all of a problem's objectives, r_1 = r_2 for zdt1 and
+    r_1 = r_2 = r_3 for dtlz2, so under examples 2.3 and 2.4 the image carried
+    duplicate columns and the transformed problem had three effective objectives
+    where zdt1 has four and four where dtlz2 has six, with no duplication under
+    example 2.2. the redundancy was **phi-dependent**, so the study's headline
+    comparison, example 2.2 against example 2.4, was on tier 1 a comparison between
+    problems of different transformed dimension and confounded the order with the
+    dimension. docs/plan_after_meeting.md section b4 priced it.
+    a5-b gives each objective its own driver, as a1-b did for p1:
+
+        zdt1     r_1 = eps ((x_30 - 1/2)^2 + 1/20),  r_2 = eps ((x_29 - 1/2)^2 + 1/20)
+        dtlz2    r_1 = eps x_12,  r_2 = eps x_11,  r_3 = eps x_10
+
+    **the functional form of each half-width is a1 part 4's, unchanged**, and only
+    which variable each objective reads has moved. the drivers are chosen so that
+    a1's argument for the form applies to each verbatim: x_29 and x_30 both enter
+    zdt1's g linearly with slope 9/29, and x_10, x_11 and x_12 all enter dtlz2's g
+    quadratically with the interior optimum at 1/2. no variable carrying a centre
+    may be a driver, which excludes x_1 on zdt1 and x_1 and x_2 on dtlz2, since a
+    half-width moving with a centre is the degeneracy of section 5 step 1.
+    what the correction buys is stated as a property and checked as one: **no two
+    image columns coincide as functions, under any admissible phi and not only the
+    three in the registry.** the 2m columns are fixed linear combinations of the 2m
+    base functions c_1..c_m, r_1..r_m with pairwise distinct coefficient vectors,
+    that following from [1]'s determinant condition alone, so coincidence would
+    require a linear dependence among the base functions; a full-rank witness
+    matrix at stated points rules that out. a5's shared width fails the same
+    certificate at rank 3 and rank 4, which is the effective column count section
+    b4 states. docs/a1_uncertainty_model.md a5-b sections 1 to 3.
+    a5-b re-ran a1 part 4's slice sweep on the new forms, because r-08 is exactly
+    the risk that a new width form passes every uniform statistic and still gives
+    example 2.4 the crisp efficient set on the slice, and s-07 says the slice check
+    is what catches it. **both forms pass at every level**, on all four of a1's
+    conditions, and the harness is a1's: on a1's own slice at side 61 it reproduces
+    every published fraction of both of a1's tables exactly. the slice gained one
+    axis per new driver, which the change forces, since a1's slice pins x_29, x_10
+    and x_11. docs/a1_uncertainty_model.md a5-b sections 4 and 5.
     a5-b precedes e2. it does not answer s-09, which asks about scaling and not
-    about drivers.
+    about drivers, and every objective still carries the same absolute form.
 
 ### b1: analytic derivation of the phi-efficient sets
     output: docs/b1_phi_efficient_sets.md. paper and pencil with symbolic
@@ -1052,9 +1075,43 @@ is code, and a session record block for PROGRESS.md.
     measured and every problem including p1, and p1's presence in both is what makes
     the instrument's error a number rather than a caveat. table 2 carries a
     same-phi seed-to-seed noise floor beside every cross-phi number, without which a
-    benchmark row where no truth exists cannot be read at all, and its delta is
-    stated as a fraction of the box diameter as well as an absolute value, a fixed
-    absolute delta meaning different things in a 2-box and a 30-box.
+    benchmark row where no truth exists cannot be read at all.
+
+    **delta is zero, and that is the headline value everywhere, d-08.** the
+    instrument the study's result is computed on filters one sample under the three
+    phi, src/random_search.py's filter_one_sample_under_every_phi, so the three sets
+    are index sets over one array: two decision vectors are bitwise identical or
+    they are different points, and no tolerance is needed to decide which. at delta
+    zero the coverage is exactly the shared count over the count, which is the
+    measured counterpart of the exact statement with the tolerance removed rather
+    than made small. a positive delta is reported **only where two different samples
+    are compared and it is structurally required**, which is the seed-to-seed noise
+    floor and the population solvers' own pairs, two independent uniform samples
+    sharing no point at all; there it is stated with the scale it is a fraction of.
+    two reasons, and the second is what makes this a decision and not a preference.
+    it removes a tuning risk rather than managing one: e1 measured the reported
+    coverage of X_lu in X_cw at 0.556, 0.625, 0.726, 0.931, 0.997 and 1.000 across
+    box fractions 0, 0.01, 0.02, 0.05, 0.1 and 0.2, so at any positive delta the
+    number reported is a choice, and a choice made after seeing the result is the
+    one thing the project's own rule forbids. and **a box-fraction delta does not
+    mean the same thing at thirty variables as at two**: distances in a box grow
+    like the square root of the dimension, so a fraction fixed on p1's 2-box is a
+    vanishing fraction of what separates points on zdt1's 30-box and the coverage
+    would collapse toward zero on tier 1 without anyone reading the table noticing.
+    delta zero has no dimension in it.
+
+    **the overlap reported is jaccard and is named jaccard, d-09.** d2's
+    compute_overlap is the two covered counts over the two cardinalities, which is
+    the dice coefficient; docs/meeting_2026_09_04.md section 4.3's 0.103177 is the
+    shared measure over the union, which is jaccard. both are correct and they are
+    different functionals -- on p1's headline pair the exact values are 0.187054 and
+    0.103177 -- and docs/plan_after_meeting.md section b1 conflated them by naming
+    compute_overlap as the measured counterpart of the second. **coverage leads in
+    every table**, being directional and unambiguous and the same functional in the
+    exact and the measured tables alike. where an overlap is reported it is jaccard
+    and the column says so. jaccard is computed **alongside** dice and
+    compute_overlap is not changed: d2 owns it, its meaning is documented there, and
+    e1's artefacts are already written against it.
 
     e1 asserts that the hypervolume reference point dominates every front it
     scores, and fails on a front it does not dominate rather than scoring it.
@@ -1278,6 +1335,19 @@ is code, and a session record block for PROGRESS.md.
         every finding under the disposition docs/plan_after_meeting.md section a1
         gives it, and it is the memoria's source: the memoria is not a second place
         where a result is decided.
+        **coverage leads every table and the overlap column is jaccard, named
+        jaccard, d-09.** coverage is directional, unambiguous and the same
+        functional in the exact table and the measured one, so it is what a reader
+        compares across the two. an overlap is a single symmetric number and there
+        are two of them: d2's compute_overlap is dice, twice the intersection over
+        the sum of the cardinalities, and the meeting document's 0.103177 is
+        jaccard, the intersection over the union. g1 reports jaccard, names it, and
+        never prints an overlap without naming which one it is; where dice appears
+        it is because it is what an e1 artefact holds, and the artefact is named
+        beside it. **delta is zero on every random-search row, d-08**, and a
+        positive delta appears only on the noise floor and the population solvers'
+        pairs, where two different samples are compared and it is structurally
+        required.
 
     g2  the figure set. one script under experiments/ regenerating every figure the
         memoria and the presentation use, into results/figures/, from the run
