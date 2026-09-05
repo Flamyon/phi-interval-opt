@@ -47,11 +47,19 @@ project started 2026-08-30.
                         25 september: a paper-like results document, a latex
                         memoria, the code repository and a short presentation with
                         no implementation detail
-    current phase:      f, part 2, **substantive arm complete**. f1 read the
+    current phase:      f, part 2, **complete**. f1 read the
                         corpus and applied the gate, f2 derived I-BK1's
-                        phi-efficient sets in closed form and f3 built the module
-                        and ran the measurement; only f4, the write-up, is left,
-                        and it is where clause c5 is judged.
+                        phi-efficient sets in closed form, f3 built the module
+                        and ran the measurement, and **f4 has closed part 2 and
+                        judged clause c5**: supported in a narrowed form on one
+                        published interval-native problem, the three orders giving
+                        three distinct derived sets with the difference exact, and
+                        **not** supported in the form part 1 measured, all three
+                        sets nesting on I-BK1 so that part 1's headline quantity
+                        has no counterpart there.
+                        docs/part2/part2_closing.md is part 2's canonical record
+                        and the second of the two documents g1 lifts from. **phase
+                        g is next and both its inputs now exist.**
                         phase e, experiments, is **complete on the part 1 side**.
                         e1 and e2
                         are both run, tier 0 and tier 1, the phase a correction
@@ -65,13 +73,51 @@ project started 2026-08-30.
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    f3, the module and the native run, **run and awaiting
-                        review**. src/problems_native.py, experiments/run_native.py,
-                        their tests, docs/part2/f3_native_run.md and
-                        results/part2/. the instrument is measured a second time,
-                        on a problem interval-valued at source that the project did
-                        not construct, and its error is inside the one e1 measured
-                        on p1. **all three pairs nest on I-BK1**, so the headline
+    current subpart:    f4, part 2's write-up, **written and awaiting review**.
+                        docs/part2/part2_closing.md, and no experiment, no module
+                        and no re-run: every part 2 figure is read out of an f2 or
+                        f3 artefact with the file named. **clause c5 is judged**,
+                        section 3.3, in the form the evidence supports and no
+                        wider. **the second calibration point is delivered and it
+                        says the bias's magnitude does not transfer**: the measured
+                        jaccard over the exact one is 1.2517, 1.0067 and 1.4828 on
+                        the three pairs of I-BK1 against p1's 1.81, so 1.81 is a
+                        property of p1's geometry and no factor is carried
+                        anywhere. **the sign does transfer**, six of nine rows
+                        measuring above the exact value with the one below being
+                        the direction no containment covers. **the budget response
+                        is not one-directional**, five of nine rows moving toward
+                        the exact value, two away and two exact at both budgets, so
+                        part 1's "every row shrinks with budget" is not universal
+                        and the transfer argument keeps only the leg measured
+                        directly against a known answer. **delta zero is the only
+                        readable value in this project and I-BK1 is the
+                        convention's third distinct failure**, its box being
+                        [-10,10]^2 while the derived sets live in [0,5]^2, so the
+                        standard 0.05 box fraction saturates every statistic and
+                        the noise floor alike at 1.0. **the counterexample is
+                        written as a correction**, transcription confirmed against
+                        the paper's printed G(x*) first, the four inequalities
+                        next, the independent reproduction after, and the limits
+                        last: proposition 2.1 and lemma 2.4(ii) are false as
+                        printed and where the proof fails is **not** claimed.
+                        **a-11 is disposed of**: the memoria may not cite either
+                        statement nor use Table 1's x* as a fixture, and equation
+                        (25)'s curve is the checkpoint that stands. the nesting
+                        against p1's crossing is recorded as an observation with a
+                        mechanism and **not** as a result, and **I-IKK1 is named as
+                        the problem that would decide it**, at two sessions and
+                        with no published checkpoint. the fallback of
+                        docs/plan_after_meeting.md section d2 is recorded as **not
+                        needed**.
+                        the previous subpart, f3, the module and the native run, is
+                        **run and awaiting review**. src/problems_native.py,
+                        experiments/run_native.py, their tests,
+                        docs/part2/f3_native_run.md and results/part2/. the
+                        instrument is measured a second time, on a problem
+                        interval-valued at source that the project did not
+                        construct, and its error is inside the one e1 measured on
+                        p1. **all three pairs nest on I-BK1**, so the headline
                         convention of docs/part1/part1_closing.md section 3.1 has
                         no counterpart there and no row of the run is a measured
                         difference between two orders. **the solvers reproduce f2's
@@ -79,9 +125,8 @@ project started 2026-08-30.
                         at every seed returning points that dominate [16]'s Table 1
                         x* in the paper's own order. **x-01's condition is
                         structurally absent on I-BK1**, the first problem in the
-                        project where that happens. c5 stays marked unsupported and
-                        is f4's to judge.
-                        the previous subpart, e3, the synthesis, is **written and
+                        project where that happens.
+                        e3, the part 1 synthesis, is **written and
                         awaiting review**.
                         docs/part1/e3_synthesis.md, and no experiment, no module and no
                         re-run: every number is read out of a file e1 or e2 wrote
@@ -438,18 +483,69 @@ presentation places it.
                                               free set on any of the twelve columns,
                                               so m-2 is not computed. c5 is not
                                               declared supported
-    f4  part 2 write-up                       not started. f3 is run, so its
-                                              inputs are on disk. **c5 is judged
-                                              there and nowhere else**, and a-11,
-                                              [16]'s false proposition 2.1, has to
-                                              be disposed of in it
+    f4  part 2 write-up                       **written and awaiting review,
+                                              2026-09-05.** docs/part2/part2_closing.md,
+                                              modelled on docs/part1/part1_closing.md
+                                              and canonical for part 2; no
+                                              experiment, no module, no re-run and
+                                              every part 2 figure read out of an f2
+                                              or f3 artefact with the file named.
+                                              **clause c5 is judged**: supported on
+                                              I-BK1 in the form that the three
+                                              orders give three distinct derived
+                                              sets with the difference exact --
+                                              areas 2.875612, 3.790332, 5.685282
+                                              and 0.494201 of the largest outside
+                                              the smallest -- reproduced by the
+                                              project's instrument within an error
+                                              whose every magnitude is inside p1's;
+                                              **not** supported in part 1's own
+                                              terms, all three sets nesting so that
+                                              the headline quantity has no
+                                              counterpart, and not supported as a
+                                              statement about interval-native
+                                              problems in general, one problem being
+                                              one problem. **the second calibration
+                                              point says the error factor does not
+                                              transfer**, 1.2517, 1.0067 and 1.4828
+                                              against p1's 1.81, while the sign
+                                              does. **the budget response is not
+                                              one-directional**, five of nine rows
+                                              moving toward the exact value and two
+                                              away, so part 1 section 3.2's uniform
+                                              budget leg does not survive and only
+                                              the directly measured sign does.
+                                              **delta zero is stated once as the
+                                              only readable value**, with I-BK1 the
+                                              convention's third distinct failure
+                                              and the reasons differing per problem.
+                                              **the counterexample is written as a
+                                              correction** and **a-11 is disposed
+                                              of**: the memoria may cite neither
+                                              proposition 2.1 nor lemma 2.4(ii) and
+                                              may not use Table 1's x* as a fixture,
+                                              equation (25)'s curve being the
+                                              checkpoint that stands, and where the
+                                              proof fails is not claimed. the
+                                              nesting against p1's crossing is
+                                              recorded as an observation with a
+                                              mechanism and not as a result, with
+                                              **I-IKK1 named as what would decide
+                                              it**, two sessions and no published
+                                              checkpoint. d2's fallback is recorded
+                                              as not needed. **phase f is complete**
 
 phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
 25 september; the fourth is the repository itself.
-    g1  the results document                not started. **both prerequisites are
-                                            met**: e1 and e3 are written, and
-                                            docs/part1/e3_synthesis.md is the document
-                                            it lifts part 1 from
+    g1  the results document                not started. **every prerequisite is
+                                            met**: e1 and e3 are written, and the
+                                            two documents it lifts from now both
+                                            exist -- docs/part1/part1_closing.md
+                                            for part 1 and
+                                            docs/part2/part2_closing.md for part 2,
+                                            each written to be complete enough that
+                                            g1 opens nothing else for that part's
+                                            results
     g2  the figure set                      not started, can start on e1's output.
                                             docs/part1/e3_synthesis.md section 9 names
                                             the three figures it must produce, one

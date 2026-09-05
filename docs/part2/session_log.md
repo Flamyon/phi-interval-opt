@@ -196,3 +196,68 @@ format:
     not be placed side by side. **c5 is not declared supported**: the run reports
     the evidence and f4 states the claim | f4, part 2's write-up, which is where
     c5 is judged and where a-11 has to be disposed of
+
+2026-09-05 | f4, part 2's write-up | docs/part2/part2_closing.md, new;
+    PROGRESS.md sections 1 and 2; docs/part2/session_log.md | **no experiment, no
+    module, no run, no new claim and no new number except the one judgement the
+    brief asks for.** part 2's canonical record, modelled on
+    docs/part1/part1_closing.md and written so that g1 opens nothing else for part
+    2's results; every part 2 figure read out of an f2 or f3 artefact with the file
+    named, every part 1 figure quoted from part1_closing with the tier 0 or tier 1
+    file that document names. **clause c5 is judged, and narrower than the draft**:
+    supported in the form that on a problem published by a third party and
+    interval-valued in its own coefficients the three orders give three distinct
+    phi-efficient sets with the difference exact -- bands [3/4,3/2] inside [2/3,5/3]
+    inside [1/2,2], areas 2.875612, 3.790332 and 5.685282, 0.494201 of the largest
+    outside the smallest -- reproduced by the project's own instrument with a
+    relative error of -0.088235 to +0.482801 at budget 5000, every magnitude inside
+    p1's +0.810049; **not** supported in part 1's own terms, because all three sets
+    nest and part 1's headline quantity, how much of each of two non-nested sets
+    lies outside the other, has no counterpart on I-BK1; and not supported as a
+    statement about interval-native problems in general. **the second calibration
+    point is delivered and its result is that the magnitude does not transfer**: by
+    the identity measured jaccard over exact jaccard the factor is 1.2517, 1.0067
+    and 1.4828 on the three pairs against p1's 1.81, so 1.81 is a property of p1's
+    geometry, which is what part1_closing section 7.3 said a second point would
+    decide; **the sign does transfer**, six of nine rows above the exact value, one
+    below and that one the direction no containment covers, two exactly on it.
+    **the hausdorff weakness is not removed** -- exact_regions_ibk1.csv carries no
+    hausdorff either -- and the geometry question is untouched, as lit_review 7.2
+    said in advance it would be. **two conventions stated once.** delta: I-BK1 is
+    the convention's third distinct failure, its box being [-10,10]^2 while the
+    derived sets live in [0,5]^2, so the standard 0.05 box fraction is a fifth of
+    the sets' own diameter and saturates every cross-phi statistic and the noise
+    floor alike at 1.000000; with p1's tuning failure and tier 1's dimension
+    failure that makes **delta zero the only readable value in the project, for
+    three different reasons**. budget: **the response is not one-directional on
+    I-BK1**, five of nine rows moving toward the exact value, two away and two
+    exact at both budgets, so part1_closing section 3.2's uniform-budget leg does
+    not survive and what survives is the sign measured directly against a known
+    answer plus the magnitude being inside p1's. **the counterexample is written as
+    a correction to a published result**, in that order: the transcription
+    confirmed against [16]'s own printed G(x*) and its printed gH-gradients, then
+    y = (2.8975, 2.3975) with the four inequalities and the tightest margin
+    0.273966 against a printed rounding five orders of magnitude smaller, then the
+    independent reproduction -- 18 of 18 configurations, 5 of 5 seeds each, medians
+    5 to 15 at budget 5000 and 4 to 40 at 20000, widest margin 0.269627 -- then the
+    mechanism, the Minkowski sum's overestimate making [16]'s Pareto critical set
+    nu in (1/9,10), 4.24 times X_lu, with x* at tolerance just outside it, and the
+    limits last. **a-11 is disposed of**: the memoria cites neither proposition 2.1
+    nor lemma 2.4(ii), does not use Table 1's x* as a fixture, uses equation (25)'s
+    curve which passes, records a-4 as resolved in the negative and a-12 beside it,
+    and **where the proof fails is not claimed**, lemma 2.4 being attributed to a
+    reference not on disk. **the nesting is recorded as an observation with a
+    mechanism and not as a result**: the wedge structure in nu explains why the
+    disagreement on I-BK1 is one-dimensional and does not force the nesting, which
+    is the ordering of six ratios of published coefficients, and one problem of each
+    kind cannot establish that adapted problems cross and native ones nest.
+    **I-IKK1 is named as the problem that would decide it** -- interval-native with
+    p1's single-variable width structure, so it separates "adapted against native"
+    from "these coefficients against those", and a third registered test of x-01 on
+    three columns at once -- at two sessions and with no published checkpoint.
+    x-01's structural absence on I-BK1 recorded, 0 of 12 columns with a free set.
+    the fallback of docs/plan_after_meeting.md section d2 recorded as **not
+    needed**, its text being lit_review sections 1.8, 1.9 and 6 and owed to the
+    memoria anyway. **phase f is complete** | g1, the results document, whose two
+    inputs now both exist; and, before it, the research chat's disposition of a-11
+    and a-12 toward the authors, which this document records and does not decide
