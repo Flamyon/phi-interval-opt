@@ -318,10 +318,78 @@ a5-b movió qué variable lee cada semianchura. **m-1 no se calcula**, retirada 
 la línea de resultado de x-01. e2 no interpreta nada de esto; eso es e3.
 
 
+### e3 síntesis de resultados
+
+docs/e3_synthesis.md. sin experimento, sin módulo y sin re-tirada: cada número
+se lee de un fichero que escribió run_tier0.py o run_tier1.py y se nombra el
+fichero al lado. **la parte 1 queda respondida.**
+
+**la comparación que ninguna de las dos tiradas hizo**, que es la afirmación: e1
+tiene los números exactos y ningún benchmark, e2 los benchmarks y ningún número
+exacto. en una página: el jaccard exacto del par de cabecera en p1 es 0.103177 y
+el mismo instrumento mide 0.187190 a presupuesto 5000, un factor de 1.81, así que
+el 0.087 a 0.133 de zdt1 y el 0.136 a 0.322 de dtlz2 son cotas superiores y los
+órdenes comparten menos de lo que imprimen las tablas.
+
+**el signo del sesgo del instrumento se mide, no se supone.** si el sesgo fuera
+un artefacto de muestra finita y no una propiedad de p1, los benchmarks tendrían
+que responder igual al presupuesto sin tener valor exacto al que caer. lo hacen:
+cuadruplicar el presupuesto baja los tres estadísticos en p1, dtlz2 y zdt1, nueve
+de nueve. **la magnitud no se transfiere y no se aplica ningún factor de
+corrección a ningún número de benchmark.**
+
+**la dependencia de eps.** la cobertura de X_lu en X_cw baja de 0.846 a 0.545 en
+zdt1 y de 0.898 a 0.684 en dtlz2; el jaccard sube, y las dos cosas salen de la
+columna de cardinalidad. |X_cw| es 257 y 1813 en **todos** los niveles positivos,
+porque eps entra en la imagen del ejemplo 2.4 solo como escalar positivo sobre
+las columnas de anchura y un reescalado positivo no cambia la relación de pareto.
+toda la dependencia de eps del par de cabecera es de X_lu. **estaba predicho**,
+en la parte 4 de docs/a1_uncertainty_model.md, y se confirma aquí sobre la
+cardinalidad de la tirada y no sobre una fracción de rodaja, r-22.
+
+**la forma, que la magnitud esconde.** en p1 los dos conjuntos no se contienen en
+ningún sentido, 0.394710 y 0.122571; en tier 1 X_lu está en gran parte dentro de
+un X_cw mucho mayor. misma magnitud de desacuerdo, geometría distinta. la
+distancia de hausdorff simétrica normalizada es el único estadístico estable a
+dos, doce y treinta variables, 0.29 a 0.39, y **no está calibrada**.
+
+**el suelo de ruido se retira medido y no se omite**, por una razón estructural y
+no de tier 1, y lo que ocupa su lugar ya está en las tablas: la cobertura de
+cabecera se calcula sobre UNA muestra filtrada tres veces, así que su rango
+intercuartílico entre semillas es toda su variabilidad muestral. el criterio se
+aplica por problema, nivel y par: **las ocho celdas de la dirección que sostiene
+la afirmación pasan; cuatro de las ocho de la otra dirección fallan**, todas con
+mediana cerca de 1.0 y X_lu pequeño.
+
+**x-01 se cierra.** la cláusula de dtlz2 se confirma y por una comparación más
+fina de la que pedía: bajo el ejemplo 2.4, sobre una muestra y un juego de
+semillas, la columna cuyo conjunto libre es {x_2} mide exactamente 0.000000 y las
+tres de conjunto libre de once variables miden 0.737 a 0.843, o sea que la
+condición discrimina columna a columna **dentro de un mismo phi**. la cláusula de
+zdt1 queda **no comprobable**: se registró contra las formas de a5 y a5-b movió
+r_2 a x_29, así que el argumento de dominación de la sección f3 ya no se le
+aplica. ni confirmada ni refutada. m-1 sigue retirada. **x-02 sigue abierta** y
+e3 lo dice en vez de inventar un veredicto: es una medida de p1 y e2 tiró solo
+tier 1.
+
+**la pregunta de los solvers, respondida aparte y nunca mezclada con la
+comparación de phi.** las veinticuatro configuraciones de nsga-ii con imprecisión
+positiva saturan el rango 1 en todas las semillas, así que esos frentes son
+resultados de dispersión y no de convergencia, y en tier 1 no hay ninguna medida
+de convergencia por no haber frente de referencia. **el bloque objetivo de e1 no
+responde a ninguna pregunta de solvers**, al estar a cardinalidad completa.
+
+**la afirmación probada cláusula a cláusula.** el ataque que no se puede rebatir
+es que el modelo de incertidumbre se eligió para separar, y **la afirmación
+recomendada es condicional**, con la forma lineal rechazada de a1 como brazo
+negativo medido. tres figuras nombradas para g2, una de ellas ya existe.
+
+
 ## estado
 
 fases a, b y c completas. d1, d2 y d3 construidos; d3 pendiente de
-revisión. **e1 y e2 tirados**, tier 0 y tier 1, y e2 pendiente de revisión; a5-b
-hecho, que era lo que bloqueaba e2. doce parámetros en xfail estricto fijan el
-hallazgo de c3. lo siguiente es e3 sobre la salida de e1 y de e2, con f1 y
-f2 en paralelo, y luego g1, g2, g3 y g4.
+revisión. **fase e completa por el lado de la parte 1**: e1 y e2 tirados, tier 0
+y tier 1, a5-b hecho, y **e3 escrito**, con la parte 1 respondida en
+docs/e3_synthesis.md y pendiente de revisión. doce parámetros en xfail estricto
+fijan el hallazgo de c3. lo siguiente es g1, que ya tiene sus dos prerrequisitos,
+con g2 al lado y f1 en paralelo, y luego g3 y g4.

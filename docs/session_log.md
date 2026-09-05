@@ -1271,3 +1271,106 @@ carries the current subpart alone.
     45 tests added. the fast run is 555 passed and 519 deselected, and the full run
     is 1062 passed and 12 xfailed in 1544.19s, the twelve being c3's finding held
     in strict xfail | the research chat, on e2; then e3, with f1 and f2 beside it
+2026-09-05 | e3 | new docs/e3_synthesis.md; PROGRESS.md sections 1, 2, 8 and 9;
+    docs/session_log.md; FASES.md | **part 1 answered.** no experiment, no module
+    and no re-run: every number is read out of a file experiments/run_tier0.py or
+    experiments/run_tier1.py wrote and the file is named beside it. one number is
+    derived and says so, p1's measured jaccard, from e1's dice by e2's own
+    identity.
+    **the comparison neither run made, which is the claim.** e1 has the exact
+    numbers and no benchmarks; e2 has the benchmarks and no exact numbers. on one
+    page: p1's exact jaccard on the headline pair is 0.103177 and the same
+    instrument measures 0.187190 at budget 5000, a factor of 1.81, so the
+    benchmarks' 0.087 to 0.133 on zdt1 and 0.136 to 0.322 on dtlz2 are upper
+    bounds and the orders share less at thirty and twelve variables than the
+    tables print.
+    **the sign of the instrument's bias is measured to transfer and is not
+    assumed**, which neither run said. if the bias were a finite-sample artefact
+    rather than a property of p1, the benchmarks would have to show the same
+    budget response with no exact value to fall toward. they do: quadrupling the
+    budget lowers all three statistics on p1, dtlz2 and zdt1, nine of nine, by 9
+    to 23 per cent against p1's 9 to 18, and on p1 that direction is known to be
+    toward the truth. **the magnitude does not transfer and no correction factor
+    is applied to any benchmark number anywhere.**
+    **the epsilon dependence, and the half of it e2 did not have.** the coverage
+    of X_lu in X_cw falls from 0.846 to 0.545 on zdt1 and 0.898 to 0.684 on dtlz2,
+    so more of phi_lu's answer would be rejected under phi_cw as the imprecision
+    grows; the jaccard moves the other way, and both follow from the cardinality
+    column. |X_cw| is 257 on zdt1 and 1813 on dtlz2 at **every** positive level,
+    because eps enters example 2.4's image only as a positive scalar on the width
+    columns and a positive rescaling leaves the pareto relation unchanged, so the
+    whole eps dependence of the headline pair is X_lu's. **it was predicted**, in
+    docs/a1_uncertainty_model.md part 4 where the five levels were chosen, and
+    confirmed here on the run's cardinality column and not on a slice fraction,
+    r-22.
+    **the shape, which the magnitude hides.** p1's two sets are non-nested both
+    ways, 0.394710 and 0.122571; at tier 1 X_lu sits largely inside a much larger
+    X_cw, 0.846 against 0.088 at zdt1 eps 0.05. same magnitude of disagreement,
+    different geometry, and reporting one jaccard column would imply otherwise.
+    the normalised symmetric hausdorff distance is the one statistic stable across
+    two, twelve and thirty variables, 0.29 to 0.39 on the headline pair, and it is
+    **uncalibrated**: exact_regions_p1.csv carries no hausdorff. neither the
+    benchmark's structure nor the dimension between 12 and 30 explains the
+    geometry; the width driver's alignment with a centre is what is left and one
+    variant run would decide it, recorded as open.
+    **the noise floor is withdrawn as measured and not omitted**, and the reason
+    is structural rather than tier 1's: two independent samples share no point at
+    delta zero in continuous space at any dimension, so the construction always
+    needed delta > 0, and e2's sweep shows delta > 0 is a step function at these
+    dimensions with no operating point. **what replaces it is in the tables**: the
+    headline coverage is one sample filtered three ways, so its across-seed
+    interquartile range is its complete sampling variability. the criterion is
+    that the IQR be small relative to the distance from 1.0, applied per problem,
+    level and pair at a stated threshold. **the eight cells in the direction that
+    carries the claim all pass, ratios 0.007 to 0.037; four of the eight in the
+    other direction fail, every failure on a median near 1.0 with a small X_lu,
+    the worst being zdt1 eps 0.05 whose IQR is as wide as its whole distance from
+    1.0 on 26 points.** so the memoria's sentence is the reverse direction: 63 to
+    91 per cent of X_cw lies outside X_lu at every level on both benchmarks.
+    **x-01 closed with a final outcome line.** the dtlz2 clause is confirmed and
+    by a sharper comparison than it asked for: under example 2.4, on one sample
+    and one seed set, the column whose free set is {x_2} measures exactly 0.000000
+    with zero IQR over twenty seeds while the three eleven-variable free-set
+    columns measure 0.737 to 0.843, so the condition discriminates column by
+    column **inside one phi**. the zdt1 clause is **untestable**: it was registered
+    against a5's forms and a5-b moved r_2 onto x_29, so section f3's own
+    domination argument no longer applies to that variable and pins one fewer;
+    not scored confirmed, since a registered prediction is about a named object
+    and the object changed, and not scored refuted, since under a5-b's structure
+    positivity holds a fortiori. zdt1 could not have decided it either way in any
+    case, every phi there having a measure-zero free-set projection. m-1 stays
+    withdrawn.
+    **x-02 stays open** and e3 says so rather than inventing a verdict: it is a p1
+    measurement, e2 ran tier 1 only, and e3 makes no run.
+    **the solver question, answered apart and never mixed into the phi
+    comparison.** every one of nsga-ii's twenty-four positive-imprecision
+    configurations saturates rank 1 in every seed on both benchmarks under all
+    three phi; the only three that do not are the crisp baseline. so those fronts
+    are spread results and not convergence results, and at tier 1 there is no
+    convergence measurement at all, no reference front existing and therefore no
+    igd. the generation at which pressure is lost is ordered and monotone,
+    phi_lu holding longest under both population solvers on both problems and
+    falling as eps rises, which is c3-d's ordering on a5-b's new forms. at equal
+    cardinality nsga-ii leads the hypervolume in five of six cells, read within a
+    row only. **e1's tier 0 objective block answers no solver question**, being at
+    full cardinality where r-16's effect exceeds the differences, and the two
+    objective blocks may not be placed side by side. the coverage deficit is
+    reported at its measured size with the phi-neutral control halving it, and the
+    containment is used only to withhold two pairs from the evidence, which is the
+    conservative direction and does not move the headline if s-11 refutes it.
+    **the claim tested clause by clause.** the p1 clauses are strongly supported
+    and exact; the benchmark clause is supported in its asymmetric form and not
+    its symmetric one; the interval-native clause is not supported by e1 and e2
+    and cannot be before f1. the attack that cannot be argued away is that the
+    uncertainty model was selected for separation, a1 part 4 having rejected the
+    linear half-width because it collapses two phi onto each other and a third
+    onto the crisp order. **the recommended claim is conditional on the width
+    being non-monotone in a driver the centres do not share, with a1's rejected
+    form as the measured negative arm**, which is longer, falsifiable on a new
+    problem and stronger. three figures named for g2, one of which exists.
+    **noted for the history**: commit 8718150, "test runs", landed
+    experiments/run_tier1.py and tests/test_run_tier1.py from outside a session on
+    2026-09-05, and e2's commit 50e69bc then landed the record and results/tier1/.
+    e2 is one subpart across two commits and the earlier one carries no session
+    message | g1, which now has both prerequisites; g2 beside it, and f1
+
