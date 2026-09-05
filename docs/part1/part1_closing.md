@@ -924,6 +924,21 @@ PROGRESS.md section 2, docs/plan_after_meeting.md section c3.
            is open, and p-05 is the one unverified number in b1's derivation
     f1     the reading gate on [16], on which clause c5 stands or is withdrawn
 
+**two of those six were discharged in session lit-review on 2026-09-05 and the
+list above is left as written, being part 1's record of what part 1 handed over.**
+**p-02 and p-05 are closed**, docs/answered.md and docs/part2/lit_review.md
+sections 2 and 3: [9]'s a_w is the half-width by its own equation (2.4), its
+definition 3.4 is example 2.4 of [1] in the same coefficients, and [10]'s
+regularity criterion is theorem 34 exactly as b1 cited it — **so b1's derivation
+now has no unverified number.** **f1 has run**, docs/part2/lit_review.md: no
+example of [16] passes the gate and none fails it, because criterion 3 cannot be
+answered by reading and not determinable is not a pass; **five pass every criterion
+a reading can settle and criterion 5 passes on nineteen of twenty**, so the
+fallback of docs/plan_after_meeting.md section d2 is not what part 2 becomes.
+**clause c5 of section 7.1 is reachable and stays marked unsupported** until
+criterion 3 is answered on one of the five, which lit_review section 7.2 argues the
+derivation itself does. p-01, p-06, s-07, s-09, s-11 and s-12 are untouched.
+
 
 ## 8. the four prohibitions, checked
 

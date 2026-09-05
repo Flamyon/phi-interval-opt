@@ -1273,8 +1273,13 @@ is code, and a session record block for PROGRESS.md.
     future-work section cites. the full prompt for each subpart below is
     docs/plan_after_meeting.md section d.
 
-    f1  reading pass over [16]. output docs/part2/f1_interval_native_reading.md,
-        the directory docs-clean created for part 2's record. **no
+    f1  reading pass over [16]. **done in session lit-review, 2026-09-05, and
+        its output is docs/part2/lit_review.md and not the
+        f1_interval_native_reading.md this line named**: the session's prompt
+        widened f1 to the whole reading that bears on part 2 -- [16], [9], [10],
+        [7], [8] and [13] -- and named the file, so the deliverable covers f1's
+        subject and more. the name here is corrected rather than the file renamed,
+        because the file is what the session wrote and the plan is a record. **no
         code and no implementation**, and the newton method itself is not read for
         implementation, section 9.
         transcribes, each located by number and page: the paper's problem class and

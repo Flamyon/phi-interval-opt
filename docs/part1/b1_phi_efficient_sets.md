@@ -199,6 +199,14 @@ analysis.md`, which is a summary and not the paper:
 with abs-differentiability of f̃ at x⁽⁰⁾ meaning that |f̃| has a classical Fréchet
 derivative there, per definition 30 of the same summary.
 
+**[the number was verified in session lit-review, 2026-09-05: it is theorem 34 of
+[10], printed page 13, verbatim. and the criterion this section actually applies —
+that a differentiable non-negative radius is abs-differentiable — is [10]'s
+proposition 32, printed page 12, which covers radii that vanish and not only
+strictly positive ones. p-05 is closed, docs/answered.md and
+docs/part2/lit_review.md sections 3.1 and 3.2. the paragraph below is left as
+written, being the record of what b1 could check on the day.]**
+
 the number is unverified. [10], stefanini, arana-jiménez and sorini 2025, is not
 in papers/, so "theorem 34" is the summary's number and this session could not
 check it against the paper. that is p-05, whose scope CONTEXT.md section 6 widens
@@ -1040,6 +1048,15 @@ keeping for the same reason it passed here.
         section 1.3 needed the midpoint-radius regularity criterion and cites it as
         "theorem 34" from the literature/ summary with the number unverified. the
         paper is still wanted.
+        [**closed in lit-review, 2026-09-05, and this paragraph is left as written
+        because it is a record of b1's state.** [10] is in papers/ and the number
+        is right: theorem 34, printed page 13, verbatim as section 1.3 quotes it.
+        one wording correction and none to the result: section 1.3's gloss of
+        abs-differentiability is [10]'s **proposition 32, printed page 12**, not
+        its definition 30, and proposition 32's second sentence covers
+        **non-negative** radii including their zeros, which is wider than the
+        strictly-positive-radius condition section 1.3 leans on and is what part 2
+        needs. docs/part2/lit_review.md sections 3.1, 3.2 and 3.4.]
     p-06, the "strict minimum". untouched, section 7.4 states what the derivation
         can and cannot say.
     r-02, the relations on C defined in [1]'s own [9]. touched by section 7.3's

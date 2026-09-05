@@ -38,6 +38,8 @@ the deliverable behind each row, so that neither side has to be searched for:
     r-04  b1                docs/part1/b1_phi_efficient_sets.md section 7.4
     r-20  e2                docs/part1/e2_tier1_results.md section 9, with
                             results/tier1/free_sets.csv
+    p-02  lit-review        docs/part2/lit_review.md sections 2.1, 2.2 and 2.5
+    p-05  lit-review        docs/part2/lit_review.md sections 3.1, 3.2, 3.3 and 3.4
 
 
 ## answered questions from section 5, questions the papers answer
@@ -62,7 +64,57 @@ p-03 | closed in a-close, and closed by a proof rather than by a paper. as raise
     written, sections 2 and 3 of [1] state no such analogue, and this session
     derives one rather than finding one
 
-p-05 was narrowed in a3 but is still open and stays in PROGRESS.md.
+p-02 | closed in lit-review, 2026-09-05, and closed affirmatively. the row asked
+    whether ishibuchi and tanaka 1990, [9], state the centre-width comparison in
+    the same coefficients as example 2.4 of [1]. **they do**: definition 3.4,
+    equations (3.11) and (3.12), printed page 222, a_c <= b_c and a_w <= b_w for
+    minimisation. the row stayed open after docs/plan_after_meeting.md section c2
+    answered it substantively, because that reading was made while surveying
+    papers/ and recorded no printed page numbers, which the evidence rule
+    requires; **the page numbers are now recorded** and the row closes on them.
+    the a_w-is-the-half-width reading the answer depends on is the paper's own
+    **three times over**: by definition at equation (2.4), printed page 220; in
+    the proof of proposition 4.1 at equation (4.6), printed page 222; and
+    numerically in example 1 at equations (5.10) and (5.11), printed page 224,
+    where [1850, 2215] is written (2032.5, 182.5). the paper's prose calls a_w
+    "the width" and its formula is the half-width, which is where the question
+    came from, and the loose word is the paper's and not the project's. the row's
+    second clause, that the closing session should also record definitions 3.1,
+    3.2, 3.3 and equation (4.1), is discharged: **six order relations are recorded,
+    not five**, the sixth being the minimisation relation <=*_LC at equations
+    (4.15) and (4.16), printed page 223, which the row did not anticipate, and
+    each of the six carries its containment verdict against the registry.
+    **no phi was added to the registry.** <=*_LR is example 2.2 and <=*_cw is
+    example 2.4, both already in it; <=_LC and <=*_LC are admissible and excluded
+    as checks; <=_cw of definition 3.2 is admissible and nested with none of the
+    three, so it would be a finding, and it is recorded as the one genuine
+    candidate the open literature adds and nothing more. **and proposition 4.2,
+    printed page 223, is a second independent confirmation of the containment
+    criterion, on the minimisation side and therefore on the project's own two
+    registry members. it is not an answer to s-11**, which asks about the
+    containments between phi_lu, phi_ls and phi_cw themselves
+
+p-05 | closed in lit-review, 2026-09-05, in both halves, one affirmatively and one
+    negatively. it was raised in a3 and narrowed there, and it was **the one
+    unverified number in b1's derivation**, docs/part1/part1_closing.md section
+    7.4. the regularity criterion is **theorem 34 of [10], printed page 13**,
+    verbatim as docs/part1/b1_phi_efficient_sets.md section 1.3 quoted it from
+    literature/gH-differentiability calculus for interval analysis.md: the
+    summary's number and statement were both correct and b1's citation needs no
+    correction to its conclusion. the supporting items are definition 29, printed
+    page 11, and definition 30, printed pages 11-12. **one correction to b1's
+    wording and not to its result**: b1 glossed abs-differentiability as "|f~| has
+    a classical Frechet derivative", which is not definition 30 but **proposition
+    32, printed page 12**, a sufficient condition -- and proposition 32's second
+    sentence, that a differentiable non-negative function is abs-differentiable,
+    is **wider than the strictly-positive-radius condition a1 imposed on p1** and
+    is what part 2 needs, since the interval-native candidates have radii that
+    vanish at interior points. the other half of the row, the gH-difference's
+    definition number in [10], has a **negative** answer: [10] states it in an
+    **unnumbered display** in section 2, printed page 3, with no definition number
+    and no equation number. the memoria must cite it by page, or cite the numbered
+    statement the corpus does have, [16] definition 2.1, printed page 4, which
+    attributes it to the same Stefanini 2008 that [10] does
 
 
 ## answered questions from section 6, questions only the supervisors can answer

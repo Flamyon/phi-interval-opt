@@ -330,13 +330,47 @@ optimization under the selected phi, f3 an out-of-sample backtest against
 markowitz, equal-weight and risk parity, f4 the answer to "which phi is better".
 the portfolio application is future work, where slide 21 of the supervisors'
 presentation places it.
-    f1  reading pass over [16], with the      not started. document only. **runs in
-        gate                                  parallel with e1 and e2** and gates f2
-    f2  problems_native.py                    not started, waits on f1 passing an
-                                              example
-    f3  the native run, plus its derivation   not started, waits on f2 and on e2
-    f4  part 2 write-up                       not started, waits on f3, or on f1
-                                              alone in the fallback form
+    f1  reading pass over [16], with the      **done, lit-review, 2026-09-05**,
+        gate                                  and widened by its prompt to the whole
+                                              reading that bears on part 2: [16],
+                                              [9], [10], [7], [8] and [13]. output
+                                              docs/part2/lit_review.md, **not** the
+                                              f1_interval_native_reading.md
+                                              CONTEXT.md named; that line is
+                                              corrected. **no example passes the
+                                              gate and none fails it**: criterion 3
+                                              cannot be answered by reading and not
+                                              determinable is not a pass. **five
+                                              pass every criterion a reading can
+                                              settle** -- I-BK1, I-SD, I-IKK1,
+                                              I-VFM1, I-MHHM2 -- and four of those
+                                              close b1's route cheaply. **criterion
+                                              5 passes on nineteen of twenty**, so
+                                              the fallback of
+                                              docs/plan_after_meeting.md section d2
+                                              is not what part 2 becomes; its text
+                                              is written anyway, lit_review sections
+                                              1.8, 1.9 and 6. closes p-02 and p-05
+    f2  problems_native.py                    not started. **f1's recommendation is
+                                              I-BK1**, the only problem in appendix
+                                              a with published checkpoints: a point
+                                              in Table 1 and a closed-form curve at
+                                              equation (25), both printed page 20-21
+                                              of [16] and both re-derived by hand in
+                                              lit_review section 1.6. lit_review
+                                              section 7.2 argues the derivation
+                                              comes **before** the separation check
+                                              and answers criterion 3 exactly rather
+                                              than by sample, which reverses the
+                                              order docs/plan_after_meeting.md
+                                              section d1 anticipated. **that
+                                              reversal is a decision and is not yet
+                                              taken**
+    f3  the native run, plus its derivation   not started, waits on f2 and on e2.
+                                              lit_review section 7.4 prices part 2's
+                                              substantive arm at **three sessions,
+                                              two of them paper-and-pencil**
+    f4  part 2 write-up                       not started, waits on f3
 
 phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
 25 september; the fourth is the repository itself.
@@ -501,23 +535,20 @@ them and guessing is what this project is avoiding.
 
 format: p-nn | question | owner subpart | status
 
+**p-02 and p-05 were closed in lit-review, 2026-09-05, and moved to
+docs/answered.md.** [9]'s a_w is the half-width by its own equation (2.4), and its
+definition 3.4 is example 2.4 of [1] in the same coefficients; [10]'s regularity
+criterion is theorem 34 and its gH-difference carries no definition number at all.
+**p-05 was the one unverified number in b1's derivation and it is now verified.**
+the deliverable is docs/part2/lit_review.md sections 2 and 3. **four p-rows
+remain, and p-01 and p-06 are one look each in [1]'s pdf.**
+
 p-01 | what letter and typeface does [1] use for the automorphism class and the
     beta row vector, and what works are its [7], [9], [23], [26] and [31]? | a0,
     then b1 | **open and now answerable**: the pdf of [1] is in papers/ since
     2026-09-04 and it carries its reference list. it stops being a wait and becomes
     a reading task, and resolving [1]'s own [9], [26] and [31] is what would settle
     the third part of s-11
-
-p-02 | does ishibuchi and tanaka 1990, [9], state the centre-width comparison in
-    the same coefficients as example 2.4 of [1]? | b1 | **open, and substantively
-    answered from the paper, which is in papers/ since 2026-09-04**: definition
-    3.4, equations (3.11) and (3.12), a_c <= b_c and a_w <= b_w for minimisation,
-    with a_w the half-width by the paper's own equation (4.6), a_R = a_L + 2 a_w.
-    docs/plan_after_meeting.md section c2. **the row stays open** because that
-    reading was made while surveying papers/ and not in a session that recorded
-    printed page numbers, which the evidence rule requires; the session that does
-    so closes it, and it should also record definitions 3.1, 3.2, 3.3 and equation
-    (4.1), which are three further order relations the project has never looked at
 
 p-04 | does any construction in [7] or [8] drive the interval width from the
     decision vector rather than by a constant band? | e3 | **open and now
@@ -533,17 +564,19 @@ p-04 | does any construction in [7] or [8] drive the interval width from the
     summaries in literature/ and not against the papers, which is a weaker
     citation and has to be visible as one
 
-p-05 | under which numbered definition does [10] state the gh-difference, and
-    under which theorem number the midpoint-radius regularity criterion? | b1,
-    then b2 | **open and now answerable**: [10]'s pdf is in papers/ since
-    2026-09-04. this is the one unverified number in b1's derivation and it can be
-    closed by a reading session before the memoria cites it. what follows is the
-    row as it stood. b1 needed the criterion and had to cite it as
-    "theorem 34" from literature/gH-differentiability calculus for interval
-    analysis.md with the number unverified, [10] not being in papers/. the outcome
-    of the check is not in doubt for p1, every function involved being a
-    polynomial with a strictly positive radius, and b1 does not rest on the
-    number; the paper is still wanted so the memoria can cite it properly
+    **partly served and not closed, lit-review, 2026-09-05.**
+    docs/part2/lit_review.md sections 4.1 and 4.2 transcribe the objection from all
+    three papers with printed page numbers, so e3 no longer has to cite the
+    literature/ summaries for it; and section 4.2 locates each paper's dominance
+    relation and gives the reason it is not in 𝔄_m -- [8]'s per-objective relation
+    **is** phi_lu, Remark 1 printed page 5, and it is the multiobjective
+    aggregation that leaves the framework, while [7]'s and [13]'s scores depend on
+    the population and on the comparison partner respectively. section 4.3 adds
+    that [8] and [13] report the selection-pressure loss part 1 measured, about
+    their own direct methods. **the row's own question is untouched**: whether any
+    construction in [7] or [8] drives the width from the decision vector is a
+    question about their benchmark suites, which lit-review did not read. e3 still
+    owns it
 
 p-06 | does [1] anywhere identify the "strict minimum" it asserts at x = 0 for the
     worked function after example 3.9 with one of definition 3.1's three named
