@@ -136,3 +136,63 @@ format:
     this session raises that bears on whether [16]'s published points may be used at
     all
 
+
+2026-09-05 | f3, the module and the native run | src/problems_native.py, new;
+    experiments/run_native.py, new; tests/test_problems_native.py, new;
+    tests/test_run_native.py, new; docs/part2/f3_native_run.md, new and generated;
+    results/part2/, new; CONTEXT.md section 12; PROGRESS.md sections 1 and 2 |
+    **the application stage: the instrument calibrated on p1 and extended to two
+    benchmarks, applied to a problem that is interval-valued at source and that
+    the project did not construct.** two files because the second is meaningless
+    without the first. **src/problems_native.py holds I-BK1 as [16] states it**,
+    coefficients cited to printed page 27, representation declared "endpoints"
+    because every h_ij is a square and Moore's product does not interchange the
+    boundary functions there, so the published coefficients compute the endpoints
+    and nothing rebuilds them from a centre and a radius, d-02. **no uncertainty
+    was added and no width function was written.** it also encodes f2 section
+    2.4's three wedges as pairs of integer-coefficient inequalities cleared of
+    denominators, so membership carries no tolerance and the two corners need no
+    case split, and samples them through the (nu, x_1) parametrisation with b2-b's
+    farthest-point correction, the mode stated by the caller with no default per
+    r-13. **experiments/run_native.py is the run**: all three solvers, all three
+    phi, five seeds, budget 5000 with the convergence check at 20000, 18
+    configurations, 90 runs, 24 figures, 1714 s, every number in the record read
+    back out of a file the run wrote. **table 1 exists and that is the point**:
+    the areas 2.8756, 3.7903 and 5.6853 reproduce f2 section 3.1 to six decimals
+    by a second route, an antiderivative in the band against a grid count of the
+    inequalities, and the pairwise coverages are 1.0 and 0.666692 on (lu, ls),
+    0.758670 and 1.0 on (lu, cw), 0.505799 and 1.0 on (ls, cw). **the instrument's
+    error, measured a second time and on a problem of a different origin**: at
+    delta zero and budget 5000 the relative error is +0.251677 on cov(ls in lu),
+    +0.074414 on cov(lu in cw), +0.482801 on cov(ls in cw) and +0.137192,
+    +0.003818 and +0.275886 on the three dice overlaps; six of the nine rows
+    measure above the exact value, two land exactly on it and one measures below.
+    **every magnitude is inside the +0.810049 e1 measured on p1**, so the stopping
+    rule the brief states was not triggered and nothing was adjusted to fit.
+    **the two rows that land exactly on the exact value are the two containments**,
+    ND_lu inside ND_ls and ND_cw inside ND_ls, and the recovered sets carry both
+    with a containment violation count of zero, so r-11's rounding artefact does
+    not occur on I-BK1 at all. **the one row that measures below, -0.088235, is
+    cov(cw in lu)**, the direction no containment covers: f2's nesting X_cw inside
+    X_lu is about the derived regions and the finite non-dominated sets of a
+    sample need not nest for that pair. **the headline convention does not apply
+    here and the record says so plainly**: all three pairs nest on I-BK1, so one
+    direction of every pair is fixed before anything runs and no row of this run
+    is a measured difference between two orders; two of the three are the
+    criterion's checks and X_cw inside X_lu is f2's finding about the problem.
+    **the counterexample reproduces independently and by a different route**: run
+    without being told any of it, every solver under every phi at every seed
+    returns points dominating [16]'s Table 1 x* in the paper's own definition 2.2,
+    medians of 5 to 15 points at budget 5000 and 4 to 40 at 20000, widest margin
+    0.269627 against f2's algebraic 0.273966. reported as a measurement; the claim
+    about the paper stays f2's. **x-01's condition is structurally absent**: none
+    of the twelve image columns has a non-empty free set and none is constant,
+    which is what f2 section 1.2 predicts from the forms, so m-2 is not computed
+    and I-BK1 is the first problem in the project where the effect is absent under
+    every phi. igd exists here where it did not at tier 1, the derived sets
+    supplying a reference, and include_singular_segments is False everywhere as a
+    no-op, I-BK1 having no singular weight direction. objective metrics at the
+    common cardinality 100, r-16, so this block and e1's full-cardinality one may
+    not be placed side by side. **c5 is not declared supported**: the run reports
+    the evidence and f4 states the claim | f4, part 2's write-up, which is where
+    c5 is judged and where a-11 has to be disposed of

@@ -47,7 +47,13 @@ project started 2026-08-30.
                         25 september: a paper-like results document, a latex
                         memoria, the code repository and a short presentation with
                         no implementation detail
-    current phase:      e, experiments, **complete on the part 1 side**. e1 and e2
+    current phase:      f, part 2, **substantive arm complete**. f1 read the
+                        corpus and applied the gate, f2 derived I-BK1's
+                        phi-efficient sets in closed form and f3 built the module
+                        and ran the measurement; only f4, the write-up, is left,
+                        and it is where clause c5 is judged.
+                        phase e, experiments, is **complete on the part 1 side**.
+                        e1 and e2
                         are both run, tier 0 and tier 1, the phase a correction
                         e2 waited on is done, and **e3 has read them**: part 1 is
                         answered in docs/part1/e3_synthesis.md and g1 has its input.
@@ -59,7 +65,24 @@ project started 2026-08-30.
                         ninety reverse measurements exceed the corrected
                         tolerance, every one of them nsga-ii, and the failure is
                         understood and is a finding rather than a defect
-    current subpart:    e3, the synthesis, **written and awaiting review**.
+    current subpart:    f3, the module and the native run, **run and awaiting
+                        review**. src/problems_native.py, experiments/run_native.py,
+                        their tests, docs/part2/f3_native_run.md and
+                        results/part2/. the instrument is measured a second time,
+                        on a problem interval-valued at source that the project did
+                        not construct, and its error is inside the one e1 measured
+                        on p1. **all three pairs nest on I-BK1**, so the headline
+                        convention of docs/part1/part1_closing.md section 3.1 has
+                        no counterpart there and no row of the run is a measured
+                        difference between two orders. **the solvers reproduce f2's
+                        counterexample independently**, every solver under every phi
+                        at every seed returning points that dominate [16]'s Table 1
+                        x* in the paper's own order. **x-01's condition is
+                        structurally absent on I-BK1**, the first problem in the
+                        project where that happens. c5 stays marked unsupported and
+                        is f4's to judge.
+                        the previous subpart, e3, the synthesis, is **written and
+                        awaiting review**.
                         docs/part1/e3_synthesis.md, and no experiment, no module and no
                         re-run: every number is read out of a file e1 or e2 wrote
                         and the file is named beside it. **part 1 is answered.**
@@ -377,21 +400,49 @@ presentation places it.
                                               shown by an explicit dominator against
                                               the paper's printed G(x*). **a-11 and
                                               a-12 raised**
-    f3  the reference set and the exact       not started. f2 is done, so its
-        statistics, then the native run       inputs are on disk: the map x(w), the
-                                              three closed-form regions as pairs of
-                                              polynomial inequalities, the exact
-                                              areas and overlap fractions, and the
-                                              published curve (25) as an
-                                              implementation check.
-                                              **docs/part2/f2_ibk1_derivation.md
-                                              section 7 lists what f3 takes and what
-                                              it must not use**, Table 1's x* being
-                                              the second. lit_review section 7.4
-                                              prices the rest of part 2's
-                                              substantive arm at two sessions, of
-                                              which only the run needs compute
-    f4  part 2 write-up                       not started, waits on f3
+    f3  the module and the native run         **run and awaiting review,
+                                              2026-09-05.** src/problems_native.py,
+                                              experiments/run_native.py, their two
+                                              test files, docs/part2/f3_native_run.md
+                                              and results/part2/. two files in one
+                                              session because the run is meaningless
+                                              without the module; the module the f2
+                                              line used to name is written here.
+                                              I-BK1 as [16] states it, coefficients
+                                              cited to printed page 27,
+                                              representation "endpoints" and no
+                                              width function written; f2 section
+                                              2.4's three wedges encoded as integer
+                                              inequalities with no tolerance, sampled
+                                              through the (nu, x_1) parametrisation
+                                              with b2-b's farthest-point correction.
+                                              all three solvers, all three phi, five
+                                              seeds, 5000 and 20000, 18
+                                              configurations, 90 runs, 24 figures.
+                                              **table 1 exists**: the areas
+                                              reproduce f2 section 3.1 by a second
+                                              route. **the instrument's error
+                                              measured a second time**, relative
+                                              +0.0744 to +0.4828 at delta zero and
+                                              budget 5000, every magnitude inside
+                                              e1's +0.8100 on p1, so the stopping
+                                              rule did not fire. **all three pairs
+                                              nest, so part1_closing section 3.1's
+                                              headline convention does not apply and
+                                              no row is a measured difference.**
+                                              **every solver under every phi at
+                                              every seed returns points dominating
+                                              [16]'s Table 1 x***, widest margin
+                                              0.2696 against f2's 0.2740. **x-01's
+                                              condition is structurally absent**, no
+                                              free set on any of the twelve columns,
+                                              so m-2 is not computed. c5 is not
+                                              declared supported
+    f4  part 2 write-up                       not started. f3 is run, so its
+                                              inputs are on disk. **c5 is judged
+                                              there and nowhere else**, and a-11,
+                                              [16]'s false proposition 2.1, has to
+                                              be disposed of in it
 
 phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
 25 september; the fourth is the repository itself.

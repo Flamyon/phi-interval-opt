@@ -1,0 +1,28 @@
+key,value,source
+problem,ibk1,run parameter
+seeds,11 12 13 14 15,run parameter
+n_seeds,5,run parameter
+budgets,5000 20000,run parameter
+pop_size,100,run parameter
+delta_box_fraction,0.05,run parameter
+reference_points,1000,run parameter
+reference_sampling_mode,farthest_point,run parameter
+reference_seed,20260905,run parameter
+hv_reference_rule,reference_front_nadir_plus_range_tenth,run parameter
+truncation_seed,20260906,run parameter
+dependence_points,512,run parameter
+dependence_seed,20260905,run parameter
+n_configurations,18,the run grid
+n_runs,90,the run grid
+wall_seconds,741.9274165630341,the run grid
+box_scale,28.284271247461902,the problem's bounds
+delta,1.4142135623730951,run parameter
+common_cardinality,100,"the smallest front of the comparison, r-16"
+printed_x_star,3.91493 1.428474,"[16] Table 1, printed page 20"
+printed_g_star,1.736722 3.677497 1.393317 6.731112,"[16] Table 1, printed page 20"
+table_1_exact_ibk1,table_1_exact_ibk1.csv,written here
+table_2_measured,table_2_measured.csv,written here
+table_3_solvers,table_3_solvers.csv,written here
+hypervolume_scored_cw,True,the point dominates every scored row
+hypervolume_scored_ls,True,the point dominates every scored row
+hypervolume_scored_lu,True,the point dominates every scored row

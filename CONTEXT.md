@@ -1605,12 +1605,17 @@ phi-interval-opt/
                                 written and were not rewritten in the move.** the
                                 mapping is below. part 1's entries only, a0 to
                                 docs-clean.
-        part2/                  part 2's record. **empty but for its README**,
-                                created in docs-clean so part 2 has somewhere to
-                                write. f1's output goes here, section 10 f1, and
-                                so does part 2's own session_log.md; neither file
-                                exists yet.
+        part2/                  part 2's record, created in docs-clean so part 2
+                                has somewhere to write.
             README.md           what belongs in the directory.
+            lit_review.md       f1's output, section 10 f1, widened by its prompt
+                                to the whole reading that bears on part 2.
+            f2_ibk1_derivation.md
+                                f2's derivation of I-BK1's phi-efficient sets.
+            f3_native_run.md    the native run record. **generated**, by
+                                experiments/run_native.py, whose --record default
+                                writes here; re-running must reproduce it exactly.
+            session_log.md      part 2's session log, one line per session.
 
     the old-to-new mapping for docs-clean, 2026-09-05. **the fifteen files below
     moved out of docs/ into docs/part1/ and nothing else moved.** every reference
@@ -1649,11 +1654,11 @@ phi-interval-opt/
         metrics_objective.py    d1
         metrics_decision.py     d2
         reporting.py            d3
-        problems_native.py      f2, planned and not yet written
+        problems_native.py      f2, written in f3, the derivation having come first
     experiments/
         run_tier0.py            e1
         run_tier1.py            e2
-        run_native.py           f3, planned and not yet written
+        run_native.py           f3
         make_figures.py         g2, planned and not yet written
     tests/
         conftest.py             import path setup
