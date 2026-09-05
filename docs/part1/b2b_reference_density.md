@@ -8,7 +8,7 @@ whether the correction is decision-relevant or cosmetic. it is decision-relevant
 and the numbers are in section 6.
 
 **why this is a separate file and not an appendix to
-docs/b1_phi_efficient_sets.md.** b1 derives the phi-efficient sets of p1 from the
+docs/part1/b1_phi_efficient_sets.md.** b1 derives the phi-efficient sets of p1 from the
 optimality conditions of [1], and every section of it is a statement about the
 paper's hypotheses and their consequences, checked in exact arithmetic. nothing
 here is such a statement. b2-b changes no line of the derivation: not the system
@@ -117,7 +117,7 @@ everywhere else in the suite that builds a reference front — the c3 gate, the 
 dominance checks, d2's tests — states `dirichlet_mode` explicitly, with the reason
 at the call site. those measurements are maxima, counts or relations, none of them
 biased by the reference's density, and every number
-docs/c3_validation.md tables was measured against that reference; changing it
+docs/part1/c3_validation.md tables was measured against that reference; changing it
 there would silently restate published numbers for no gain.
 
 
@@ -436,7 +436,7 @@ corrected reference. the two forms of the evidence are worth keeping apart:
         quality that agrees with the corrected reference instead.
 
 a comparison of two solvers that place their points differently — which is exactly
-what nsga-ii, mopso and random search do, docs/c3_validation.md section 5 — is a
+what nsga-ii, mopso and random search do, docs/part1/c3_validation.md section 5 — is a
 comparison of the kind these pairs are.
 
 
@@ -445,7 +445,7 @@ comparison of the kind these pairs are.
 **d1 computes igd against the farthest-point reference and records the mode in
 every table**, beside the seed, the point count and `include_singular_segments`.
 CONTEXT.md section 10 d1 now says so. the dirichlet mode is kept and is not
-deprecated: it is what every number already published in docs/c3_validation.md was
+deprecated: it is what every number already published in docs/part1/c3_validation.md was
 measured against, and the tests that use a maximum, a count or a dominance
 relation state it explicitly and are unaffected.
 
@@ -481,7 +481,7 @@ instrument list and not one this document takes.
     the region inequalities. still only in tests/test_reference_fronts.py and
         tests/test_validation.py, never in `src/`.
     src/problems_tier0.py. not opened.
-    the c3 gate and every number in docs/c3_validation.md. the gate states the
+    the c3 gate and every number in docs/part1/c3_validation.md. the gate states the
         dirichlet mode and measures a directed hausdorff distance, and its
         reference is bitwise the front it was before b2-b.
     d2's metrics. decision-space, a maximum and two counts, and its tests state

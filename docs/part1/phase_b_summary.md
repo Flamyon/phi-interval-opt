@@ -11,20 +11,30 @@ measurement and states no new result. every claim below points at the session
 deliverable that established it, and where this document and a deliverable could
 differ the deliverable wins.
 
+**this document and docs/project_narrative.md cover the same ground and both are
+kept**, docs-clean, 2026-09-05. that file is one continuous account of phases a to
+c in plain words, written in the research chat rather than at a phase boundary,
+with the failures narrated rather than cited; this one is the close-out of a
+single phase, organised by subpart, and every claim in it points at the
+deliverable that established it. **where the two could differ, this one wins.**
+part 1 as a whole is docs/part1/part1_closing.md, which is the settled record and
+supersedes neither.
+
 where the detail is, so this document does not become a second copy of it:
 
-    docs/b1_phi_efficient_sets.md  the derivation itself, sections 0 to 10, with
-                                   the hypotheses, the closed forms, the exact
-                                   verification and p0's status
-    src/reference_fronts.py        b2, and its module comment, which states what
-                                   the module does and does not encode
-    docs/verified.md               the verified facts, each with its source
-    docs/answered.md               answered questions and retired risks
-    PROGRESS.md                    the open p-, s- and r-rows
-    docs/session_log.md            b1's and b2's own session records
-    docs/phase_a_summary.md        phase a's close-out, on the same model
-    docs/phase_c_summary.md        phase c's, which judges its solvers against
-                                   what phase b produced
+    docs/part1/b1_phi_efficient_sets.md  the derivation itself, sections 0 to
+                                         10, with the hypotheses, the closed
+                                         forms, the exact verification and p0's
+                                         status
+    src/reference_fronts.py              b2, and its module comment, which states
+                                         what the module does and does not encode
+    docs/verified.md                     the verified facts, each with its source
+    docs/answered.md                     answered questions and retired risks
+    PROGRESS.md                          the open p-, s- and r-rows
+    docs/part1/session_log.md            b1's and b2's own session records
+    docs/part1/phase_a_summary.md        phase a's close-out, on the same model
+    docs/part1/phase_c_summary.md        phase c's, which judges its solvers
+                                         against what phase b produced
 
 
 ## 1. why phase b exists at all
@@ -99,7 +109,7 @@ the absolute distance halves with the spacing, and 0 of 289, 0 of 1418 and 0 of
 
 **one result was reproduced independently.** both containments, ND_lu and ND_cw
 inside ND_ls, fall out of the closed forms without using
-docs/a_close_containment.md's criterion. b1 section 5. that is a check on both and
+docs/part1/a_close_containment.md's criterion. b1 section 5. that is a check on both and
 neither is asserted by the project; the criterion is s-11.
 
 
@@ -133,7 +143,7 @@ and nothing else.
 needs a zero weight, so a uniform simplex draw approaches them slowly; b2 draws
 dirichlet with concentration 0.3, at which the worst gap from a fine lattice of
 the derived region to the sample is 0.034, 0.165 and 0.138 under the three phi
-against 0.274, 1.191 and 0.868 at concentration 1. docs/session_log.md, b2.
+against 0.274, 1.191 and 0.868 at concentration 1. docs/part1/session_log.md, b2.
 
 **the test that catches a wrong derivation** is that no point of a dense random
 sample dominates any point of the reference front: 0 of 2000 front points
@@ -204,7 +214,7 @@ nested in neither direction. CONTEXT.md section 10 e3, r-06, s-11.
 sets in closed form, c3-f could compute |X_lu| = 0.310533, |X_ls| = 1.513401 and
 |X_cw| = 1 and attribute half of r-19's coverage deficit to the shape of the
 region rather than to any solver. that half of the phase c finding is a phase b
-object. docs/c3_validation.md section 5.5.
+object. docs/part1/c3_validation.md section 5.5.
 
 **one reference-front risk is still open and is d1's, not b2's.** the sample is
 drawn through the weight map, so its density in objective space is the

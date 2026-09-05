@@ -7,6 +7,38 @@ PROGRESS.md and never reused.
 nothing is deleted here. a row is kept with the reasoning that retired it, so a
 later session can see why it stopped being live rather than finding it gone.
 
+**this file and the deliverable that retired each row are not the same document
+and neither is a copy of the other**, docs-clean, 2026-09-05. **this file is
+canonical for the disposition**: that a row is closed, when, by which subpart, and
+the reasoning in the compressed form a later session needs to decide whether the
+row can be reopened. **the deliverable is canonical for the derivation or the
+measurement** that produced the closure, and where a row and its deliverable could
+differ, the deliverable wins, on CONTEXT.md section 11's rule. a row states its
+conclusion and names its source; it does not reproduce the argument, and nothing
+in this file needs to be repeated in a deliverable or the reverse.
+
+the deliverable behind each row, so that neither side has to be searched for:
+
+    p-03  a-close           docs/part1/a_close_containment.md, the whole file
+    s-08  plan-after-meeting docs/meeting_2026_09_04.md section 4.3, with
+                            docs/part1/a1_uncertainty_model.md part 3 and
+                            docs/part1/b1_phi_efficient_sets.md sections 2.2, 2.4
+    s-05  plan-after-meeting docs/meeting_2026_09_04.md, the fifth decision
+    s-13  c3-b              docs/part1/c3_validation.md section 5.5 and
+                            docs/part1/b1_phi_efficient_sets.md section 2.6
+    r-03  plan-after-meeting docs/meeting_2026_09_04.md; the pdf itself, papers/
+    r-07  a3-b              docs/part1/a4b_dominance_tolerance.md, which measured
+                            it; CONTEXT.md sections 4 and 10 carry what remains
+    r-01  a4                no deliverable: the premise was a .gitignore line,
+                            and git history is the record
+    r-10  a3                papers/Presentacion_optimizacion_intervalar.txt
+                            slide 5 equation (2), the primary source that
+                            replaced the summary; v-39 in docs/verified.md
+    r-17  c3-c              docs/part1/c3_validation.md sections 2.2 and 2.3
+    r-04  b1                docs/part1/b1_phi_efficient_sets.md section 7.4
+    r-20  e2                docs/part1/e2_tier1_results.md section 9, with
+                            results/tier1/free_sets.csv
+
 
 ## answered questions from section 5, questions the papers answer
 
@@ -22,7 +54,7 @@ p-03 | closed in a-close, and closed by a proof rather than by a paper. as raise
     one. the argument is verified symbolically through the project's own phi
     routes, by exhaustive case analysis in exact rational arithmetic covering both
     strictness branches, and numerically on p0, p1, zdt1 and dtlz2, in
-    docs/a_close_containment.md. what the row was really carrying is two questions
+    docs/part1/a_close_containment.md. what the row was really carrying is two questions
     and both are now s-11 to the supervisors: is the argument correct, and is the
     interval statement already published, [26] being where it would sit. the
     project does not build on the result until they answer; it is recorded, not
@@ -39,7 +71,7 @@ s-08 | answered as assumed at the supervisors' meeting of 2026-09-04, and filed
     here in plan-after-meeting. the question was whether to accept p1's
     two-dimensional efficient band or change p1's shape, a curve and three
     distinct phi not being available together at two variables and two interval
-    objectives, docs/a1_uncertainty_model.md part 3. the working assumption was to
+    objectives, docs/part1/a1_uncertainty_model.md part 3. the working assumption was to
     accept the band. **the meeting's first decision accepts part 1's results as
     they stand and retracts nothing**, and the band is what b1 derived and what
     docs/meeting_2026_09_04.md section 4.3 presented, including the closed-form
@@ -47,7 +79,7 @@ s-08 | answered as assumed at the supervisors' meeting of 2026-09-04, and filed
     none for example 2.4, whose set is the unit square minus one open edge. the
     band is also what makes the coverage finding r-19 measurable at all, covering
     a two-dimensional region being a question a hundred points can answer badly.
-    docs/b1_phi_efficient_sets.md sections 2.2 and 2.4.
+    docs/part1/b1_phi_efficient_sets.md sections 2.2 and 2.4.
 
 s-05 | **moot** since the supervisors' meeting of 2026-09-04, and filed here in
     plan-after-meeting. the question was whether CONTEXT.md section 9's exclusion
@@ -62,7 +94,7 @@ s-05 | **moot** since the supervisors' meeting of 2026-09-04, and filed here in
     always applied: the project does not assert an interval analogue of a fuzzy
     proposition without deriving it, and the analogue it has, s-11's containment
     criterion, was derived independently and is not a corollary of proposition
-    5.1. CONTEXT.md section 9 as rewritten, docs/a0_framework.md and its a0-b
+    5.1. CONTEXT.md section 9 as rewritten, docs/part1/a0_framework.md and its a0-b
     addendum.
 
 s-13 | closed in c3-b, and closed by the derivation rather than by the
@@ -95,7 +127,7 @@ s-13 | closed in c3-b, and closed by the derivation rather than by the
     segment {(x_1, 0) : 0 < x_1 <= 1} itself is, where the published conditions
     give weak optimality and no verdict either way, and nothing here bears on it |
     b1 section 2.4's closed form, read instead of b2's sample | closed in c3-b |
-    docs/c3_validation.md section 5.5 and docs/b1_phi_efficient_sets.md section 2.6
+    docs/part1/c3_validation.md section 5.5 and docs/part1/b1_phi_efficient_sets.md section 2.6
 
 every other s-row is still marked "not yet asked" and stays in PROGRESS.md.
 
@@ -194,7 +226,7 @@ r-17 | retired in c3-c, and retired by a correction to the tolerance rather than
     resolution plays no part in it. the second was that the surviving term was
     read off twenty draws, which is a statistic that moves with the draw count,
     and c3-c replaces the point estimate with a measured distribution over 1000
-    draws whose quantiles are printed in docs/c3_validation.md section 2.2 and
+    draws whose quantiles are printed in docs/part1/c3_validation.md section 2.2 and
     whose 0.95 quantile, fixed before the study ran, is the tolerance. the
     estimator itself is unchanged and the first twenty draws reproduce c3's
     published 0.1246, 0.2174 and 0.1836 to four decimal places, so what was
@@ -206,7 +238,7 @@ r-17 | retired in c3-c, and retired by a correction to the tolerance rather than
     which is the evidence that it was derived and not aimed. what r-17 also said,
     that no sharp gate on p1 is available because the derived sets are
     two-dimensional regions of substantial area, is still true and is now stated
-    where it belongs, in docs/c3_validation.md section 2.3, as a property of the
+    where it belongs, in docs/part1/c3_validation.md section 2.3, as a property of the
     fixture rather than as a risk about a number
 
 r-04 | retired in b1, and filed here in repo-clean-b: the row stated its own
@@ -222,7 +254,7 @@ r-04 | retired in b1, and filed here in repo-clean-b: the row stated its own
     3 makes x = 0 an optimal solution under all three phi, so the published
     conclusion is recovered and the procedure is validated before p1, and the
     sets come from definition 3.1 applied directly. the consequence is that p0 is
-    a smoke test and not a b2 fixture, docs/b1_phi_efficient_sets.md section 7.4,
+    a smoke test and not a b2 fixture, docs/part1/b1_phi_efficient_sets.md section 7.4,
     and the row retires with that reasoning
 
 r-20 | retired in e2, and retired by the measurement its mitigation asked for. as
@@ -235,7 +267,7 @@ r-20 | retired in e2, and retired by the measurement its mitigation asked for. a
     width driver with every functional form unchanged. **e2 measured the effective
     column count at the run rather than inheriting it**: on a 512-point dependence
     sample it is 2m under every phi at every positive imprecision level on both
-    benchmarks, docs/e2_tier1_results.md section 9 and results/tier1/free_sets.csv,
+    benchmarks, docs/part1/e2_tier1_results.md section 9 and results/tier1/free_sets.csv,
     and tests/test_run_tier1.py asserts the same property as a test. at eps = 0 the
     columns do coincide, m under example 2.2 and m + 1 under examples 2.3 and 2.4,
     and that level is the crisp baseline that src/problems_tier1.py labels as one

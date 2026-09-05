@@ -247,7 +247,7 @@ what it does not:
     coordinates this says that any phi with four non-negative coefficients is a
     refinement of example 2.4 and carries nothing new, so a genuinely new order
     must carry a sign change relative to every registry member.
-    docs/a_close_containment.md for the criterion, s-11 for its status, and
+    docs/part1/a_close_containment.md for the criterion, s-11 for its status, and
     docs/plan_after_meeting.md section c for the candidates and the verdicts.
 
 note the second coordinate of phi_ls is the full width and the second coordinate of
@@ -290,7 +290,7 @@ the three named examples in these coordinates:
     phi_cw   (c, r),           the identity, determinant 1 = 2 * (1/2)
 
 the reason for having both routes is arithmetic and is measured in
-docs/a4b_dominance_tolerance.md: reaching the second coordinate of phi_ls or
+docs/part1/a4b_dominance_tolerance.md: reaching the second coordinate of phi_ls or
 phi_cw by subtracting endpoints costs an error of order eps|c|, reaching 1.1e-07
 at |c| = 1e9, and destroys the exact ties a width column has by construction,
 46 distinct values becoming 210 on p1's grid. subpart a3 implements both routes
@@ -373,10 +373,10 @@ one dominance relation, everywhere, and no tolerance anywhere.
     section 10. the arithmetic error that a tolerance would have had to cover is
     not committed in the first place.
     a tolerance was measured before it was rejected, in
-    docs/a4b_dominance_tolerance.md parts 1.5 and 1.6; that is the reasoning
+    docs/part1/a4b_dominance_tolerance.md parts 1.5 and 1.6; that is the reasoning
     behind d-02 and it is not reopened without a measurement.
     pymoo 0.6.2 could not be given a tolerance even if one were wanted, its
-    epsilon argument being a no-op, in docs/a4b_dominance_tolerance.md part 3.
+    epsilon argument being a no-op, in docs/part1/a4b_dominance_tolerance.md part 3.
 
 
 ## 6. what theory the project uses, and from where
@@ -589,7 +589,7 @@ each subpart is one session. a session produces the file named, its tests where 
 is code, and a session record block for PROGRESS.md.
 
 ### a0: verification pass over [1]
-    output: docs/a0_framework.md. no code. read from the paper itself.
+    output: docs/part1/a0_framework.md. no code. read from the paper itself.
     section 4 of this file states the framework as read in the research chat. a0
     verifies every claim in it against the paper independently and records, for
     each, the equation or example number and the page. it is a check on that
@@ -622,7 +622,7 @@ is code, and a session record block for PROGRESS.md.
     an ambiguity by choosing the convenient reading.
 
 ### a1: uncertainty model decision
-    output: docs/a1_uncertainty_model.md. no code in this session.
+    output: docs/part1/a1_uncertainty_model.md. no code in this session.
     decides, once and for the whole project, how imprecision enters a problem.
     must contain:
         an empirical check of the degeneracy described in step 1, run on a
@@ -711,7 +711,7 @@ is code, and a session record block for PROGRESS.md.
     p0's comment gives the paper's own words for the property at that point, "a
     strict minimum", and says that the paper does not identify it with any of
     definition 3.1's three names. the mapping to definition 3.1(1) is an inference
-    and is p-06, never a fact the code asserts. docs/a0_framework.md, "the
+    and is p-06, never a fact the code asserts. docs/part1/a0_framework.md, "the
     conclusion the paper states, and the phi it is stated under".
     problem p1, two variables, two interval objectives, smooth, with an efficient
     set of positive extent in the decision space. smoothness is a design
@@ -719,7 +719,7 @@ is code, and a session record block for PROGRESS.md.
     every phi. its concrete form comes from a1.
     that set is a two-dimensional band and not a curve, and a curve and three
     distinct phi are not both available at this size. the argument is
-    docs/a1_uncertainty_model.md part 3; accepting the band is s-08.
+    docs/part1/a1_uncertainty_model.md part 3; accepting the band is s-08.
     bounds are explicit and are not the unit box. p0's anchor point sits at the
     origin and needs a box containing negative values.
     tests: the bounds contain p0's anchor point; the width of p1 varies
@@ -776,7 +776,7 @@ is code, and a session record block for PROGRESS.md.
     require a linear dependence among the base functions; a full-rank witness
     matrix at stated points rules that out. a5's shared width fails the same
     certificate at rank 3 and rank 4, which is the effective column count section
-    b4 states. docs/a1_uncertainty_model.md a5-b sections 1 to 3.
+    b4 states. docs/part1/a1_uncertainty_model.md a5-b sections 1 to 3.
     a5-b re-ran a1 part 4's slice sweep on the new forms, because r-08 is exactly
     the risk that a new width form passes every uniform statistic and still gives
     example 2.4 the crisp efficient set on the slice, and s-07 says the slice check
@@ -784,12 +784,12 @@ is code, and a session record block for PROGRESS.md.
     conditions, and the harness is a1's: on a1's own slice at side 61 it reproduces
     every published fraction of both of a1's tables exactly. the slice gained one
     axis per new driver, which the change forces, since a1's slice pins x_29, x_10
-    and x_11. docs/a1_uncertainty_model.md a5-b sections 4 and 5.
+    and x_11. docs/part1/a1_uncertainty_model.md a5-b sections 4 and 5.
     a5-b precedes e2. it does not answer s-09, which asks about scaling and not
     about drivers, and every objective still carries the same absolute form.
 
 ### b1: analytic derivation of the phi-efficient sets
-    output: docs/b1_phi_efficient_sets.md. paper and pencil with symbolic
+    output: docs/part1/b1_phi_efficient_sets.md. paper and pencil with symbolic
     verification. no module.
     method, entirely inside the corpus:
         write the image coordinates Lambda_i^T f and B_i^T f explicitly for each
@@ -824,7 +824,7 @@ is code, and a session record block for PROGRESS.md.
         neither include_singular_segments nor sampling_mode has a default: the
             flag names which set the reference is, s-12 and r-12, and the mode
             names how evenly that set is sampled, dirichlet or farthest_point,
-            r-13 and docs/b2b_reference_density.md. section 10 d1 is where the
+            r-13 and docs/part1/b2b_reference_density.md. section 10 d1 is where the
             two values are required to appear in a table.
     tests: every sampled point satisfies condition (15) numerically with the weights
     b1 recorded; no point of a dense random sample dominates any point of the
@@ -841,7 +841,7 @@ is code, and a session record block for PROGRESS.md.
     phi arrives by name and not as a callable, and the record is looked up in
     phi_registry, as src/reference_fronts.py does it. the same applies to c2 below.
     this line specified a phi_fn until c2 corrected it against d-02, which made a
-    bare callable unpairable with a problem; docs/session_log.md, c1 and c2.
+    bare callable unpairable with a problem; docs/part1/session_log.md, c1 and c2.
     why the separation matters: one uniform sample can be filtered under each phi in
     turn, and the resulting fronts then differ only through the order, because the
     search was identical. in nsga-ii and mopso, phi drives the search as well as the
@@ -873,10 +873,10 @@ is code, and a session record block for PROGRESS.md.
     which random draws occur and not what the algorithm does with them. c2-b's
     SeededArchiveMopso is that and nothing more; the resize it replaced was a
     modification, because the archive is mopso's leader pool and its size changes
-    what the search does. d-03, v-51, docs/session_log.md, c2-b.
+    what the search does. d-03, v-51, docs/part1/session_log.md, c2-b.
 
 ### c3: validation gate
-    output: docs/c3_validation.md and tests/test_validation.py.
+    output: docs/part1/c3_validation.md and tests/test_validation.py.
     runs all three solvers on every tier 0 problem under every phi for which b1
     closed, and checks recovery of the known efficient set within a stated
     tolerance, per seed. recovery is measured by hausdorff distance in the
@@ -890,14 +890,14 @@ is code, and a session record block for PROGRESS.md.
     settle that are whether any solver returns a point beating the derivation and
     whether the failing solver's front lies on and around the derived set; if
     either goes the other way, phase e does not start. record the tolerance and
-    why it was chosen. added in c3-c, docs/c3_validation.md section 4.
+    why it was chosen. added in c3-c, docs/part1/c3_validation.md section 4.
     what the gate asserts, and what it only reports.
     the forward direction, solver to reference, is reported and is never
     asserted. the reason is a proposition and not an observation: under phi_ls
     and phi_cw the whole low-|x_1| tail of any finite candidate set is shielded
     from domination while its x_2 ranges over the box, and the overhang of that
     tail past the derived set is a floor no solver can clear. under phi_lu no
-    such member exists. v-54, docs/c3_validation.md section 1.
+    such member exists. v-54, docs/part1/c3_validation.md section 1.
     so the gate asserts, pass or fail, both directions of the pipeline:
         reference to solver, the hausdorff distance from the derived set to the
         recovered set, within the derived tolerance, per solver, phi, seed and
@@ -912,7 +912,7 @@ is code, and a session record block for PROGRESS.md.
         and it is exact: it is algebraic, it needs no sample, and a point outside
         the region is not efficient whatever any sample says. it replaces the
         sampled count of front points dominated by b2's reference front, which is
-        biased downward at every finite reference size, docs/c3_validation.md
+        biased downward at every finite reference size, docs/part1/c3_validation.md
         section 3.2. that count is kept for one run at several reference sizes,
         so the bias is quantified once, and nowhere else.
         the forward hausdorff, per configuration, with the note that it carries
@@ -920,7 +920,7 @@ is code, and a session record block for PROGRESS.md.
         the budget trend, on both measures, at the gate budget against four times
         it, for all three solvers. it is reported and never asserted, for all
         three solvers and not restricted to phi_lu. r-18,
-        docs/c3_validation.md section 6.
+        docs/part1/c3_validation.md section 6.
         the front cardinality beside every number, r-16.
     the tolerance, and it is derived before the runs and never adjusted after
     them. it is the fill distance of a design-sized front alone, with the
@@ -930,7 +930,7 @@ is code, and a session record block for PROGRESS.md.
     justified before the study is run. 100 is the smallest front size the design
     fixes in advance. the distribution is reported and not only the quantile. the
     derivation, including why the two-sided bound between two subsets of R is a
-    max and never a sum, is v-55 and docs/c3_validation.md section 2.
+    max and never a sum, is v-55 and docs/part1/c3_validation.md section 2.
     what c3-c's own failure was diagnosed as is r-19, and section 10 e3 carries
     what e3 must do with it.
     the gate also reports one number that is not a recovery check: the count of
@@ -939,7 +939,7 @@ is code, and a session record block for PROGRESS.md.
     real arithmetic, so in doubles the count is a violation of an identity and is
     reported as numerical noise in the pipeline, as a diagnostic of the arithmetic
     and never as a result about phi. the instruction holds whichever way s-11 is
-    answered. docs/a_close_containment.md.
+    answered. docs/part1/a_close_containment.md.
 
 ### d1: metrics_objective.py
         compute_hv(front, reference_point)
@@ -989,7 +989,7 @@ is code, and a session record block for PROGRESS.md.
     density in objective space is the weight parametrisation's and not the front's,
     r-13, and igd averages over reference points, so it weights a region of the
     front by how the simplex happens to map. the correction was measured before it
-    was adopted, docs/b2b_reference_density.md: the nearest-neighbour spacing of a
+    was adopted, docs/part1/b2b_reference_density.md: the nearest-neighbour spacing of a
     1000-point front goes from a coefficient of variation of 0.74, 1.13 and 1.42
     under phi_lu, phi_ls and phi_cw to 0.12, 0.16 and 0.20; the igd of one fixed
     test front moves by 5.1 to 30.4 per cent between the two references, and by 5.1,
@@ -1018,7 +1018,7 @@ is code, and a session record block for PROGRESS.md.
     two additions to that rule. the common cardinality is shared across phi and is
     not computed per phi, which is what common_cardinality takes over every front
     of the comparison at once. the smallest front in a comparison is systematically
-    phi_lu's, ND_lu being contained in ND_ls, docs/a_close_containment.md, so
+    phi_lu's, ND_lu being contained in ND_ls, docs/part1/a_close_containment.md, so
     truncating each phi to its own smallest would put a phi-dependent selection
     inside the one comparison the study exists to make.
     and the rule is for objective-space metrics only. d2's hausdorff, coverage and
@@ -1139,7 +1139,7 @@ is code, and a session record block for PROGRESS.md.
     of the objection [7] raises against transformation methods. c3-d measured it on
     p1 and on both tier 1 benchmarks and found that the column count does not on
     its own order them, which is why e2 measures the number per configuration
-    rather than predicting it; the series are docs/c3_validation.md section 5.1.
+    rather than predicting it; the series are docs/part1/c3_validation.md section 5.1.
     the number is read out of the algorithm's state through a pymoo callback;
     pymoo is not modified.
 
@@ -1157,7 +1157,7 @@ is code, and a session record block for PROGRESS.md.
     rather than reporting all three alike. phi_ls's non-dominated set contains
     both of the others, ND_lu and ND_cw inside ND_ls, exactly and for every
     problem, and both follow from one criterion on the map between two
-    automorphisms, docs/a_close_containment.md. so on the phi_ls against phi_lu pair
+    automorphisms, docs/part1/a_close_containment.md. so on the phi_ls against phi_lu pair
     and on the phi_ls against phi_cw pair, one direction of every coverage and
     overlap statistic is fixed before a solver is run, and a difference measured
     there is in part a theorem and must not be reported as evidence that the
@@ -1176,20 +1176,20 @@ is code, and a session record block for PROGRESS.md.
     this project has that property: in nsga-ii and mopso phi drives the search as
     well as the ordering, and c3-f measured the consequence, that at matched
     cardinality nsga-ii's coverage of the derived region is phi-conditional and
-    random search's is not, docs/c3_validation.md section 5.5. **the population
+    random search's is not, docs/part1/c3_validation.md section 5.5. **the population
     methods are reported separately, as a question about how solvers behave under
     each order and not as the phi comparison, with the coverage deficit and the
     rank-1 saturation stated beside them.** c1's control is therefore the
     instrument carrying the study's main result rather than a baseline to beat,
     which is what slide 17 asked for it. c-close's amendment,
-    docs/session_log.md.
+    docs/part1/session_log.md.
 
     e3 must report the c3-c finding, r-19, with its numbers, and must not report
     it as a result about phi. for a full-dimensional efficient set nsga-ii's
     decision-space coverage is worse than uniform random sampling of that set at
     equal cardinality, under phi_ls and phi_cw and not under phi_lu. how c3-b read
     the same numbers as a tolerance question, and why c3-c reads them as a finding
-    with the gate left failing, is docs/c3_validation.md section 5. the numbers e3
+    with the gate left failing, is docs/part1/c3_validation.md section 5. the numbers e3
     carries: nsga-ii's fill distance with respect to the derived region sits at
     the 85th to the 99th percentile of 1000 uniform 100-point draws under phi_ls
     and phi_cw, worse than the uniform mean in all ten measurements, and at the
@@ -1211,10 +1211,10 @@ is code, and a session record block for PROGRESS.md.
     same size, the other says that from generation three or four onwards the
     selection producing that front is crowding distance and not dominance. the
     measurement and its numbers are in the e2 paragraph above and in
-    docs/c3_validation.md section 5.1.
+    docs/part1/c3_validation.md section 5.1.
 
     e3 reports r-19 at its measured size and not at its apparent one, which c3-e
-    and c3-f halve, docs/c3_validation.md sections 5.2 to 5.5. the sentence e3
+    and c3-f halve, docs/part1/c3_validation.md sections 5.2 to 5.5. the sentence e3
     must not write is that nsga-ii covers worse than random sampling because of
     the phi, and the reason is a control: random search is phi-neutral by
     construction, c1's sample being a pure function of the box, the budget and the
@@ -1230,7 +1230,7 @@ is code, and a session record block for PROGRESS.md.
     has no mechanism.** four candidates are excluded by direct measurement and e3
     must not revive any of them without new measurement: rank-1 saturation, wasted
     front slots, the pullback, and the alignment of the crowding distance's axes.
-    each exclusion and the numbers that made it are docs/c3_validation.md
+    each exclusion and the numbers that made it are docs/part1/c3_validation.md
     sections 5.2 to 5.5.
 
     e3 may use v-56 and it is the one piece of this that is about [1] rather than
@@ -1273,7 +1273,8 @@ is code, and a session record block for PROGRESS.md.
     future-work section cites. the full prompt for each subpart below is
     docs/plan_after_meeting.md section d.
 
-    f1  reading pass over [16]. output docs/f1_interval_native_reading.md. **no
+    f1  reading pass over [16]. output docs/part2/f1_interval_native_reading.md,
+        the directory docs-clean created for part 2's record. **no
         code and no implementation**, and the newton method itself is not read for
         implementation, section 9.
         transcribes, each located by number and page: the paper's problem class and
@@ -1335,6 +1336,14 @@ is code, and a session record block for PROGRESS.md.
         every finding under the disposition docs/plan_after_meeting.md section a1
         gives it, and it is the memoria's source: the memoria is not a second place
         where a result is decided.
+        **it lifts part 1 from docs/part1/part1_closing.md**, which is written to
+        be complete enough that g1 opens nothing else for the results; where a
+        conclusion's full reasoning is wanted it is in docs/part1/e3_synthesis.md,
+        and where the two could differ the e1 or e2 artefact settles it.
+        **two statements in that document bind g1 and neither is in the generated
+        run records**, section 11: part1_closing section 3.5's caption for e1's
+        tier 0 objective block, which travels with that table wherever g1 prints
+        it, and section 3.4's prohibition on generalising the dtlz2 column result.
         **coverage leads every table and the overlap column is jaccard, named
         jaccard, d-09.** coverage is directional, unambiguous and the same
         functional in the exact table and the measured one, so it is what a reader
@@ -1358,12 +1367,17 @@ is code, and a session record block for PROGRESS.md.
 
     g3  the latex memoria. every number arrives as an \input of a generated
         fragment or as a named csv cell, with the file and the key named.
+        **the two statements that bind g1 bind g3 as well**, section 11:
+        docs/part1/part1_closing.md section 3.5's caption for e1's tier 0 objective
+        block, and section 3.4's prohibition on generalising the dtlz2 column
+        result. neither is in docs/part1/e1_tier0_run.md or any other generated
+        record, and shortness is not a reason to drop either.
         **it is in english, and it is short and applied**, d-07: it does not
         re-derive the framework, does not restate the theory of [1] beyond what a
         reader needs to follow the application, and does not carry the derivations
         at length. it cites the papers and shows what applying them produced, the
         problems, the measured results, the tables and the figures; the derivations
-        stay in docs/b1_phi_efficient_sets.md and the other deliverables and are
+        stay in docs/part1/b1_phi_efficient_sets.md and the other deliverables and are
         cited from here rather than reproduced. no translation step is scheduled
         and no spanish terminology has to be fixed, which removes the risk
         docs/plan_after_meeting.md section h3 raised.
@@ -1446,9 +1460,28 @@ session discipline:
     sessions while absent from disk, and the audit it could not have until it
     arrived found eighteen items in it. where a document is planned and not yet
     written, section 12 either says so in place or does not name it.
+    **two statements bind g1 and g3 and live in exactly one place each, and this
+    is the second place they are named**, docs-clean. the first is the caption for
+    e1's tier 0 objective block, docs/part1/part1_closing.md section 3.5: that
+    block is reported at each solver's full cardinality, it is a record of what
+    each solver returned and not a comparison between solvers, r-16's cardinality
+    effect exceeds the differences it displays, random search leading it is its row
+    count, and **no ranking of solvers may be read from it**. it is deliberately
+    not in docs/part1/e1_tier0_run.md, that record being generated and required to
+    reproduce exactly, so the caption travels with the table from part1_closing and
+    from nowhere else. the second is the prohibition on generalising the dtlz2
+    column result, docs/part1/part1_closing.md section 3.4: column 4's exact zero
+    overhang is a fact about dtlz2's structure and not about example 2.2, the
+    condition is a property of a column and the orders enter only by determining
+    which columns exist, and **the sentence "phi_cw has protected minimisers and
+    phi_lu does not" must not be written**. neither statement is recorded anywhere
+    else in the repository and neither may be dropped when part 1 is lifted into
+    the memoria.
     the agent maintains PROGRESS.md, which holds current state and open items
-    only: the subpart status, the open questions, the open risks and the session
-    log, updated at the end of each session, and no specification. verified facts
+    only: the subpart status, the open questions and the open risks, updated at
+    the end of each session, and no specification. the session log is not in it
+    since docs-clean and is docs/part1/session_log.md for part 1 and
+    docs/part2/session_log.md for part 2. verified facts
     live in docs/verified.md, answered questions and retired risks in
     docs/answered.md, and session-by-session detail in the commit history.
     PROGRESS.md holds open rows only, in fixed shapes. a p-row is question,
@@ -1490,14 +1523,16 @@ dependencies:
 
 phi-interval-opt/
     CONTEXT.md                  this file. specification.
-    PROGRESS.md                 state, decisions, open questions, session log.
+    PROGRESS.md                 state, decisions and open questions. **no session
+                                log**: section 8 is a pointer since docs-clean.
     papers/                     source pdfs and extracted text. **the corpus, and
                                 it is open**: every paper is here, section 3.
         resumed/                paper summaries. reference only, never a substitute
                                 for the papers. **this is the directory this file
                                 used to call literature/**, which does not exist.
-    docs/                       a0, a1, b1, c3 deliverables and research-chat
-                                analyses.
+    docs/                       **only what spans the whole project.** a
+                                document belonging to one part lives under that
+                                part's directory, docs-clean, 2026-09-05.
         plan_after_meeting.md   the plan after the supervisors' meeting of
                                 2026-09-04: the claim, the ordered path, what phase
                                 e must report to be comparable with p1, the phi
@@ -1505,28 +1540,99 @@ phi-interval-opt/
                                 its fallback, the scope diffs, the registered
                                 prediction and the calendar.
         meeting_2026_09_04.md   the document written for that meeting.
-        project_narrative.md    the project in plain language, written in the
+        project_narrative.md    phases a to c in plain language, written in the
                                 research chat: what is being asked, what has been
                                 established and what it cost. the human narrative
                                 kept alongside PROGRESS.md's machine state, and
                                 the two are read together: PROGRESS.md says what
-                                is open, this says what the work means.
+                                is open, this says what the work means. its last
+                                section, "where the project is, and what is left",
+                                is superseded and its header says so; it is kept
+                                unedited as history.
         verified.md             every verified fact, v-nn, moved out of
                                 PROGRESS.md section 4 in a1-b.
         answered.md             answered p- and s-questions and retired risks,
                                 moved out of PROGRESS.md in a1-b. nothing is
                                 deleted there; a row is kept with the reasoning
-                                that retired it.
-        session_log.md          the session log, one line per session, moved out
-                                of PROGRESS.md section 8 in repo-clean. PROGRESS.md
-                                keeps the last three entries and a pointer here.
-        phase_a_summary.md      the close-out of each phase, written for a reader
-        phase_b_summary.md      who did not follow the sessions. they repeat no
-        phase_c_summary.md      derivation and state no new result; where one and
-                                a deliverable could differ the deliverable wins.
+                                that retired it. canonical for a row's
+                                disposition; the deliverable named in its header
+                                index is canonical for the derivation.
         supervisor_questions.md the full text of every open s-row, written to be
                                 answered in one sitting. PROGRESS.md section 6 is
                                 the index into it.
+        part1/                  **part 1's whole record**, filed there in
+                                docs-clean. nothing under it is current state.
+            part1_closing.md    **the canonical part 1 record** and the document
+                                g1 lifts part 1 from. section 3.5 carries the
+                                caption binding on g1 and g3 for e1's tier 0
+                                objective block, which is deliberately not in the
+                                generated e1 record; section 3.4 carries the
+                                prohibition on generalising the dtlz2 column
+                                result. neither is recorded anywhere else and
+                                both are named again in section 11.
+            e3_synthesis.md     the working synthesis with its full reasoning.
+                                part1_closing is the settled record of the same
+                                answer; each header names the other and says
+                                which is which.
+            e1_tier0_run.md     the tier 0 run record. **generated**, by
+            e2_tier1_results.md experiments/run_tier0.py and run_tier1.py, whose
+                                --record defaults write here; re-running must
+                                reproduce them exactly.
+            the analysis deliverables, a0 to c3, one per subpart:
+                a0_framework.md             the verification pass over [1]
+                a1_uncertainty_model.md     the uncertainty model decision
+                a4b_dominance_tolerance.md  the dominance tolerance
+                a_close_containment.md      the containment and s-11
+                b1_phi_efficient_sets.md    the derivation, 2.4 the closed forms
+                b2b_reference_density.md    the reference front's density
+                c3_validation.md            the validation gate and its finding
+            phase_a_summary.md  the close-out of each phase, written for a reader
+            phase_b_summary.md  who did not follow the sessions. they repeat no
+            phase_c_summary.md  derivation and state no new result; where one and
+                                a deliverable could differ the deliverable wins.
+                                docs/project_narrative.md covers the same ground
+                                in plainer language and both are kept.
+            session_log.md      the session log, one line per session, canonical.
+                                moved out of PROGRESS.md section 8 in repo-clean
+                                and here in docs-clean, which also removed the
+                                copy of the last three entries PROGRESS.md kept.
+                                **append-only: its entries name paths as they were
+                                written and were not rewritten in the move.** the
+                                mapping is below. part 1's entries only, a0 to
+                                docs-clean.
+        part2/                  part 2's record. **empty but for its README**,
+                                created in docs-clean so part 2 has somewhere to
+                                write. f1's output goes here, section 10 f1, and
+                                so does part 2's own session_log.md; neither file
+                                exists yet.
+            README.md           what belongs in the directory.
+
+    the old-to-new mapping for docs-clean, 2026-09-05. **the fifteen files below
+    moved out of docs/ into docs/part1/ and nothing else moved.** every reference
+    was rewritten except in two places, deliberately: docs/part1/session_log.md,
+    which is append-only, and the comments under src/ and tests/, which docs-clean
+    was told not to touch. a citation there naming docs/<name>.md means
+    docs/part1/<name>.md and this is the mapping that resolves it.
+
+        docs/a0_framework.md            -> docs/part1/a0_framework.md
+        docs/a1_uncertainty_model.md    -> docs/part1/a1_uncertainty_model.md
+        docs/a4b_dominance_tolerance.md -> docs/part1/a4b_dominance_tolerance.md
+        docs/a_close_containment.md     -> docs/part1/a_close_containment.md
+        docs/b1_phi_efficient_sets.md   -> docs/part1/b1_phi_efficient_sets.md
+        docs/b2b_reference_density.md   -> docs/part1/b2b_reference_density.md
+        docs/c3_validation.md           -> docs/part1/c3_validation.md
+        docs/e1_tier0_run.md            -> docs/part1/e1_tier0_run.md
+        docs/e2_tier1_results.md        -> docs/part1/e2_tier1_results.md
+        docs/e3_synthesis.md            -> docs/part1/e3_synthesis.md
+        docs/part1_closing.md           -> docs/part1/part1_closing.md
+        docs/phase_a_summary.md         -> docs/part1/phase_a_summary.md
+        docs/phase_b_summary.md         -> docs/part1/phase_b_summary.md
+        docs/phase_c_summary.md         -> docs/part1/phase_c_summary.md
+        docs/session_log.md             -> docs/part1/session_log.md
+
+    docs/row_history.md is not in the mapping. it was deleted in repo-clean-b and
+    the session log entries that name it are recording a file that no longer
+    exists.
     src/
         interval_math.py        a2
         phi_transforms.py       a3

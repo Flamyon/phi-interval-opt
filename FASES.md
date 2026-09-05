@@ -9,7 +9,7 @@ sección 8; el estado vivo está en PROGRESS.md. lo último hecho es d3.
 
 ### a0 revisión del marco teórico
 
-docs/a0_framework.md. sin código.
+docs/part1/a0_framework.md. sin código.
 
 19 afirmaciones del paper [1] (c1 a c19), cada una con su número de definición, teorema o ejemplo y su página impresa.
 
@@ -20,7 +20,7 @@ trabajada que el paper da tras el ejemplo 3.9.
 
 ### a1 modelo de incertidumbre
 
-docs/a1_uncertainty_model.md. sin código.
+docs/part1/a1_uncertainty_model.md. sin código.
 
 la decisión de cómo entra la imprecisión, se elige imprecisión en el objetivo con semianchura función del vector de decisión; se rechaza la imprecisión en los coeficientes (hace la semianchura función lineal del centro, que es la degeneración que anula el estudio) y la proporcional.
 
@@ -34,7 +34,7 @@ variante que a1-b mide después.
 
 ### a1-b anchuras distintas por objetivo, medida y adoptada
 
-docs/a1_uncertainty_model.md, apéndice a1-b.
+docs/part1/a1_uncertainty_model.md, apéndice a1-b.
 
 la variante que a1 no consideró: r_1 = rho·x_2^2 + delta y r_2 = rho·x_1^2 + delta,
 las dos semianchuras no monótonas en variables distintas en lugar de opuestas en
@@ -73,7 +73,7 @@ p0, la función trabajada de [1], y p1, el problema de a1. cada uno
 es un registro Problem con evaluate, representation ("endpoints" o
 "centre_radius"), bounds, n_vars y n_obj. n_obj es m y nunca 2m.
 
-docs/a4b_dominance_tolerance.md. mide el coste aritmético de
+docs/part1/a4b_dominance_tolerance.md. mide el coste aritmético de
 la ruta equivocada (46 valores de anchura convertidos en 210) y cierra dos
 decisiones: d-02, una sola relación de dominancia sin tolerancia en todo el
 proyecto, y d-01, delta = 1/8 en p1.
@@ -87,7 +87,7 @@ zdt1 y dtlz2 como problemas intervalares, en forma centro-semianchura desde el p
 ### a5-b un driver de anchura por objetivo
 
 src/problems_tier1.py, tests/test_problems_tier1.py,
-docs/a1_uncertainty_model.md apéndice a5-b.
+docs/part1/a1_uncertainty_model.md apéndice a5-b.
 
 a5 daba a todos los objetivos de un problema la misma función de semianchura, así
 que bajo los ejemplos 2.3 y 2.4 la imagen llevaba columnas duplicadas: zdt1 tenía
@@ -117,7 +117,7 @@ de a1, que es lo que lo convierte en una repetición y no en un experimento nuev
 
 ### b1 conjuntos phi-eficientes
 
-docs/b1_phi_efficient_sets.md. sin módulo.
+docs/part1/b1_phi_efficient_sets.md. sin módulo.
 
 los conjuntos eficientes de p1 en forma cerrada bajo los tres phi.
 convexidad por el teorema 3.3, regularidad por el criterio de [10], la
@@ -136,7 +136,7 @@ símplex de pesos y lo pasa por x(w); reference_front empuja ese conjunto por ph
 y lo devuelve como array (k, 2m) en el mismo orden de columnas que producen los
 solvers. include_singular_segments y sampling_mode no tienen valor por defecto.
 
-docs/b2b_reference_density.md. el muestreo dirichlet reparte
+docs/part1/b2b_reference_density.md. el muestreo dirichlet reparte
 la densidad según la parametrización de pesos y sesga el igd; se añade el modo
 farthest_point y es el único válido para igd.
 
@@ -165,7 +165,7 @@ tres solvers tengan el mismo.
 
 ### c3 puerta de validación
 
-docs/c3_validation.md. 
+docs/part1/c3_validation.md. 
 
 tests/test_validation.py.
 
@@ -222,7 +222,7 @@ historia por generación.
 
 ### e1 tirada tier 0
 
-experiments/run_tier0.py, tests/test_run_tier0.py, docs/e1_tier0_run.md.
+experiments/run_tier0.py, tests/test_run_tier0.py, docs/part1/e1_tier0_run.md.
 
 los tres solvers, los tres phi, p0 y p1, sobre la lista de semillas, con
 presupuesto 5000 y una comprobación de convergencia por problema a 20000, que es
@@ -257,7 +257,7 @@ aquí. e1 no las interpreta; eso es e3.
 
 ### e2 tirada tier 1
 
-experiments/run_tier1.py, tests/test_run_tier1.py, docs/e2_tier1_results.md.
+experiments/run_tier1.py, tests/test_run_tier1.py, docs/part1/e2_tier1_results.md.
 
 los tres solvers, los tres phi, zdt1_interval y dtlz2_interval, los cinco niveles
 de imprecisión de src/problems_tier1.py, cinco semillas, con presupuesto 5000 y
@@ -320,7 +320,7 @@ la línea de resultado de x-01. e2 no interpreta nada de esto; eso es e3.
 
 ### e3 síntesis de resultados
 
-docs/e3_synthesis.md. sin experimento, sin módulo y sin re-tirada: cada número
+docs/part1/e3_synthesis.md. sin experimento, sin módulo y sin re-tirada: cada número
 se lee de un fichero que escribió run_tier0.py o run_tier1.py y se nombra el
 fichero al lado. **la parte 1 queda respondida.**
 
@@ -344,7 +344,7 @@ columna de cardinalidad. |X_cw| es 257 y 1813 en **todos** los niveles positivos
 porque eps entra en la imagen del ejemplo 2.4 solo como escalar positivo sobre
 las columnas de anchura y un reescalado positivo no cambia la relación de pareto.
 toda la dependencia de eps del par de cabecera es de X_lu. **estaba predicho**,
-en la parte 4 de docs/a1_uncertainty_model.md, y se confirma aquí sobre la
+en la parte 4 de docs/part1/a1_uncertainty_model.md, y se confirma aquí sobre la
 cardinalidad de la tirada y no sobre una fracción de rodaja, r-22.
 
 **la forma, que la magnitud esconde.** en p1 los dos conjuntos no se contienen en
@@ -385,11 +385,46 @@ recomendada es condicional**, con la forma lineal rechazada de a1 como brazo
 negativo medido. tres figuras nombradas para g2, una de ellas ya existe.
 
 
+## cierre de la parte 1, y mantenimiento
+
+fuera de las fases a a g: no son subpartes de una fase, son el cierre de la parte
+1 y la sesión de orden que lo archivó.
+
+### part1-close cierre de la parte 1
+
+docs/part1/part1_closing.md. sin experimento, sin módulo, sin re-tirada, **sin
+afirmación nueva y sin número nuevo**: cada cifra se lee de un artefacto de e1, e2
+o e3 y se nombra al lado. **es el registro canónico de la parte 1 y el documento
+del que g1 la levanta**, escrito para los directores y para quien redacte la
+memoria. e3 sigue siendo la síntesis de trabajo con el razonamiento completo; este
+es el registro asentado, y la cabecera de cada uno nombra al otro.
+
+dos cosas viven **solo** aquí y obligan a g1 y a g3, CONTEXT.md sección 11: la
+sección 3.5, el pie del bloque objetivo de tier 0 de e1, que no está en el
+registro generado porque ese registro se reproduce exactamente; y la sección 3.4,
+la prohibición de generalizar el resultado de la columna de dtlz2.
+
+### docs-clean reorganización de la documentación
+
+sin código, sin tirada y sin afirmación nueva. quince ficheros de la parte 1
+pasan de docs/ a docs/part1/, docs/ se queda con lo que abarca todo el proyecto, y
+docs/part2/ se crea con su README para que la parte 2 tenga dónde escribir. la
+sección 12 de CONTEXT.md lleva el mapa de rutas antiguas a nuevas.
+
+cuatro solapes resueltos: el registro de sesiones queda solo en
+docs/part1/session_log.md y la sección 8 de PROGRESS.md deja de copiar las tres
+últimas entradas; los tres resúmenes de fase y docs/project_narrative.md se
+conservan los dos con una línea en cada uno que nombra al otro; part1_closing y e3
+igual; y docs/answered.md queda como canónico de la disposición de cada fila, con
+un índice al entregable que la retiró.
+
+
 ## estado
 
 fases a, b y c completas. d1, d2 y d3 construidos; d3 pendiente de
 revisión. **fase e completa por el lado de la parte 1**: e1 y e2 tirados, tier 0
 y tier 1, a5-b hecho, y **e3 escrito**, con la parte 1 respondida en
-docs/e3_synthesis.md y pendiente de revisión. doce parámetros en xfail estricto
-fijan el hallazgo de c3. lo siguiente es g1, que ya tiene sus dos prerrequisitos,
-con g2 al lado y f1 en paralelo, y luego g3 y g4.
+docs/part1/e3_synthesis.md y pendiente de revisión. **la parte 1 está cerrada en
+docs/part1/part1_closing.md**, que es de donde g1 la levanta. doce parámetros en
+xfail estricto fijan el hallazgo de c3. lo siguiente es g1, que ya tiene sus dos
+prerrequisitos, con g2 al lado y f1 en paralelo, y luego g3 y g4.

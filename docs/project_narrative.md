@@ -17,6 +17,29 @@ deliverable wins, on the model of the three phase summaries.
 PROGRESS.md is the working state file and is read by the coding agent. this file
 is the human one.
 
+**this file and the three phase summaries cover the same ground and both are
+kept**, docs-clean, 2026-09-05. docs/part1/phase_a_summary.md,
+docs/part1/phase_b_summary.md and docs/part1/phase_c_summary.md are the close-out
+of one phase each, organised by subpart, and every claim in them points at the
+deliverable that established it. this file is one continuous account of phases a
+to c in plain words, with the failures narrated rather than cited, and it was
+written in the research chat rather than at a phase boundary. the readers are
+different and so is the register; **where this file and a phase summary could
+differ, the summary wins**, on the same rule that puts the deliverable above the
+summary.
+
+**this file and docs/part1/part1_closing.md are not the same document either, and
+one half of this one is superseded.** part1_closing is the settled record of the
+whole of part 1, phases a to e, written for the supervisors and for g1 to lift
+from. this file stops at phase c. its retrospective sections are the plain-language
+account of a to c and they stand. **its last section, "where the project is, and
+what is left", is superseded and is kept unedited as history**: it was written on
+2026-09-02, it names d2 as the current subpart, and it names phase f as the
+portfolio application, which the supervisors' meeting of 2026-09-04 replaced with
+the interval-native problems of [16]. for where the project actually is, read
+PROGRESS.md section 1; for what part 1 established, docs/part1/part1_closing.md;
+for the path ahead, docs/plan_after_meeting.md.
+
 
 ## the project in three sentences
 
@@ -83,7 +106,7 @@ width column that is constant by construction. the expected symptom of a
 degenerate model is that the three phi coincide, which is easy to notice; the
 floating-point symptom is that they differ, which reads as a positive result. that
 is r-07, and a3-b below is where it was fixed.
-docs/a1_uncertainty_model.md part 1.
+docs/part1/a1_uncertainty_model.md part 1.
 
 the fix is that the width must vary independently of the centre as the decision
 variables move. a1 evaluated putting the imprecision in the coefficients and
@@ -111,14 +134,14 @@ efficient set is generically min(m - 1, n) = 2 dimensional, and forcing a curve
 requires the width coordinate and the centre coordinate to share an optimum in
 x_2, which is the exact case where phi_cw reproduces the crisp order. a curve and
 three distinct phi are not simultaneously available at n = 2, m = 2.
-docs/a1_uncertainty_model.md part 3.
+docs/part1/a1_uncertainty_model.md part 3.
 
 what a1-b itself cost is one property, and it is recorded rather than patched: the
 efficient set stops being a product of intervals under phi_lu and phi_ls, 13 and
 11 distinct x_2 ranges across the occupied x_1 columns against one apiece before,
 while phi_cw keeps its single range. that was the premise s-08 had been answered
 on, so b1 derives a region with a curved boundary rather than a rectangle for two
-of the three phi. docs/a1_uncertainty_model.md, a1-b section 3.
+of the three phi. docs/part1/a1_uncertainty_model.md, a1-b section 3.
 
 ### a2 and a3, the arithmetic and the orders
 
@@ -194,7 +217,7 @@ sample, the route pairing, the column order or the dominance relation. d2 and e3
 report the two phi_ls pairs as checks on r-06's prediction and never as
 independent findings. that stands until the supervisors answer s-11, and if they
 refute the criterion the tests asserting it are deleted and no result moves,
-because none was claimed from them. docs/a_close_containment.md, the standing
+because none was claimed from them. docs/part1/a_close_containment.md, the standing
 constraint.
 
 one caveat, r-11: the nesting is a theorem in real arithmetic and fails by
@@ -263,7 +286,7 @@ sampled through the weight map, so its density in objective space is the
 parametrisation's and not the front's, and igd averages over reference points. its
 mitigation is a b2-b before d1 and none at all if d1 is cut; c3 is unaffected,
 measuring recovery by a hausdorff distance, which is a maximum.
-docs/phase_b_summary.md sections 3 and 6.
+docs/part1/phase_b_summary.md sections 3 and 6.
 
 
 ## phase c, the solvers, and where the project learned the most
@@ -322,7 +345,7 @@ X_cw's [0, 1] with probability exactly 1/2 and its expected overhang is exactly
 over 200 draws at each of four budgets the mean overhang is 0.1226, 0.1404, 0.1334
 and 0.1261, which does not move with the budget, while the median smallest |x_1|
 falls by a factor of four for every factor of four in it.
-docs/c3_validation.md section 1.3.
+docs/part1/c3_validation.md section 1.3.
 
 **the tolerance was derived wrongly.** it summed two terms where only one belongs.
 correcting it made the gate tighter under two phi and looser under one, which is
@@ -335,7 +358,7 @@ side. at that quantile a
 solver whose front were a uniform draw would exceed it in about one measurement in
 twenty, so one isolated failure at a margin near zero is not evidence of a defect
 while a failure concentrated in one solver across seeds and phi is, and that
-reading was fixed in advance too. docs/c3_validation.md sections 2.3 and 2.4.
+reading was fixed in advance too. docs/part1/c3_validation.md sections 2.3 and 2.4.
 
 **what the gate now says.** every part of every derived set is reached by random
 search and by mopso, at every seed, under every phi, at both settings of the
@@ -353,13 +376,13 @@ test_the_derived_set_is_reached_by_the_solver at nsga-ii under phi_ls and phi_cw
 repo-clean-b marked exactly those twelve parameter sets xfail(strict=True), so a
 thirteenth failure is a plain failure and an unexpected pass is an error, and the
 assertion itself still runs on all ninety. the suite is 822 tests after d2's 28.
-docs/phase_c_summary.md section 5, PROGRESS.md.
+docs/part1/phase_c_summary.md section 5, PROGRESS.md.
 
 **the finding, and three sessions of trying to explain it.** at equal front size,
 nsga-ii covers this efficient set worse than uniform random sampling does, under
 phi_ls and phi_cw but not under phi_lu. c3-d, c3-e and c3-f put five candidate
 explanations to measurement and excluded all five. the list below is the one
-docs/c3_validation.md's section 5.5 closes on, in its own terms:
+docs/part1/c3_validation.md's section 5.5 closes on, in its own terms:
 
     that the non-dominated rank saturates and dominance stops selecting. it does
         saturate, under every phi, which is why it cannot explain a split between
@@ -440,7 +463,7 @@ project's own numbers. what orders the three problems is not the column count,
 which p1 and zdt1 share: it is the non-dominated fraction of the transformed
 image, 0.58, 0.79 and 0.55 on dtlz2 against 0.24, 0.52 and 0.47 on zdt1, and three
 problems is not enough to assert that as a law, so c3 does not.
-docs/c3_validation.md section 5.1.
+docs/part1/c3_validation.md section 5.1.
 
 
 ## what the project can say so far
@@ -468,7 +491,7 @@ none of these is the answer to the research question yet. that comes from phase 
 
 phase a, b and c are complete and tagged. phase b's tag was missing until session
 d2-b applied it: phase b closed with b2 and without a close-out session, so
-nothing tagged it at the time, docs/phase_b_summary.md was written after the fact
+nothing tagged it at the time, docs/part1/phase_b_summary.md was written after the fact
 in repo-clean-b, and phase-b-complete now names b2's commit. the current subpart
 is d2, built and awaiting review. PROGRESS.md.
 

@@ -266,7 +266,7 @@ derived region and S for the recovered set. the reverse direction is
 
     sup over p in the reference set of dist(p, S).
 
-every reference point lies in R, docs/b1_phi_efficient_sets.md section 2.4 and
+every reference point lies in R, docs/part1/b1_phi_efficient_sets.md section 2.4 and
 tests/test_reference_fronts.py::test_sampled_points_lie_in_the_derived_region, so
 the supremum over the reference set is at most the supremum over R:
 
@@ -737,7 +737,7 @@ pop_size + offspring = 200 candidates per generation. if rank 1 alone holds at
 least pop_size of them then dominance never enters the selection: every survivor
 is chosen by crowding distance, and the algorithm is a spread maximiser with no
 convergence pressure. a4 measured p1's exact non-dominated sets at 460, 1505 and
-961 points for phi_lu, phi_ls and phi_cw, docs/a4b_dominance_tolerance.md section
+961 points for phi_lu, phi_ls and phi_cw, docs/part1/a4b_dominance_tolerance.md section
 1.5, on the 61 x 61 grid of 3721 points on [-0.5, 1.5]^2 that section 1.2 states,
 so the fractions are 0.124, 0.404 and 0.258. if a generation's candidate set
 behaved like that grid the expected rank-1 size among 200 would be about 25, 81
@@ -906,7 +906,7 @@ because the column count is the obvious candidate and it is wrong. p1 transforms
 to 4 columns and saturates at generation 3 or 4, as fast as dtlz2's 6; zdt1 also
 transforms to 4 and takes 13 to 21. what does track the ordering is the
 non-dominated fraction of the transformed image, on a5's separation samples,
-recomputed in exact arithmetic in docs/a_close_containment.md section 3.3: at
+recomputed in exact arithmetic in docs/part1/a_close_containment.md section 3.3: at
 eps = 0.10 dtlz2 gives 995, 1362 and 947 of 1728, which is 0.58, 0.79 and 0.55,
 against zdt1's 247, 535 and 483 of 1024, which is 0.24, 0.52 and 0.47. three
 problems is not enough to assert that as a law and it is not asserted here; what
@@ -1589,7 +1589,7 @@ finding the anchor is finding the answer.
 CONTEXT.md section 10 c3 asks for one number that is not a recovery check: the
 count of points in the phi_lu non-dominated set that are not in the phi_ls one,
 over every tier 0 problem and every run the gate filters.
-docs/a_close_containment.md corollary 1 makes ND_lu a subset of ND_ls exactly, in
+docs/part1/a_close_containment.md corollary 1 makes ND_lu a subset of ND_ls exactly, in
 real arithmetic, so this count is zero as an identity and any positive value is a
 violation of an identity in doubles. it is reported as a diagnostic of the
 pipeline's arithmetic and never as a result about phi.

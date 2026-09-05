@@ -47,7 +47,7 @@ the tables written, all through src/reporting.py's save_metrics_table:
 
 ## 2. table 1, exact, p1 only
 
-the closed-form pair statistics of docs/b1_phi_efficient_sets.md section 2.4's derived regions, integrated in closed form by this script. no seed, no budget, no solver and no tolerance enter them. source: results/tier0/table_1_exact_p1.csv, decision block; every measure and both overlap conventions are in results/tier0/exact_regions_p1.csv.
+the closed-form pair statistics of docs/part1/b1_phi_efficient_sets.md section 2.4's derived regions, integrated in closed form by this script. no seed, no budget, no solver and no tolerance enter them. source: results/tier0/table_1_exact_p1.csv, decision block; every measure and both overlap conventions are in results/tier0/exact_regions_p1.csv.
 
 | phi_a | phi_b | status | metric | median |
 | --- | --- | --- | --- | --- |

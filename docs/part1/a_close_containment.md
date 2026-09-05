@@ -361,7 +361,7 @@ proposition 5.1 of [1]. corollary 2, the phi_cw case, has no counterpart anywher
 in the paper: v-25 records that example 2.4's solution set is related to no other
 automorphism's in any statement of [1], fuzzy or interval.
 
-what the paper states, transcribed in docs/a0_framework.md c16 and verified as
+what the paper states, transcribed in docs/part1/a0_framework.md c16 and verified as
 v-24: for the multiobjective **fuzzy** interval problems (1MFIOP_phi) and
 (1MFIOP_psi) sharing S and F-tilde, with phi the automorphism of example 2.2 and
 psi that of example 2.3, if x-bar is an optimal solution for (1MFIOP_phi) then
@@ -372,7 +372,7 @@ qualification and no structure on S, is stated for the optimal solution concept
 of definition 5.1(2) only, and has no converse.
 
 what a0-b established about the interval side, v-25 and v-26 and the search method
-in docs/a0_framework.md c17: sections 2 and 3 of [1] contain no stated relation
+in docs/part1/a0_framework.md c17: sections 2 and 3 of [1] contain no stated relation
 between the solution sets of two different automorphisms and no interval-space
 analogue of proposition 5.1. psi does not occur anywhere in lines 99 to 771, no
 line of those sections names two different examples from 2.1 to 2.4 together, and
@@ -402,7 +402,7 @@ proposition 5.1 is a resemblance of statements and not a chain of implication.
 that resemblance is the reason for s-11 rather than a reason to be confident. the
 proof is a few lines, which usually means either that it is right or that the
 interesting content is somewhere else, and the paper's own framing of proposition
-5.1 is "there exist cases", docs/a0_framework.md c16, which is the framing of an
+5.1 is "there exist cases", docs/part1/a0_framework.md c16, which is the framing of an
 exception rather than of a general relation between automorphisms. the criterion
 of section 1 is a general relation between automorphisms, which is a larger claim
 than the one [1] makes, and that is the second reason to hand it to the
@@ -476,7 +476,7 @@ three things and nothing else.
 
     is any of it already published? [1] cites its own reference [26] for
     LS-convexity in example 2.3 and for LS-Pareto in the conclusion, line 1526,
-    docs/a0_framework.md, so [26] is where the phi_lu statement would sit. [9], the
+    docs/part1/a0_framework.md, so [26] is where the phi_lu statement would sit. [9], the
     m = 1 predecessor where the order relations on C are defined, and [31], cited
     for LU-convexity and CW-convexity, are the other two candidates. the phi_cw
     statement and the general criterion have no candidate location at all: v-25

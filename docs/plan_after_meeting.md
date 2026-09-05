@@ -201,15 +201,15 @@ floating.
 
 | finding | source | disposition |
 | --- | --- | --- |
-| the containment, ND_lu and ND_cw inside ND_ls | docs/a_close_containment.md, s-11 | **supporting, and structurally load-bearing.** it is the reason the headline pair is example 2.2 against example 2.4 and not an average over three pairs. one subsection of the results document's theory section; one paragraph in the memoria; **not in the presentation**. it must appear wherever the two phi_ls pairs are reported, because one direction of every coverage statistic there is fixed before a solver runs. |
-| the exact linear relations between the three images, v-56 | docs/c3_validation.md 5.5 | **its own short section in the results document, an appendix in the memoria, out of the presentation.** it is about [1]'s framework rather than about this study, which is why it is worth publishing, and it is load-bearing negatively: A^T A = 2 I forbids any sentence of the form "the phi_lu map distorts more than the phi_cw map", so it is the guard on how the claim may be phrased. |
-| the nsga-ii decision-space coverage deficit, r-19 | docs/c3_validation.md 5 | **its own section in the results document, a section in the memoria, out of the presentation.** it is reported as a property of one solver on a full-dimensional efficient set and never as a result about phi; half of it is the comparator's region shape and half has no mechanism after five exclusions. it protects the claim by explaining why the headline is on random search. |
-| the rank-1 saturation, c3-d and e2 | docs/c3_validation.md 5.1 | **supporting evidence in the same section as the coverage deficit**, and together with it the memoria's answer to [7]. one paragraph. out of the presentation. |
+| the containment, ND_lu and ND_cw inside ND_ls | docs/part1/a_close_containment.md, s-11 | **supporting, and structurally load-bearing.** it is the reason the headline pair is example 2.2 against example 2.4 and not an average over three pairs. one subsection of the results document's theory section; one paragraph in the memoria; **not in the presentation**. it must appear wherever the two phi_ls pairs are reported, because one direction of every coverage statistic there is fixed before a solver runs. |
+| the exact linear relations between the three images, v-56 | docs/part1/c3_validation.md 5.5 | **its own short section in the results document, an appendix in the memoria, out of the presentation.** it is about [1]'s framework rather than about this study, which is why it is worth publishing, and it is load-bearing negatively: A^T A = 2 I forbids any sentence of the form "the phi_lu map distorts more than the phi_cw map", so it is the guard on how the claim may be phrased. |
+| the nsga-ii decision-space coverage deficit, r-19 | docs/part1/c3_validation.md 5 | **its own section in the results document, a section in the memoria, out of the presentation.** it is reported as a property of one solver on a full-dimensional efficient set and never as a result about phi; half of it is the comparator's region shape and half has no mechanism after five exclusions. it protects the claim by explaining why the headline is on random search. |
+| the rank-1 saturation, c3-d and e2 | docs/part1/c3_validation.md 5.1 | **supporting evidence in the same section as the coverage deficit**, and together with it the memoria's answer to [7]. one paragraph. out of the presentation. |
 | the protected-minimiser effect, v-54 and section f | docs/verified.md v-54 | **its own section, ranked second after the claim.** it is the mechanism behind both of the two above, it is registered as a prediction before phase e runs, and section f generalises it. if section f's analysis survives the measurement it is the project's second publishable result. |
-| p0 and the recovery of [1]'s published anchor | docs/b1_phi_efficient_sets.md 7 | **appendix.** it is the check on the derivation procedure before it was trusted on p1, which is a methods statement and not a result. |
-| the singular segments, s-12, and what did not close | docs/b1_phi_efficient_sets.md 2.6 | **appendix, plus one sentence in the memoria's limitations.** the value is that the project priced not knowing rather than arguing about it. |
-| the reference-front density correction, r-13 and b2-b | docs/b2b_reference_density.md | **appendix or out.** it is an instrument correction, it changes no reported claim, and it costs a page. include only if the memoria has room. |
-| the dominance-tolerance measurements, a4-b | docs/a4b_dominance_tolerance.md | **out**, except one sentence in the methods: the project uses one untoleranced pareto relation everywhere and obtains exactness by evaluation order. |
+| p0 and the recovery of [1]'s published anchor | docs/part1/b1_phi_efficient_sets.md 7 | **appendix.** it is the check on the derivation procedure before it was trusted on p1, which is a methods statement and not a result. |
+| the singular segments, s-12, and what did not close | docs/part1/b1_phi_efficient_sets.md 2.6 | **appendix, plus one sentence in the memoria's limitations.** the value is that the project priced not knowing rather than arguing about it. |
+| the reference-front density correction, r-13 and b2-b | docs/part1/b2b_reference_density.md | **appendix or out.** it is an instrument correction, it changes no reported claim, and it costs a page. include only if the memoria has room. |
+| the dominance-tolerance measurements, a4-b | docs/part1/a4b_dominance_tolerance.md | **out**, except one sentence in the methods: the project uses one untoleranced pareto relation everywhere and obtains exactness by evaluation order. |
 
 ### a2. the path
 
@@ -328,7 +328,7 @@ a calibrated instrument; it is a separate experiment reported next to one.
 ### b1. the yardstick, and its counterpart, named exactly
 
 p1's pair result, from docs/meeting_2026_09_04.md section 4.3 and
-docs/b1_phi_efficient_sets.md section 2.4:
+docs/part1/b1_phi_efficient_sets.md section 2.4:
 
     example 2.2 against example 2.4:
         0.394710 of X_lu lies in X_cw, so 60.5 per cent of X_lu lies outside it
@@ -546,7 +546,7 @@ implies phi_B-dominance and therefore ND_B ⊆ ND_A. the argument is two lines:
 non-negativity preserves every weak inequality under the map, so a point no worse
 in every phi_A column is no worse in every phi_B column; invertibility preserves
 the strict one, since a strict improvement cannot map to equality without M being
-singular. docs/a_close_containment.md; s-11.
+singular. docs/part1/a_close_containment.md; s-11.
 
 **used as a filter.** a candidate phi related to a registry member by an
 entrywise non-negative invertible M, in either direction, is admitted to the
@@ -598,7 +598,7 @@ a_R = a_L + 2 a_w, equation (4.6).
 | ≤*_cw, definition 3.4, equations (3.11) and (3.12), the minimisation order by centre and half-width | [9] | (1/2, 1/2); (−1/2, 1/2) | **already in the registry**: it is example 2.4 of [1], in the same coefficients. **this closes the substantive half of p-02**, which asked exactly whether [9] states the centre-width comparison in example 2.4's coefficients. it does, subject to the a_w-is-the-half-width reading above, and the reading is the paper's own. |
 | ≤_LC, definition in equations (4.1) and (4.2): a_L ≤ b_L and a_c ≤ b_c | [9] | (1, 0); (1/2, 1/2), determinant 1/2 | **admissible, and excluded as a check.** M against example 2.2 is [[1, 0], [1/2, 1/2]], entrywise non-negative and invertible, so ND_LC ⊆ ND_lu. and [9]'s own proposition 4.1 says why: A ≤_LC B holds exactly when A ≤_LR B or A ≤_cw B, so ≤_LC is the union of two orders, dominates more often, and has the smaller non-dominated set. **the criterion and the published proposition agree, which is the first independent check the criterion has had.** |
 | ≤_cw, definition 3.2, equations (3.3) and (3.4): a_c ≤ b_c and a_w ≥ b_w, [9]'s maximisation order, the decision maker preferring the higher expected value **and less uncertainty** | [9] | (1/2, 1/2); (1/2, −1/2), determinant −1/2 | **admissible, and admitted: it is nested with none of the three.** in centre and half-width coordinates it is [[1, 0], [0, −1]], and the sign change is exactly what section c1 predicts a new order must carry. this is the one genuine candidate the now-open literature adds. |
-| example 2.1 of [1], the car-purchase illustration | [1], verified in docs/a0_framework.md | as recorded in a0 | **already known and already excluded, on a different ground**: it carries no convexity notion and no optimality condition, so b1's route does not run on it and it can be an experiment but never a calibration. its criterion verdict should be computed in the same session that computes any other, for completeness. |
+| example 2.1 of [1], the car-purchase illustration | [1], verified in docs/part1/a0_framework.md | as recorded in a0 | **already known and already excluded, on a different ground**: it carries no convexity notion and no optimality condition, so b1's route does not run on it and it can be an experiment but never a calibration. its criterion verdict should be computed in the same session that computes any other, for completeness. |
 | the path phi_t between examples 2.4 and 2.2, t in [0, 1] | **constructed by this project**, and admissible by [1]'s own definition, the determinant condition being the whole of admissibility | in centre and half-width coordinates [[1, −(1−t)], [1−t, 1]], determinant 1 + (1−t)^2 > 0 for every real t | **admitted**: it carries a negative entry for every t < 1 and is nested with no registry member. |
 | the dominance relations of [7], [8] and [13] -- possibility degree, information entropy dominance, direct interval comparison | [7], [8], [13] | none | **not excluded by the criterion but by admissibility**: they are not automorphisms of the plane and do not lie in 𝔄_m at all, so they cannot enter the registry. they remain what CONTEXT.md section 3 says they are, comparison references, and the memoria's answer to them is the interval-native application and not a fourth phi. |
 
@@ -932,7 +932,7 @@ the draft prediction -- that under phi_ls and phi_cw a solver's front carries
 points outside the derived region and under phi_lu it does not -- is not a
 prediction. it is proved twice over.
 
-*by the closed form.* docs/b1_phi_efficient_sets.md section 2.4 gives X_cw as the
+*by the closed form.* docs/part1/b1_phi_efficient_sets.md section 2.4 gives X_cw as the
 closed unit square minus the open segment {(x_1, 0) : 0 < x_1 ≤ 1}, so the origin
 lies in X_cw; the origin lies in X_ls likewise; and X_lu is contained in
 [0, 4/3] x [4/5, 4/3], whose x_2 range excludes it. so the three sets already
@@ -946,7 +946,7 @@ dominates it, whatever its x_2 is; under phi_lu every column moves with both
 variables and the hypothesis is unavailable.
 
 **two corrections of fact carried into everything below.** delta is 1/8 and not
-1/10, since d-01 and docs/a4b_dominance_tolerance.md part 2. and the condition is
+1/10, since d-01 and docs/part1/a4b_dominance_tolerance.md part 2. and the condition is
 that the column be a function of a **strict subset** of the decision variables
 with a unique minimiser, **not** that the minimiser be interior: dtlz2's width is
 minimised at x_n = 0, on a face, and the mechanism applies there.

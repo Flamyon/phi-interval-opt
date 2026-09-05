@@ -6,7 +6,7 @@ decides, once and for the whole project, how bounded imprecision enters a
 problem. slide 19 of `papers/Presentacion_optimizacion_intervalar.txt` allows it
 in the coefficients or in the objective; this session picks one and says why.
 
-read for this session: CONTEXT.md in full, PROGRESS.md, docs/a0_framework.md,
+read for this session: CONTEXT.md in full, PROGRESS.md, docs/part1/a0_framework.md,
 and slide 19. the paper was not re-read; a0 and a0-b are relied on for [1].
 
 decided on 2026-08-31.

@@ -3,7 +3,7 @@
 session part1-close, 2026-09-05. no experiment, no module, no re-run and **no new
 claim and no new number**: every figure below is read out of a file
 `experiments/run_tier0.py` or `experiments/run_tier1.py` wrote, or out of
-docs/e3_synthesis.md, which read those files, and the artefact is named beside
+docs/part1/e3_synthesis.md, which read those files, and the artefact is named beside
 it. where a number is derived from two such numbers by an identity stated
 elsewhere in the project, it says so and gives the identity.
 
@@ -12,24 +12,42 @@ document g1 lifts part 1 from**, and it is written to be complete enough that g1
 opens nothing else for the results. where this document and an e1, e2 or e3
 artefact could differ, the artefact wins.
 
+**this document and docs/part1/e3_synthesis.md are the nearest overlap in the
+repository and the pair most likely to drift, so the difference is stated here and
+in that file's header**, docs-clean, 2026-09-05. e3 is **the working synthesis**:
+it carries the full reasoning, every intermediate step, the alternatives weighed
+and rejected, and the section-by-section argument that got from e1's and e2's
+artefacts to part 1's answer. this document is **the settled record**: the same
+answer with the reasoning compressed to what a reader needs to act on it, plus
+what e3 does not have — the question in the supervisors' own terms, the arc, the
+methodological results, and what part 1 hands to part 2 with its five-criterion
+gate. both documents check the same four prohibitions, each against its own text.
+**this one is canonical for part 1 and it is the one g1 lifts from**; e3 is where
+to go for why a conclusion holds, and it is not superseded. neither restates the other's
+numbers independently: every figure here is read out of an e1 or e2 artefact or
+out of e3, and named. if the two ever disagree, the artefact settles it and
+whichever of the two is wrong is corrected rather than quietly left.
+
 what it may not do, and each is checked at the end. it may not rank phi,
 CONTEXT.md section 2. it may not claim anything from the containment while s-11
-is unanswered, docs/a_close_containment.md section 6. it may not quote a slice
+is unanswered, docs/part1/a_close_containment.md section 6. it may not quote a slice
 fraction as a quantity, r-22. and it may not interpret a benchmark number without
 the instrument's error beside it.
 
 where the detail is, so this document does not become a second copy of it:
 
-    docs/e1_tier0_run.md            the tier 0 run and the exact table
-    docs/e2_tier1_results.md        the tier 1 run
-    docs/e3_synthesis.md            the synthesis, and part 1's answer
-    docs/phase_a_summary.md         formulation, closed out
-    docs/phase_b_summary.md         ground truth, closed out
-    docs/phase_c_summary.md         solvers and the gate, closed out
-    docs/b1_phi_efficient_sets.md   the derivation, section 2.4 the closed forms
-    docs/a_close_containment.md     the containment criterion and s-11
-    docs/plan_after_meeting.md      the claim and the path, section a
-    PROGRESS.md                     the open rows and the registered predictions
+    docs/part1/e1_tier0_run.md           the tier 0 run and the exact table
+    docs/part1/e2_tier1_results.md       the tier 1 run
+    docs/part1/e3_synthesis.md           the synthesis, and part 1's answer
+    docs/part1/phase_a_summary.md        formulation, closed out
+    docs/part1/phase_b_summary.md        ground truth, closed out
+    docs/part1/phase_c_summary.md        solvers and the gate, closed out
+    docs/part1/b1_phi_efficient_sets.md  the derivation, section 2.4 the closed
+                                         forms
+    docs/part1/a_close_containment.md    the containment criterion and s-11
+    docs/plan_after_meeting.md           the claim and the path, section a
+    PROGRESS.md                          the open rows and the registered
+                                         predictions
 
 
 ## 1. the question, and the answer
@@ -102,7 +120,7 @@ refutation was that a fourth named example exists, example 2.1, carrying four
 different coefficient pairs and no convexity notion. section 5 of [1] was read
 once and deliberately, because it contains proposition 5.1, which relates two of
 the three phi in the fuzzy setting; the interval side was searched exhaustively
-and contains no analogue. docs/phase_a_summary.md, docs/a0_framework.md.
+and contains no analogue. docs/part1/phase_a_summary.md, docs/part1/a0_framework.md.
 
 **construct a calibration problem.** the literal reading of slide 19 is
 degenerate and the project measured that before building anything on it: with a
@@ -114,7 +132,7 @@ produced p1, two variables and two interval objectives, with each objective's
 half-width driven by the *other* objective's variable, and it produced the two
 tier 1 forms; it also produced the design rule that all image coordinates are
 convex under all three phi exactly when c − r and r are both convex, which is what
-makes the next stage possible. docs/a1_uncertainty_model.md, docs/phase_a_summary.md.
+makes the next stage possible. docs/part1/a1_uncertainty_model.md, docs/part1/phase_a_summary.md.
 
 **derive its answer exactly.** on p1 the published conditions of [1] close under
 all three phi: theorem 3.3 gives phi-convexity globally, the regularity criterion
@@ -126,8 +144,8 @@ less one open edge — every one of them strictly interior to the box. the three
 descriptions were verified in exact rational arithmetic in both directions, 12341
 weight vectors forward with none landing outside the stated region and 301 region
 points inverted with none lacking a witness weight. that is what makes a coverage
-question askable rather than merely plottable. docs/b1_phi_efficient_sets.md
-sections 2.4 and 2.6, docs/phase_b_summary.md.
+question askable rather than merely plottable. docs/part1/b1_phi_efficient_sets.md
+sections 2.4 and 2.6, docs/part1/phase_b_summary.md.
 
 **validate the instrument.** three solvers on one contract — random search as
 slide 17's *referencia base*, pymoo's NSGA-II and MOPSO_CD used as published —
@@ -140,7 +158,7 @@ every one of them NSGA-II, and that failure is a finding and not a defect,
 section 5.4. e1 then did the thing the whole arc was built for: it measured the
 same pair statistics on recovered sets at the same budget, so that the gap between
 the derived value and the measured value is a number and not a worry.
-docs/phase_c_summary.md, docs/e1_tier0_run.md.
+docs/part1/phase_c_summary.md, docs/part1/e1_tier0_run.md.
 
 **extend to benchmarks.** zdt1 at thirty variables and dtlz2 at twelve, in
 interval form with each objective driving its own half-width, across five
@@ -148,7 +166,7 @@ imprecision levels, all three solvers, all three phi, five seeds, at budget 5000
 with one convergence check per problem at 20000: 108 configurations and 540 runs
 for e2, after e1's 36 configurations and 180 runs. e3 then put e1's exact numbers
 and e2's measured ones on one page, which is the comparison neither run made and
-is the claim. docs/e2_tier1_results.md, docs/e3_synthesis.md.
+is the claim. docs/part1/e2_tier1_results.md, docs/part1/e3_synthesis.md.
 
 
 ## 3. the result
@@ -183,7 +201,7 @@ point bitwise or they are two points.
 provenance. p1's exact row is `results/tier0/exact_regions_p1.csv`, keys
 coverage_a_in_b, coverage_b_in_a, overlap_union_share and area on the (lu, cw)
 pair, the areas being lebesgue measures of the closed-form regions of
-docs/b1_phi_efficient_sets.md section 2.4. p1's measured row is
+docs/part1/b1_phi_efficient_sets.md section 2.4. p1's measured row is
 `results/tier0/table_2_measured.csv`, decision block, delta 0.0, n_evals 5000;
 its jaccard is the one derived number in the table, from e1's dice 0.315349 by the
 identity jaccard = dice / (2 − dice) that e2 section 5 states and uses throughout.
@@ -198,7 +216,7 @@ identity. coverage leads and any overlap is named, d-09.
 > level, on both benchmarks** — 0.628240 to 0.912000 across the eight cells —
 > with an across-seed interquartile range of one to four per cent of that figure.
 
-it is the direction that passes the seed-spread criterion of docs/e3_synthesis.md
+it is the direction that passes the seed-spread criterion of docs/part1/e3_synthesis.md
 section 5.1 in all eight of its cells, ratios IQR / (1 − median) of 0.007 to
 0.037, and it is therefore the sentence the memoria and the presentation carry.
 
@@ -210,7 +228,7 @@ cells fail the same criterion — zdt1 at eps 0.05, 0.10 and 0.25 and dtlz2 at e
 36 and 53 points on zdt1. the cell that fails hardest, zdt1 at eps 0.05, has an
 interquartile range as wide as its whole distance from 1.0. so the sentence "the
 coverage of X_lu in X_cw is 0.85 at thirty variables" is **not available**, and
-the loss is stated rather than absorbed. docs/e3_synthesis.md section 5.1, from
+the loss is stated rather than absorbed. docs/part1/e3_synthesis.md section 5.1, from
 `results/tier1/table_2_measured_eps_*.csv` columns median and iqr.
 
 **one statistic is stable across the dimension change and is uncalibrated.** the
@@ -222,7 +240,7 @@ hausdorff distance is a maximum and is driven by the single worst-separated poin
 and `results/tier0/exact_regions_p1.csv` carries **no exact hausdorff**, so this
 statistic was never calibrated and section 3.2's error does not cover it. it is a
 scale-free corroboration and not a second headline number.
-docs/e3_synthesis.md section 4.3.
+docs/part1/e3_synthesis.md section 4.3.
 
 **the shape differs where the magnitude does not.** on p1 the two sets are
 genuinely non-nested — both coverages strictly between zero and one, X_lu reaching
@@ -230,7 +248,7 @@ above x_2 = 1 where X_cw does not go and X_cw filling x_2 < 4/5 where X_lu does
 not, each set holding a region the other cannot reach. on both benchmarks X_lu
 sits largely inside a much larger X_cw. the jaccard column alone would say the two
 situations are alike; they are not, and the decision-relevant reading differs.
-docs/e3_synthesis.md sections 4.1 and 4.2.
+docs/part1/e3_synthesis.md sections 4.1 and 4.2.
 
 ### 3.2 the instrument's error, measured once, and what it licenses
 
@@ -258,7 +276,7 @@ statistics on p1, dtlz2 and zdt1 — nine of nine — by 9 to 23 per cent agains
 `results/tier0/table_2_measured.csv` and
 `results/tier1/table_2_measured_eps_0.1.csv`, decision block, delta 0.0, at both
 n_evals. **the magnitude does not transfer and no correction factor is applied to
-any benchmark number anywhere.** docs/e3_synthesis.md sections 2.1 and 2.2.
+any benchmark number anywhere.** docs/part1/e3_synthesis.md sections 2.1 and 2.2.
 
 what may not be said, and g1 must not: that the benchmark jaccard is "about 0.10
 as on p1", the two not being the same kind of number and only p1's being exact;
@@ -278,9 +296,9 @@ multiple of the r_i; multiplying a column by a positive constant is a strictly
 increasing per-column relabelling, which leaves the pareto relation on R^2m
 unchanged, so the phi_cw non-dominated set of a given sample is the same index set
 at every eps > 0. the cardinality column confirms it exactly at all four positive
-levels. docs/e3_synthesis.md section 3.1.
+levels. docs/part1/e3_synthesis.md section 3.1.
 
-**the direction was predicted before either run**, in docs/a1_uncertainty_model.md
+**the direction was predicted before either run**, in docs/part1/a1_uncertainty_model.md
 part 4, where the five levels were placed: phi_lu is the sensitive one and its
 efficient set grows with eps on both benchmarks; phi_cw is stable. it is confirmed
 here on the run's own cardinality column and not on a slice fraction, r-22. what
@@ -360,7 +378,7 @@ and on g3:
 > r-16's cardinality effect exceeds the differences it displays, and random search
 > leading it is its row count. no ranking of solvers may be read from it.
 
-it is not written into docs/e1_tier0_run.md, because that document is generated and
+it is not written into docs/part1/e1_tier0_run.md, because that document is generated and
 re-running the script must reproduce it exactly; the label lives here, where g1
 reads it, and it travels with the table.
 
@@ -371,7 +389,7 @@ depending on the level, r-16 and CONTEXT.md section 10 d1,
 largest hypervolume in five of the six (problem, phi) cells at eps 0.10 and MOPSO
 is level with it in the sixth; random search is last in all six. **the two
 objective blocks are not comparable with each other and may never be placed side
-by side**, in the memoria or in the presentation. docs/e3_synthesis.md section 6.2.
+by side**, in the memoria or in the presentation. docs/part1/e3_synthesis.md section 6.2.
 
 
 ## 4. the structural findings
@@ -390,8 +408,8 @@ two automorphisms — if M = phi_B phi_A^-1 is entrywise non-negative and invert
 then phi_A-dominance implies phi_B-dominance — and exactly two of the six maps
 between the three phi qualify, both out of phi_ls. neither map between phi_lu and
 phi_cw is non-negative, so **those two are nested in neither direction and nothing
-relates them.** docs/a_close_containment.md sections 1 and 2, reproduced
-independently from b1's closed forms in docs/b1_phi_efficient_sets.md section 5.
+relates them.** docs/part1/a_close_containment.md sections 1 and 2, reproduced
+independently from b1's closed forms in docs/part1/b1_phi_efficient_sets.md section 5.
 
 the consequence, and it is the reason the study has one headline pair rather than
 an average over three: on the (lu, ls) and (ls, cw) pairs **one direction of every
@@ -408,7 +426,7 @@ all three pairs are reported alike, and the headline number does not move, becau
 it never came from those pairs. s-11 asks three things — is the criterion correct,
 are both containments correct, and is any of it published — and the third is what
 decides whether the memoria cites a known result or records a small original
-observation. docs/a_close_containment.md section 6.
+observation. docs/part1/a_close_containment.md section 6.
 
 ### 4.2 v-56, the exact linear relations, which carry no problem parameter
 
@@ -428,7 +446,7 @@ values are 2.288246 and 0.874032, each twice, and its condition number is exactl
 (1 + √5)^2 / 4 = 2.618034, the golden ratio squared; the map from the phi_ls image
 to the phi_lu image has singular values exactly φ and 1/φ. verified to 0.000e+00
 on 500 random points of the box and on all three region samples.
-docs/c3_validation.md section 5.5.
+docs/part1/c3_validation.md section 5.5.
 
 **A and B contain no parameter of p1** — no rho, no delta, no box, no objective.
 they are built from the coefficient pairs of examples 2.2, 2.3 and 2.4 alone, so
@@ -478,8 +496,8 @@ methods**, stated by this project as a measurement on its own problems rather th
 as a citation. it is a statement about what 2m objectives do to any
 dominance-based selection and it is not a statement that any solver is
 misconfigured. together with section 5.2 it is the memoria's answer to [7].
-docs/c3_validation.md section 5.1, docs/e2_tier1_results.md section 8,
-docs/e3_synthesis.md section 6.1.
+docs/part1/c3_validation.md section 5.1, docs/part1/e2_tier1_results.md section 8,
+docs/part1/e3_synthesis.md section 6.1.
 
 
 ## 5. what could not be settled
@@ -496,7 +514,7 @@ not apply; example 3.8 statement 2 and example 3.9 statement 3 require every
 weight strictly positive, which those rays do not have; and no regular weight
 reaches the interior of the segments. **the published conditions therefore give
 weak optimality there and no optimality verdict either way**, under phi_ls and
-phi_cw; phi_lu has no singular ray at all. docs/b1_phi_efficient_sets.md
+phi_cw; phi_lu has no singular ray at all. docs/part1/b1_phi_efficient_sets.md
 section 2.6.
 
 CONTEXT.md section 10 b1's stopping rule is that a derivation which does not close
@@ -521,7 +539,7 @@ distance sits at the 85th to 99th percentile of 1000 uniform 100-point draws und
 the two, worse than the uniform mean in all ten measurements, and at the 33rd to
 60th under phi_lu, which is where a uniform draw itself sits. it returns exactly
 100 rows, so no cardinality correction is needed. this is what the twelve gate
-failures are. docs/c3_validation.md section 5.
+failures are. docs/part1/c3_validation.md section 5.
 
 **about half of it is not about NSGA-II**, and the halving is by control and not
 by argument: random search, whose sample is a pure function of the box, the budget
@@ -578,7 +596,7 @@ efficient points need not lie in and comes out systematically the larger — at 
 a non-empty free set of measure-zero projection, so x-01's condition says *present*
 under all three and zdt1 can supply a "present" observation and never a
 discriminating one. the mechanism's evidence is dtlz2's and not zdt1's, section
-3.4. docs/e3_synthesis.md section 5.2.
+3.4. docs/part1/e3_synthesis.md section 5.2.
 
 **x-02 is open and that is a fact about which run happened.** it re-registers the
 1/8 overhang constant on p1 under example 2.4 at twenty seeds instead of five; e2
@@ -610,7 +628,7 @@ pinned to those twelve parameter sets: **the assertion is unchanged and still ru
 on all ninety**, a thirteenth failure is a plain failure, and an unexpected pass is
 an error. so the twelve encode the finding of section 5.2 and encode that it has
 not moved. the suite is 1074 tests, 1062 passing and 12 xfailed.
-docs/c3_validation.md sections 4.1 and 5, PROGRESS.md.
+docs/part1/c3_validation.md sections 4.1 and 5, PROGRESS.md.
 
 what the twelve do *not* say: that a solver failed to recover the set. the
 derivation, its encoding and all three solvers agree about where the efficient set
@@ -650,7 +668,7 @@ set exactly, at d = 0.10 and 0.25.
 of ones.** the consequence is the project's standing rule — the half-width must be
 driven by a decision variable the centre does not resolve — and the proportional
 construction is kept as a negative control, asserted as a test.
-docs/a1_uncertainty_model.md part 1, docs/phase_a_summary.md, v-30 to v-32.
+docs/part1/a1_uncertainty_model.md part 1, docs/part1/phase_a_summary.md, v-30 to v-32.
 
 ### 6.2 the uniform-sample separation check is no evidence
 
@@ -687,7 +705,7 @@ slice fraction at ε = 0.10 runs 0.2441, 0.1435, 0.1392 and 0.0769 at grid sides
 number would be quoting the grid. a5-b's verdict is untouched, being about whether
 the three sets are distinct and not about how large any is, and every quantitative
 statement in section 3 rests on the runs' cardinality columns instead.
-docs/a1_uncertainty_model.md parts 2 and 4 and appendix a5-b.
+docs/part1/a1_uncertainty_model.md parts 2 and 4 and appendix a5-b.
 
 ### 6.3 the endpoint cancellation, and the evaluation-order fix
 
@@ -723,8 +741,8 @@ the matching route, and no round trip is formed anywhere: p1 and both benchmarks
 declare centre-radius, p0 declares endpoints, which is the form [1] states it in.
 **the project therefore uses one untoleranced pareto relation everywhere, and the
 reason it can is that the arithmetic error a tolerance would have covered is not
-committed in the first place.** d-02, docs/a4b_dominance_tolerance.md,
-docs/phase_a_summary.md.
+committed in the first place.** d-02, docs/part1/a4b_dominance_tolerance.md,
+docs/part1/phase_a_summary.md.
 
 ### 6.4 the instrument overstates agreement, and one registered instrument failed
 
@@ -752,7 +770,7 @@ the prediction says at least 3 — the same non-discrimination seen from both si
 re-thresholded and not reinterpreted, and its companion m-2 confirmed on the same
 run. that both thresholds were fixed before the run is exactly what made the
 failure visible, and that is the result.
-PROGRESS.md x-01, docs/e3_synthesis.md section 5.4.
+PROGRESS.md x-01, docs/part1/e3_synthesis.md section 5.4.
 
 a fourth item belongs here in one sentence and is section 5.1's counterpart: the
 plan's own control, a same-phi seed-to-seed noise floor, **was built, run, swept
@@ -762,7 +780,7 @@ function in delta at tier 1 dimensions, 0.002604 to 0.006619 at a tenth of the b
 diameter and 0.734139 to 0.951821 at a fifth on dtlz2 — so it is withdrawn *as measured*
 and replaced by the across-seed interquartile range of a statistic computed from
 one sample filtered three ways, which is that statistic's complete sampling
-variability. `results/tier1/noise_floor_sweep.csv`, docs/e3_synthesis.md section
+variability. `results/tier1/noise_floor_sweep.csv`, docs/part1/e3_synthesis.md section
 5.1. the replacement is weaker than a floor and the memoria says so.
 
 
@@ -771,7 +789,7 @@ variability. `results/tier1/noise_floor_sweep.csv`, docs/e3_synthesis.md section
 ### 7.1 the claim, in the form the evidence supports, with c5 marked unsupported
 
 the design objection cannot be argued away and does not need to be, because the
-project measured its own negative arm: docs/a1_uncertainty_model.md part 4 records
+project measured its own negative arm: docs/part1/a1_uncertainty_model.md part 4 records
 that under the rejected **linear** half-width phi_lu and phi_ls give identical
 sets at every level and phi_cw gives the crisp order. that is the control, and it
 turns the design choice from a vulnerability into the claim's second half.
@@ -793,9 +811,9 @@ it is longer than the claim of docs/plan_after_meeting.md section a1, it is
 conditional, and it is stronger: it is falsifiable on a new problem rather than
 merely reproducible on a chosen one, and it survives a reviewer who asks where the
 width function came from. it costs the presentation one extra sentence.
-docs/e3_synthesis.md section 7.1.
+docs/part1/e3_synthesis.md section 7.1.
 
-clause by clause against the evidence, docs/e3_synthesis.md section 7:
+clause by clause against the evidence, docs/part1/e3_synthesis.md section 7:
 
     c1  "not a modelling detail"            the conclusion of c2 to c4; stands or
                                             falls with them
@@ -883,7 +901,7 @@ deciding measurement is p1's own width design transplanted onto zdt1, a width
 driven by x_1**; it is a variant of a5 and not a new problem family, and it is
 out of scope before 25 september. section 7.1's conditional claim makes it the
 natural next measurement, so it belongs in the memoria's future work.
-docs/e3_synthesis.md section 4.4.
+docs/part1/e3_synthesis.md section 4.4.
 
 two cheaper things sit beside it and are recorded rather than scheduled. **x-02**
 needs twenty seeds of random search on p1 under example 2.4, column 3 — one

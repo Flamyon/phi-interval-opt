@@ -10,18 +10,29 @@ new result. every claim below points at the session deliverable or the paper tha
 established it, and where the two could differ the paper wins, which is
 CONTEXT.md section 11's first rule.
 
+**this document and docs/project_narrative.md cover the same ground and both are
+kept**, docs-clean, 2026-09-05. that file is one continuous account of phases a to
+c in plain words, written in the research chat rather than at a phase boundary,
+with the failures narrated rather than cited; this one is the close-out of a
+single phase, organised by subpart, and every claim in it points at the
+deliverable that established it. **where the two could differ, this one wins.**
+part 1 as a whole is docs/part1/part1_closing.md, which is the settled record and
+supersedes neither.
+
 where the detail is, so this document does not become a second copy of it:
 
-    docs/verified.md         every verified fact, v-01 to v-46, each with its
-                             source and location
-    docs/answered.md         answered questions and retired risks, with the
-                             reasoning that retired them
-    PROGRESS.md              the open p-, s- and r-rows and the session log
-    git log                  one commit per subpart, with its full session record
-    docs/a0_framework.md     the verification pass over [1]
-    docs/a1_uncertainty_model.md    the uncertainty model decision
-    docs/a4b_dominance_tolerance.md the dominance rule decision
-    docs/a_close_containment.md     the phi_lu inside phi_ls containment
+    docs/verified.md                      every verified fact, v-01 to v-46,
+                                          each with its source and location
+    docs/answered.md                      answered questions and retired risks,
+                                          with the reasoning that retired them
+    PROGRESS.md                           the open p-, s- and r-rows and the
+                                          session log
+    git log                               one commit per subpart, with its full
+                                          session record
+    docs/part1/a0_framework.md            the verification pass over [1]
+    docs/part1/a1_uncertainty_model.md    the uncertainty model decision
+    docs/part1/a4b_dominance_tolerance.md the dominance rule decision
+    docs/part1/a_close_containment.md     the phi_lu inside phi_ls containment
 
 the papers, in CONTEXT.md section 3's numbering, which is the supervisors' own:
 
@@ -48,7 +59,7 @@ result about phi. what it produces is the ground the results will stand on: a
 verified statement of the framework, a construction of imprecision that is not
 degenerate, and code that evaluates both without arithmetic artefacts.
 
-**a0, the verification pass over [1].** docs/a0_framework.md. no code. fifteen
+**a0, the verification pass over [1].** docs/part1/a0_framework.md. no code. fifteen
 claims about the framework, taken from CONTEXT.md section 4 as the research chat
 had read it, were checked against the paper itself: twelve confirmed, one refuted,
 one partial and one split. it produced v-01 to v-23, each carrying an equation or
@@ -63,7 +74,7 @@ v-12), examples 3.8 and 3.9 with their numbered statements and condition (15)
 2.1, with four different coefficient pairs in its four components and no convexity
 notion attached (v-21). CONTEXT.md was corrected in sections 4, 6 and 11.
 
-**a0-b, section 5 read once, deliberately.** docs/a0_framework.md addendum, and
+**a0-b, section 5 read once, deliberately.** docs/part1/a0_framework.md addendum, and
 the source papers committed to papers/. CONTEXT.md section 9 puts sections 4 and 5
 of [1], the fuzzy branch, out of scope, but section 5 contains proposition 5.1,
 which relates two of the three phi this project implements. it was transcribed
@@ -74,7 +85,7 @@ recorded: sections 2 and 3 contain no stated relation between the solution sets 
 two automorphisms and no interval analogue (v-25, v-26). that is what p-03 asked
 and what session a-close closes.
 
-**a1, the uncertainty model.** docs/a1_uncertainty_model.md. no code. decides,
+**a1, the uncertainty model.** docs/part1/a1_uncertainty_model.md. no code. decides,
 once for the project, how imprecision enters a problem. it rejected imprecision in
 the coefficients and took bounded imprecision in the objective with a half-width
 driven by a decision variable, and it did so on measurements rather than on
@@ -113,7 +124,7 @@ an efficient set. p1 in a1-b's form. 13 tests, 42 in the suite, including the r-
 slice check as an assertion. the reading of the paper's "strict minimum" as
 definition 3.1(1) was demoted from a claim to an inference and opened as p-06.
 
-**a4-b, the dominance rule.** docs/a4b_dominance_tolerance.md. measured what
+**a4-b, the dominance rule.** docs/part1/a4b_dominance_tolerance.md. measured what
 computing a width as f_u - f_l costs, found a clean tolerance band and showed it
 disappearing with magnitude, and recommended removing the subtraction instead
 (finding 4 below). it changed p1's delta to 1/8 as d-01 after verifying in exact
@@ -138,7 +149,7 @@ positive levels with non-dominated fractions between 0.031 and 0.927. 22 tests, 
 in the suite.
 
 **a-close, this session.** verified the phi_lu inside phi_ls containment
-symbolically and numerically and wrote it up in docs/a_close_containment.md, closed
+symbolically and numerically and wrote it up in docs/part1/a_close_containment.md, closed
 p-03, raised s-11, and recorded in CONTEXT.md section 10 c3 that the validation
 gate reports the containment's violation count as a measure of numerical noise.
 this document is its other deliverable.
@@ -304,12 +315,12 @@ coordinates, CONTEXT.md section 4 and v-43, and not a second family.
 | problem | n_vars, n_obj | centres | half-widths | box, representation | source | in |
 | --- | --- | --- | --- | --- | --- | --- |
 | p0 | 1, 2 | F_1 = [-abs(x), abs(x)], F_2 = [0, x^2], stated as endpoints | c_1 = 0, r_1 = abs(x); c_2 = r_2 = x^2 / 2, derived | [-1, 1], endpoints | [1] page 11, lines 752-753, v-18; the anchor x = 0 under phi_lu, v-19 | src/problems_tier0.py |
-| p1 | 2, 2 | c_1 = x_1^2 + (x_2 - 1)^2, c_2 = (x_1 - 1)^2 + (x_2 - 1)^2 | r_1 = rho x_2^2 + delta, r_2 = rho x_1^2 + delta, rho = 1/4, delta = 1/8 | [-0.5, 1.5]^2, centre_radius | project design, docs/a1_uncertainty_model.md a1-b; delta by d-01, docs/a4b_dominance_tolerance.md part 2 | src/problems_tier0.py |
-| zdt1_interval | 30, 2 | [2]'s T_1: f_1 = x_1, g = 1 + 9 (sum_{i>=2} x_i)/(n_vars - 1), f_2 = g (1 - sqrt(f_1/g)) | r_1 = r_2 = eps ((x_30 - 1/2)^2 + 1/20) | [0, 1]^30, centre_radius | centres [2] definition 4, equation (7), page 177, v-44; half-width docs/a1_uncertainty_model.md part 4 | src/problems_tier1.py |
-| dtlz2_interval | 12, 3 | [3]'s DTLZ2 at M = 3, g = sum_{i>=3} (x_i - 1/2)^2 | r_1 = r_2 = r_3 = eps x_12 | [0, 1]^12, centre_radius | centres [3] section vii.b, equation (9), pdf page 4, v-45; half-width docs/a1_uncertainty_model.md part 4 | src/problems_tier1.py |
+| p1 | 2, 2 | c_1 = x_1^2 + (x_2 - 1)^2, c_2 = (x_1 - 1)^2 + (x_2 - 1)^2 | r_1 = rho x_2^2 + delta, r_2 = rho x_1^2 + delta, rho = 1/4, delta = 1/8 | [-0.5, 1.5]^2, centre_radius | project design, docs/part1/a1_uncertainty_model.md a1-b; delta by d-01, docs/part1/a4b_dominance_tolerance.md part 2 | src/problems_tier0.py |
+| zdt1_interval | 30, 2 | [2]'s T_1: f_1 = x_1, g = 1 + 9 (sum_{i>=2} x_i)/(n_vars - 1), f_2 = g (1 - sqrt(f_1/g)) | r_1 = r_2 = eps ((x_30 - 1/2)^2 + 1/20) | [0, 1]^30, centre_radius | centres [2] definition 4, equation (7), page 177, v-44; half-width docs/part1/a1_uncertainty_model.md part 4 | src/problems_tier1.py |
+| dtlz2_interval | 12, 3 | [3]'s DTLZ2 at M = 3, g = sum_{i>=3} (x_i - 1/2)^2 | r_1 = r_2 = r_3 = eps x_12 | [0, 1]^12, centre_radius | centres [3] section vii.b, equation (9), pdf page 4, v-45; half-width docs/part1/a1_uncertainty_model.md part 4 | src/problems_tier1.py |
 
 the imprecision levels for both tier 1 problems are eps in {0, 0.05, 0.10, 0.25,
-0.50}, docs/a1_uncertainty_model.md part 4. eps = 0 is a labelled degenerate
+0.50}, docs/part1/a1_uncertainty_model.md part 4. eps = 0 is a labelled degenerate
 baseline, not a data point: there every half-width is exactly zero, being a product
 and never a difference, the second image coordinate of phi_ls and phi_cw is
 identically zero, and all three phi coincide with the crisp order. p0 has no
@@ -362,5 +373,5 @@ anchor and not an efficient set, and what the phi-efficient sets are, under each
 phi, is b1's derivation and b2's encoding. no solver has been run on a project
 problem. no comparison between phi has been made that is a result rather than a
 construction check, and CONTEXT.md section 2 forbids part 1 from ranking phi at
-all. the containment of docs/a_close_containment.md is recorded and is not built
+all. the containment of docs/part1/a_close_containment.md is recorded and is not built
 on until the supervisors answer s-11.

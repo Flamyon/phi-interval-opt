@@ -1,8 +1,18 @@
 # phi-interval-opt: session log
 
 moved out of PROGRESS.md section 8 in session repo-clean, 2026-09-02, unchanged
-and in order. PROGRESS.md keeps the last three entries and a pointer to this
-file; everything before them is here.
+and in order. it is **canonical**: PROGRESS.md section 8 holds no entries at all
+since docs-clean, which removed the copy of the last three it used to keep rather
+than leave the same text in two files, and points here instead.
+
+moved again to docs/part1/ in docs-clean, 2026-09-05, still unchanged. **every
+entry names paths as they were on the day it was written and none was rewritten
+in the move**, the log being append-only: an entry that says
+docs/a0_framework.md means what is now docs/part1/a0_framework.md, and CONTEXT.md
+section 12 carries the whole old-to-new mapping. entries also name
+docs/row_history.md, which the repo-clean-b entry records as deleted and which
+the mapping does not cover for that reason. part 2's entries go in
+docs/part2/session_log.md and not here.
 
 one line per session, appended after review. never edited once written; a
 correction is a new entry. the detail behind each line is in that session's
@@ -1374,3 +1384,50 @@ carries the current subpart alone.
     e2 is one subpart across two commits and the earlier one carries no session
     message | g1, which now has both prerequisites; g2 beside it, and f1
 
+2026-09-05 | part1-close | new docs/part1/part1_closing.md | **the closing
+    document for part 1**, landed by commit 1d2aa88 without a session log entry;
+    docs-clean records it here rather than absorbing it silently, on CONTEXT.md
+    section 11's rule for a session that did not write its own line. no
+    experiment, no module, no re-run, no new claim and no new number: every
+    figure is read out of an e1, e2 or e3 artefact and the file is named beside
+    it. it is the canonical part 1 record and the document g1 lifts part 1 from.
+    two statements live only there and bind g1 and g3: section 3.5's caption for
+    e1's tier 0 objective block, deliberately not in the generated e1 record, and
+    section 3.4's prohibition on generalising the dtlz2 column result | docs-clean,
+    then g1
+2026-09-05 | docs-clean | fifteen docs/ files moved to docs/part1/; new
+    docs/part2/README.md; CONTEXT.md sections 10 f1, 10 g1, 10 g3, 11 and 12;
+    PROGRESS.md header and section 8; FASES.md; docs/answered.md;
+    docs/project_narrative.md; docs/part1/part1_closing.md,
+    docs/part1/e3_synthesis.md and the three phase summaries, headers only;
+    experiments/run_tier0.py and run_tier1.py | **documentation reorganised, no
+    code, no run and no new claim.** part 1's record is docs/part1/: the phase
+    summaries, a0 to c3, e1 to e3, part1_closing and the session log. docs/ keeps
+    only what spans the whole project, verified, answered, supervisor_questions,
+    project_narrative, plan_after_meeting and meeting_2026_09_04. docs/part2/ is
+    created with a README naming what belongs there.
+    **306 path references rewritten** and none dangles: 304 citations of a moved
+    file plus the two --record output defaults in experiments/. 299 are live; the
+    other 7 were inside the PROGRESS.md section 8 text this session removed as a
+    duplicate, and their originals stand unchanged in this file. two sets were
+    left unrewritten deliberately and both are covered by CONTEXT.md section 12's
+    mapping: this file, which is append-only and whose entries name paths as they
+    were written, 49 of them; and the comments under src/ and tests/, 89, which
+    this session was told not to touch. **both generated records were rebuilt
+    from their artefacts after the repointing and reproduce byte for byte**.
+    **four overlaps decided, not listed.** the session log is canonical and
+    PROGRESS.md section 8 now holds no entries, its copy of a5-b, e2 and e3
+    removed rather than kept in two files, 212 lines. the three phase summaries
+    and docs/project_narrative.md serve different readers and both are kept, each
+    naming the other, the summary winning on a difference; that file's last
+    section, written on 2026-09-02, is superseded by PROGRESS.md and
+    part1_closing and is kept unedited as history with a header saying so.
+    part1_closing is the settled record and e3_synthesis the working synthesis
+    with the full reasoning, each header naming the other and which is which.
+    docs/answered.md is canonical for a row's disposition and the deliverable for
+    the derivation, with a header index naming the deliverable behind each of the
+    eleven rows. nothing was reworded, renumbered or dropped.
+    no test was added, changed or deleted and nothing under src/ or tests/ was
+    touched. the fast run is 555 passed and 519 deselected in 154.38s and the full
+    run is 1062 passed and 12 xfailed in 1250.08s, both counts identical to e2's
+    | g1, which lifts part 1 from docs/part1/part1_closing.md

@@ -7,6 +7,20 @@ is derived from two such numbers by an identity stated elsewhere in the project,
 it says so and gives the identity. e1 and e2 deliberately did not interpret.
 this document interprets, and it is written so that g1 can lift from it.
 
+**this document and docs/part1/part1_closing.md are the nearest overlap in the
+repository and the pair most likely to drift, so the difference is stated here and
+in that file's header**, docs-clean, 2026-09-05. this one is **the working
+synthesis**: the full reasoning, every intermediate step, the alternatives weighed
+and rejected, and the section-by-section argument from e1's and e2's artefacts to
+part 1's answer. part1_closing is **the settled record**: the same answer
+compressed to what a reader needs to act on it, plus what this document does not
+have — the question in the supervisors' own terms, the arc, the methodological
+results, and what part 1 hands to part 2 with its five-criterion gate. both check
+the same four prohibitions, each against its own text. **part1_closing is canonical for part 1
+and is the one g1 lifts from**; this document is where g1 goes for why a
+conclusion holds, and it is not superseded by it. if the two ever disagree, the
+artefact settles it and whichever of the two is wrong is corrected.
+
 what this is the answer to: CONTEXT.md section 10 e3 and docs/plan_after_meeting.md
 section a2 stage 4. how much the recovered efficient sets differ across phi, in
 the decision space, with the variance across seeds, under which conditions the
@@ -16,7 +30,7 @@ given what the calibration measured.
 **the four things this document may not do**, and each is checked at the end.
 it may not rank phi: the project has no external criterion and the new part 2
 supplies none, docs/plan_after_meeting.md section a2. it may not claim anything
-from the containment while s-11 is unanswered, docs/a_close_containment.md
+from the containment while s-11 is unanswered, docs/part1/a_close_containment.md
 section 6. it may not quote a slice fraction as a quantity, r-22. and it may not
 interpret a benchmark number without the instrument's error beside it.
 
@@ -76,7 +90,7 @@ over the count.
 provenance, key by key. p1's exact row is results/tier0/exact_regions_p1.csv,
 keys coverage_a_in_b, coverage_b_in_a and overlap_union_share on the (lu, cw)
 pair, with the two areas under key area; the exact areas are lebesgue measures of
-the closed-form regions of docs/b1_phi_efficient_sets.md section 2.4 and the two
+the closed-form regions of docs/part1/b1_phi_efficient_sets.md section 2.4 and the two
 "lies outside" figures in section 1 are one minus each coverage. p1's measured
 row is results/tier0/table_2_measured.csv, decision block, delta 0.0, n_evals
 5000; its cardinalities are that table's cardinality_a and cardinality_b. **p1's
@@ -177,7 +191,7 @@ on R^2m unchanged, so **the phi_cw non-dominated set of a given sample is the
 same index set at every eps > 0.** the cardinality column of
 results/tier1/table_2_measured_eps_*.csv confirms it exactly, 257 and 1813 at all
 four positive levels, and a1's own slice sweep,
-docs/a1_uncertainty_model.md part 4, records phi_cw's x_n band pinned at
+docs/part1/a1_uncertainty_model.md part 4, records phi_cw's x_n band pinned at
 [0, 0.5] on both benchmarks at every level. no slice fraction is quoted here,
 r-22.
 
@@ -190,7 +204,7 @@ to 0.45 on zdt1 and from 0.10 to 0.32 on dtlz2.*
 
 ### 3.2 was it predicted, and where
 
-**yes, and before either run.** docs/a1_uncertainty_model.md part 4, "the levels
+**yes, and before either run.** docs/part1/a1_uncertainty_model.md part 4, "the levels
 to sweep", states from the slice sweeps that *phi_lu is the sensitive one*, that
 its efficient set grows with eps on both benchmarks, and that *phi_cw is stable*,
 its width-variable band pinned on both. the five levels were placed to resolve
@@ -212,7 +226,7 @@ in opposite directions. that is e3's, and it follows from the invariance in 3.1.
 results/tier0/exact_regions_p1.csv. 0.394710 of X_lu lies in X_cw and 0.122571 of
 X_cw lies in X_lu. both are strictly between zero and one, so neither set
 contains the other, and both are small, so the disagreement is two-sided. the
-geometry behind the numbers is in docs/b1_phi_efficient_sets.md section 2.4:
+geometry behind the numbers is in docs/part1/b1_phi_efficient_sets.md section 2.4:
 X_cw is the closed unit square less one open edge, X_lu is a curved sliver
 contained in [0, 4/3] × [4/5, 4/3]. X_lu reaches above x_2 = 1, where X_cw does
 not go, and X_cw fills x_2 < 4/5, where X_lu does not go. each set has a region
@@ -232,7 +246,7 @@ order loses most of the set in both directions; on the benchmarks at low
 imprecision, switching from phi_cw to phi_lu is close to a *restriction* and
 switching the other way is close to an *enlargement*. both are still large
 changes and neither is nesting — the containment criterion of
-docs/a_close_containment.md section 1 does not apply to this pair in either
+docs/part1/a_close_containment.md section 1 does not apply to this pair in either
 direction, and tests/test_problems_tier1.py asserts 0 < containment < 1 both ways
 at every positive level — but the failure of nesting at tier 1 is by a small
 margin in one direction and a large one in the other.
@@ -548,7 +562,7 @@ a configuration whose rank 1 holds at least the population size of the candidate
 set in every seed is one where dominance decides nothing from its first saturated
 generation onwards: every survivor is chosen out of one front on crowding
 distance alone. source: results/tier1/rank_one_summary.csv, read through the
-pymoo Callback docs/c3_validation.md section 5.1 describes, which leaves the
+pymoo Callback docs/part1/c3_validation.md section 5.1 describes, which leaves the
 front bit-identical.
 
 | problem | solver | saturating in every seed | of |
@@ -642,7 +656,7 @@ side.
 
 ### 6.3 the nsga-ii coverage deficit, at its established scope
 
-docs/c3_validation.md section 5, and the scope is p1 at n = 2 with a
+docs/part1/c3_validation.md section 5, and the scope is p1 at n = 2 with a
 full-dimensional efficient set and a closed-form region to measure against. it is
 reported as a property of one solver and never as a result about phi.
 
@@ -682,7 +696,7 @@ slide 17 asked of it.
 
 ### 6.4 why two of the three pairs are checks
 
-docs/a_close_containment.md. phi_ls's non-dominated set contains both of the
+docs/part1/a_close_containment.md. phi_ls's non-dominated set contains both of the
 others, ND_lu ⊆ ND_ls and ND_cw ⊆ ND_ls, for every feasible set and every
 objective, both following from one criterion on the map between two automorphisms.
 so on the (lu, ls) and (ls, cw) pairs **one direction of every coverage and
@@ -724,7 +738,7 @@ designed. see c3.
 two sets share 10.3 per cent of their union."**
 **strongly supported.** 0.103177 is exact, it is
 results/tier0/exact_regions_p1.csv key overlap_union_share on the (lu, cw) pair,
-and docs/b1_phi_efficient_sets.md section 2.4 verifies the three closed-form
+and docs/part1/b1_phi_efficient_sets.md section 2.4 verifies the three closed-form
 regions in exact rational arithmetic in both directions — 12341 weight vectors
 forward with zero points outside the stated region, 301 region points inverted
 with zero failures. the calibration then does what no other paper on order

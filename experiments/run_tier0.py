@@ -5,14 +5,14 @@
 #
 # what makes this script the calibration and not just a run. p1 is the only
 # problem in the project whose phi-efficient sets are known exactly,
-# docs/b1_phi_efficient_sets.md section 2.4, so it is the only place where the
+# docs/part1/b1_phi_efficient_sets.md section 2.4, so it is the only place where the
 # measurement can be checked against a known answer. table 1 below is that known
 # answer computed from the closed forms, table 2 is the same quantity measured on
 # recovered sets, and the difference between p1's row of each is the instrument's
 # error, measured once, here. docs/plan_after_meeting.md sections a1 and b3.
 #
 # the number-provenance rule, CONTEXT.md section 10 e1, is why the record is
-# generated. every number in docs/e1_tier0_run.md is read back out of a file this
+# generated. every number in docs/part1/e1_tier0_run.md is read back out of a file this
 # script wrote, and the record names the file and the key beside it. nothing is
 # typed into the record, so re-running the script regenerates the record's numbers
 # from the same seeds rather than leaving them to agree with the run on the day
@@ -93,7 +93,7 @@
 #
 # no number is typed into this file that is not a run parameter or a constant of
 # a derivation cited beside it. the closed-form regions are transcribed from
-# docs/b1_phi_efficient_sets.md section 2.4 and their measures are integrated
+# docs/part1/b1_phi_efficient_sets.md section 2.4 and their measures are integrated
 # here in closed form; tests/test_run_tier0.py checks the results against the
 # values docs/meeting_2026_09_04.md section 4.3 published from an independent
 # quadrature and an 8000 by 8000 grid.
@@ -136,7 +136,7 @@ phi_names = ("lu", "ls", "cw")
 solver_names = ("random_search", "nsga2", "mopso")
 
 # the two tier 0 problems. p0 is the published anchor's problem and p1 is the
-# fixture, docs/b1_phi_efficient_sets.md section 7.4.
+# fixture, docs/part1/b1_phi_efficient_sets.md section 7.4.
 problem_names = ("p0", "p1")
 
 # the seed list, the population and the gate budget, all three the ones
@@ -206,7 +206,7 @@ tail_rank_count = 30
 
 # the projections of the derived phi-efficient sets onto each decision variable,
 # per problem and phi, as closed intervals. p1's are read off the regions of
-# docs/b1_phi_efficient_sets.md section 2.4: X_lu spans x_1 in [0, 4/3] and x_2 in
+# docs/part1/b1_phi_efficient_sets.md section 2.4: X_lu spans x_1 in [0, 4/3] and x_2 in
 # [4/5, 4/3], X_ls spans [0, 4/3] in both, X_cw spans [0, 1] in both. p0's are
 # section 7.4's: the optimal set is the whole decision box under examples 2.2 and
 # 2.3 and the single point x = 0 under example 2.4. m-2 measures a distance to
@@ -334,7 +334,7 @@ def lu_cw_intersection_area():
 # the pairwise intersection measures of the three derived regions
 def derived_intersections(areas):
     # ND_lu and ND_cw both sit inside ND_ls exactly and for every problem,
-    # docs/a_close_containment.md, and b1 section 2.4's regions carry the
+    # docs/part1/a_close_containment.md, and b1 section 2.4's regions carry the
     # containment: X_lu and X_cw are subsets of X_ls, so those two intersections
     # are the contained region itself and only the lu against cw pair is free in
     # both directions.
@@ -927,7 +927,7 @@ def delta_sweep_values(set_a, set_b, delta, fraction, comparison, problem, phi_a
 
 # every reference front of one problem and phi, one per setting of the singular flag
 def reference_fronts_for(problem, phi_name, params, n_points):
-    # a reference front exists for p1 alone, docs/b1_phi_efficient_sets.md
+    # a reference front exists for p1 alone, docs/part1/b1_phi_efficient_sets.md
     # section 7.4: under examples 2.2 and 2.3 p0's optimal set is the whole
     # decision box and under example 2.4 it is one point, so an igd against it
     # measures nothing about finding an efficient set.
@@ -1291,7 +1291,7 @@ def record_opening(summary, tables):
 # the record's exact table, table 1 of plan section b3
 def record_exact(path, exact_path):
     lines = ["## 2. table 1, exact, p1 only", "",
-             "the closed-form pair statistics of docs/b1_phi_efficient_sets.md "
+             "the closed-form pair statistics of docs/part1/b1_phi_efficient_sets.md "
              "section 2.4's derived regions, integrated in closed form by this "
              "script. no seed, no budget, no solver and no tolerance enter them. "
              "source: results/tier0/{}, decision block; every measure and both "
@@ -1827,7 +1827,7 @@ def parse_arguments(argv):
     parser.add_argument("--output-root", default=str(repository_root / "results"
                                                      / "tier0"))
     parser.add_argument("--record", default=str(repository_root / "docs"
-                                                / "e1_tier0_run.md"))
+                                                / "part1" / "e1_tier0_run.md"))
     parser.add_argument("--seeds", default=",".join(str(seed) for seed in run_seeds))
     parser.add_argument("--budgets", default="{},{}".format(
         gate_budget, gate_budget * convergence_multiple))

@@ -17,7 +17,7 @@ format:
 
 line numbers are lines of papers/new_preference_order_relationships_paper.txt.
 pages are the printed journal pages. every row below was checked against the
-paper in a0; the transcriptions are in docs/a0_framework.md.
+paper in a0; the transcriptions are in docs/part1/a0_framework.md.
 
 v-01 | the class of admissible automorphisms acts componentwise on endpoint pairs,
     each component the map phi_i(x_2i-1, x_2i) = (lambda_2i-1 x_2i-1 + lambda_2i
@@ -166,7 +166,7 @@ v-24 | proposition 5.1: for the fuzzy problems, if x-bar is an optimal solution
 v-25 | example 2.4, this project's phi_cw, appears in no statement of [1]
     relating its solution set to that of any other automorphism. proposition 5.1
     and remark 5.1 name only examples 2.2 and 2.3 | [1] | established by
-    exhaustive search of the whole file; method recorded in docs/a0_framework.md
+    exhaustive search of the whole file; method recorded in docs/part1/a0_framework.md
     c17 | a0-b | 2026-08-31
 
 v-26 | sections 2 and 3 of [1] contain no stated relation between the solution
@@ -175,7 +175,7 @@ v-26 | sections 2 and 3 of [1] contain no stated relation between the solution
     one phi to a formulation in the literature, examples 3.4 to 3.7 give a
     condition under one phi, theorems 3.1 to 3.3 concern one phi, and examples 3.8
     and 3.9 hold for an arbitrary but fixed phi | [1] | sections 2 and 3, lines
-    99-771; search method recorded in docs/a0_framework.md c17 | a0-b | 2026-08-31
+    99-771; search method recorded in docs/part1/a0_framework.md c17 | a0-b | 2026-08-31
 
 v-27 | theorem 5.1 is where [1] states the relationship between the fuzzy and the
     interval formulations: for phi in the class, x-bar is a (local) strong or
@@ -198,7 +198,7 @@ v-30 | a constant half-width collapses phi_lu, phi_ls and phi_cw to one order an
     {0.05, 0.5}, over 5000 uniform points, all four non-dominated index sets are
     identical, not merely equal in size. this is CONTEXT.md section 5 step 1's
     constant-width clause, confirmed | project diagnostic, not a paper |
-    docs/a1_uncertainty_model.md part 1, exact arithmetic, seed 20260831 | a1 |
+    docs/part1/a1_uncertainty_model.md part 1, exact arithmetic, seed 20260831 | a1 |
     2026-08-31
 
 v-31 | a half-width that is an exact function of the centre collapses all three
@@ -206,14 +206,14 @@ v-31 | a half-width that is an exact function of the centre collapses all three
     proportional imprecision f -> [f(1-eps), f(1+eps)] on zdt1 at eps in
     {0.10, 0.25} gives width spans of 0.84 and 2.19, correlation +1.0000, and all
     four index sets identical. this is step 1's "function of the centre alone"
-    clause, confirmed | project diagnostic | docs/a1_uncertainty_model.md part 2
+    clause, confirmed | project diagnostic | docs/part1/a1_uncertainty_model.md part 2
     (c) | a1 | 2026-08-31
 
 v-32 | multiplicative coefficient imprecision makes the half-width an exact linear
     function of the centre for any objective that is a monomial in the imprecise
     coefficient. on zdt1 with f1 = c1*x1, c1 in [1-d, 1+d], objective 1 gives
     correlation +1.0000 and phi_cw returns the crisp non-dominated set exactly, at
-    d = 0.10 and d = 0.25 | project diagnostic | docs/a1_uncertainty_model.md part
+    d = 0.10 and d = 0.25 | project diagnostic | docs/part1/a1_uncertainty_model.md part
     2 (b) | a1 | 2026-08-31
 
 v-33 | all six image coordinates of a problem are convex under all three phi if
@@ -221,7 +221,7 @@ v-33 | all six image coordinates of a problem are convex under all three phi if
     centre + half_width and centre are non-negative combinations of those two.
     this is the design rule p1 is built to | derived from [1] theorem 3.3 and the
     coefficients of examples 2.2, 2.3 and 2.4, verified in a0 as v-06 to v-08 and
-    v-12 | docs/a1_uncertainty_model.md part 3 | a1 | 2026-08-31
+    v-12 | docs/part1/a1_uncertainty_model.md part 3 | a1 | 2026-08-31
 
 v-29 | the conclusion's "better option" claim about the inclusion-order
     automorphism is conditional and not general. it is stated for the case m = 1
@@ -394,7 +394,7 @@ v-47 | a5's separation report shows |ls&cw| falling short of |cw| on dtlz2 by 7,
     of up to 0.5; zdt1 has no such face and shows none. the crisp column and |cw|
     are bit-identical in exact and double arithmetic in all eight cases, 144 and
     32, and 947 and 483 | project diagnostic, not a paper |
-    docs/a_close_containment.md section 3.4; the two counts are printed on the
+    docs/part1/a_close_containment.md section 3.4; the two counts are printed on the
     noise line of tests/test_problems_tier1.py's separation report | a-close-b |
     2026-09-01
 
@@ -559,7 +559,7 @@ v-54 | the protected extreme. let S be any finite set of decision vectors in p1'
     the mean overhang of the elected point's x_2 does not move, 0.1226, 0.1404,
     0.1334, 0.1261. this supersedes v-53's account of the same phenomenon by
     proving it rather than observing it, and it is what removes c3-b's budget
-    trend assertion | project diagnostic, not a paper | docs/c3_validation.md
+    trend assertion | project diagnostic, not a paper | docs/part1/c3_validation.md
     section 1, and tests/test_validation.py::test_the_strict_minimiser_of_a_width_column_is_never_dominated,
     ::test_one_image_column_is_a_function_of_one_variable_under_ls_and_cw,
     ::test_the_whole_low_width_tail_is_shielded_and_not_only_its_first_member,
@@ -581,7 +581,7 @@ v-55 | the reverse recovery direction is bounded by one fill distance and not by
     attained and not merely valid, while the sum stands at 0.189, 0.293 and 0.238
     against maxima of 0.143, 0.219 and 0.177 for phi_lu, phi_ls and phi_cw. this
     is what removes h_reference from the c3 gate tolerance and retires r-17 |
-    project diagnostic, not a paper | docs/c3_validation.md section 2.1, and
+    project diagnostic, not a paper | docs/part1/c3_validation.md section 2.1, and
     tests/test_validation.py::test_the_reverse_distance_is_bounded_by_the_solver_fill_distance
     | c3-c | 2026-09-01
 
@@ -605,7 +605,7 @@ v-56 | the three phi images of p1 are constant linear images of one another, and
     7.1e-15. this is a fact about examples 2.2, 2.3 and 2.4 of [1] and not about
     p1, since A and B do not contain the problem. **reported and not asserted: the
     session that measured it added nothing to the suite, so no test guards this
-    row yet** | project diagnostic, not a paper | docs/c3_validation.md section
+    row yet** | project diagnostic, not a paper | docs/part1/c3_validation.md section
     5.5, "where phi_ls sits" | c3-f | 2026-09-02
 
 v-57 | the cost of a sweep, measured in c2-b on one seed at pop_size 100,
@@ -657,7 +657,7 @@ v-59 | what pymoo 0.6.2's three indicators do, measured against hand-computed
     moocore's igd and averages over the reference points and not over the front:
     the front (0, 0), (10, 10) against the single reference point (0, 0) gives
     0.0 and the transposed call gives 7.0710678118654755, which is
-    sqrt(200) / 2. that is the direction docs/b2b_reference_density.md section 1
+    sqrt(200) / 2. that is the direction docs/part1/b2b_reference_density.md section 1
     states and the opposite of [2]'s M_1^*, v-58.
     pymoo.indicators.spacing.SpacingIndicator computes a spread of the
     nearest-neighbour distances in the cityblock metric normalised by the number

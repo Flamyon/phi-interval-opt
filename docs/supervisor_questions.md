@@ -105,7 +105,7 @@ nesting is exact in real arithmetic and fails by rounding in doubles, c + r and
 eps = 0.50, one point of 1565, where the centre is 6.1e-17 against a half-width of
 0.5. the decision-space tables name the artefact rather than reporting it.
 
-**where it is written up.** docs/a_close_containment.md; v-24, v-25, v-26, v-46,
+**where it is written up.** docs/part1/a_close_containment.md; v-24, v-25, v-26, v-46,
 v-47.
 
 ### s-12. the singular segments: undecided, and it is your call
@@ -162,7 +162,7 @@ derivation, is carried as a test, and **s-12 is untouched by it**: s-12 asks abo
 the segment itself, where the published conditions give no verdict, and the s-13
 witness bears on neither.
 
-**where it is written up.** docs/b1_phi_efficient_sets.md section 2.6, the module
+**where it is written up.** docs/part1/b1_phi_efficient_sets.md section 2.6, the module
 comment of src/reference_fronts.py, and docs/answered.md for the closed s-13.
 
 
@@ -183,7 +183,7 @@ definitions of Lambda_i and B_i instead.
 **what depends on it.** nothing, until the memoria wants to print (16). b1 has run
 and the assumption held.
 
-**where it is written up.** docs/a0_framework.md c14.
+**where it is written up.** docs/part1/a0_framework.md c14.
 
 ### s-02. the weight condition in example 3.9
 
@@ -202,8 +202,8 @@ answer: every optimality conclusion is drawn from example 3.8, whose weight
 condition is unambiguous, and the strict reading would cost only the necessity
 direction.
 
-**where it is written up.** docs/a0_framework.md c14 and a-2,
-docs/b1_phi_efficient_sets.md section 6.
+**where it is written up.** docs/part1/a0_framework.md c14 and a-2,
+docs/part1/b1_phi_efficient_sets.md section 6.
 
 ### s-03. which efficiency does theorem 3.1 mean
 
@@ -216,7 +216,7 @@ as pymoo implements it.
 **what depends on it.** the two differ only when two decision vectors share an
 image, so the choice is recorded in b2 rather than assumed away.
 
-**where it is written up.** docs/a0_framework.md.
+**where it is written up.** docs/part1/a0_framework.md.
 
 ### s-05. does the exclusion of section 5 of [1] stand
 
@@ -234,7 +234,7 @@ project has read proposition 5.1 and transcribed it, v-24: for the fuzzy problem
 optimal under example 2.2 implies optimal under example 2.3, with no convexity, no
 differentiability and no converse.
 
-**where it is written up.** docs/a0_framework.md and its a0-b addendum; v-24,
+**where it is written up.** docs/part1/a0_framework.md and its a0-b addendum; v-24,
 v-26.
 
 ### s-06. is the centre-radius form of phi the working form, or an implementation note
@@ -259,7 +259,7 @@ exactly 46 distinct values, and the endpoint route gives it **210** while the
 centre-radius route gives it 46. an order built on a column is built on that
 column's ties, and the subtraction shatters them.
 
-**where it is written up.** docs/a4b_dominance_tolerance.md part 3, CONTEXT.md
+**where it is written up.** docs/part1/a4b_dominance_tolerance.md part 3, CONTEXT.md
 section 4, v-41 and v-42.
 
 
@@ -286,7 +286,7 @@ residual is r-09: the rule was derived from two benchmarks and one tier 0 design
 so it is a working rule and every new problem, including the portfolio returns of
 part 2, runs the full diagnostic before use.
 
-**where it is written up.** docs/a1_uncertainty_model.md part 2 and a1-b.
+**where it is written up.** docs/part1/a1_uncertainty_model.md part 2 and a1-b.
 
 ### s-08. accept p1's two-dimensional efficient set
 
@@ -305,8 +305,8 @@ one open edge. **the row can retire on your acknowledgement.** it is also what
 makes the coverage finding of part e below measurable at all, since covering a
 two-dimensional region is a question a hundred points can answer badly.
 
-**where it is written up.** docs/a1_uncertainty_model.md part 3 and a1-b section
-3, docs/b1_phi_efficient_sets.md sections 2.2 and 2.4.
+**where it is written up.** docs/part1/a1_uncertainty_model.md part 3 and a1-b section
+3, docs/part1/b1_phi_efficient_sets.md sections 2.2 and 2.4.
 
 ### s-09. one absolute half-width per objective, or scaled
 
@@ -320,7 +320,7 @@ slide 19, and record the asymmetry in every tier 1 table.
 **what depends on it.** a one-line change in src/problems_tier1.py if the answer
 differs, plus a rerun of tier 1.
 
-**where it is written up.** docs/a1_uncertainty_model.md part 4.
+**where it is written up.** docs/part1/a1_uncertainty_model.md part 4.
 
 ### s-10. keep the double seeding
 
@@ -408,7 +408,7 @@ it is verified to 0.000e+00 on 500 random points and on all three region samples
 **no test in the suite guards it**, the session that established it having added
 no assertions, and docs/verified.md says so in its row.
 
-**where it is written up.** docs/c3_validation.md section 5.5, "where phi_ls
+**where it is written up.** docs/part1/c3_validation.md section 5.5, "where phi_ls
 sits"; docs/verified.md v-56.
 
 

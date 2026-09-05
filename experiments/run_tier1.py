@@ -63,14 +63,14 @@
 # fills the survivor slots is one where dominance-based selection has no
 # pressure and the front is a spread result and not a convergence result. the
 # series is read out of the algorithm's state after every generation through a
-# pymoo Callback, exactly as c3-d read it, docs/c3_validation.md section 5.1;
+# pymoo Callback, exactly as c3-d read it, docs/part1/c3_validation.md section 5.1;
 # **pymoo is not modified and src/runners.py is not modified**: the callback is
 # attached to the algorithm c2's own factory built, it writes nothing back, and
 # tests/test_run_tier1.py asserts the front comes back bit-identical with it
 # installed.
 #
 # no igd on tier 1, and the reason is b2's scope. src/reference_fronts.py
-# derives a reference front for p1 alone, docs/b1_phi_efficient_sets.md section
+# derives a reference front for p1 alone, docs/part1/b1_phi_efficient_sets.md section
 # 7.4, so there is no reference object to average over here and the metric is
 # not computed rather than computed against something invented. the objective
 # block therefore carries hypervolume and spread, with the reference size zero.
@@ -110,7 +110,7 @@
 #
 # no number is typed into this file that is not a run parameter. the imprecision
 # levels are src/problems_tier1.py's own, the budget and the seed list are the
-# ones the gate ran at, and every number in docs/e2_tier1_results.md is read back
+# ones the gate ran at, and every number in docs/part1/e2_tier1_results.md is read back
 # out of a file this script wrote.
 
 import argparse
@@ -577,7 +577,7 @@ def seed_rank_summary(rows):
     # saturation is rank 1 holding at least the population size of the candidate
     # set, which is when dominance stops deciding anything: every survivor is then
     # chosen out of one front on crowding distance alone,
-    # docs/c3_validation.md section 5.1. the late median is over the second half
+    # docs/part1/c3_validation.md section 5.1. the late median is over the second half
     # of the run, which is the window c3-d reported its own medians over.
     ordered = sorted(rows, key=lambda row: row["generation"])
     pop_size = int(np.median([row["n_pop"] for row in ordered]))
@@ -1537,7 +1537,7 @@ def record_no_exact_table():
     return ["", "## 2. there is no table 1 on tier 1, and that is the statement", "",
             "table 1 of docs/plan_after_meeting.md section b3 is exact and p1 only. "
             "it is the lebesgue measure of the closed-form phi-efficient regions "
-            "docs/b1_phi_efficient_sets.md section 2.4 derives, and zdt1 and dtlz2 "
+            "docs/part1/b1_phi_efficient_sets.md section 2.4 derives, and zdt1 and dtlz2 "
             "have no such derivation: b1 covers p0 and p1, and "
             "src/reference_fronts.py refuses any other problem by name. so the "
             "benchmarks have no exact row, no reference front and therefore no "
@@ -1763,7 +1763,7 @@ def record_rank(rows, budget):
              "distance alone, and the solver's front is a spread result and not a "
              "convergence result. the series is read out of the algorithm's state "
              "after every generation through a pymoo Callback, the instrument "
-             "docs/c3_validation.md section 5.1 describes; pymoo is not modified, "
+             "docs/part1/c3_validation.md section 5.1 describes; pymoo is not modified, "
              "src/runners.py is not modified, and the candidate set is the "
              "previous generation's survivors stacked on this generation's "
              "offspring, sorted with pymoo's own NonDominatedSorting. the median "
@@ -2425,7 +2425,7 @@ def parse_arguments(argv):
     parser.add_argument("--tier0-root", default=str(repository_root / "results"
                                                     / "tier0"))
     parser.add_argument("--record", default=str(repository_root / "docs"
-                                                / "e2_tier1_results.md"))
+                                                / "part1" / "e2_tier1_results.md"))
     parser.add_argument("--seeds", default=",".join(str(seed) for seed in run_seeds))
     parser.add_argument("--overhang-seeds",
                         default=",".join(str(seed) for seed in overhang_seeds))

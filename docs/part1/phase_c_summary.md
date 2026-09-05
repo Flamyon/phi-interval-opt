@@ -10,20 +10,31 @@ measurement and states no new result. every claim below points at the session
 deliverable that established it, and where this document and a deliverable could
 differ the deliverable wins.
 
+**this document and docs/project_narrative.md cover the same ground and both are
+kept**, docs-clean, 2026-09-05. that file is one continuous account of phases a to
+c in plain words, written in the research chat rather than at a phase boundary,
+with the failures narrated rather than cited; this one is the close-out of a
+single phase, organised by subpart, and every claim in it points at the
+deliverable that established it. **where the two could differ, this one wins.**
+part 1 as a whole is docs/part1/part1_closing.md, which is the settled record and
+supersedes neither.
+
 where the detail is, so this document does not become a second copy of it:
 
-    docs/c3_validation.md    the gate, its verdict, and sections 5 to 5.5, which
-                             are the whole of the coverage finding and of the five
-                             mechanisms excluded from it
-    docs/verified.md         v-01 to v-56, each with its source and location
-    docs/answered.md         answered questions and retired risks
-    PROGRESS.md              the open p-, s- and r-rows and the session log
-    git log                  one commit per subpart, with its full session record
+    docs/part1/c3_validation.md    the gate, its verdict, and sections 5 to 5.5,
+                                   which are the whole of the coverage finding
+                                   and of the five mechanisms excluded from it
+    docs/verified.md               v-01 to v-56, each with its source and location
+    docs/answered.md               answered questions and retired risks
+    PROGRESS.md                    the open p-, s- and r-rows and the session log
+    git log                        one commit per subpart, with its full session
+                                   record
     docs/supervisor_questions.md   the open questions, written to be answered
-    docs/phase_a_summary.md  phase a's close-out, on the same model
-    docs/phase_b_summary.md  phase b's, written after the fact in repo-clean-b.
-                             phase b's own detail is b1, which is itself a
-                             document, docs/b1_phi_efficient_sets.md
+    docs/part1/phase_a_summary.md  phase a's close-out, on the same model
+    docs/part1/phase_b_summary.md  phase b's, written after the fact in
+                                   repo-clean-b. phase b's own detail is b1,
+                                   which is itself a document,
+                                   docs/part1/b1_phi_efficient_sets.md
 
 
 ## 1. what phase c built
@@ -71,7 +82,7 @@ test had run at a budget where the archive never overflowed, so it asserted a
 property it could not observe and would have passed with the defect present.
 c2-b's test counts the truncation calls and fails if the count is zero.
 
-**c3, tests/test_validation.py and docs/c3_validation.md.** the gate. it runs all
+**c3, tests/test_validation.py and docs/part1/c3_validation.md.** the gate. it runs all
 three solvers on p1 under all three phi at the budget r-15 fixed, over five seeds
 and both settings of include_singular_segments, ninety measurements, and compares
 the recovered decision vectors against the sets b1 derived and b2 encodes. it was
@@ -119,7 +130,7 @@ within the derivation's own resolution and the third does not. **the twelve
 failing tests are left failing on purpose and the count is recorded so that a
 later session can see whether it moved.** c3-c refused both ways of making them
 green, exempting nsga-ii from the assertion and marking the six configurations
-xfail, docs/c3_validation.md section 4.1.
+xfail, docs/part1/c3_validation.md section 4.1.
 
 
 ## 3. the findings
@@ -128,7 +139,7 @@ each with its evidence, and each bounded by what it does not say.
 
 ### the protected extreme, proved
 
-**docs/c3_validation.md section 1, v-54.** under phi_cw the four image columns are
+**docs/part1/c3_validation.md section 1, v-54.** under phi_cw the four image columns are
 (c_1, r_1, c_2, r_2) and under phi_ls they are (c_1 - r_1, 2 r_1, c_2 - r_2,
 2 r_2), so in both the fourth column is a r_2 with a > 0, and r_2 = rho x_1^2 +
 delta is a strictly increasing function of |x_1| and of nothing else. in any
@@ -165,7 +176,7 @@ smaller |x_1| at an x_2 no better placed.
 
 ### rank 1 saturates, and it is a cost of the transformation
 
-**docs/c3_validation.md section 5.1, c3-d.** nsga-ii sorts pop_size + offspring =
+**docs/part1/c3_validation.md section 5.1, c3-d.** nsga-ii sorts pop_size + offspring =
 200 candidates a generation and keeps 100. if rank 1 alone holds at least 100 of
 them then dominance never enters the selection and every survivor is chosen on
 crowding distance. **it does, under every phi.** on p1 at the gate's budget rank 1
@@ -204,7 +215,7 @@ statement about what 2m objectives do to any dominance-based selection.
 
 ### the exact linear relations between the three phi images
 
-**docs/c3_validation.md section 5.5, v-56, c3-f.** each phi is a constant linear
+**docs/part1/c3_validation.md section 5.5, v-56, c3-f.** each phi is a constant linear
 map of the endpoint pair, [1] section 2, so the three images of any decision set
 are constant linear images of one another. writing g_lu, g_ls and g_cw for the
 four image columns:
@@ -238,13 +249,13 @@ measurement that appears to show one is measuring the region it was averaged ove
 
 what it does not say. it says nothing about the solution sets. dominance is not
 preserved by an arbitrary invertible linear map, only by an entrywise non-negative
-one, which is the separate criterion of docs/a_close_containment.md and s-11; A
+one, which is the separate criterion of docs/part1/a_close_containment.md and s-11; A
 and B both have negative entries. the relations are about the geometry the
 operator sees, not about which points are efficient.
 
 ### nsga-ii's coverage deficit, at its true scope
 
-**docs/c3_validation.md sections 5 and 5.2 to 5.5.** the finding, stated as
+**docs/part1/c3_validation.md sections 5 and 5.2 to 5.5.** the finding, stated as
 measured: on p1, at k = 100, nsga-ii's fill distance with respect to the derived
 region sits **above the 85th percentile** of 1000 uniform 100-point draws of the
 same region under phi_ls and phi_cw, worse than the uniform mean in all ten

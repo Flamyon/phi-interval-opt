@@ -7,16 +7,16 @@ sources read in this session:
 
     papers/new_preference_order_relationships_paper.txt, [1], for example 3.9's
         condition (15) and its weight condition, read at lines 709-746 directly
-        and cross-read against the transcription in docs/a0_framework.md c13,
+        and cross-read against the transcription in docs/part1/a0_framework.md c13,
         c14 and c15.
-    docs/a0_framework.md, for theorem 3.3 (c12), example 3.8 (c13), example 3.9
+    docs/part1/a0_framework.md, for theorem 3.3 (c12), example 3.8 (c13), example 3.9
         (c14), the worked function (c15), definition 3.1 (c10) and the three
         order relations (3), (6), (7) (c4).
-    docs/a1_uncertainty_model.md, part 3 and the a1-b section, for p1's design,
+    docs/part1/a1_uncertainty_model.md, part 3 and the a1-b section, for p1's design,
         its image coordinates, hessians, eigenvalues and stationary points.
     src/problems_tier0.py, for what p0 and p1 actually are, including d-01's
         delta = 1/8.
-    docs/a_close_containment.md, for the containment the derived sets must satisfy.
+    docs/part1/a_close_containment.md, for the containment the derived sets must satisfy.
     literature/gH-differentiability calculus for interval analysis.md, for the
         regularity criterion of [10]. flagged below: the theorem number is not
         verified against the paper, which is not in papers/.
@@ -36,7 +36,7 @@ the brief instructs that condition (15) be confirmed to be stationarity of a
 weighted sum of the image coordinates before the linear-system route is used, and
 that the derivation stop if it is not.
 
-it is. [1] lines 715-723, transcribed in docs/a0_framework.md c14 and recorded as
+it is. [1] lines 715-723, transcribed in docs/part1/a0_framework.md c14 and recorded as
 v-17, chains three expressions and sets the last to the zero vector of R^n:
 
 >     Σ_{i=1}^{m} w_2i−1 ∇Λ_i^T f(x̄)  +  Σ_{i=1}^{m} w_2i ∇B_i^T f(x̄)
@@ -149,7 +149,7 @@ equations below.
 
 ### 1.2 p1, convexity, by theorem 3.3
 
-theorem 3.3 of [1], transcribed in docs/a0_framework.md c12 and recorded as v-12:
+theorem 3.3 of [1], transcribed in docs/part1/a0_framework.md c12 and recorded as v-12:
 
 > **Theorem 3.3.** ... Then F is φ-convex if and only if Λ_i^T f and B_i^T f are
 > convex for all i ∈ {1, …, m}, where f = (f_1, f̄_1, …, f_m, f̄_m).
@@ -266,7 +266,7 @@ the interiority reading. condition (15) is unconstrained stationarity and carrie
 no constraint multipliers, unlike examples 3.4 to 3.7. read literally, statement
 1 would be false at any weak optimal point on a face of S, since a constrained
 minimum need not have a vanishing gradient. this project reads example 3.9 as an
-interior condition, which is what docs/a1_uncertainty_model.md part 3 already
+interior condition, which is what docs/part1/a1_uncertainty_model.md part 3 already
 states and what fixed p1's box, and applies it only at interior points. every
 derived set below is strictly interior to the box, so nothing in the p1 result
 depends on this reading; it is stated because the necessity direction of
@@ -752,7 +752,7 @@ matters beyond tidiness.
 
 ## 5. the containment check
 
-docs/a_close_containment.md proves, from the criterion that phi_B = M phi_A with M
+docs/part1/a_close_containment.md proves, from the criterion that phi_B = M phi_A with M
 entrywise non-negative and invertible makes phi_A-dominance imply phi_B-dominance,
 that ND_lu and ND_cw are both contained in ND_ls, exactly and for every problem.
 this document did not use that result anywhere in the derivation, per the standing
@@ -777,7 +777,7 @@ measured on 200000 uniform points of the box:
 
 both containments hold on the derived sets, and phi_lu against phi_cw is nested in
 neither direction, with substantial violation counts both ways. that is corollary
-1, corollary 2 and corollary 3 of docs/a_close_containment.md reproduced from an
+1, corollary 2 and corollary 3 of docs/part1/a_close_containment.md reproduced from an
 entirely independent route: that document argues from the map between the two
 image spaces and never looks at F, while this one derives each set from [1]'s
 optimality conditions applied to p1 and never uses the map. the two agree.
