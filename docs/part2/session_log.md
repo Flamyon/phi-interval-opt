@@ -70,3 +70,69 @@ format:
     the decision lit_review section 7.2 asks for**: whether the derivation comes
     before the separation check and answers criterion 3 exactly, reversing the
     order docs/plan_after_meeting.md section d1 anticipated
+
+2026-09-05 | f2, the derivation on I-BK1 | docs/part2/f2_ibk1_derivation.md, new;
+    PROGRESS.md sections 2, 6 and 7; docs/answered.md | **paper and pencil with
+    exact rational symbolic verification, no module, no run, nothing from [16]
+    implemented.** b1's method applied to a problem the project did not construct.
+    the ordering decision lit_review section 7.2 asked for **was taken**: the
+    derivation comes before the separation check and answers criterion 3 exactly
+    rather than by sample, reversing docs/plan_after_meeting.md section d1. **the
+    cheap check first**: under coefficient imprecision the centre and half-width are
+    two combinations of the same h_ij with coefficients (a+b)/2 and (b-a)/2, and
+    they are proportional exactly when every coefficient interval of that objective
+    has the same relative half-width, which is part1_closing section 6.1's
+    degeneracy; **no objective of any of the five candidates is proportional**,
+    thirteen objectives checked in exact rationals, so the width-centre
+    independence comes from the published coefficients and not from any choice of
+    ours. **the derivation closes under all three phi with no reservation**, which
+    p1 did under one of three: every one of the twelve image coordinates is a
+    strictly positive diagonal quadratic, so theorem 3.3 gives phi-convexity with no
+    semidefinite row, **there is no singular weight direction at all** and b1's two
+    singular rays do not recur, every derived set is strictly interior to
+    [-10,10]^2 with margin 5, and the sandwich collapses so that optimal = weak
+    optimal = X_phi exactly under all three. [10] proposition 32 is **load-bearing
+    and not a formality**: I-BK1's radii vanish at (0,0) and (5,5), which are the
+    two corners every derived set is pinned at, and a strict-positivity rule would
+    have left a hole there. the sets are wedges: with U = x_1/(5-x_1),
+    V = x_2/(5-x_2) and nu = V/U, **X_lu is nu in [2/3,5/3], X_ls is [1/2,2] and
+    X_cw is [3/4,3/2]**, each a region between two hyperbolas through (0,0) and
+    (5,5), given as pairs of polynomial inequalities, verified in both directions in
+    exact rationals. **criterion 3 passes and I-BK1 passes the gate**: X_cw strictly
+    inside X_lu strictly inside X_ls, areas 2.8756, 3.7903, 5.6853 in closed form,
+    overlap fractions 0.7587, 0.6667 and 0.5058, and every crisp comparator is a
+    one-dimensional curve of constant nu. **two of the three relations are predicted
+    by the containment criterion and are checks; X_cw inside X_lu is not predicted
+    and is a finding**, and it differs in kind from p1, where phi_lu and phi_cw
+    crossed. **the external checks split.** equation (25)'s published curve is
+    exactly nu = 162/169 constant, **inside all three derived sets along its whole
+    length**, with eight of Table 2's eleven rows on it and two more at its
+    corners; that is the first external
+    check the project has ever had and it passes. **Table 1's x* is outside all
+    three**, nu = 0.1109, and the failure is located in the paper, not in the
+    derivation: **x* is not a Pareto optimal point of I-BK1 in [16]'s own definition
+    2.17**, shown by an explicit dominator y = (2.8975, 2.3975) whose four endpoint
+    values are all strictly below the paper's printed G(x*), tightest margin 0.2740
+    against a printed rounding of 1e-6. the mechanism is identified: the interval
+    directional derivative's Minkowski sum overestimates, so **[16]'s Pareto
+    critical set is nu in (1/9, 10), area 16.07, 4.24 times X_lu and containing all
+    three derived sets**, and x* is the algorithm's output at tolerance just outside
+    it. **a-11: [16]'s proposition 2.1 and lemma 2.4(ii) are false as printed**,
+    with x = (5/2, 5/6) a Pareto critical point of I-BK1 that is dominated in all
+    four coordinates and every hypothesis verified; lemma 2.4 is attributed to [27],
+    not on disk, so the session does not say where the proof fails. **lit_review's
+    a-4 is resolved in the negative**: the printed argument is invalid and the
+    conclusion is false, and the rescue through proposition 2.1 does not survive.
+    **a-12: Table 2's alpha = 0.8 row carries the alpha = 0.9 row's second
+    coordinate**, (25) giving 4.235294 against the printed 4.628566, with the row's
+    objective values computed from the printed value. **s-02 gains a second witness
+    and a structural one**: every weight reaching a boundary ray of any derived set
+    has two zero components, so reading two makes example 3.9 statement 1 false
+    along a whole curve. r-09 discharged for I-BK1 by derivation rather than
+    diagnostic, r-21 retired, s-12 recorded as p1's alone. **clause c5 stays marked
+    unsupported**: the gate is passed but c5 is about measured behaviour under the
+    project's instrument and that is f3's | f3, the reference set and the exact
+    statistics, **after the research chat rules on a-11**, which is the one finding
+    this session raises that bears on whether [16]'s published points may be used at
+    all
+

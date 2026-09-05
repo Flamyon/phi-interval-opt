@@ -351,25 +351,46 @@ presentation places it.
                                               is not what part 2 becomes; its text
                                               is written anyway, lit_review sections
                                               1.8, 1.9 and 6. closes p-02 and p-05
-    f2  problems_native.py                    not started. **f1's recommendation is
-                                              I-BK1**, the only problem in appendix
-                                              a with published checkpoints: a point
-                                              in Table 1 and a closed-form curve at
-                                              equation (25), both printed page 20-21
-                                              of [16] and both re-derived by hand in
-                                              lit_review section 1.6. lit_review
-                                              section 7.2 argues the derivation
-                                              comes **before** the separation check
-                                              and answers criterion 3 exactly rather
-                                              than by sample, which reverses the
-                                              order docs/plan_after_meeting.md
-                                              section d1 anticipated. **that
-                                              reversal is a decision and is not yet
-                                              taken**
-    f3  the native run, plus its derivation   not started, waits on f2 and on e2.
-                                              lit_review section 7.4 prices part 2's
-                                              substantive arm at **three sessions,
-                                              two of them paper-and-pencil**
+    f2  the derivation on I-BK1               **done, 2026-09-05**, paper and
+                                              pencil, no module and no run; the
+                                              module problems_native.py the line
+                                              used to name is f3's. output
+                                              docs/part2/f2_ibk1_derivation.md. the
+                                              reversal lit_review section 7.2 asked
+                                              for **was taken**: the derivation came
+                                              before the separation check and
+                                              answers criterion 3 exactly. **the
+                                              derivation closes under all three phi
+                                              with no reservation**, no singular
+                                              weight direction, every derived set
+                                              strictly interior, and optimal = weak
+                                              optimal = X_phi exactly. **criterion 3
+                                              passes and I-BK1 passes the gate**:
+                                              X_cw subset X_lu subset X_ls, all
+                                              strict, areas 2.8756, 3.7903 and
+                                              5.6853. **one published checkpoint
+                                              passes and one fails**: equation
+                                              (25)'s curve is inside all three sets
+                                              along its whole length, and Table 1's
+                                              x* is not a Pareto optimal point of
+                                              I-BK1 in [16]'s own definition 2.17,
+                                              shown by an explicit dominator against
+                                              the paper's printed G(x*). **a-11 and
+                                              a-12 raised**
+    f3  the reference set and the exact       not started. f2 is done, so its
+        statistics, then the native run       inputs are on disk: the map x(w), the
+                                              three closed-form regions as pairs of
+                                              polynomial inequalities, the exact
+                                              areas and overlap fractions, and the
+                                              published curve (25) as an
+                                              implementation check.
+                                              **docs/part2/f2_ibk1_derivation.md
+                                              section 7 lists what f3 takes and what
+                                              it must not use**, Table 1's x* being
+                                              the second. lit_review section 7.4
+                                              prices the rest of part 2's
+                                              substantive arm at two sessions, of
+                                              which only the run needs compute
     f4  part 2 write-up                       not started, waits on f3
 
 phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
@@ -625,8 +646,10 @@ s-01 | which w subscripts (16) of [1] intends, the expanded line's w_2i or the
 
 s-02 | example 3.9's "w_i >= 0 not equal zero for all i", nonnegative and not all
     zero or strictly positive | the former, the strict reading making statement 3
-    redundant and making statement 1 false at a witness b1 found |
-    docs/supervisor_questions.md s-02, docs/part1/b1_phi_efficient_sets.md section 6
+    redundant and making statement 1 false at a witness b1 found and along a whole
+    boundary curve f2 found | docs/supervisor_questions.md s-02,
+    docs/part1/b1_phi_efficient_sets.md section 6,
+    docs/part2/f2_ibk1_derivation.md section 5
 
 s-03 | which efficiency theorem 3.1 means, [1]'s no-strictness form being strong
     efficiency and not definition 3.1(2) | the usual pareto definition, as in
@@ -671,8 +694,10 @@ s-11 | is the entrywise-non-negative containment criterion correct, are both
 s-12 | are the points of the singular weight segments optimal solutions for
     (1MIOP_phi), the published conditions giving weak optimality and no verdict
     either way | b2 does not choose and does not patch:
-    include_singular_segments has no default and the value goes in every table |
-    docs/supervisor_questions.md s-12, docs/part1/b1_phi_efficient_sets.md section 2.6
+    include_singular_segments has no default and the value goes in every table; the
+    row is p1's alone, I-BK1 having no singular weight under any phi |
+    docs/supervisor_questions.md s-12, docs/part1/b1_phi_efficient_sets.md section 2.6,
+    docs/part2/f2_ibk1_derivation.md section 2.3
 
 ## 7. risks
 
@@ -733,7 +758,11 @@ r-09 | a1's width driver rule was derived from two benchmarks and one tier 0
     constructing interval returns" while part 2 was the portfolio application.
     mitigation: treat it as a working rule and not a result, and run the full a1
     diagnostic including the slice check on every new problem before use. f1's
-    criterion 3 records it per example and f2 discharges it as an assertion.
+    criterion 3 records it per example. **discharged for I-BK1 in f2 by derivation
+    rather than by diagnostic**, docs/part2/f2_ibk1_derivation.md sections 0 and 3:
+    the cheap check shows no candidate of [16] has proportional centre and
+    half-width coefficient vectors, and the closed forms answer criterion 3 exactly.
+    the row stays open for any other new problem.
 
 r-11 | the phi_lu inside phi_ls nesting is a theorem in real arithmetic and fails
     by rounding in doubles, one point of 1565 measured on dtlz2 at eps = 0.50.
@@ -872,18 +901,6 @@ r-19 | nsga-ii's decision-space coverage of a full-dimensional efficient set is
     comparison at all is a change to c2 and is out of scope for a gate. the
     measurements, the five exclusions and the control are docs/part1/c3_validation.md
     sections 3, 4 and 5.
-
-r-21 | f1's gate may pass no example of [16], the paper not having been read and
-    its examples not having been chosen for this purpose.
-    cost: known in advance rather than discovered. the claim loses its third
-    clause and becomes a two-stage claim; the answer to [7]'s objection reverts
-    from a result to an argument; the presentation loses one slide and its
-    strongest closing sentence.
-    trigger: f1's verdict table.
-    mitigation: the fallback is written before the reading and not after it,
-    docs/plan_after_meeting.md section d2: part 2 becomes the reading result, what
-    the twenty problems are, why each does or does not serve, and what a study
-    using them would need. f4 has a form for that case and f2 and f3 do not run.
 
 r-22 | a slice fraction from a1 part 4's separation sweep is grid-resolution
     dependent: phi_lu's zdt1 fraction at eps = 0.10 runs 0.2441, 0.1435, 0.1392 and

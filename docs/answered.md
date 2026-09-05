@@ -325,3 +325,20 @@ r-20 | retired in e2, and retired by the measurement its mitigation asked for. a
     and that level is the crisp baseline that src/problems_tier1.py labels as one
     rather than a data point. the phi-dependence the row was about is therefore
     absent wherever the study measures anything.
+
+
+r-21 | retired in f2, and retired by the derivation rather than by the reading. as
+    raised in plan-after-meeting it said f1's gate might pass no example of [16],
+    the paper not having been read and its examples not having been chosen for this
+    purpose, and it priced the loss: the claim's third clause, the answer to [7]'s
+    objection, and a slide | **not realised.** f1 returned four of four readable
+    criteria on five examples, docs/part2/lit_review.md section 1.9, and **f2
+    answered the fifth exactly**: on I-BK1 the three phi give X_cw strictly inside
+    X_lu strictly inside X_ls, areas 2.8756, 3.7903 and 5.6853, none of them a
+    crisp set and none of them the box, docs/part2/f2_ibk1_derivation.md section 3.
+    **I-BK1 passes all five criteria of docs/part1/part1_closing.md section 7.2** |
+    fired at f1's verdict table and again at f2's criterion-3 answer | the fallback
+    of docs/plan_after_meeting.md section d2 is not what part 2 becomes and f2 and
+    f3 do run. the row retires with the gate passed. **it does not carry clause c5
+    with it**: c5 is about measured behaviour under the project's own instrument
+    and that measurement is f3's, docs/part2/f2_ibk1_derivation.md section 7
