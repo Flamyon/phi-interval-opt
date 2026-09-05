@@ -255,9 +255,73 @@ m-1 y m-2, las dos medidas registradas en x-01 antes de la tirada, se calculan
 aquí. e1 no las interpreta; eso es e3.
 
 
+### e2 tirada tier 1
+
+experiments/run_tier1.py, tests/test_run_tier1.py, docs/e2_tier1_results.md.
+
+los tres solvers, los tres phi, zdt1_interval y dtlz2_interval, los cinco niveles
+de imprecisión de src/problems_tier1.py, cinco semillas, con presupuesto 5000 y
+una comprobación de convergencia por problema a 20000 en el nivel por defecto de
+ese módulo: 108 configuraciones, 540 tiradas, 4243 segundos. escribe
+results/tier1/, diez tablas por save_metrics_table —una por nivel y por tipo,
+porque el bloque de decisión de d3 no tiene columna para el nivel—, 72 figuras y
+el registro, que **se genera** como el de e1.
+
+**no hay tabla 1 y el registro lo dice**: es exacta y solo de p1, y los dos
+benchmarks no tienen forma cerrada, ni conjunto eficiente derivado, ni frente de
+referencia, así que tampoco hay igd. lo que ocupa su lugar es el error del
+instrumento de e1, leído de results/tier0/ y no tecleado: la cobertura exacta de
+X_lu en X_cw es 0.394710 y se mide 0.555932 a presupuesto 5000 y 0.504177 a
+20000, un sesgo relativo de 0.408 y 0.277. **el instrumento exagera el acuerdo**,
+así que toda cobertura medida aquí es una cota superior del solapamiento
+verdadero y una cota inferior de cuánto difieren los dos órdenes.
+
+el par de cabecera, ejemplo 2.2 contra ejemplo 2.4, a delta cero y presupuesto
+5000: en zdt1 la cobertura de X_lu en X_cw va de 0.846 a 0.545 al subir eps de
+0.05 a 0.50 y la inversa de 0.088 a 0.160, con jaccard entre 0.087 y 0.133; en
+dtlz2 de 0.898 a 0.684 y de 0.138 a 0.372, con jaccard entre 0.136 y 0.322. la
+cobertura va primero por ser direccional, d-09, y el dice se imprime al lado del
+jaccard porque los artefactos de e1 usan el primero.
+
+**el suelo de ruido es exactamente cero en los dos benchmarks, en todos los
+niveles y bajo los tres phi**, y eso es una medida y no una omisión: dos muestras
+uniformes independientes no comparten ningún punto, y a treinta y a doce
+variables una bola de un veinteavo del diámetro de la caja no contiene ninguno de
+los puntos de la otra. el suelo se barrió para ver dónde deja de ser cero y es un
+escalón, nunca un valor intermedio informativo: en zdt1 cero hasta un quinto del
+diámetro y 0.438 a 0.896 a tres décimos; en dtlz2 0.0026 a 0.0066 a un décimo y
+0.734 a 0.952 a un quinto. **a las dimensiones de tier 1 el suelo de la sección
+b1 del plan no discrimina**, y la razón es la dimensión y no los problemas. el
+barrido de delta dice lo mismo por el otro lado: la cobertura de cabecera no se
+mueve nada entre delta cero y un décimo del diámetro, frente a p1, donde ese
+mismo rango la llevaba de 0.556 a 0.997.
+
+**la corrección de a5-b comprobada en la tirada y no heredada**: el número de
+columnas efectivas es 2m bajo los tres phi en todos los niveles positivos y en
+los dos problemas; en eps = 0 es m bajo el ejemplo 2.2 y m + 1 bajo los otros
+dos, que es lo que hace de ese nivel una línea base. ninguna violación de la
+contención en ningún sitio, r-11. r-20 se retira.
+
+**el tamaño del rango 1 contra el tamaño de la población**, por configuración,
+leído con un Callback de pymoo que deja el frente bit a bit idéntico: nsga-ii
+satura en todas las semillas en las quince configuraciones de dtlz2 y en doce de
+quince en zdt1; mopso en doce y en cinco. a eps = 0.10 nsga-ii llena las plazas
+por primera vez en la generación 2 a 4 en dtlz2 y 4 a 17 en zdt1, que es el orden
+de c3-d sobre las formas nuevas.
+
+**m-2 con veinte semillas, el recuento que registra x-02**, calculada y no leída:
+la mediana del voladizo es estrictamente positiva en zdt1 bajo los tres phi y en
+dtlz2 bajo los ejemplos 2.3 y 2.4, y exactamente cero en dtlz2 bajo el ejemplo
+2.2. se reporta contra dos estructuras, la registrada en x-01 y el propio
+argumento de dominación de la sección f3 rehecho sobre las formas de a5-b, porque
+a5-b movió qué variable lee cada semianchura. **m-1 no se calcula**, retirada en
+la línea de resultado de x-01. e2 no interpreta nada de esto; eso es e3.
+
+
 ## estado
 
 fases a, b y c completas. d1, d2 y d3 construidos; d3 pendiente de
-revisión. e1 tirado y pendiente de revisión; a5-b hecho y pendiente de revisión,
-que era lo que bloqueaba e2. doce parámetros en xfail estricto fijan el hallazgo
-de c3. lo siguiente es e2 sobre las formas nuevas, y e3 sobre la salida de e1,
+revisión. **e1 y e2 tirados**, tier 0 y tier 1, y e2 pendiente de revisión; a5-b
+hecho, que era lo que bloqueaba e2. doce parámetros en xfail estricto fijan el
+hallazgo de c3. lo siguiente es e3 sobre la salida de e1 y de e2, con f1 y
+f2 en paralelo, y luego g1, g2, g3 y g4.

@@ -195,6 +195,15 @@ delta_box_fraction = 0.05
 # caveat: a box fraction on a 30-box is not the quantity it is on a 2-box.
 delta_sweep_fractions = (0.0, 0.01, 0.02, delta_box_fraction, 0.10, 0.20)
 
+# the fractions the same-phi noise floor is swept at, which is a wider range than
+# the pairs are. the floor compares two independent uniform samples, which share
+# no point at all, so it is zero at delta zero by construction and, at thirty and
+# at twelve variables, a delta-ball of one twentieth of the box diameter is a
+# vanishing fraction of the box. the sweep is what turns "the floor is zero" into
+# a statement about how large a ball has to be before it stops being zero, which
+# is d-08's dimension argument measured rather than argued.
+floor_sweep_fractions = (delta_box_fraction, 0.10, 0.20, 0.30, 0.50)
+
 # zero, and it is not a limiting case. the three sets of one random-search
 # comparison are three index sets over one array, so two decision vectors are the
 # same point bitwise or they are two points and no tolerance decides it.
@@ -1086,6 +1095,51 @@ def overlap_convention_row(key, dice, jaccard):
             "jaccard_q3": jaccard_summary["q3"]}
 
 
+# the same-phi seed-to-seed coverage over a range of delta, from the raw sets
+def floor_sweep_rows(runs, settings):
+    # the floor of docs/plan_after_meeting.md section b1, swept. it needs only the
+    # per-phi decision sets random search returned, which the raw arrays hold, so
+    # it is computed from them and can be rebuilt without re-running a solver. it
+    # is computed at the reported budget alone, the cost being quadratic in the
+    # set size.
+    rows, budget = [], settings["budgets"][0]
+    for problem_name in problem_names:
+        problem = problem_registry[problem_name]
+        for eps in epsilon_levels:
+            for phi_name in phi_names:
+                key = (problem_name, "random_search", phi_name, eps, budget)
+                rows.extend(floor_sweep_of(runs[key], problem, phi_name, eps,
+                                           budget))
+    return rows
+
+
+# one configuration's floor, each seed against the next one cyclically
+def floor_sweep_of(results, problem, phi_name, eps, budget):
+    rows = []
+    diameter = box_diameter(problem)
+    sets = [result.decision_vectors for result in results]
+    for index, result in enumerate(results):
+        other = (index + 1) % len(results)
+        for fraction in floor_sweep_fractions:
+            rows.extend(floor_sweep_values(sets[index], sets[other], problem,
+                                           phi_name, eps, budget, result.seed,
+                                           fraction, fraction * diameter))
+    return rows
+
+
+# the two directed coverages of one same-phi seed pair at one delta
+def floor_sweep_values(set_a, set_b, problem, phi_name, eps, budget, seed,
+                       fraction, delta):
+    values = {"coverage_a_in_b": compute_coverage(set_a, set_b, delta),
+              "coverage_b_in_a": compute_coverage(set_b, set_a, delta)}
+    return [{"problem": problem.name, "phi": phi_name, "metric": metric,
+             "eps": float(eps), "n_evals": int(budget), "seed": int(seed),
+             "delta_box_fraction": fraction, "delta": delta,
+             "box_scale": box_diameter(problem), "cardinality_a": len(set_a),
+             "cardinality_b": len(set_b), "value": value}
+            for metric, value in values.items()]
+
+
 # the coverage and overlap statistics at a range of delta, as raw rows
 def delta_sweep_rows(comparisons, problem, eps, budget):
     # delta is a reporting parameter and the numbers move with it, and on a 30-box
@@ -1614,7 +1668,8 @@ def record_overlap(rows, path, budget):
              "every level, both deltas and both budgets are in "
              "results/tier1/{}.".format(path.name), ""]
     shown = [row for row in rows
-             if row["solver"] == "random_search" and row["delta"] == zero_delta
+             if row["solver"] == "random_search"
+             and float(row["delta"]) == zero_delta
              and int(row["n_evals"]) == budget]
     lines.extend(markdown_table(("problem", "eps", "phi_a", "phi_b", "status",
                                  "n_seeds", "dice_median", "jaccard_median"),
@@ -1930,21 +1985,61 @@ def record_findings(root, tables, budget):
              "each of the three tables below is assembled from files this run "
              "wrote and states a fact about the run. what any of them means for "
              "the study is e3's, CONTEXT.md section 10 e3.", "",
-             "**the cross-phi coverage against the same-phi noise floor.** both at "
-             "the positive delta, since the floor is zero by construction at delta "
-             "zero, with the delta zero value of the same pair carried beside "
-             "them. below_the_floor is true where the cross-phi coverage is "
+             "**the cross-phi coverage against the same-phi noise floor.** both "
+             "at the positive delta, since the floor is zero by construction at "
+             "delta zero, with the delta zero value of the same pair carried "
+             "beside them. below_the_floor is true where the cross-phi coverage is "
              "smaller than the coverage of one phi's set by the same phi at "
-             "another seed, which is the only comparison that says a difference "
-             "between two orders is larger than the instrument's own "
-             "disagreement.", ""]
+             "another seed, which is the comparison "
+             "docs/plan_after_meeting.md section b1 asks for: a cross-phi number "
+             "that does not exceed the instrument's own seed-to-seed disagreement "
+             "is not evidence of anything. read the floor column first, and read "
+             "it with the sweep below it: two independent uniform samples share no "
+             "point, so the floor is a count of how many points of one sample fall "
+             "within delta of the other, and at thirty and at twelve variables a "
+             "ball of one twentieth of the box diameter contains none of them.",
+             ""]
     lines.extend(markdown_table(
         ("problem", "eps", "phi_a", "phi_b", "status", "coverage_at_delta_zero",
          "coverage_at_delta", "same_phi_floor", "below_the_floor"),
         floor_comparison_rows(tables, budget)))
+    lines.extend(record_findings_floor(root))
     lines.extend(record_findings_rank(root, budget))
     lines.extend(record_findings_overhang(root, budget))
     return lines
+
+
+# the floor's median over the seeds at each swept delta, per problem, phi and level
+def floor_sweep_summary(root):
+    rows = [row for row in read_table(root / "noise_floor_sweep.csv")
+            if row["metric"] == "coverage_a_in_b"]
+    summary = []
+    for key in sorted({(row["problem"], row["phi"], row["eps"],
+                        row["delta_box_fraction"], row["delta"]) for row in rows}):
+        values = [float(row["value"]) for row in rows
+                  if (row["problem"], row["phi"], row["eps"],
+                      row["delta_box_fraction"], row["delta"]) == key]
+        summary.append({"problem": key[0], "phi": key[1], "eps": float(key[2]),
+                        "delta_box_fraction": float(key[3]),
+                        "delta": float(key[4]),
+                        "median": float(np.median(values))})
+    return summary
+
+
+# the swept floor at the level the convergence check was run at, as the record's row
+def record_findings_floor(root):
+    lines = ["", "**the floor swept, and how large a ball has to be before it "
+             "stops being zero.** the same statistic between two seeds of one phi "
+             "at a range of delta, at the reported budget and at the level the "
+             "convergence check was run at. it is zero at delta zero by "
+             "construction, two independent uniform samples sharing no point, and "
+             "the sweep says whether that survives a ball of a fifth, a third or a "
+             "half of the box diameter at thirty and at twelve variables. source: "
+             "results/tier1/noise_floor_sweep.csv, which carries every level.", ""]
+    rows = [row for row in floor_sweep_summary(root)
+            if row["eps"] == convergence_eps]
+    return lines + markdown_table(("problem", "phi", "eps", "delta_box_fraction",
+                                   "delta", "median"), rows) + [""]
 
 
 # the saturation count and the overhang presence, the run's other two findings
@@ -2166,6 +2261,9 @@ raw_fieldnames = {
                              "constant_column", "defined", "n_seeds", "median",
                              "q1", "q3", "iqr", "mean", "standard_deviation",
                              "standard_error"),
+    "noise_floor_sweep.csv": ("problem", "phi", "metric", "eps", "n_evals", "seed",
+                              "delta_box_fraction", "delta", "box_scale",
+                              "cardinality_a", "cardinality_b", "value"),
     "delta_sweep.csv": ("problem", "phi_a", "phi_b", "status", "metric", "eps",
                         "n_evals", "seed", "delta_box_fraction", "delta",
                         "box_scale", "cardinality_a", "cardinality_b", "value"),
@@ -2237,6 +2335,8 @@ def write_artefacts(root, runs, comparisons, rank_rows, settings, tier0_root):
     tables.update(write_solvers(root, objective_by_seed, solver_by_seed, points))
     write_raw_table(root, "delta_sweep.csv",
                     all_delta_sweep_rows(comparisons, settings))
+    announce("sweeping the noise floor")
+    write_raw_table(root, "noise_floor_sweep.csv", floor_sweep_rows(runs, settings))
     write_raw_table(root, "inherited_instrument_error.csv",
                     inherited_error_rows(tier0_root))
     announce("measuring the free sets and the overhang")
@@ -2294,6 +2394,17 @@ def rebuild_figures(output_root, settings):
     return all_figures(root, artefact_runs(root, settings), settings)
 
 
+# the noise-floor sweep recomputed from the raw arrays, without re-running anything
+def rebuild_floor_sweep(output_root, settings):
+    # the sweep needs only the per-phi decision sets random search returned, and
+    # the raw arrays hold those, so it is the one artefact that can be added to a
+    # finished run without spending the grid again.
+    root = Path(output_root)
+    return write_raw_table(root, "noise_floor_sweep.csv",
+                           floor_sweep_rows(artefact_runs(root, settings),
+                                            settings))
+
+
 # the record rebuilt from the artefacts of a run, without re-running anything
 def rebuild_record(output_root, record_path, settings, tier0_root):
     # the raw results and the tables are re-readable without re-running, so the
@@ -2323,6 +2434,9 @@ def parse_arguments(argv):
     parser.add_argument("--pop-size", type=int, default=gate_pop_size)
     parser.add_argument("--record-only", action="store_true",
                         help="rebuild the record from artefacts already written")
+    parser.add_argument("--floor-only", action="store_true",
+                        help="recompute the noise-floor sweep from the raw "
+                             "arrays, then the record")
     parser.add_argument("--figures-only", action="store_true",
                         help="redraw the figures from the raw arrays, then the "
                              "record")
@@ -2337,7 +2451,11 @@ def main(argv=None):
         [int(budget) for budget in arguments.budgets.split(",")],
         arguments.pop_size,
         [int(seed) for seed in arguments.overhang_seeds.split(",")])
-    if arguments.figures_only:
+    if arguments.floor_only:
+        rebuild_floor_sweep(arguments.output_root, settings)
+        rebuild_record(arguments.output_root, arguments.record, settings,
+                       arguments.tier0_root)
+    elif arguments.figures_only:
         rebuild_figures(arguments.output_root, settings)
         rebuild_record(arguments.output_root, arguments.record, settings,
                        arguments.tier0_root)

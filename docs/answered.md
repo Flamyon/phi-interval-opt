@@ -225,3 +225,19 @@ r-04 | retired in b1, and filed here in repo-clean-b: the row stated its own
     a smoke test and not a b2 fixture, docs/b1_phi_efficient_sets.md section 7.4,
     and the row retires with that reasoning
 
+r-20 | retired in e2, and retired by the measurement its mitigation asked for. as
+    raised in plan-after-meeting it said that a5's shared width function made the
+    transformed problem's effective column count phi-dependent, four against three
+    on zdt1 and six against four on dtlz2, so the study's headline pair, example
+    2.2 against example 2.4, compared problems of different transformed dimension
+    and the measured difference confounded the order with that dimension. d-05
+    took the mitigation and a5-b implemented it, giving each objective its own
+    width driver with every functional form unchanged. **e2 measured the effective
+    column count at the run rather than inheriting it**: on a 512-point dependence
+    sample it is 2m under every phi at every positive imprecision level on both
+    benchmarks, docs/e2_tier1_results.md section 9 and results/tier1/free_sets.csv,
+    and tests/test_run_tier1.py asserts the same property as a test. at eps = 0 the
+    columns do coincide, m under example 2.2 and m + 1 under examples 2.3 and 2.4,
+    and that level is the crisp baseline that src/problems_tier1.py labels as one
+    rather than a data point. the phi-dependence the row was about is therefore
+    absent wherever the study measures anything.

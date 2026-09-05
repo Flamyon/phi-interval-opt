@@ -1210,3 +1210,64 @@ carries the current subpart alone.
     a1, a1-b, a2, a3, a3-b, a4, a4-b, a5 and a-close are all
     done and docs/phase_a_summary.md is the close-out
     document
+
+2026-09-05 | e2 | new experiments/run_tier1.py, tests/test_run_tier1.py and
+    docs/e2_tier1_results.md; results/tier1/; PROGRESS.md; docs/session_log.md;
+    docs/answered.md; FASES.md | **the tier 1 run.** all three solvers, all three
+    phi, zdt1_interval and dtlz2_interval, the five imprecision levels of
+    src/problems_tier1.py, five seeds, at budget 5000 with one convergence check
+    per problem at 20000 at that module's own default level: 108 configurations,
+    540 runs, 4243 seconds. ten metrics tables, one per level and kind, 72 figures
+    and the record generated, so that every number in it is read back out of a
+    file the run wrote.
+    **there is no table 1 and the record says so rather than leaving it out**: it
+    is exact and p1 only and the two benchmarks have no closed form. what stands
+    in its place is e1's instrument error, read back out of results/tier0/ and not
+    typed: the exact coverage of X_lu in X_cw is 0.394710 and the measurement
+    gives 0.555932 at budget 5000 and 0.504177 at 20000, a relative bias of 0.408
+    and 0.277. **the instrument overstates agreement**, so every measured coverage
+    here is an upper bound on true sharing and a lower bound on how far the two
+    orders differ, and the benchmark numbers understate the difference by a factor
+    measured once on the calibration problem.
+    **the headline pair on the benchmarks**, example 2.2 against example 2.4, at
+    delta zero and budget 5000: on zdt1 the coverage of X_lu in X_cw runs 0.846,
+    0.722, 0.660 and 0.545 across eps 0.05 to 0.50 and the reverse 0.088 to 0.160,
+    with jaccard 0.087 to 0.133; on dtlz2 0.898 to 0.684 and 0.138 to 0.372, with
+    jaccard 0.136 to 0.322. coverage leads and any overlap is named, d-09, and
+    dice is printed beside jaccard because e1's artefacts use it.
+    **the noise floor is exactly zero on both benchmarks, at every level, under
+    every phi**, and that is a measurement and not an omission: two independent
+    uniform samples share no point, and at thirty and at twelve variables a ball
+    of one twentieth of the box diameter contains none of the other sample's
+    points. the floor was swept to find where it stops being zero and it is a
+    step and never an informative intermediate value: on zdt1 zero to a fifth of
+    the box diameter and 0.438 to 0.896 at three tenths, on dtlz2 0.0026 to 0.0066
+    at a tenth and 0.734 to 0.952 at a fifth. **so at tier 1 dimensions the floor
+    of docs/plan_after_meeting.md section b1 cannot discriminate**, and the reason
+    is the dimension and not the problems.
+    **the delta sweep is flat**, which is the same fact from the other side: the
+    headline coverage does not move at all from delta zero to a tenth of the box
+    diameter on either problem, against p1 where the same range took it from 0.556
+    to 0.997. d-08's dimension argument, measured rather than argued.
+    **a5-b's correction checked at the run and not inherited**: the effective
+    column count is 2m under every phi at every positive level on both problems,
+    and at eps = 0 it is m under example 2.2 and m + 1 under the other two, which
+    is what makes that level a baseline. no containment violation anywhere, r-11.
+    **the rank-1 size against the population size, per configuration**, read
+    through a pymoo callback that leaves the front bit-identical: nsga-ii
+    saturates in every seed in all fifteen dtlz2 configurations and in twelve of
+    fifteen on zdt1, mopso in twelve and in five. at eps = 0.10 nsga-ii first
+    fills the slots at generation 2 to 4 on dtlz2 and 4 to 17 on zdt1, which is
+    c3-d's ordering on a5-b's new forms.
+    **m-2 at twenty seeds, x-02's count, computed and not read**: the median
+    overhang is strictly positive on zdt1 under all three phi and on dtlz2 under
+    examples 2.3 and 2.4, and exactly zero on dtlz2 under example 2.2. it is
+    reported against two structures, x-01's registered one and section f3's own
+    domination argument re-run on a5-b's forms, because a5-b moved which variable
+    each half-width reads. **m-1 is not computed**, being withdrawn at x-01's
+    outcome line. x-02's own p1 constant is not e2's and stays open.
+    **r-20 retires**, its mitigation measured; **r-22 opens**, a1's slice
+    fractions being grid-resolution dependent by a factor of three.
+    45 tests added. the fast run is 555 passed and 519 deselected, and the full run
+    is 1062 passed and 12 xfailed in 1544.19s, the twelve being c3's finding held
+    in strict xfail | the research chat, on e2; then e3, with f1 and f2 beside it
