@@ -261,3 +261,65 @@ format:
     memoria anyway. **phase f is complete** | g1, the results document, whose two
     inputs now both exist; and, before it, the research chat's disposition of a-11
     and a-12 toward the authors, which this document records and does not decide
+
+2026-09-06 | f5, boundary-function interchange and the last problem's shortlist |
+    docs/part2/f5_boundary_interchange.md, new; docs/part2/session_log.md |
+    **audit, reading and diagnostics. no problem added to src/, no derivation, no
+    fix to evaluation semantics, and nothing committed but the document and this
+    line.** **the headline is the audit and it is a defect, not a wrong result: the
+    project implements the fixed-order endpoint reading and not definition
+    2.1(iii) of [16].** src/interval_math.py has no interval-product primitive at
+    all -- its six callables are add, scalar_multiply, centre, half_width, width
+    and gh_difference -- and objective_endpoints in src/problems_native.py computes
+    (sum a_j h_j, sum b_j h_j) in fixed order. **tested rather than read**: I-VU2's
+    G_1 pushed through the module's own arithmetic returns lower > upper at every
+    point with x_1 < 0, and phi_ls and phi_cw carry it forward as **negative
+    widths**, 3 of 7 sampled points, because **nothing in src/ asserts f_l <= f_u**.
+    **correct on everything ever run and silently wrong in general**; the fix is
+    its own session and r-23 is proposed, its cheaper half being the missing guard
+    rather than the missing primitive. **no problem already run can trigger it**,
+    per problem with the reason: p0 has no product, p1 and both tier 1 benchmarks
+    have half-widths non-negative by construction, and I-BK1's four h_ij are
+    squares -- 200000 points per box, f_l <= f_u everywhere. **the substantive
+    result is a check lit_review did not run**: part1_closing section 6.1's
+    degeneracy is decidable exactly from the printed coefficients, since r_i is an
+    affine function of c_i iff rho_j = (b_j-a_j)/(a_j+b_j) is constant across the
+    non-constant terms, and **eight of the twenty appendix-A problems have at least
+    one objective that fails it**, five of them on every objective -- I-CH
+    (constant width, part1_closing 6.1 verbatim in a published problem), I-FON,
+    I-Hil1, I-TR1 and I-Comet. **any objective that is one coefficient on one
+    function is degenerate**, which disposes of I-AP1 and I-AP4, lit_review's two
+    "not determinable" rows, on a ground it did not have: two of three objectives
+    each are phi-blind. **five of the twenty interchange** -- I-VU2, I-CH, I-Hil1,
+    I-Viennet, I-Comet -- and I-KW2's and I-PNR's sign-changing factors carry
+    degenerate coefficients and interchange nothing, correcting lit_review 1.9's
+    prose without moving its verdicts; I-Viennet's ⊖gH kink is **not** reached,
+    correcting lit_review 1.8. **the crossing meets the answer, and the
+    phi-dependence is a mechanism**: under phi_cw and phi_ls the second image
+    column is the half-width sum w|h|, minimised exactly on the locus, so the order
+    pulls the efficient set onto it -- 12/161, 205/400 and 780/780 of sampled
+    crossing points survive on I-CH, I-Viennet and I-Comet against 0, 4 and 0 under
+    phi_lu. **on I-VU2 it is exact, not a grid statement**: the origin, where both
+    crossing loci meet, is efficient under all three phi because three of the four
+    columns attain their global minimum there. **that is p0's obstruction on a
+    published problem** -- G_1's lower boundary function 1.25(x1+x2) -
+    0.25(|x1|+|x2|) + 1 is concave so theorem 3.3 fails for phi_lu and phi_ls
+    globally, example 3.9's differentiability fails on the loci under all three by
+    a0 c14's invertibility argument, and the kink sits at the answer -- reached
+    from Moore's product rather than written into the problem, and on two lines
+    rather than one point. **four candidates, no pick, by instruction**: I-SD for
+    novelty (first n > 2 and first non-polynomial derivation, closing by the
+    diagonal-but-not-constant route, risking the two ends of its efficient set on
+    faces and a 3-D set in a 4-D box), I-IKK1 for decision value (settles
+    part2_closing section 4, third x-01 test, no checkpoint), I-VU2 for the
+    crossing -- **the only appendix-A problem that interchanges and is not
+    disqualified otherwise, so the sign-changing slot and the expected-failure slot
+    collapse onto one problem**, with G_2 phi-blind at r = c/5 as its cost -- and
+    I-MHHM2 as the floor. **s-14 proposed**, whether example 3.9 statements 2 and
+    3's phi-convexity is theorem 3.3's global form as printed or remark 2.2's
+    pointwise one, which decides whether a crossing costs phi_lu and phi_ls their
+    sufficiency on the whole box or only on the locus. **and a sixth gate criterion
+    proposed**, the 6.1 check of section 3.2, which the gate of part1_closing 7.2
+    currently has nothing that would have caught | the research chat's choice of
+    the last problem, with this comparison in front of it; and, separately, the
+    session that fixes evaluation semantics and adds the well-ordering guard
