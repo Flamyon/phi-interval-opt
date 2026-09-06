@@ -7,7 +7,7 @@ research chat.
 this file holds current state and open items only. everything settled lives
 elsewhere:
 
-    docs/verified.md    every verified fact, v-01 to v-57
+    docs/verified.md    every verified fact, v-01 to v-61
     docs/answered.md    answered questions and retired risks
     docs/supervisor_questions.md
                         the full text of every open s-row. section 6 is the index
@@ -24,7 +24,7 @@ elsewhere:
                         removed in docs-clean
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-59, p-06, s-13, r-23, d-06, and x-02 for the
+    highest numbers in use: v-61, p-06, s-13, r-23, d-06, and x-02 for the
     registered predictions of section 9, which is new.
     numbering continues across those files and numbers are never reused.
 
@@ -47,7 +47,11 @@ project started 2026-08-30.
                         25 september: a paper-like results document, a latex
                         memoria, the code repository and a short presentation with
                         no implementation detail
-    current phase:      f, part 2, **complete**. f1 read the
+    current phase:      f, part 2, **complete and closed**. f8 closed it on a
+                        second pass; **no further test problem is in scope** and
+                        the remaining sessions are the figures, the presentation,
+                        the memoria and, if time allows, the paper — g2, g4, g3
+                        and g1 of section 2. f1 read the
                         corpus and applied the gate, f2 derived I-BK1's
                         phi-efficient sets in closed form, f3 built the module
                         and ran the measurement, and **f4 has closed part 2 and
@@ -161,7 +165,7 @@ project started 2026-08-30.
                         recommended form is conditional on the width being
                         non-monotone in a driver the centres do not share, with
                         a1's rejected linear form as the measured negative arm
-    after f4:           three sessions have run since part 2 closed and none of
+    after f4:           four sessions have run since part 2 closed and none of
                         them changes a part 1 or part 2 number. **f5** audited the
                         interval product against [16], found the fixed-order
                         reading and the absent well-ordering guard, decided
@@ -189,7 +193,41 @@ project started 2026-08-30.
                         interchange creates section 6.1's degeneracy with negative
                         slope on the quadrant that holds the answer, which corrects
                         f5 section 3.5 without reversing its choice. **no external
-                        check exists on I-VU2** and none is claimed
+                        check exists on I-VU2** and none is claimed.
+                        **f8 is part 2's second pass and it closes part 2**:
+                        docs/part2/part2_closing.md extended by four sections and
+                        nothing in it rewritten, PROGRESS.md, docs/verified.md and
+                        docs/part2/session_log.md, with **no run, no module and no
+                        new number**. **I-VU2 is not run, and that is a decision
+                        with a reason and not an omission**: its three
+                        phi-efficient sets are equal to each other and to the crisp
+                        centre problem's, derived rather than estimated, so a run
+                        would measure the crisp problem three times and there is
+                        nothing to compare and nothing to calibrate,
+                        part2_closing section 10.7. **I-VU2 is folded in as
+                        part2_closing section 10** — the boundary of the
+                        transformation approach, and not a fourth comparison —
+                        **and clause c5 is re-judged in section 12 and does not
+                        move**: I-VU2 adds no comparison and no measured number, so
+                        the magnitude arm is untouched, and what it adds is the
+                        first published interval-native problem on which the three
+                        orders coincide, which is a limit on the clause's reach and
+                        is now printed beside it. **f6 is recorded as a
+                        precondition of f7 and not an improvement to it**: I-VU2 is
+                        the first problem the project has touched that exercises
+                        the guard, 2071 of 4000 sampled points ill ordered under
+                        the pre-f6 fixed-order reading against 0 under Moore's
+                        product, and the 2071 are exactly the half of the box that
+                        holds the whole answer. **two v-rows registered**, v-60 and
+                        v-61 in docs/verified.md: the interval product's locator,
+                        item (iii) of the unnumbered operations display of [16]
+                        section 2.1, printed page 4, and the verified negative that
+                        [16] is the corpus's only printed closed form for it, [9]
+                        giving the set-of-products definition at equation (2.5)
+                        printed page 220 with no closed form and [1] no product at
+                        all. **part 2 is closed and no further test problem is in
+                        scope**: I-IKK1 stays where part2_closing section 7.2 puts
+                        it, as future work and the first item of it
     a5-b:               done, its review evidenced by e2's prompt, which reads
                         the a5-b section of docs/part1/a1_uncertainty_model.md and says
                         in terms that a5-b's width forms are not to be changed.
@@ -564,6 +602,14 @@ presentation places it.
                                               checkpoint. d2's fallback is recorded
                                               as not needed. **phase f is complete**
 
+**f5 to f8 ran after this table was written and none of them is a subpart row**;
+section 1's *after f4* entry is their record. f5 audited the interval product and
+shortlisted the last problem, f6 built the product and the well-ordering guard,
+f7 derived I-VU2, and **f8 closed part 2 on a second pass**: I-VU2 folded into
+docs/part2/part2_closing.md as its section 10, the decision not to run it recorded
+with its reason in section 10.7, clause c5 re-judged in section 12 and unchanged,
+and **no further test problem in scope**. the remaining work is phase g.
+
 phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
 25 september; the fourth is the repository itself.
     g1  the results document                not started. **every prerequisite is
@@ -584,6 +630,16 @@ phase g, the write-up. **new on 2026-09-04.** three of the four artefacts due on
                                             are d-07: english, short and applied
     g4  the presentation                    not started, waits on g3's frozen claim
                                             sentence and g2's figures
+
+**the order the remaining sessions run in, recorded from f8's brief and not from
+this table's numbering: the figures, the presentation, the memoria and, if time
+allows, the paper** — g2, then g4, then g3, then g1. **that is a reordering and a
+demotion of g1 against section 1's list of four artefacts due on 25 september**,
+where the paper-like results document is one of the four; f8's brief puts the
+paper last and conditional and that is what is recorded here, the memoria, the
+figures and the presentation being the three that are not conditional. part 2 is
+closed and no further test problem is in scope,
+docs/part2/part2_closing.md section 11.
 
 ## 3. decisions
 

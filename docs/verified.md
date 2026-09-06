@@ -5,7 +5,7 @@ record of claims checked against a source. numbering continues here and numbers
 are never reused. the rows are in the order they stood in PROGRESS.md, which is
 not strictly numeric: v-29 was appended after v-33 by a0-b and stays there.
 
-highest number in use: v-59.
+highest number in use: v-61.
 
 claims read from a paper in this project, with their location. a claim moves here
 only once it has been checked against the source, and once here it may be relied on
@@ -668,3 +668,40 @@ v-59 | what pymoo 0.6.2's three indicators do, measured against hand-computed
     | pymoo 0.6.2 source, indicators/hv/__init__.py, indicators/igd.py,
     indicators/distance_indicator.py and indicators/spacing.py, with the numbers
     reproduced in tests/test_metrics_objective.py | d1 | 2026-09-03
+
+v-60 | ⊙, the interval product [16] uses in every objective of its appendix A,
+    is item (iii) of the **unnumbered operations display of section 2.1, printed
+    page 4**: S ⊙ T := [min{s t, s t̄, s̄ t, s̄ t̄}, max{s t, s t̄, s̄ t, s̄ t̄}], Moore's
+    product, given there beside (i) interval addition, (ii) interval subtraction
+    and (iv) the real multiple, and attributed in the display's own preamble to
+    Moore [28]. **the locator the project used from f2 until f6, "definition
+    2.1(iii), printed page 3", names neither the right object nor the right
+    page**: definition 2.1 of [16] is the gH-difference and it stands immediately
+    below the display, on printed page 4, so the old locator pointed at the
+    gH-difference. **the content of the operation is unchanged by the correction
+    and no finding of f2, f3, f5 or f6 moves**; the row exists because the memoria
+    cites this operation and the locator must be right | [16] | section 2.1, the
+    operations display, item (iii), printed page 4; definition 2.1, printed page 4
+    | f6, which corrected it; re-read against the pdf and filed here in f8 |
+    2026-09-06
+
+v-61 | **[16] is the only source in the corpus that prints a closed form for the
+    interval product**, which is why the project ran from a0 to f6 with no
+    interval-product primitive and why the memoria has one locator and not three.
+    **[9] defines multiplication as the set of products and prints no closed form
+    for it**: its definition 2.1, equation (2.5), printed page 220, reads
+    "A * B = {a * b : a ∈ A, b ∈ B}" for * in {+, −, ·, ÷}, and the explicit
+    formulas it gives immediately after are only the sum, equations (2.6) and
+    (2.7) in the endpoint and the centre-width coordinates, and the real multiple,
+    equations (2.8) and (2.9); its own problem (1.1) uses the sum and the real
+    multiple and nothing else. **[1] states no product at all**: the operations it
+    puts on the space are ⊞ and ⊡, Minkowski addition and the real multiple, the
+    only two appearing in definition 2.2's (8) and (9), printed page 5. **so
+    nothing in the corpus contradicts [16]'s display and nothing else in it could
+    have supplied the operation** | [16], [9], [1] | [16] section 2.1, printed
+    page 4, v-60; [9] definition 2.1 with equation (2.5) and equations (2.6) to
+    (2.9), printed page 220; [1] definition 2.2, printed page 5 | f6, which
+    cross-checked all three; the [16] and [9] halves re-read against the pdfs in
+    f8, the [1] half resting on f6's check and on docs/part1/a0_framework.md's
+    transcription of definition 2.2, whose (8) and (9) carry ⊞ and ⊡ and no
+    product; filed here in f8 | 2026-09-06

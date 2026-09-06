@@ -428,3 +428,79 @@ format:
     both variables | g1, the results document; the research chat's disposition of
     s-14, of f5's proposed sixth gate criterion, and of whether s-12 gains I-VU2
     as a second instance
+2026-09-06 | f8, part 2 closed on a second pass, I-VU2 folded in |
+    docs/part2/part2_closing.md, extended by four sections with nothing in it
+    rewritten; PROGRESS.md sections 1 and 2; docs/verified.md, v-60 and v-61;
+    docs/part2/session_log.md | **no run, no module, no derivation, no new number
+    and no new claim.** every figure in the added sections is read out of an f5,
+    f6 or f7 artefact with its section named, and the four sections are
+    **appended** rather than inserted so that every locator another document
+    already cites still points where it pointed. **the decision, recorded with its
+    reason and not as an omission: I-VU2 is not run.** f7 establishes by
+    derivation that its three phi-efficient sets are equal to each other and to
+    the crisp centre problem's, because the boundary interchange creates
+    part1_closing section 6.1's degeneracy on the quadrant holding the whole
+    answer while G_2 is phi-blind before the interchange is considered at all, so
+    **a run would measure the crisp problem three times**: no pair, no coverage,
+    no overlap, nothing to compare, and nothing to calibrate either, the sets
+    being derived rather than estimated. part2_closing section 10.7.
+    **I-VU2 is written throughout as the boundary of the transformation approach
+    and not as a fourth comparison**, section 10: the derivation closes under
+    example 2.2 and not under 2.3 or 2.4, and the obstruction is a **singular
+    weight ray** on which the scalarised objective is constant across the quadrant
+    holding the answer — b1 section 2.3's phenomenon one dimension up, s-12
+    recurring — so **the order that keeps theorem 3.3 is the one that fails to
+    close**; the crossing's own failure is separate, additional and exhibited,
+    (15)'s candidate set being the open segment whose limit point the origin is
+    and is not in, and at the origin (15) cannot be written at all because no
+    gradient of an individual image coordinate exists; and **the origin is
+    nevertheless a strong optimal solution under all three phi by definition
+    3.1(1)**, which is the section's strongest sentence and is written to be
+    lifted — a point whose optimality is provable while the machinery that
+    generates candidates provably does not apply there. **s-14 is settled and
+    settles against the weakening**, [1] definition 2.2 printed page 5 with
+    example 3.9's differentiability preamble printed page 10, and it
+    **retroactively confirms b1's reading rather than changing it**. **the two
+    corrections are stated as the current reading and not as history**: f5 section
+    4.1 expected the crossing to be the obstruction and it is not, and f5's "G_1
+    is not degenerate" is true of the box and false on the quadrant where the
+    answer lives, so criterion 3 fails on I-VU2 **exactly**; both are corrections
+    to a reading and not to a measurement, and no number moves. **what part 2 is,
+    written out in section 11**: the twenty-problem corpus read and screened
+    twice, **two problems derived and one run** — I-BK1 derived, run and the
+    second calibration point; I-VU2 derived and deliberately not run — plus f6's
+    code work, which changed no number, plus the correction to [16], which stands
+    unchanged. **there is no third problem**: the two-asset portfolio problem of
+    [16] section 6 printed page 26 was **not examined**, lit_review section 5.2
+    naming it for the memoria's future-work paragraph only and the meeting of
+    2026-09-04 having moved the portfolio out of scope, and that is recorded with
+    its reason rather than left to a count. **clause c5 is re-judged in section 12
+    on the full evidence and does not move**: I-VU2 adds no comparison and no
+    measured number, so the magnitude arm is **untouched, neither strengthened nor
+    weakened**, and no third calibration point exists; what it does add is **the
+    first published interval-native problem on which the three orders coincide**,
+    so the wider plural form of the clause is not merely unsupported but known not
+    to hold as a universal, and that limit is now printed beside the clause with
+    the regime test that decides it — part1_closing section 6.1's condition, read
+    **on the region where the efficient set lives and not on the box**, which is
+    the one refinement I-VU2 forces on f5's screen. **f6 is recorded as a
+    precondition of f7 and not an improvement to it**, section 10.8: I-VU2 is the
+    first problem the project has touched that exercises the guard, **2071 of 4000
+    sampled points ill ordered under the pre-f6 fixed-order reading against 0
+    under Moore's product**, and the 2071 are exactly the half of the box that
+    holds the entire answer. **two v-rows registered from f6's cross-check**,
+    docs/verified.md: **v-60**, ⊙ is item (iii) of the unnumbered operations
+    display of [16] section 2.1, **printed page 4**, and not "definition 2.1(iii),
+    printed page 3", which points at the gH-difference — the memoria cites this
+    operation, so the locator must be right; and **v-61**, the verified negative
+    that [16] is the corpus's only printed closed form for the product, [9]'s
+    definition 2.1 equation (2.5) printed page 220 giving the set of products with
+    no closed form and using only the sum and the real multiple, and [1] equipping
+    the space with ⊞ and ⊡ alone, which is why the project ran this long without
+    an interval product. **no external check on I-VU2 is claimed and none exists.**
+    **part 2 is closed and no further test problem is in scope** | phase g: the
+    figures, the presentation, the memoria and, if time allows, the paper — g2,
+    g4, g3 and g1. I-IKK1 stays as future work, part2_closing section 7.2; and the
+    research chat still holds the disposition of a-11 and a-12 toward the authors,
+    of s-14's residue, of f5's proposed sixth gate criterion, and of whether s-12's
+    row gains I-VU2 as a second instance

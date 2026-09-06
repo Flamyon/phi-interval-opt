@@ -46,6 +46,37 @@ where the detail is, so this document does not become a second copy of it:
                                         predictions
 
 
+**extended in session f8, 2026-09-06, and nothing written in f4 is rewritten.**
+the second pass folds in the three sessions that ran after part 2 was declared
+closed — f5's interval-product audit and its shortlist, f6's product and
+well-ordering guard, and f7's derivation on I-VU2 — and records one decision taken
+in the research chat, **that I-VU2 is not run**, with its reason. what f8 adds is
+**section 10**, I-VU2 as its own section; **section 11**, what part 2 is now that
+it is closed; **section 12**, clause c5 re-judged on the full evidence; and
+**section 13**, the prohibitions re-checked over those three. inside sections 1 to
+9 the additions are marked where they occur and nothing above a mark is touched.
+**f8 runs nothing, adds no module and states no new number**: I-VU2 carries no
+measured number at all, because it was not run, and every figure in the new
+sections is read out of an f5, f6 or f7 artefact with its section named. **the
+sections are appended rather than inserted** so that every locator another
+document already cites — sections 3.3, 4, 5.5, 6.1, 7.2 and 8.3 among them — still
+points where it pointed.
+
+where the added detail is:
+
+    docs/part2/f5_boundary_interchange.md
+                                        f5: the interval-product audit, the
+                                        degeneracy screen over all twenty
+                                        problems, the crossing loci per problem,
+                                        and the four-candidate shortlist
+    docs/part2/f7_ivu2_derivation.md    f7: the derivation on I-VU2, the singular
+                                        weight ray, the origin from definition
+                                        3.1, s-14 answered, criterion 3 failed
+                                        exactly
+    docs/answered.md                    s-14's answer and r-23's discharge
+    tests/test_interval_invariant.py    f6's assertion that nothing moved
+
+
 ## 1. the question, and the answer
 
 ### 1.1 the question part 2 was set
@@ -97,6 +128,20 @@ problem is not Pareto optimal in the paper's own definition**, and two printed
 statements it rests on are false as printed. section 5 states that as a
 correction, with the checkable facts first.
 
+**added by f8.** part 2 examined **two** interval-native problems in full and ran
+**one**. I-BK1 is above; the second is **I-VU2, problem 2 of the same appendix,
+derived and deliberately not run**, and its deliverable is not a fourth
+comparison. it is **the boundary of the transformation approach, exhibited on a
+published problem**: the derivation closes under one of the three orders and
+provably cannot be written at a point of the answer under any of them, while that
+point's optimality is provable in nine lines from the framework's own definition.
+section 10. **it carries no comparison at all** — its three phi-efficient sets are
+equal, and equal to the crisp centre problem's — which is why it was not run,
+section 10.7, and why clause c5 stands exactly where section 3.3 put it, section
+12. the third problem a reader might expect, the two-asset portfolio problem of
+[16] section 6, was **not examined**, and section 11 records that with its reason
+rather than leaving it to a count.
+
 
 ## 2. what was done, in the order of the arc
 
@@ -139,6 +184,29 @@ then the same grid part 1 ran: three solvers, three phi, five seeds, budget 5000
 with the convergence check at 20000 — 18 configurations, 90 runs, 741.927417
 seconds, 24 figures, every number in the record read back out of a file the run
 wrote. results/part2/summary.csv, docs/part2/f3_native_run.md.
+
+**added by f8: three further stages, none of which changes a number above.**
+
+**audit the arithmetic, and screen the corpus a second time.** the project
+implemented a fixed-order endpoint reading rather than [16]'s product and asserted
+`f_l ⩽ f_u` nowhere — correct on everything ever run and silently wrong in
+general. the same session decided part1_closing section 6.1's degeneracy exactly
+for all twenty appendix-A problems, confirmed the crossing loci per problem and
+per phi, and shortlisted four candidates for the last problem without choosing.
+docs/part2/f5_boundary_interchange.md.
+
+**fix it before using it.** the Moore product in `src/interval_math.py` and the
+`f_l ⩽ f_u` guard at the one interface every problem shares, with nothing moved
+and that asserted rather than stated. `tests/test_interval_invariant.py`.
+section 10.8 records why this had to precede the derivation and not follow it.
+
+**derive the one problem that interchanges.** I-VU2 by b1's route, paper and
+pencil with exact rational verification, no module and no run: the derivation
+closes under example 2.2 and not under examples 2.3 and 2.4, the obstruction is a
+singular weight ray rather than the crossing, the crossing's own failure is
+exhibited at the origin, and criterion 3 fails exactly.
+docs/part2/f7_ivu2_derivation.md, read out in section 10. **and then the decision
+not to run it**, section 10.7.
 
 
 ## 3. the result: the second calibration point
@@ -320,6 +388,13 @@ sampled once. **c5 stops being marked unsupported and becomes supported in that
 form, and in no wider one.** the wider form — that the effect persists on
 problems interval-valued at source, plural, with a magnitude — remains
 unsupported, and section 7 says what would move it.
+
+**added by f8: re-judged on the full evidence in section 12, and it does not
+move.** the wording above is unchanged. I-VU2 adds no comparison and no measured
+number, so the magnitude arm is untouched; what it does add is a published
+interval-native problem on which the three orders **coincide**, which is why the
+wider plural form of the clause may never be written. section 12 states both
+halves explicitly.
 
 
 ## 4. the structural finding: crossing on an adapted problem, nesting on a native one
@@ -758,6 +833,16 @@ is recorded here as the single most valuable thing part 2 did not do**, and it i
 where the memoria's future-work paragraph should point first, ahead of the
 portfolio application.
 
+**added by f8, and the recommendation above is unchanged.** the one session part 2
+had left for a second problem went to **I-VU2** and not to I-IKK1, for the reason
+f5 section 5.5 states: of the two readings of what the supervisors asked on 4
+september, I-VU2 is the only candidate that answers *the method's limits are known
+and stated*, and it is the only problem in the appendix that interchanges and is
+not disqualified otherwise. **that choice cost the third calibration point and
+bought section 10.** I-IKK1 is untouched by it and stays exactly as this section
+prices it. **part 2 is now closed and no further test problem is in scope**,
+section 11.
+
 
 ## 8. what the two parts say together
 
@@ -799,6 +884,25 @@ this section is what g1 turns into the paper's conclusion.
     **measure it with the same instrument.** the same grid, the same seeds, the
         same budgets, a second instrument-error row, and a published claim
         independently contradicted. docs/part2/f3_native_run.md.
+
+**added by f8: three stages after that, and one decision.**
+
+    **audit the arithmetic and screen the corpus again.** the fixed-order product
+        and the missing well-ordering guard found by test rather than by reading,
+        the section 6.1 degeneracy decided exactly for all twenty problems, and
+        four candidates shortlisted without a choice.
+        docs/part2/f5_boundary_interchange.md.
+    **fix the arithmetic before using it**, with the assertion that nothing moved.
+        `src/interval_math.py`, `tests/test_interval_invariant.py`.
+    **derive the problem that interchanges.** I-VU2's boundary, located: the
+        derivation closes under one order of three, the obstruction is a singular
+        weight ray rather than the crossing, and condition (15) cannot be written
+        at a point of the answer under any order — a point whose optimality is
+        provable from definition 3.1 in nine lines.
+        docs/part2/f7_ivu2_derivation.md.
+    **and decide not to run it**, because its three efficient sets are equal and
+        equal to the crisp problem's, so a run would measure the crisp problem
+        three times. section 10.7.
 
 ### 8.2 the objection to transformation methods, and what answers it
 
@@ -887,6 +991,16 @@ docs/part1/part1_closing.md section 7.1. the second is part 2's and is section
 optional and may not be dropped in compression**: without it the paragraph reads
 as a second measurement of part 1's quantity, which it is not.
 
+**added by f8: the claim is unchanged, and I-VU2 does not enter it.** I-VU2
+measured nothing and compared nothing, so neither paragraph gains a clause from
+it. what it obliges is one sentence elsewhere in the memoria, not in the claim:
+**being interval-valued at source does not on its own make the choice of order
+matter**, and the regime is decidable from the printed coefficients on the region
+the answer occupies, section 12. I-VU2's own result — where the transformation
+approach stops — belongs to the methods and limits of the memoria and not to this
+claim, which is about what the orders do and not about what the machinery can
+reach.
+
 ### 8.4 what is still open
 
     **s-11**, the containment criterion, both containments and whether any of it
@@ -913,6 +1027,32 @@ as a second measurement of part 1's quantity, which it is not.
         settle whether they are taken from it. **the memoria cites [16] as a
         preprint with its identifier and names both sources for the problems.**
 
+**added by f8, and one sentence above is qualified rather than corrected.**
+
+    **s-12 gains a second instance and is not closed by it.** the row is p1's and
+        stays open on p1's terms; I-VU2 is the same gap on a published problem and
+        in a two-dimensional rather than a one-dimensional form, section 10.2, and
+        whether the row should record it is the research chat's. the sentence
+        above — "I-BK1 has no singular weight direction under any phi, so the gap
+        does not recur" — is true of I-BK1 and is not true of part 2 as a whole.
+    **`Opt_ls` and `Opt_cw` on I-VU2 are not derived**, and are left as
+        `E ⊆ · ⊆ [−4,0]²` by the published route. what section 6.1 of f7 states
+        about them by direct domination is **not** offered as a derivation.
+    **s-14 is answered and was never a registered row**, docs/answered.md and
+        section 10.5. the residue for the authors — whether example 3.9's omission
+        of "at x̄" is deliberate — is the research chat's to register or drop.
+    **s-02 carries a third witness**, f7 section 5.2's certification of I-VU2's
+        origin at `w = (0,0,w_3,w_4)`, which reading two of the weight phrase would
+        forbid. as with the first two it is evidence and not a resolution, and no
+        conclusion in either part depends on the answer.
+    **the interiority reading of example 3.9 is now load-bearing on a published
+        problem**, costing an arc of I-VU2's answer where on p1 and I-BK1 it cost
+        nothing, section 10.3. whether the reading should carry constraint
+        multipliers on a boxed problem is not opened here.
+    **f5's proposed sixth gate criterion is untouched**, and section 10.6 adds the
+        one refinement it would need: the degeneracy screen must be read on the
+        region where the efficient set lives and not on the box.
+
 ### 8.5 what a reader must not conclude
 
     **not that any order is better than another.** neither part ranks phi, no
@@ -936,6 +1076,22 @@ as a second measurement of part 1's quantity, which it is not.
         is at full cardinality and f3's is truncated to the common cardinality 100,
         r-16, so they may never be placed side by side, and neither may be read as
         a solver ranking across phi.
+
+**added by f8, four more.**
+
+    **not that anything was measured on I-VU2.** it was not run, section 10.7. it
+        contributes no table, no statistic and no calibration row, and a figure of
+        it may only be a drawing of a derived set.
+    **not that I-VU2 says how often a crossing occurs, or how much it hides.** it
+        says where the published hypotheses fail on one problem and what is
+        provable there anyway, section 10.9.
+    **not that the three orders agreeing on I-VU2 says anything about the orders.**
+        it says that both of that problem's objectives are degenerate on the region
+        holding its answer, section 10.6, which is a property of the problem and is
+        checkable before any solver runs.
+    **not that I-VU2 extends section 5's correction.** it is not a second
+        counterexample to proposition 2.1 or lemma 2.4(ii); both require hypotheses
+        it fails independently, section 10.9.
 
 ### 8.6 what g1 lifts from part 2
 
@@ -962,8 +1118,22 @@ as a second measurement of part 1's quantity, which it is not.
         where the nesting is visible, and they are the natural companions to part
         1's p1 figures, which show the crossing.
 
+**added by f8, three more.**
+
+    **section 10 whole**, as the memoria's statement of where the transformation
+        approach stops, with f7 as its detail. its strongest sentence is section
+        10.4's and it is written to be lifted verbatim.
+    **section 12's clause**, which replaces nothing in section 3.3 and adds the
+        limit on the clause's reach that the memoria must print beside it.
+    **section 11's account of what part 2 is**, two problems derived and one run,
+        with the portfolio problem's absence and its reason, so that g1 does not
+        have to reconstruct the count from the session log.
+
 
 ## 9. the prohibitions, checked
+
+**f8, 2026-09-06: this section covers sections 1 to 9 and is unchanged. section 13
+checks the same five prohibitions over sections 10 to 12.**
 
 *no phi is ranked.* no table here orders the three and no sentence says one order
 is better. section 3.1 gives the three set sizes, which is a statement about
@@ -995,3 +1165,534 @@ numbers quoted anywhere in this document are the instrument-error table of secti
 3.2 and the budget-response table of section 6.2, and in both they are read
 against a known answer as a property of the instrument and never as a property of
 the orders.
+
+
+## 10. I-VU2: the second derivation, and where the transformation approach stops
+
+**added by f8, 2026-09-06.** the derivation is session f7's and
+docs/part2/f7_ivu2_derivation.md is canonical for it; where this section and that
+document could differ, that document wins. **it was not run**, and section 10.2
+records that as a decision with its reason. every number below is read out of f7
+with its section named, and there is no measured number in this section at all.
+
+### 10.1 what I-VU2 is, and what it is for
+
+problem 2 of appendix A, **[16] printed page 28**:
+
+    G_1(x_1, x_2) := [1, 1.5] ⊙ x_1 ⊕ [1, 1.5] ⊙ x_2 ⊕ [1, 1],
+    G_2(x_1, x_2) := [1, 1.5] ⊙ x_1² ⊕ [2, 3] ⊙ x_2² ⊖_gH [1, 1],
+    lb^T = (−4, −4) and ub^T = (4, 4),
+
+so n = 2, m = 2, four image columns and the box [−4, 4]². the interval
+coefficients multiply `x_1` and `x_2`, which **change sign on the box**, and by
+Moore's product that puts an absolute value in the half-width: `r_1 = ¼(|x_1| +
+|x_2|)`, f7 section 2.2. so the lower and upper boundary functions of `G_1`
+**interchange**, on the two lines `x_1 = 0` and `x_2 = 0`, which is the condition
+[16]'s own conclusion names on printed page 27 as the one under which the 2m
+reading is available.
+
+docs/part2/f5_boundary_interchange.md section 5 establishes that **I-VU2 is the
+only problem in [16]'s appendix A that interchanges and is not disqualified on
+other grounds** — of the five that interchange, I-CH has a constant width and
+fails criterion 5, I-Hil1 and I-Comet have every objective degenerate, and
+I-Viennet's `G_1` is a function of one scalar. so the shortlist's
+"most derivable sign-changing problem" slot and its "expected-failure" slot
+collapse onto one problem, and that is what the appendix contains rather than a
+convenience.
+
+**what it is for, and it is not a fourth comparison.** section 3 is the second
+calibration point and section 5 is the correction to [16]; I-VU2 is neither. **it
+is the boundary of the transformation approach, exhibited on a published
+problem** — the question the supervisors raised on 4 September, which p1, the tier
+1 benchmarks and I-BK1 cannot test, because in all four of those every interval
+coefficient multiplies a function of constant sign and [16]'s validity condition
+is satisfied by construction. what it delivers is a statement about **where the
+published hypotheses fail and what is provable anyway**, and sections 10.2 to 10.4
+are that statement.
+
+### 10.2 the derivation, per phi: it closes under example 2.2 and not under 2.3 or 2.4
+
+**the hypotheses first, on the box, f7 section 3.1.** by theorem 3.3 of [1],
+printed page 9, `F` is **not** phi_lu-convex and **not** phi_ls-convex — `G̲_1 =
+ℓ(x_1) + ℓ(x_2) + 1` with `ℓ = min(t, 1.5t)` is a sum of minima of affine
+functions, hence concave — and **is** phi_cw-convex, because under example 2.4 the
+coordinate carrying the interchange is the half-width, a sum of absolute values
+and therefore convex. and example 3.9's differentiability preamble, [1] printed
+page 10, **fails on both lines under all three phi**: every phi carries `|x_1|`
+and `|x_2|` into one of its two objective-1 columns, and since each φ_i is
+invertible no admissible order removes it, a0 c14.
+
+on each **closed quadrant** every image coordinate is affine or a positive
+semidefinite diagonal quadratic, so examples 3.8 and 3.9 are available there with
+no hypothesis weakened, f7 section 3.3; and a projection argument from definition
+3.1 alone puts the whole answer in the closed third quadrant `Q = [−4, 0]²`. on
+`Q` condition (15) gives the candidate curve `x_2 = x_1/2` under all three phi,
+and example 3.8 statement 3 certifies the **L-shaped curve**
+
+    E := { (t, t/2) : −4 ⩽ t ⩽ 0 }  ∪  { (−4, s) : −4 ⩽ s ⩽ −2 }
+
+as optimal under all three, on the whole box, with no convexity and no
+differentiability used, f7 section 3.7.
+
+**and then the derivation stops, under two of the three orders, for a reason that
+is not the crossing.** f7 section 3.5: `Σ_k w_k H_k = diag(2κ, 4κ)` is singular
+exactly when the objective-2 weights vanish, and the surviving condition on the
+objective-1 weights has a non-negative solution under phi_ls and phi_cw and none
+under phi_lu:
+
+    phi_ls   the ray  w ∝ (1, 3, 0, 0)
+    phi_cw   the ray  w ∝ (1, 5, 0, 0)
+    phi_lu   **none**: both objective-1 columns increase in x_1 + x_2 on Q, so no
+             non-negative combination of them is constant there
+
+**on those rays the scalarised objective is constant on the whole of `Q`.** so
+condition (15) holds at every point of the quadrant that holds the answer, and the
+weighted sum example 3.8 statement 4 produces is constant there too: **both
+necessary conditions are exact and vacuous at once**, and the published route
+leaves `E ⊆ Opt ⊆ Q`, a gap of Lebesgue measure 16 against an answer of measure
+zero. the summary, f7 section 3.8:
+
+| phi | theorem 3.3 on S | example 3.9 on S | singular ray | optimal set | weak optimal set |
+| --- | --- | --- | --- | --- | --- |
+| lu | **fails** | fails | **none** | **= E**, closed | = E off the axes and faces only |
+| ls | **fails** | fails | (1,3,0,0) | E ⊆ · ⊆ Q, open | **= Q**, closed |
+| cw | **holds** | fails | (1,5,0,0) | E ⊆ · ⊆ Q, open | **= Q**, closed |
+
+**two things to read off it, and the second is the one for the memoria.**
+
+**this is docs/part1/b1_phi_efficient_sets.md section 2.3's phenomenon one
+dimension up, on a problem the project did not construct.** on p1 the singular
+rays put all their mass on a single width coordinate and each produced a *line*;
+here the ray mixes two columns of one objective and produces a *two-dimensional
+region*, and the mechanism differs — it is section 10.6's negative-slope
+degeneracy, `r_1 = (1 − c_1)/5` on `Q`, which makes exactly those combinations
+constant. **s-12 recurs**, on a published problem and in a two-dimensional form,
+and section 8.4 records what that does and does not do to the row.
+
+**the order that keeps theorem 3.3 is the one that fails to close.** phi_cw keeps
+the convexity, on the whole box, and its derivation does not close; phi_lu loses
+it and its derivation closes exactly. that is not a paradox — convexity is a
+hypothesis of the *sufficient* statements, and what stops phi_ls and phi_cw is the
+*necessary* one — but it is the opposite of what
+docs/part2/f5_boundary_interchange.md section 4.1 read into the same convexity
+split, and section 10.6 records the correction.
+
+### 10.3 the crossing's own failure, exhibited rather than asserted
+
+the crossing costs the derivation something separate from and additional to
+section 10.2's singular ray, and f7 exhibits it rather than asserting it.
+
+**the candidate set condition (15) produces on the open quadrants is the open
+segment `{ (t, t/2) : −4 < t < 0 }`**, f7 section 3.6. the origin is its **limit
+point** and is **not in it**, and the four quadrant pieces do not glue: the other
+three quadrants contribute no interior candidate under any phi, so (15) approaches
+the origin from one side and never reaches it.
+
+**and at the origin (15) cannot be written down at all.** condition (15) as
+printed chains three expressions and **the first requires each `∇Λ_i^T f(x̄)` and
+`∇B_i^T f(x̄)` separately**; at a point of the locus none of those exists under any
+of the three phi. so the chain has no meaning there **even at weight vectors for
+which the last expression is perfectly well defined** — `w = (0, 0, w_3, w_4)`
+makes the weighted sum `κU + const`, a smooth function with a stationary point at
+the origin, and the condition still cannot be stated. f7 section 4.1. that is the
+exact sense in which the origin is not produced: not that the equation fails, that
+it cannot be written.
+
+**one further gap, and it is the interiority reading and not the crossing.** (15)
+is unconstrained stationarity and carries no constraint multipliers, so under the
+reading b1 section 1.4 and f2 section 1.5 take it says nothing on a face of the
+box. the face piece `{ (−4, s) : −4 ⩽ s ⩽ −2 }` is **an arc of positive length of
+the answer** and lies entirely on `x_1 = −4`. **on p1 and I-BK1 that reading cost
+nothing**, both derived sets being strictly interior; on I-VU2 it costs an arc,
+which is the risk f5 section 5.1 named for I-SD, arriving on a different problem.
+f7 section 4.2.
+
+**both gaps are filled by a published result, and it is not the one that finds
+candidates**: example 3.8 statement 3 has no differentiability hypothesis and no
+interiority question and certifies the origin and the whole face piece, f7 section
+3.7. **the third gap, section 10.2's, is filled by nothing published.**
+
+### 10.4 the origin, and the sentence this section exists to make
+
+**the origin is a strong optimal solution of I-VU2 under all three phi**, by
+definition 3.1(1) of [1], printed page 6, proved directly in f7 section 5.1: at
+`x̄ = (0,0)` the four image coordinates take known values under each phi, and any
+`x ≠ 0` with all four no larger would need `U := x_1² + 2x_2² ⩽ 0`, which a
+positive definite quadratic form forbids. one column of objective 2 per phi
+settles it. **no differentiability, no convexity, no weights, no grid and no
+quadrant decomposition are used**, and by definition 3.1's own implication chain
+the origin is an optimal and a weak optimal solution too.
+
+**so the sentence, and it is the whole of what this problem is for:**
+
+> **the origin of I-VU2 is a point whose optimality is provable — under all three
+> orders, from the framework's own definition, in nine lines — while the published
+> machinery that generates candidates provably does not apply there.** condition
+> (15) is not merely unsatisfied at that point; it cannot be written at it, under
+> any admissible order, because no gradient of an individual image coordinate
+> exists. and the point is not an artefact of a box or a face: it is `G_2`'s own
+> global minimiser and the meeting point of both crossing loci.
+
+**a second, published certificate says the same thing from the other side.**
+example 3.8 statement 3 at `w = (0, 0, w_3, w_4)` makes the origin an optimal
+solution, the scalarised objective being a positive multiple of `U` with a unique
+minimiser, f7 section 5.2. **example 3.8 has no smoothness hypothesis and example
+3.9 does, and the crossing separates them.** that is the boundary in one sentence,
+and it is [16]'s reservation of printed page 27 instantiated, located and bounded
+on the paper's own test problem.
+
+### 10.5 s-14, settled, and settled against the weakening
+
+f5 section 6 proposed **s-14** and it was never registered here: whether example
+3.9 statements 2 and 3's "F is φ-convex" is theorem 3.3's global hypothesis or may
+be weakened to remark 2.2's pointwise "φ-convex at x̄". **f7 settles it from [1]'s
+own printed text, and it settles against the weakening**, f7 section 1:
+
+    **[1] definition 2.2, printed page 5**, defines both notions one display
+        apart and names them differently — (8) quantified over both arguments and
+        (9) with one pinned at x*.
+    **[1] examples 3.4 to 3.7, printed pages 7 and 8**, use the pointwise form
+        four times, each with "continuously differentiable **at x̄**" beside it. so
+        both forms are in the paper's active vocabulary.
+    **[1] example 3.9, printed page 10**, uses the unqualified form in statements
+        2 and 3 **and in its differentiability preamble**, which f5 did not ask
+        about and which binds harder on I-VU2.
+
+**so it retroactively confirms b1's reading rather than changing it.**
+docs/part1/b1_phi_efficient_sets.md section 1.2, docs/part2/f2_ibk1_derivation.md
+section 1.3 and f5 section 4.1 all assumed the global hypothesis; that is the
+printed one and it needs no defending. **no derivation in either part moves**, and
+the pointwise weakening is not used anywhere in the project.
+
+**and on I-VU2 the answer costs nothing either way**, f7 section 1.6: under the
+pointwise reading `F` would be phi_lu-convex and phi_ls-convex at exactly one
+point of the box, the origin, which is the one point where the differentiability
+hypothesis has already failed. the answer is filed in docs/answered.md; the
+residue — whether the omission of "at x̄" in example 3.9 is deliberate given that
+the four preceding examples carry it — is a question for the authors that the
+project does not need answered, and registering or dropping it is the research
+chat's.
+
+### 10.6 criterion 3 fails on I-VU2, exactly, and two corrections to the reading
+
+**criterion 3 of the gate**, docs/part1/part1_closing.md section 7.2: the three phi
+must give distinct non-trivial sets, none equal to the crisp set and none the whole
+box. on I-VU2, f7 sections 6.1 and 6.4:
+
+    **distinct: no.** all three phi-efficient sets are `E`.
+    **none equal to the crisp set: no.** the crisp centre problem `min (c_1, c_2)`
+        has Pareto set `E` as well, by the same computation.
+    **none the whole box: yes**, `E` has Lebesgue measure zero in `[−4, 4]²`.
+
+**so I-VU2 fails criterion 3, and it fails it exactly rather than by sample** —
+the reversal docs/part2/lit_review.md section 7.2 argued for and f2 first
+exercised, answering the criterion from the derivation, and here the answer is no.
+
+**the mechanism is the interchange itself.** on `Q` the crossing turns
+`r_1 = ¼(|x_1| + |x_2|)` into `r_1 = (1 − c_1)/5`, an exact affine function of the
+centre with **negative** slope, which is docs/part1/part1_closing.md section 6.1's
+degeneracy in its saturating form: phi_ls's and phi_cw's two columns of objective 1
+then move oppositely in `c_1`, so no two points with distinct `c_1` are comparable
+on that objective at all. and `G_2` is degenerate everywhere with positive slope,
+`r_2 = (c_2 + 1)/5`, and is **phi-blind**: all six of its columns across the three
+phi are strictly increasing affine functions of the single scalar
+`U = x_1² + 2x_2²`, so objective 2 orders any two points identically under all
+three orders. **both objectives are degenerate on the region that matters and the
+three orders have nothing left to disagree about**, f7 sections 2.5, 2.6 and 6.4.
+
+**two corrections follow, and they are stated here as the current reading and not
+as history. neither is a correction to a measurement and neither moves a number.**
+
+    **f5 section 4.1 expected the crossing to be the obstruction. it is not.**
+        f5 has the convexity split right — phi_cw keeps theorem 3.3 where phi_lu
+        and phi_ls lose it — and reads that as what costs the derivation. on I-VU2
+        the obstruction is the **singular weight ray** of section 10.2, and the
+        crossing's own failure is **separate and additional**, section 10.3. the
+        current reading is: phi_lu loses the convexity and closes; phi_cw keeps it
+        and does not.
+    **f5 sections 3.5 and 5.3 record `G_1` as non-degenerate.** that is true of
+        the box — `(1,−1)` and `(0,0)` share `c_1 = 1` with different half-widths —
+        and **false on the quadrant where the answer lives**, where `r_1` is
+        affine in `c_1` with slope −1/5. f5's own constant-sign degeneracy table
+        row is exactly right on the first quadrant and has the wrong sign on the
+        third. **the consequence is the criterion-3 failure above**, which f5 did
+        not predict.
+
+**and one line the memoria needs from this.** f5 section 3.2's degeneracy screen
+is exact, costs minutes and needs only the printed coefficients — and I-VU2 shows
+that its verdict must be read **on the region where the efficient set lives and
+not on the box**. the screen's own constant-sign computation gives the same ratio
+1/5 on every term of both of I-VU2's objectives, which is exactly right quadrant
+by quadrant; what misleads is the box-level verdict, where `G_1` is non-degenerate
+only because the slope is +1/5 on one aligned quadrant and −1/5 on the other, and
+the answer lives on the second. that is the same lesson section 6.2 of
+docs/part1/part1_closing.md records for the separation check, arriving on a
+published problem by a different route.
+
+**neither correction reverses f5's choice.** f5 section 5.3 states the deliverable
+as the failure statement and not as a comparison, and the failure statement is
+delivered, section 10.4. what is retracted is any expectation that I-VU2 could
+*also* carry a cross-phi comparison, and section 10.7 is the decision that follows.
+
+**one thing the derivation does add to section 4's observation**, and it is derived
+rather than measured: the containment criterion of
+docs/part1/a_close_containment.md predicts `X_lu ⊆ X_ls` and `X_cw ⊆ X_ls` and is
+silent on the pair (phi_lu, phi_cw) in both directions. the project now has **three
+different answers on that one un-predicted pair** — p1's two sets cross, I-BK1's
+nest strictly, and I-VU2's are equal, f7 section 6.3. the two predicted relations
+hold and are withheld from the evidence exactly as in sections 7.1 and 9.
+
+### 10.7 the decision: I-VU2 is not run, and this is the reason
+
+**this is a decision taken in the research chat and recorded here with its
+reasoning. it is not an omission and must not be read as one.**
+
+**the reason.** f7 establishes, by derivation and not by sample, that the three
+phi-efficient sets of I-VU2 are **equal to each other and equal to the crisp
+centre problem's**, section 10.6. the boundary interchange creates
+part1_closing section 6.1's degeneracy on the quadrant that holds the whole
+answer, and `G_2` is phi-blind before the interchange is considered at all. **so a
+run under the three orders would measure the crisp problem three times.** there is
+nothing to compare: no pair, no coverage, no overlap, no non-nested pair and no
+statistic that could differ between two orders. and there is nothing to calibrate
+either — the sets are **derived rather than estimated**, and the instrument-error
+row a run produces is a comparison of a measured statistic with an exact one on
+*distinct* sets, which I-VU2 does not have.
+
+**what a run would have cost and what it would have bought.** it would have cost
+one session of encoding and one grid of eighteen configurations, and it would have
+bought three identical index sets, a table of ones, and a standing risk that a
+later reader takes the table for a measurement of agreement between orders rather
+than for the definition of the problem it is. **docs/part1/part1_closing.md section
+6.1 is the precedent**: the constant-width degeneracy is the case the project
+measured *first* precisely so that it would never be run into unknowingly, and
+I-VU2 is that case occurring in a published problem and reached by a mechanism —
+the crossing — that part 1 did not anticipate.
+
+**what is therefore true of part 2's evidence base, stated so it cannot be
+mistaken.** I-VU2 contributes **no measured number to this document**, no third
+calibration point, and no row to any table in sections 3 or 6. what it contributes
+is sections 10.2 to 10.4, which are derived, and section 10.6's exact criterion-3
+verdict, which is also derived. section 12 says what that does and does not do to
+clause c5.
+
+### 10.8 f6 was a precondition of f7 and not an improvement to it
+
+**I-VU2 is the first problem the project has touched that exercises the guard**,
+and this is worth its own line because the ordering of two sessions turns out to
+have been load-bearing.
+
+f5 section 1 found that the project implemented a **fixed-order** endpoint reading
+— `(Σ_j a_j h_j, Σ_j b_j h_j)` — rather than [16]'s product, and that nothing in
+`src/` asserted `f_l ⩽ f_u`; f6 built both halves of r-23, the Moore product in
+`src/interval_math.py` and the well-ordering guard at the `Problem` boundary, and
+asserted that no existing number moved. **on I-VU2 the difference is not
+hypothetical.** measured in exact rationals at 4000 random points of the box, f7
+section 2.4:
+
+    ill ordered under Moore's product:            **0 of 4000**
+    ill ordered under the fixed-order reading: **2071 of 4000**
+
+and the 2071 are exactly the sampled points with `x_1 + x_2 < 0` — **half the box,
+and the half that contains the entire answer**, `E ⊆ Q = [−4, 0]²`. without f6 the
+derivation of section 10.2 would have been a derivation of a different object over
+the region where the answer lives, and the error would have been silent.
+
+**so f6 is a precondition of f7 and not an improvement to it.** that ordering is
+also the answer to what the audit was worth: f5 found a defect that was correct on
+everything ever run and silently wrong in general, and the first problem added
+after it would have triggered it.
+
+### 10.9 what I-VU2 does not establish
+
+**one problem, and a statement about where hypotheses fail rather than about how
+often that happens.** f7 section 8, and it is repeated here because it is the
+sentence most at risk of widening in compression:
+
+    it says nothing about **how often** a crossing occurs. f5 section 3.3
+        measured that five of [16]'s twenty appendix-A problems interchange, which
+        bounds the frequency in **one published suite** and in no other.
+    it says nothing about **how much of a typical efficient set** a crossing
+        hides. f5 section 4.2's counts are grid statements on four of the five
+        problems that interchange, of which only I-VU2's is now exact.
+    it says nothing about **[16]'s Newton method**, which is not implemented
+        anywhere in this project, and it is **not** a second counterexample to
+        proposition 2.1 or lemma 2.4(ii): both statements require hypotheses I-VU2
+        fails independently, `G_1` being affine and `G̲_1` concave, so section 5's
+        correction is neither extended nor weakened by it. what recurs is only
+        a-11's mechanism — definition 2.18's Pareto critical set strictly
+        containing the efficient set, with positive measure, on a second problem of
+        the appendix. f7 section 7.2.
+    and **`Opt_ls` and `Opt_cw` are not derived**: the published route leaves
+        `E ⊆ · ⊆ Q` under both. f7 section 6.1 says what is true of them by a
+        direct domination argument and **does not offer that argument as a
+        derivation**; the derived bound is the one that goes in the memoria's
+        derivation column.
+
+**the honest general sentence is the conditional one**, f7 section 8: wherever an
+interval coefficient multiplies a function that changes sign on the feasible set,
+the 2m transformation's differentiability hypothesis fails on the sign-change
+locus under every order in [1]'s class, and whether that costs anything depends on
+whether the efficient set meets the locus — which, on the one problem where it has
+been settled exactly, it does.
+
+**and there is no external check on I-VU2 and none is claimed.** [16] prints no
+solution point, no gH-gradient and no gH-Hessian for it — only Table 3's iteration
+statistics, printed page 23, and Figure 3(a), printed page 24, from which no
+coordinates can be read. f2's two published checkpoints have no analogue here, and
+the derivation is verified against its own algebra and against the project's own
+modules. what f7 section 7.2 does check is internal to [16]'s definitions and is
+not a checkpoint: `E` lies inside [16]'s own Pareto critical set of definition
+2.18, computed in closed form as the cone `2/9 ⩽ x_2/x_1 ⩽ 9/8` and agreeing with a
+direction scan, which is a necessary condition the derivation had to satisfy.
+
+
+## 11. what part 2 is, now that it is closed
+
+**added by f8, 2026-09-06.**
+
+**the corpus.** the twenty published problems of [16]'s appendix A,
+transcribed one block each with `n`, `m`, the 2m column count, the box and every
+objective in the paper's own notation, and screened against the five-criterion
+gate; five pass every criterion a reading can settle, and nineteen of twenty are
+interval-valued at source. docs/part2/lit_review.md. and screened a second time in
+f5 against two conditions a reading had not applied: **eight of the twenty have at
+least one objective whose half-width is an exact function of its centre**, five of
+them on every objective, and **five of the twenty have boundary functions that
+interchange**. docs/part2/f5_boundary_interchange.md sections 3.2 and 3.3.
+
+**two problems examined in full, and one of them run.**
+
+    **I-BK1**, problem 1 of appendix A, **derived and run**: three distinct
+        phi-efficient sets in closed form, the gate's criterion 3 answered exactly,
+        two published checkpoints of which one passes and one fails, and the
+        project's second calibration point. sections 3, 5 and 6.
+    **I-VU2**, problem 2 of appendix A, **derived and deliberately not run**: the
+        boundary of the transformation approach, exhibited; criterion 3 failed
+        exactly; and the decision not to run it recorded with its reason. section
+        10.
+    **and no third.** the two-asset portfolio problem of **[16] section 6, printed
+        page 26**, with its equation (28) and its five solutions in Table 4, is a
+        one-variable interval-native problem with a published solution table and is
+        **not part of part 2's evidence**: docs/part2/lit_review.md section 5.2
+        names it for the memoria's future-work paragraph only, the meeting of
+        2026-09-04 having moved the portfolio application out of scope, and no
+        session opened it. **recorded here with its reason rather than left to be
+        inferred from a count**: part 2's problem count is two derived and one run.
+
+**one piece of code work, which changed no number.** f6 built both halves of r-23
+— the Moore product in `src/interval_math.py`, replacing the fixed-order endpoint
+reading, and the `f_l ⩽ f_u` guard at the one interface every problem shares —
+with `tests/test_interval_invariant.py` asserting rather than stating that nothing
+moved: the two readings agree bitwise at all 40401 points of a grid of I-BK1's
+whole box, and [16]'s printed `G(x⋆)` still reproduces at the printed precision
+through the new path. section 10.8 records why it had to come before f7.
+
+**and the correction to [16], section 5, which stands unchanged.** nothing in f5,
+f6 or f7 touches it, and section 10.9 says in terms that I-VU2 does not extend it.
+
+**part 2 is closed and no further test problem is in scope.** I-IKK1 stays exactly
+where section 7.2 puts it — the single most valuable thing part 2 did not do, at
+two sessions and with no published checkpoint, and the first item the memoria's
+future-work paragraph should point at, ahead of the portfolio application. the
+remaining sessions are the figures, the presentation, the memoria and, if time
+allows, the paper.
+
+
+## 12. clause c5, re-judged on the full evidence
+
+**added by f8, 2026-09-06.** section 3.3 judged c5 on I-BK1 alone, because I-BK1
+was the whole of the evidence when it was written. the evidence is now I-BK1 and
+I-VU2. **the clause does not move, and the reason it does not move is stated here
+rather than left to be inferred.**
+
+**what I-VU2 does not do to the clause.**
+
+    **it adds no comparison, so c5's magnitude arm is exactly where section 3.3
+        left it.** I-VU2's three phi-efficient sets are equal, so there is no pair,
+        no coverage, no overlap and no non-nested pair; and it was not run, so
+        there is no measured statistic of any kind, section 10.7. the clause's
+        weakest point — that part 1's headline quantity has no counterpart on
+        I-BK1, all three sets nesting there — is **neither strengthened nor
+        weakened**. it is untouched.
+    **it adds no third calibration point.** section 3.2's instrument-error rows
+        stay two, p1's and I-BK1's, and the jaccard factors stay 1.81 against
+        1.2517, 1.0067 and 1.4828, with none of them transported anywhere.
+    **and it does not contradict c5 as judged**, which is a statement about one
+        named problem and says in terms that one problem is one problem.
+
+**what it does do, and it is one thing.** **I-VU2 is the first published
+interval-native problem on which the three orders coincide** — with each other and
+with the crisp centre problem, exactly and by derivation, section 10.6. the wider
+form of c5 that section 3.3 leaves unsupported — that the effect persists on
+problems interval-valued at source, plural, as a property of the class — is
+therefore not merely unsupported but **known not to hold as a universal**, and
+that is a limit on the clause's reach that belongs beside it in the memoria rather
+than in a footnote.
+
+**and the limit comes with the regime test that the claim of section 8.3 already
+carries.** what puts I-VU2 in the degenerate regime is
+docs/part1/part1_closing.md section 6.1's condition, which f5 section 3.2 shows is
+decidable exactly from the printed coefficients before anything runs — with the
+one refinement section 10.6 forces, that it must be decided on the region where
+the efficient set lives and not on the box. **so the last sentence of the claim
+arrives on a published problem**: which of the two regimes an application is in is
+a property of its uncertainty model, and it is checkable in advance. on I-VU2 the
+regime was not chosen by anyone; the boundary interchange created it.
+
+**so, the clause. section 3.3's wording is unchanged and the addition is to what
+it does not establish:**
+
+> **c5, as supported.** unchanged, and its wording is section 3.3's and is not
+> restated here, so that the clause has one canonical form and not two.
+>
+> **and what it does not establish, extended by f8.** it is not a statement about
+> interval-native problems as a class, and the second such problem the project
+> derived is the reason it may not become one: on I-VU2, problem 2 of the same
+> appendix, the three orders return **one** set and it is the crisp centre
+> problem's, because the boundary interchange makes both objectives degenerate in
+> the sense of docs/part1/part1_closing.md section 6.1 on the region where the
+> efficient set lives. **being interval-valued at source does not on its own make
+> the choice of order matter**; which regime a problem is in is decidable from its
+> printed coefficients, on the region the answer occupies, before any solver runs.
+
+**c5's status is unchanged: supported in section 3.3's narrow form and in no wider
+one.** what f8 adds is the second half of that sentence made concrete, on a
+published problem, instead of resting on "one problem is one problem".
+
+
+## 13. the prohibitions, re-checked over sections 10 to 12
+
+**added by f8, 2026-09-06.** section 9 checks the five prohibitions over sections
+1 to 9 and is unchanged; this section checks the same five over what f8 added.
+
+*no phi is ranked.* section 10.2 reports that the derivation closes under example
+2.2 and not under examples 2.3 and 2.4. **that is a statement about which
+published hypotheses are available on one problem and not about which order is
+better**, and the section says in terms that the order which keeps theorem 3.3 is
+the one whose derivation fails to close, which is the opposite direction from a
+ranking. no table in sections 10 to 12 orders the three, and I-VU2's three
+efficient sets are equal.
+
+*nothing is claimed from the containment.* section 10.6 records that the two
+relations the criterion predicts hold on I-VU2 and are withheld from the evidence,
+and that the un-predicted pair is an equality established by the derivation without
+the criterion. s-11 is untouched and no statement in sections 10 to 12 moves if the
+criterion is refuted.
+
+*no slice fraction is quoted as a quantity.* none appears. the only counts in
+sections 10 to 12 are exact-arithmetic verification counts read out of f7 —
+2071 of 4000 and 0 of 4000 in section 10.8 — and they are properties of two
+readings of one problem's arithmetic, not of any efficient set.
+
+*no measured number is interpreted without the instrument's error beside it.*
+**sections 10 to 12 contain no measured number at all.** I-VU2 was not run,
+section 10.7, and every quantity in them is derived or is a verification count in
+exact rational arithmetic. section 12 states that the instrument-error rows stay
+two.
+
+*no nested pair is presented as a measured difference between two orders.*
+I-VU2's three sets are **equal**, not nested, and the equality is derived. section
+10.7 says that a run would have measured the crisp problem three times, and section
+12 says that the clause's magnitude arm is untouched, so no reader can take the
+equality for a measurement of agreement between orders.
