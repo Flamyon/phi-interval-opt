@@ -1554,6 +1554,26 @@ phi-interval-opt/
                                 section, "where the project is, and what is left",
                                 is superseded and its header says so; it is kept
                                 unedited as history.
+        explicacion_proyecto.md **the whole project in plain spanish**, session
+                                doc-explicacion, 2026-09-06. written for the
+                                human rather than for a supervisor or a coding
+                                agent: every term defined before use, parts 1 to
+                                13 covering the framework, both parts' results,
+                                the counterexample, the five caught errors, a
+                                file map organised by question, and the
+                                presentation skeleton. every section names the
+                                file to open and carries one of SLIDE, DECIR or
+                                FONDO, so the presentation is collected rather
+                                than written. **it makes no claim and states no
+                                number that is not in a deliverable or an
+                                artefact, and it names where**; where it and a
+                                deliverable could differ, the deliverable wins.
+                                it lived outside the repository until this
+                                session. **it and project_narrative.md are the
+                                two plain-language accounts and both are kept**:
+                                that one is in english and stops at phase c, this
+                                one is in spanish and covers both parts. neither
+                                restates the other's numbers independently.
         verified.md             every verified fact, v-nn, moved out of
                                 PROGRESS.md section 4 in a1-b.
         answered.md             answered p- and s-questions and retired risks,

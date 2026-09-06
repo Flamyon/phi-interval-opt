@@ -17,6 +17,13 @@ deliverable wins, on the model of the three phase summaries.
 PROGRESS.md is the working state file and is read by the coding agent. this file
 is the human one.
 
+**docs/explicacion_proyecto.md is the second plain-language account and both are
+kept**, doc-explicacion, 2026-09-06. it is in spanish, it is written for the
+author rather than for the supervisors, and it covers the whole project — phases
+a to e, part 2, the counterexample and the presentation skeleton — where this
+file stops at phase c. neither restates the other's numbers independently, and
+both defer to the deliverables.
+
 **this file and the three phase summaries cover the same ground and both are
 kept**, docs-clean, 2026-09-05. docs/part1/phase_a_summary.md,
 docs/part1/phase_b_summary.md and docs/part1/phase_c_summary.md are the close-out
