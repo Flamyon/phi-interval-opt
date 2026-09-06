@@ -161,6 +161,35 @@ project started 2026-08-30.
                         recommended form is conditional on the width being
                         non-monotone in a driver the centres do not share, with
                         a1's rejected linear form as the measured negative arm
+    after f4:           three sessions have run since part 2 closed and none of
+                        them changes a part 1 or part 2 number. **f5** audited the
+                        interval product against [16], found the fixed-order
+                        reading and the absent well-ordering guard, decided
+                        part1_closing section 6.1's degeneracy exactly for all
+                        twenty appendix-A problems and shortlisted four candidates
+                        without choosing, docs/part2/f5_boundary_interchange.md.
+                        **f6** built both halves of r-23 and asserted that nothing
+                        moved. **f7 is the last problem**, I-VU2, derived:
+                        docs/part2/f7_ivu2_derivation.md, paper and pencil with
+                        exact rational verification, no module, no run, nothing
+                        from [16] implemented. **s-14 is answered from [1]'s own
+                        text and answered against the weakening**, and the answer
+                        changes nothing on I-VU2 because the hypothesis that binds
+                        at the crossing is the differentiability and not the
+                        convexity, section 1. **the derivation closes under phi_lu
+                        and does not close under phi_ls or phi_cw**, and the reason
+                        is a singular weight ray and not the crossing — b1 section
+                        2.3's phenomenon on a published problem, s-12 recurring.
+                        **the crossing's own failure is exhibited**: (15)'s
+                        candidate set is an open segment whose limit point, the
+                        origin, is a **strong** optimal solution under all three
+                        phi by definition 3.1(1) and cannot be produced by (15) at
+                        all. **criterion 3 fails exactly**: all three sets are
+                        equal, and equal to the crisp centre problem's, because the
+                        interchange creates section 6.1's degeneracy with negative
+                        slope on the quadrant that holds the answer, which corrects
+                        f5 section 3.5 without reversing its choice. **no external
+                        check exists on I-VU2** and none is claimed
     a5-b:               done, its review evidenced by e2's prompt, which reads
                         the a5-b section of docs/part1/a1_uncertainty_model.md and says
                         in terms that a5-b's width forms are not to be changed.
@@ -783,6 +812,17 @@ scaling are independent choices.
 the full text of every row: the question, the working assumption, what depends on
 the answer and where it is written up. this section is the index into it and
 nothing else. s-13 is closed and is in docs/answered.md.
+
+**s-14, which docs/part2/f5_boundary_interchange.md section 6 proposed and which
+was never registered here, is answered in f7 and does not need to be asked.** [1]
+settles it from its own printed text: example 3.9's "F is φ-convex" is definition
+2.2's global (8), the pointwise (9) being what examples 3.4 to 3.7 use four times
+over, printed pages 7 and 8, with "continuously differentiable **at x̄**" beside
+it. **b1's and f2's reading is the printed one.** the answer is in
+docs/answered.md and the derivation of what it costs is
+docs/part2/f7_ivu2_derivation.md section 1; the highest s number in use is
+unchanged at s-13, and whether to register the residue the row leaves -- whether
+the omission of "at x̄" in example 3.9 is deliberate -- is the research chat's.
 
 format: s-nn | question | working assumption | where the full text is
 

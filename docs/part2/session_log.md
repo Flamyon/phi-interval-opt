@@ -367,3 +367,64 @@ format:
     changed, newly skipped or newly xfailed | g1, the results document, and the
     research chat's choice of the last problem; **s-14 and the proposed sixth
     gate criterion are untouched by this session** and stay where f5 left them
+
+2026-09-06 | f7, I-VU2 derived and the boundary of the transformation approach |
+    docs/part2/f7_ivu2_derivation.md, new; PROGRESS.md sections 1 and 6;
+    docs/answered.md; docs/part2/session_log.md | **paper and pencil with exact
+    rational verification. no module, no run, no problem added to src/, no test
+    changed and nothing from [16] implemented.** **s-14 is answered from the
+    printed text and answered against the weakening**: [1] definition 2.2 printed
+    page 5 defines both "φ-convex" (8), global on S, and "φ-convex at x*" (9);
+    examples 3.4 to 3.7 printed pages 7 and 8 use the pointwise form four times
+    with "continuously differentiable **at x̄**" beside it; example 3.9 printed
+    page 10 uses the unqualified form in statements 2 and 3 **and in its
+    differentiability preamble**, which f5 did not ask about and which matters
+    more here. so b1's reading is the printed one. **and the answer changes
+    nothing on I-VU2**: under the pointwise reading F is phi_lu- and
+    phi_ls-convex at exactly one point, the origin, which is the one point where
+    the differentiability fails independently, so example 3.9's statements 2 and
+    3 are unavailable at every point of the box under phi_lu and phi_ls under
+    either reading. **the derivation closes under phi_lu and does not close under
+    phi_ls or phi_cw, and the reason is not the crossing**: a singular weight ray,
+    w ∝ (1,3,0,0) under phi_ls and (1,5,0,0) under phi_cw, on which the scalarised
+    objective is constant on the quadrant holding the whole answer, so (15) holds
+    everywhere on it and example 3.8 statement 4 cannot pin the optimal set below
+    it — b1 section 2.3's phenomenon on a published problem, two-dimensional
+    rather than one-dimensional, and s-12 recurring. **the order that keeps
+    theorem 3.3 is the one that does not close and the order that loses it is the
+    one that does**, which corrects f5 section 4.1's reading of where the damage
+    falls. **the crossing's own failure is exhibited and not asserted**: the
+    candidate set (15) produces on the open quadrants is the open segment
+    {(t, t/2) : −4 < t < 0}, the origin is its limit point and is not in it, and
+    at the origin the first expression of (15) is undefined under all three phi
+    because each ∇Λ_i^T f and ∇B_i^T f is required separately. **the origin is a
+    strong optimal solution under all three phi by definition 3.1(1) printed page
+    6**, proved from one column of objective 2 per phi and the positive
+    definiteness of U = x_1²+2x_2², with no differentiability and no convexity,
+    and certified a second time by example 3.8 statement 3 at w = (0,0,w_3,w_4);
+    (15) cannot produce it and example 3.8 can, which is the boundary in one
+    sentence. **the interiority reading costs an arc here** where it cost nothing
+    on p1 and I-BK1, the answer containing the face piece {(−4,s) : −4 ⩽ s ⩽ −2}.
+    **criterion 3 fails exactly**: all three phi-efficient sets equal the L-shaped
+    curve E = {(t,t/2)} ∪ {(−4,s)} and equal the crisp centre problem's, because
+    the interchange makes r_1 = (1−c_1)/5 on the third quadrant — part1_closing
+    6.1's degeneracy with **negative** slope, created by the crossing — while G_2
+    is phi-blind at r_2 = (c_2+1)/5, so both objectives are degenerate where the
+    answer is. **that corrects f5 section 3.5's "G_1 is not degenerate", which is
+    true of the box and false where it matters, and does not reverse f5's
+    choice.** the containment corollaries hold as checks and the un-predicted
+    (lu, cw) pair is an equality, the project's third distinct answer on that pair
+    after p1's crossing and I-BK1's strict nesting. **no external check exists**:
+    [16] prints for I-VU2 only Table 3's iteration statistics, printed page 23,
+    and Figure 3(a), printed page 24, and no solution point, so none is claimed;
+    what is checked is that E lies inside [16]'s own Pareto critical set of
+    definition 2.18 printed page 7, computed in closed form as the cone
+    2/9 ⩽ x_2/x_1 ⩽ 9/8 and agreeing with an 8000-direction scan at 70 points,
+    and that Table 3's minimum iteration count of 0 over 100 random starts is
+    consistent with that cone being one ninth of the box while E has measure zero.
+    **I-VU2 is not a second counterexample to [16] proposition 2.1 or lemma
+    2.4(ii)**, both of whose hypotheses it fails independently; only a-11's
+    mechanism recurs. x-01 is structurally absent, all twelve columns depending on
+    both variables | g1, the results document; the research chat's disposition of
+    s-14, of f5's proposed sixth gate criterion, and of whether s-12 gains I-VU2
+    as a second instance

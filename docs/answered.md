@@ -20,6 +20,9 @@ in this file needs to be repeated in a deliverable or the reverse.
 the deliverable behind each row, so that neither side has to be searched for:
 
     p-03  a-close           docs/part1/a_close_containment.md, the whole file
+    s-14  f7                docs/part2/f7_ivu2_derivation.md section 1, with
+                            [1] definition 2.2 p.5, examples 3.4-3.7 pp.7-8 and
+                            example 3.9 p.10
     s-08  plan-after-meeting docs/meeting_2026_09_04.md section 4.3, with
                             docs/part1/a1_uncertainty_model.md part 3 and
                             docs/part1/b1_phi_efficient_sets.md sections 2.2, 2.4
@@ -121,6 +124,33 @@ p-05 | closed in lit-review, 2026-09-05, in both halves, one affirmatively and o
 
 
 ## answered questions from section 6, questions only the supervisors can answer
+
+s-14 | **answered in f7, 2026-09-06, from [1]'s own printed text, and it was never
+    registered as an s-row** — docs/part2/f5_boundary_interchange.md section 6
+    proposed it to the research chat and PROGRESS.md's highest s number is still
+    s-13. it is filed here so that a later session finds the answer where it would
+    look for the row. the question was whether example 3.9 statements 2 and 3's
+    "F is φ-convex" is theorem 3.3's global hypothesis, as printed and as
+    docs/part1/b1_phi_efficient_sets.md read it, or may be weakened to remark
+    2.2's pointwise "φ-convex at x̄". **it is the global one.** [1] definition 2.2,
+    printed page 5, defines both notions one display apart and names them
+    differently, (8) global and (9) at a point; [1] examples 3.4, 3.5, 3.6 and
+    3.7, printed pages 7 and 8, use the pointwise form four times, each with
+    "continuously differentiable **at x̄**" beside it; and example 3.9, printed
+    page 10, uses the unqualified form in statements 2 and 3 **and in its
+    differentiability preamble**, which f5 did not ask about and which binds
+    harder. so b1's and f2's reading is the printed one and needs no defending,
+    and the pointwise weakening is not used anywhere in the project.
+    **what f5 expected the answer to decide, it does not decide**: on I-VU2 the
+    pointwise reading would make F phi_lu- and phi_ls-convex at exactly one point
+    of the box, the origin, which is the one point at which the differentiability
+    hypothesis fails independently, so example 3.9's statements 2 and 3 are
+    unavailable at every point of that problem under both readings.
+    docs/part2/f7_ivu2_derivation.md sections 1.1 to 1.6. **the residue is a
+    question for the authors and the project does not need it answered**: whether
+    the omission of "at x̄" in example 3.9 is deliberate, given that the four
+    preceding examples carry it. registering that residue, or dropping it, is the
+    research chat's, as f5 left it
 
 s-08 | answered as assumed at the supervisors' meeting of 2026-09-04, and filed
     here in plan-after-meeting. the question was whether to accept p1's
