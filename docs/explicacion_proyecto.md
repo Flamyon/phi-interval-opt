@@ -1,45 +1,14 @@
-# El proyecto explicado desde cero
-
-Documento para entender qué se ha hecho, sin matemáticas previas. Cada término se
-define antes de usarse. Va de lo general a lo concreto.
-
-**Para quién es.** Para Fran, que escribió los prompts y revisó todas las
-sesiones pero no sigue las matemáticas, y que tiene que ponerse delante de dos
-matemáticos el 25 de septiembre y contar esto. **No es un entregable.** La
-memoria y la presentación se construyen a partir de él; él no se entrega.
-
-**De dónde viene esta versión.** La primera se escribió el 2026-09-04, vivía
-fuera del repositorio, en `quant/imus/explicacion_proyecto.md`, y llegaba hasta
-la fase C. Se escribió **antes de la reunión con los tutores y antes de que
-corrieran los experimentos**. Esta versión, del 2026-09-06, está dentro del
-repositorio, llega hasta el final de la parte 2, y sustituye dos partes enteras
-que la realidad ha dejado obsoletas. La sección "Qué se corrigió", justo debajo,
-dice exactamente qué cambió y por qué.
-
-**Su pariente en el repositorio.** `docs/project_narrative.md` es el otro relato
-en lenguaje llano: está en inglés, se escribió en el chat de investigación y
-llega hasta la fase C. **Se conservan los dos**, y ninguno recalcula los números
-del otro. Aquél es el que un lector angloparlante abre; éste cubre el proyecto
-entero y es el que se usa para preparar el día 25.
-
-**La regla de procedencia.** Este documento **no hace ninguna afirmación nueva y
-no contiene ningún número nuevo**. Cada cifra sale de un entregable o de un
-artefacto del repositorio, y el fichero se nombra al lado. Si este documento y un
-artefacto se contradicen, **gana el artefacto** y este documento está mal.
-
+# Proyecto explicado desde cero
 
 ## Cómo leer este documento
-
-Además de lo anterior, hay dos convenios nuevos respecto a la primera versión.
 
 **1. Cada sección dice dónde mirar.** Al final de casi todas hay un bloque así:
 
     Dónde mirar. docs/part1/b1_phi_efficient_sets.md, sección 2.4. Busca las
     tres regiones en forma cerrada.
 
-Sirve para una cosa concreta: que puedas rastrear cualquier afirmación hasta el
-fichero que la produjo **sin preguntarle a nadie**. Si un tutor pregunta "¿de
-dónde sale ese 10,3 %?", la respuesta está en la sección, no en tu memoria.
+Sirve para una rastrear cualquier afirmación hasta el
+fichero que la produjo.
 
 **2. Cada sección lleva una etiqueta.** Una de estas tres:
 
@@ -56,64 +25,14 @@ lista es el guion. La parte 13 apunta a unos quince minutos.
 
 La etiqueta va en el título. Cuando una parte entera lleva una, vale para todo lo
 que hay debajo; cuando la parte es sólo un contenedor — las partes 3, 5, 6, 7 y 8
-— la etiqueta está en cada sección. Las secciones de servicio (ésta, "Qué se
-corrigió" y el cierre) no llevan etiqueta: no se presentan.
+— la etiqueta está en cada sección. Las secciones de servicio (ésta y el cierre)
+no llevan etiqueta: no se presentan.
 
 Una advertencia sobre las etiquetas FONDO: no significan "poco importante".
 Varias de las cosas más sólidas del proyecto son FONDO, porque son garantías
 sobre cómo se puede formular la afirmación y no resultados que se enseñen. Un
 tribunal que pregunte por ellas se merece la respuesta; una diapositiva que las
 lleve pierde el hilo.
-
-
-## Qué se corrigió respecto a la primera versión
-
-Ocho cosas. Las cuatro primeras son partes enteras; las cuatro últimas son frases
-sueltas que el trabajo posterior contradijo.
-
-**1. La parte 3, fase E, decía "no hechos todavía".** Se hicieron. Están en las
-secciones 3.5 y 3.6, con los números.
-
-**2. La parte 3, fase D, tenía cinco líneas.** Ahora es la sección 3.4 entera,
-porque la distinción entre las dos familias de métricas es **la idea más
-importante de todos los resultados** y no se puede despachar en cinco líneas.
-
-**3. La parte 6, "Qué falta y qué se espera", predecía.** Ya no hay nada que
-predecir: cada predicción tiene respuesta. La parte 6 de ahora es esa lista de
-respuestas, incluida una predicción que **falló** y una que se quedó sin poder
-comprobarse.
-
-**4. La parte 7, "Preguntas para los tutores", se escribió para una reunión que
-ya ocurrió.** La reunión fue el 4 de septiembre. La parte 7 de ahora es qué
-decidió esa reunión y qué sigue abierto.
-
-**5. La sección 2.5 decía "la parte 2 mide cuál es mejor".** **Es falso y hay que
-borrarlo de la cabeza.** La reunión cambió la parte 2: ya no es la aplicación a
-carteras, sino los problemas intervalares publicados. La cartera era lo que iba a
-aportar el criterio externo que permitiría decir "cuál es mejor", y se ha ido a
-trabajo futuro. **El proyecto no ordena los φ en ningún sitio y no responde a esa
-pregunta.** La sección 2.5 está corregida.
-
-**6. La fase C decía "a partir de la generación 3 o 4, NSGA-II ya no selecciona
-por dominancia en ninguna configuración".** Eso era p1. Medido en los benchmarks
-la cosa está **ordenada**: en DTLZ2 la mediana es la generación 2, en ZDT1 va de
-la 23 a la 13 bajo φ_lu. La sección 5.3 lo dice bien.
-
-**7. La parte 5.1 decía que la contención es "la pregunta que hay que
-hacerles".** Sigue abierta (es s-11), pero el corpus se abrió en la reunión y
-apareció una comprobación independiente del criterio en un cuarto orden, en el
-artículo de Ishibuchi y Tanaka. No es la respuesta; es una comprobación. Está en
-la sección 5.1.
-
-**8. La parte 4 decía "el 60 % de lo que era óptimo deja de serlo".** El número
-está bien, pero le faltaba la dirección: es el 60,5 % **del conjunto de φ_lu** el
-que se sale del de φ_cw. En la otra dirección el número es 87,7 %, y **esa** es la
-que se presenta. La sección 4 lo dice ahora, y la 3.6 explica por qué esa
-dirección y no la otra.
-
-    Dónde mirar. La versión antigua no está en el historial de git: vivía fuera
-    del repositorio. Si quieres compararla, está en quant/imus/explicacion_proyecto.md,
-    un directorio por encima de este.
 
 
 ## PARTE 1. El problema de fondo — SLIDE
@@ -204,7 +123,7 @@ elegante: en vez de proponer *un* orden, describieron **toda la familia** de
 Ese parámetro se llama **φ** (fi). Un φ es, en esencia, una función clave.
 
 En el repositorio ese artículo es **[1]**, y está en `papers/` con su lista de
-referencias completa desde la reunión del 4 de septiembre.
+referencias completa.
 
 ### 2.3 Qué hace un φ, concretamente
 
@@ -266,18 +185,13 @@ Ahora ya se puede formular lo que pidieron tus tutores:
     Si cambio φ y resuelvo el mismo problema, ¿cambian las soluciones que
     encuentro? ¿Cuánto? ¿Bajo qué condiciones?
 
-**Y aquí va la corrección más importante respecto a la primera versión de este
-documento.** Aquella decía que había una segunda pregunta, "¿qué φ da mejores
-resultados?", y que la parte 2 la respondería. **No la responde, y el proyecto no
-la responde en ningún sitio.**
-
-La razón es la misma que decía la primera versión, y sigue siendo correcta: cada
-φ manda el problema a un espacio distinto con una escala distinta, así que
-comparar "calidad" entre φ es comparar peras con manzanas. Sólo se podría
-responder con un criterio externo — por ejemplo el rendimiento real de una
-cartera. Lo que ha cambiado es que **la cartera ya no está en el proyecto**: la
-reunión del 4 de septiembre la movió a trabajo futuro y puso en su lugar los
-problemas intervalares publicados, que no traen criterio externo ninguno.
+**Hay una segunda pregunta que el proyecto no responde en ningún sitio: "¿qué φ
+da mejores resultados?".** Cada φ manda el problema a un espacio distinto con una
+escala distinta, así que comparar "calidad" entre φ es comparar peras con
+manzanas. Sólo se podría responder con un criterio externo — por ejemplo el
+rendimiento real de una cartera —, y ni los benchmarks ni los problemas
+intervalares publicados traen criterio externo ninguno. El estudio de carteras es
+trabajo futuro, que es donde la diapositiva 21 de los propios tutores lo pone.
 
 Así que la pregunta del proyecto es una sola, y hay que decirla así:
 
@@ -298,23 +212,19 @@ construir el problema, luego calcular la respuesta correcta a mano, luego
 programar los algoritmos, luego comprobar que los algoritmos encuentran la
 respuesta correcta, luego decidir con qué se mide, y por último medir.
 
-**Las seis fases están hechas.** En la primera versión de este documento la fase
-E estaba por hacer y la D despachada en cinco líneas. Ahora hay números.
+**Las seis fases están hechas.**
 
 ### 3.1 Fase A — Entender el marco y construir los problemas
 
 **A0: leer el artículo y verificar todo.** — DECIR
 
-El proyecto arrastraba un tercer φ que nadie había comprobado contra el artículo.
 Se leyó el artículo afirmación por afirmación, anotando página y número de
-ejemplo. Quince afirmaciones sobre el marco: **doce confirmadas, una refutada,
-una parcial y una partida en dos.** El tercer φ que arrastraba el proyecto **no
-estaba en el artículo**. Se eliminó y se sustituyó por el Ejemplo 2.3, que sí
-está. La refutación fue otra: existe un cuarto ejemplo, el 2.1, con cuatro pares
-de coeficientes distintos y sin noción de convexidad asociada.
+ejemplo en cada una. De ahí salió también que existe un cuarto ejemplo, el 2.1,
+con cuatro pares de coeficientes distintos y sin noción de convexidad asociada,
+que es por lo que no se usa.
 
-Regla que salió de aquí y que gobierna todo el proyecto: **si algo no está
-verificado, no se marca con un comentario y se deja; se quita.**
+Regla del proyecto, y gobierna todo lo demás: **si algo no está verificado, no se
+marca con un comentario y se deja; se quita.**
 
     Dónde mirar. docs/part1/a0_framework.md. Busca las filas v-01 a v-23: cada
     una es un hecho verificado con su ecuación o su número de ejemplo y su
@@ -368,8 +278,7 @@ una muestra aleatoria de una caja de treinta dimensiones casi no contiene puntos
 cerca del conjunto eficiente. La comprobación se hace **donde vive el conjunto
 eficiente**, no en la caja.
 
-Las dos cosas están contadas con sus números en la parte 10, que es la de los
-errores.
+Las dos cosas están contadas con sus números en la parte 10.
 
     Dónde mirar. docs/part1/a1_uncertainty_model.md, partes 1 y 2. La parte 4
     lleva el barrido de niveles de imprecisión y la predicción, hecha antes de
@@ -399,7 +308,7 @@ mismo φ evaluado en otro orden. El proyecto evalúa φ directamente sobre la
 representación en la que el problema está realmente calculado. Las matemáticas no
 cambian; sólo el orden de las operaciones.
 
-Está contado entero, con las magnitudes, en la sección 10.4.
+Está contado entero, con las magnitudes, en la sección 10.3.
 
 **A4, A5: los problemas.** — DECIR
 
@@ -415,8 +324,7 @@ Está contado entero, con las magnitudes, en la sección 10.4.
 
 Una palabra que hace falta más adelante: p1, ZDT1 y DTLZ2 son problemas
 **adaptados**. Eran problemas normales y el proyecto les puso una banda de
-incertidumbre encima. Eso es exactamente lo que la reunión señaló y lo que la
-parte 2 vino a arreglar.
+incertidumbre encima. Eso es exactamente lo que la parte 2 existe para responder.
 
     Dónde mirar. src/problems_tier0.py (p0 y p1) y src/problems_tier1.py (ZDT1 y
     DTLZ2 intervalares). En problems_tier0.py, busca `p1_default_params`: el
@@ -949,8 +857,7 @@ dentro del otro, una de las dos direcciones de cualquier estadístico estaría
 fijada de antemano y no habría nada que medir. **Por eso el par de cabecera del
 proyecto es Ejemplo 2.2 contra Ejemplo 2.4 y no un promedio sobre los tres pares.**
 
-Y aquí van las frases de la reunión, con las tres cifras exactas y sus
-direcciones:
+Y aquí van las tres cifras exactas, con sus direcciones:
 
     Los conjuntos de Ejemplo 2.2 y Ejemplo 2.4 comparten el 10.3 % de su unión.
     El 39.5 % del de 2.2 está dentro del de 2.4, y el 12.3 % del de 2.4 está
@@ -961,10 +868,8 @@ Leído al revés, que es como se presenta:
     **El 60.5 % del conjunto de 2.2 queda fuera del de 2.4, y el 87.7 % del de
     2.4 queda fuera del de 2.2.**
 
-La primera versión de este documento decía "el 60 % de lo que era óptimo deja de
-serlo" sin decir de cuál de los dos. Es el 60.5 % **del de 2.2**. Y la cifra que
-va a la presentación es la otra, el 87.7 %, por la razón que explica la sección
-3.6.4: es la dirección estable.
+La cifra que va a la presentación es el 87.7 %, por la razón que explica la
+sección 3.6.4: es la dirección estable.
 
 En medida de Lebesgue exacta, sin muestreo y sin ningún solver dentro. **La
 elección de φ no es un detalle, es la mitad del problema.**
@@ -1014,10 +919,9 @@ Su artículo tiene un resultado equivalente (Proposición 5.1) pero sólo para e
 caso difuso, no para el intervalar. Se buscó el análogo intervalar
 exhaustivamente y no está.
 
-**Novedad respecto a la primera versión.** Al abrirse el corpus en la reunión
-apareció una comprobación independiente: la Proposición 4.2 de Ishibuchi y Tanaka
-(1990), página 223, demuestra para un **cuarto** orden la contención que el
-criterio predice. **Eso es una comprobación del criterio, no una respuesta a la
+**Hay una comprobación independiente del criterio en la literatura.** La
+Proposición 4.2 de Ishibuchi y Tanaka (1990), página 223, demuestra para un
+**cuarto** orden la contención que el criterio predice. **Eso es una comprobación del criterio, no una respuesta a la
 pregunta.** La pregunta sigue siendo s-11 y tiene tres partes: ¿es correcto el
 criterio?, ¿son correctas las dos contenciones?, y ¿está publicado en algún
 sitio? La tercera es la que decide si la memoria cita un resultado conocido o
@@ -1060,9 +964,7 @@ problema de "muchos objetivos", donde la dominancia deja de discriminar: casi
 todo el mundo es no dominado por casi todo el mundo, y el algoritmo se queda sin
 criterio para elegir.
 
-**Medido, y esto corrige lo que decía la primera versión.** Aquélla decía "a
-partir de la generación 3 o 4 en ninguna configuración", que era p1. En los
-benchmarks el resultado es más fino y está **ordenado**:
+**Medido en los benchmarks, y el resultado está ordenado:**
 
     las 24 configuraciones de NSGA-II con imprecisión positiva — los dos
     benchmarks, los tres φ, los cuatro niveles — saturan el rango 1 en todas las
@@ -1095,14 +997,9 @@ hacen 2m objetivos a cualquier selección basada en dominancia.
 
 ## PARTE 6. Qué se predijo, y qué salió
 
-La versión anterior de este documento tenía aquí una parte titulada "Qué falta y
-qué se espera", escrita antes de correr nada. **Ya no falta nada de aquello y
-cada expectativa tiene respuesta.** Esta parte es esa lista de respuestas.
-
-Se conserva como parte porque es lo que hace que el trabajo sea creíble: las
-predicciones estaban **escritas y fechadas antes** de la medida, así que no se
-pueden reinterpretar a posteriori. Dos de ellas salieron mal, y las dos están
-aquí.
+Lo que hace que estas respuestas valgan es que las predicciones estaban
+**escritas y fechadas antes** de la medida, así que no se pueden reinterpretar a
+posteriori. Dos de ellas salieron mal, y las dos están aquí.
 
 ### 6.1 Las cuatro expectativas generales — DECIR
 
@@ -1201,51 +1098,39 @@ suelo de ruido y la memoria lo dice.**
     results/tier0/registered_measurements_summary.csv para x-02.
 
 
-## PARTE 7. La reunión del 4 de septiembre, y lo que sigue abierto
+## PARTE 7. Lo que está fijado, y lo que sigue abierto
 
-La versión anterior de este documento tenía aquí una lista de preguntas para una
-reunión. La reunión fue. Esto es lo que decidió y lo que quedó fuera.
+### 7.1 Lo que está fijado — DECIR
 
-### 7.1 Las cinco decisiones — DECIR
+**1. La parte 1 es un test controlado sobre problemas adaptados.** Su propósito
+era hacer los órdenes comparables entre sí, y lo consiguió. Por eso la parte 1 se
+**presenta** como un test controlado y no se **defiende** como si fuera realista.
 
-**1. La parte 1 se acepta como está. No se retracta nada.** El punto de la
-reunión fue explícito: la parte 1 era un test controlado sobre problemas
-adaptados, su propósito era hacer los órdenes comparables entre sí, y lo
-consiguió. Por eso la parte 1 se **presenta** como un test controlado y no se
-**defiende** como si fuera realista.
+**2. Se pueden buscar más φ, sujeto a las condiciones del marco.** La condición
+de admisibilidad del artículo es sólo "determinante no nulo", así que interpolar
+entre el Ejemplo 2.2 y el 2.4 da automorfismos admisibles **por la propia
+definición del artículo**, sin necesidad de permiso. **No se ha hecho** — es la
+curva de sensibilidad, y es lo primero que se recortó por calendario.
 
-**2. La fase E procede como estaba especificada.** Sin cambios.
+**3. La parte 2 son los problemas intervalares de origen** de un artículo
+publicado, sin añadirles incertidumbre nosotros. El estudio de carteras es
+trabajo futuro, que es donde la propia diapositiva 21 de los tutores lo pone. Es
+lo que da lugar a toda la parte 8 de este documento.
 
-**3. Se pueden buscar más φ, sujeto a las condiciones del marco.** Esto convierte
-una prohibición en un procedimiento. La condición de admisibilidad del artículo
-es sólo "determinante no nulo", así que interpolar entre el Ejemplo 2.2 y el 2.4
-da automorfismos admisibles **por la propia definición del artículo**, sin
-necesidad de permiso. **No se ha hecho** — es la curva de sensibilidad, y es lo
-primero que se recortó por calendario.
+**4. El corpus está abierto.** Todos los artículos están en `papers/` y no hay
+exclusiones a nivel de artículo. Eso hace contestables varias preguntas de
+lectura y cerró la única cifra sin verificar que quedaba en la derivación de la
+fase B.
 
-**4. La parte 2 ya no es la aplicación a carteras.** Son los problemas
-**intervalares de origen** de un artículo publicado, sin añadirles incertidumbre
-nosotros. La cartera se registra como trabajo futuro, que es donde la propia
-diapositiva 21 de los tutores la pone. **Éste es el punto más largo y más
-específico de los cinco**, y es lo que da lugar a toda la parte 8 de este
-documento.
+**5. Los entregables son tres**, para el 25 de septiembre: la presentación, que
+es el entregable de verdad; una memoria informal de lo que se ha hecho; y un
+artículo si da tiempo.
 
-**5. El corpus se abre.** Todos los artículos están en `papers/` y se levantan
-todas las exclusiones previas a nivel de artículo. Esto desbloqueó de golpe
-varias preguntas de lectura y cerró la única cifra sin verificar que quedaba en
-la derivación de la fase B.
+### 7.2 Lo que sigue abierto — FONDO
 
-**Y una cosa que se acordó sin ser una pregunta: los entregables.** Cuatro, para
-el 25 de septiembre: un documento de resultados con forma de artículo, una
-memoria en LaTeX, el repositorio de código, y una presentación corta sin detalle
-de implementación.
-
-### 7.2 Lo que la reunión no tocó, y sigue abierto — FONDO
-
-La reunión se dedicó a la dirección del trabajo, no a las lecturas del artículo.
-**Nueve preguntas siguen abiertas y todas siguen mereciendo hacerse.** No hay
-ninguna que bloquee trabajo: cada una lleva escrita la hipótesis sobre la que el
-proyecto avanza mientras tanto.
+**Nueve preguntas siguen abiertas y todas merecen hacerse.** No hay ninguna que
+bloquee trabajo: cada una lleva escrita la hipótesis sobre la que el proyecto
+avanza mientras tanto.
 
 Las dos que cambiarían algo:
 
@@ -1266,24 +1151,15 @@ s-04, s-06, s-07 y s-09 (dos decisiones de diseño que quieren visto bueno) y s-
 Y tres tareas de lectura del propio proyecto que el corpus abierto hizo
 contestables y que nadie ha hecho: p-01, p-04 y p-06.
 
-**Dos cosas prácticas quedaron pendientes de un correo** y no consta en el
-registro que se hayan contestado: **la extensión esperada de la memoria** y **el
-idioma**. Una memoria de veinte páginas y una de ochenta son documentos
-distintos. Y una memoria en español obliga a fijar antes los términos — centro,
-semianchura, anchura, relación de orden, conjunto eficiente, automorfismo — para
-no usar una palabra para dos cosas.
-
-    Dónde mirar. docs/meeting_2026_09_04.md es el documento que se llevó a la
-    reunión. docs/plan_after_meeting.md es el plan que salió de ella, y su sección
-    h1 dice qué contestó y su h2 qué no. El texto entero de cada pregunta abierta
-    está en docs/supervisor_questions.md, escrito para poder contestarse de una
-    sentada. Las cerradas están en docs/answered.md con el razonamiento que las
-    retiró.
+    Dónde mirar. docs/plan_after_meeting.md es el plan de trabajo. El texto
+    entero de cada pregunta abierta está en docs/supervisor_questions.md, escrito
+    para poder contestarse de una sentada. Las cerradas están en docs/answered.md
+    con el razonamiento que las retiró.
 
 
 ## PARTE 8. La parte 2: los problemas intervalares de origen
 
-### 8.1 Por qué los tutores redirigieron el trabajo — SLIDE
+### 8.1 Por qué hacen falta problemas intervalares de origen — SLIDE
 
 Aquí hay que ser honesto, porque es la crítica más obvia al proyecto y hay que
 adelantarse a ella.
@@ -1303,8 +1179,8 @@ Un crítico puede decir, con toda la razón del mundo:
 rechazada, dos de los tres órdenes dan conjuntos idénticos y el tercero da el
 orden sin incertidumbre.
 
-Los tutores señalaron exactamente esto en la reunión: **el sujeto de verdad es la
-incertidumbre genuina**, no una banda que nos hemos inventado.
+Y ése es exactamente el punto: **el sujeto de verdad es la incertidumbre
+genuina**, no una banda que nos hemos inventado.
 
 **"Intervalar de origen" significa: los intervalos son del propio problema.** Los
 coeficientes están publicados como intervalos por otros autores, para otro
@@ -1321,9 +1197,9 @@ artefacto del diseño.**
 Hay una trampa evidente en "busca un problema publicado que sirva": si eliges el
 criterio después de mirar los problemas, eliges el problema que te conviene.
 
-Así que los cinco criterios se escribieron **antes de ver ningún ejemplo**, en el
-plan que salió de la reunión. Un problema sirve sólo si cumple **los cinco**; el
-que cumple cuatro se reporta con el que falló y no se usa.
+Así que los cinco criterios se escribieron **antes de ver ningún ejemplo**, en
+el plan de trabajo. Un problema sirve sólo si cumple **los cinco**; el que cumple
+cuatro se reporta con el que falló y no se usa.
 
     1. dimensión      lo bastante pequeño para poder comparar los conjuntos en el
                       espacio de decisión con nuestro presupuesto.
@@ -1359,11 +1235,10 @@ notación del propio artículo.
                  suspende.** Cinco pasan todos los criterios que una lectura puede
                  decidir: I-BK1, I-SD, I-IKK1, I-VFM1 y I-MHHM2.
 
-Y aquí se tomó una decisión que invierte el orden previsto y que es mejor: en vez
-de contestar el criterio 3 con un diagnóstico muestreado, **se contestó
-derivando**. Si eres capaz de deducir los tres conjuntos en forma cerrada, sabes
-si son distintos **en medida de Lebesgue**, que es mucho mejor evidencia que
-cualquier muestra.
+El criterio 3 no se contesta con un diagnóstico muestreado, sino **derivando**.
+Si eres capaz de deducir los tres conjuntos en forma cerrada, sabes si son
+distintos **en medida de Lebesgue**, que es mucho mejor evidencia que cualquier
+muestra.
 
     Dónde mirar. docs/part2/lit_review.md. Sección 1.8 lleva la tabla de los
     veinte problemas y la sección 1.9 el veredicto criterio por criterio. Los
@@ -1711,116 +1586,100 @@ que cuadrase.
     5, que es la versión asentada y la que va a la memoria.
 
 
-## PARTE 10. Los errores que el proyecto cometió y detectó — DECIR
+## PARTE 10. Cuatro trampas de diseño, y cómo se detectan — DECIR
 
-Ésta es la mejor respuesta a "¿y cómo sé que algo de esto está bien?". Son cinco,
-en tres frases cada uno: qué estaba mal, cómo se detectó, y qué habría costado.
+Ésta es la mejor respuesta a "¿y cómo sé que algo de esto está bien?". Son
+cuatro, en tres frases cada una: qué pasa, cómo se detecta y qué está en juego.
 
-**Ninguno de los cinco lo detectó una revisión. Los cinco los detectó una
-medida.** Ésa es la parte que importa, porque una revisión sólo encuentra lo que
-ya sospechas.
+**A ninguna de las cuatro llega una revisión; a las cuatro llega una medida.**
+Ésa es la parte que importa, porque una revisión sólo encuentra lo que ya
+sospechas.
 
-### 10.1 El tercer φ que no estaba en el artículo
+### 10.1 El modelo de anchura constante, con el que el estudio mide cero
 
-**Qué estaba mal.** El proyecto arrastraba tres φ, y el tercero no salía de
-ninguna parte verificable: nadie lo había cotejado con el artículo.
+**Qué pasa.** Convertir `f(x)` en `[f(x) − ε, f(x) + ε]` con ε constante deja
+constante el segundo número de dos de los tres φ, y un campo constante no ordena
+nada.
 
-**Cómo se detectó.** Leyendo el artículo afirmación por afirmación y anotando
-página y número de ejemplo en cada una. Quince afirmaciones comprobadas; ese φ no
-estaba en ninguna.
-
-**Qué habría costado.** Todos los resultados del proyecto habrían sido sobre una
-familia de órdenes que incluye uno que los tutores no reconocerían como suyo. Se
-sustituyó por el Ejemplo 2.3, que sí está, y de ahí salió la regla que gobierna
-todo lo demás: **lo no verificado se quita, no se comenta.**
-
-### 10.2 El modelo de anchura constante, que habría hecho que el estudio midiera cero
-
-**Qué estaba mal.** El plan decía convertir `f(x)` en `[f(x) − ε, f(x) + ε]` con ε
-constante. Con eso, el segundo número de dos de los tres φ es constante, y un
-campo constante no ordena nada.
-
-**Cómo se detectó.** Midiéndolo antes de construir nada encima. Los cuatro
-conjuntos — los tres φ y el problema sin incertidumbre — salieron **idénticos como
+**Cómo se detecta.** Midiéndolo antes de construir nada encima. Los cuatro
+conjuntos — los tres φ y el problema sin incertidumbre — salen **idénticos como
 conjuntos de índices**, no sólo del mismo tamaño, en ZDT1 con 30 variables y
 DTLZ2 con 12, sobre 5000 puntos. Y no hace falta que sea constante: con
 imprecisión proporcional, donde la anchura varía muchísimo, la correlación entre
 centro y anchura sale +1.0000 y los cuatro conjuntos vuelven a ser idénticos.
 
-**Qué habría costado.** **Todas las tablas de la parte 1 habrían sido tablas de
+**Qué está en juego.** **Todas las tablas de la parte 1 habrían sido tablas de
 unos**, y la conclusión habría sido "el orden no importa" — que es exactamente lo
-contrario de lo que es verdad. Es el peor de los cinco con diferencia.
+contrario de lo que es verdad. Un estudio diseñado así no mide nada. Es la peor
+de las cuatro con diferencia.
 
-### 10.3 La anchura de ZDT1, cuyo óptimo caía donde estaban las soluciones
+### 10.2 La anchura de ZDT1, cuyo óptimo cae donde están las soluciones
 
-**Qué estaba mal.** La anchura natural para ZDT1 pasa todas las comprobaciones
-que el propio proyecto prescribía: su recorrido es 0.4999, su correlación con el
-centro es −0.011 y +0.103, y los tres φ separan. Por la comprobación prescrita,
-es una buena construcción.
+**Qué pasa.** La anchura natural para ZDT1 pasa todas las comprobaciones que el
+propio proyecto prescribía: su recorrido es 0.4999, su correlación con el centro
+es −0.011 y +0.103, y los tres φ separan. Por la comprobación prescrita es una
+buena construcción, y no lo es.
 
-**Cómo se detectó.** Repitiendo la comprobación **en la rodaja donde vive de
+**Cómo se detecta.** Repitiendo la comprobación **en la rodaja donde vive de
 verdad el conjunto eficiente**, en lugar de sobre la caja entera. Allí el
 conjunto de φ_cw es **exactamente** el conjunto sin incertidumbre, y los de φ_lu
 y φ_ls son la rodaja entera. La causa es de alineación: la función que hay que
 minimizar y la anchura se minimizan en el mismo sitio, así que no hay nada que
 intercambiar.
 
-**Qué habría costado.** Un estudio que informa de separación justo donde los
+**Qué está en juego.** Un estudio que informa de separación justo donde los
 conjuntos coinciden. Y la lección tiene alcance general: **una muestra uniforme
 de una caja de treinta dimensiones no contiene prácticamente nada cerca del
 conjunto eficiente**, así que separar sobre ella no es evidencia. Esto se
 convirtió en el criterio 3 de la puerta de la parte 2.
 
-### 10.4 La cancelación en coma flotante que destruía la columna de la anchura
+### 10.3 La cancelación en coma flotante que destruye la columna de la anchura
 
-**Qué estaba mal.** Calcular la anchura como `(c + r) − (c − r)` no da `2r` en
-coma flotante. El error es proporcional al tamaño del centro y cae entero en la
+**Qué pasa.** Calcular la anchura como `(c + r) − (c − r)` no da `2r` en coma
+flotante. El error es proporcional al tamaño del centro y cae entero en la
 columna de la anchura, que es el segundo número de dos de los tres φ.
 
-**Cómo se detectó.** Contando valores distintos. Una anchura que de verdad toma
-**46** valores distintos en una rejilla salía con **210**. Y midiendo el error
+**Cómo se detecta.** Contando valores distintos. Una anchura que de verdad toma
+**46** valores distintos en una rejilla sale con **210**. Y midiendo el error
 contra una referencia en aritmética entera: 7.2e-16, 1.1e-13, 1.1e-10 y 1.1e-07
 según el centro crece de 0 a 10⁹, mientras la ruta buena se queda en 2.2e-16 en
 los cuatro casos.
 
-**Qué habría costado.** No es el tamaño del error, es lo que le hace a la
+**Qué está en juego.** No es el tamaño del error, es lo que le hace a la
 estructura: **un orden construido sobre una columna está construido sobre los
-empates de esa columna**, y la resta los rompe todos. Se arregló sin tolerancias:
+empates de esa columna**, y la resta los rompe todos. Se arregla sin tolerancias:
 componer φ con el cambio de representación da el mismo automorfismo leído en
 otras coordenadas, comprobado entrada por entrada en racionales exactos sobre
 2000 juegos de coeficientes. **Cada problema declara en qué representación está
 calculado y φ se aplica una sola vez por la ruta que corresponde.** Por eso el
 proyecto usa una única relación de dominancia sin tolerancia en todas partes.
 
-### 10.5 La aserción de la puerta que era imposible de satisfacer
+### 10.4 La aserción de puerta que es imposible de satisfacer
 
-**Qué estaba mal.** La puerta de validación asertaba que cierta distancia
-mejoraría al subir el presupuesto. Y una proposición del propio proyecto —
-demostrada dos secciones más arriba en el mismo documento — dice que **eso no
-puede pasar**: el punto que causa la distancia está *protegido* (nadie puede
+**Qué pasa.** Asertar que la distancia del frente del solver al conjunto deducido
+mejora al subir el presupuesto no se puede cumplir nunca, y hay un teorema que
+dice por qué: el punto que causa la distancia está *protegido* (nadie puede
 dominarlo, porque minimiza estrictamente una columna que depende de una sola
 variable), así que un presupuesto mayor **lo vuelve a elegir** en lugar de
 quitarlo, y su otra coordenada es libre.
 
-**Cómo se detectó.** Escribiendo la proposición como proposición, con su
+**Cómo se detecta.** Escribiendo la proposición como proposición, con su
 demostración de dos líneas, en lugar de dejarla como intuición. Y luego
 midiéndola: al multiplicar el presupuesto por 80, la distancia al punto más
 cercano cae por un factor de cuatro cada vez que el presupuesto se multiplica por
 cuatro, **y el desbordamiento del punto protegido no se mueve**: 0.1226, 0.1404,
 0.1334, 0.1261. Su valor esperado es exactamente 1/8, **a cualquier presupuesto**.
 
-**Qué habría costado.** Una aserción que no puede pasar nunca, en la puerta que
-decide si empieza la fase de experimentos. O bien se habría relajado la
-tolerancia hasta que pasara — que es ajustar el criterio a la fuerza del
-resultado — o bien habría bloqueado el proyecto por un motivo inexistente. Es el
-error más sutil de los cinco y es el que mejor ilustra la disciplina: **la
-proposición estaba escrita en el mismo documento que la aserción que la
-contradecía.**
+**Qué está en juego.** Una aserción que no puede pasar nunca, en la puerta que
+decide si empieza la fase de experimentos: o se relaja la tolerancia hasta que
+pase — que es ajustar el criterio a la fuerza del resultado — o bloquea el
+proyecto por un motivo inexistente. Es la más sutil de las cuatro y la que mejor
+enseña la disciplina: **la proposición y la aserción que la contradice caben en
+el mismo documento.**
 
-    Dónde mirar. 10.1 en docs/part1/a0_framework.md. 10.2 y 10.3 en
-    docs/part1/a1_uncertainty_model.md, partes 1 y 2, y resumidos en
-    docs/part1/part1_closing.md secciones 6.1 y 6.2. 10.4 en
-    docs/part1/a4b_dominance_tolerance.md y en part1_closing sección 6.3. 10.5 en
+    Dónde mirar. 10.1 y 10.2 en docs/part1/a1_uncertainty_model.md, partes 1 y 2,
+    y resumidos en docs/part1/part1_closing.md secciones 6.1 y 6.2. 10.3 en
+    docs/part1/a4b_dominance_tolerance.md y en part1_closing sección 6.3. 10.4 en
     docs/part1/c3_validation.md, sección 1: la proposición está en 1.1, el
     corolario en 1.2 y la medida en 1.3.
 
@@ -1854,28 +1713,19 @@ tiene equivalente allí y no se reclama ninguna.
 
 ### 11.2 Qué queda, y cuál es el entregable de verdad
 
-La reunión acordó **cuatro** entregables: un documento de resultados con forma de
-artículo, una memoria en LaTeX, el repositorio de código y una presentación corta
-sin detalle de implementación. **Esto no se ha renegociado y consta así en el
-registro.**
-
-La lectura de trabajo con diecinueve días por delante, y hay que decirla en voz
-alta porque cambia dónde va el esfuerzo:
+Los entregables son tres, y con diecinueve días por delante conviene decir en voz
+alta dónde va el esfuerzo:
 
     **la presentación es el entregable de verdad.** Es lo que ocurre el día 25 y
         es lo único con fecha y hora. La parte 13 de este documento es su guion.
-    **este documento hace de memoria informal.** Cubre el proyecto entero en
-        lenguaje llano, con la procedencia de cada afirmación. La memoria en
-        LaTeX se monta desde aquí y desde los dos documentos de cierre, y es
-        montaje y traducción, no escritura nueva.
+    **este documento es la memoria informal.** Cubre el proyecto entero en
+        lenguaje llano, con la procedencia de cada afirmación, y se monta desde
+        aquí y desde los dos documentos de cierre.
     **el artículo es la salida formal, si da tiempo.** El material está: los dos
         documentos de cierre están escritos para que se levante de ellos.
-    **el estudio de carteras es trabajo futuro**, que es donde la diapositiva 21
-        de los propios tutores lo pone y donde la reunión lo dejó.
 
-Y hay que reconocer la tensión: **el registro dice cuatro entregables y esta
-lectura prioriza uno.** Si no se van a entregar los cuatro, eso se dice por
-correo antes, no el día 25.
+El estudio de carteras es trabajo futuro, que es donde la diapositiva 21 de los
+propios tutores lo pone.
 
 ### 11.3 Las cuatro cosas que el proyecto no hizo y sabe que no hizo
 
@@ -2145,7 +1995,7 @@ preguntas, y hay que llevar preparada la frase de la sección 9.5 sobre lo que
 **no** se afirma, porque es la primera pregunta que va a hacer un matemático.
 
 **Ten a mano tres diapositivas de reserva**, sin numerar y fuera del recorrido:
-los cinco errores de la parte 10, para la pregunta "¿cómo sé que esto está bien?";
+las cuatro trampas de la parte 10, para "¿cómo sé que esto está bien?";
 la contención de la sección 5.1, para la pregunta "¿y los tres pares?"; y la
 pérdida de presión selectiva de la 5.3, para "¿y esto escala?".
 

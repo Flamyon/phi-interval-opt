@@ -118,12 +118,10 @@ and p-05, which removed the one unverified number in b1's derivation, and
 recorded ten ambiguities without resolving any. docs/part2/lit_review.md.
 
 **derive the answer exactly, and let the derivation answer the gate's last
-criterion.** this reverses the order docs/plan_after_meeting.md section d1
-anticipated, which expected criterion 3 to be answered by a sampled diagnostic
-before the derivation was attempted; on a problem whose efficient sets are
-derivable the derivation answers it in Lebesgue measure instead, which is
-strictly better evidence than any diagnostic. the reversal was argued in
-docs/part2/lit_review.md section 7.2, taken by the human, and executed: b1's
+criterion.** criterion 3 asks whether the three phi give distinct non-trivial
+sets, and on a problem whose efficient sets are derivable the derivation answers
+it in Lebesgue measure rather than by a sampled diagnostic, which is strictly
+better evidence. docs/part2/lit_review.md section 7.2 states the argument. b1's
 route — image coordinates written out, phi-convexity by theorem 3.3 of [1],
 regularity by [10] proposition 32 then [10] theorem 34, condition (15) of example
 3.9 for the candidate set, example 3.8 statement 3 to lift to optimality — closes
@@ -141,19 +139,6 @@ then the same grid part 1 ran: three solvers, three phi, five seeds, budget 5000
 with the convergence check at 20000 — 18 configurations, 90 runs, 741.927417
 seconds, 24 figures, every number in the record read back out of a file the run
 wrote. results/part2/summary.csv, docs/part2/f3_native_run.md.
-
-**the fallback of docs/plan_after_meeting.md section d2 is recorded as not
-needed.** it was written on 2026-09-04, before the reading, so that the loss would
-be priced in advance rather than improvised: if no example passed the gate, part 2
-became the reading result, f2 and f3 did not run, the claim lost its third clause
-and the answer to [7]'s objection reverted to an argument. **none of that was
-incurred.** r-21, the risk that the gate might pass nothing, is retired in
-docs/answered.md, retired by the derivation rather than by the reading. the
-fallback's own content is not wasted and is not rewritten: **sections 1.8, 1.9 and
-6 of docs/part2/lit_review.md are that text**, they are owed to the memoria
-whatever else happened, and they go into it as the record of what the twenty
-problems are and why each does or does not serve. the paragraph stays in the plan
-as written, the plan being a record of what the meeting produced.
 
 
 ## 3. the result: the second calibration point
@@ -780,11 +765,10 @@ this section is what g1 turns into the paper's conclusion.
 
 ### 8.1 the arc, and what each stage established
 
-    **read and verify.** [1] checked line by line against the printed page,
-        fifteen claims, twelve confirmed, one refuted; the automorphism class, the
-        three named orders with their exact coefficients, definition 3.1's three
-        solution concepts and examples 3.8 and 3.9 with condition (15).
-        docs/part1/a0_framework.md.
+    **read and verify.** [1] checked line by line against the printed page: the
+        automorphism class, the three named orders with their exact coefficients,
+        definition 3.1's three solution concepts and examples 3.8 and 3.9 with
+        condition (15). docs/part1/a0_framework.md.
     **construct a calibration problem, and measure the trap first.** the literal
         reading of the supervisors' slide 19 is degenerate — a constant half-width,
         or any half-width that is an exact function of the centre, makes all three

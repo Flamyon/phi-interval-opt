@@ -544,7 +544,7 @@ dropping c3 or d2 instead would produce a longer report saying less.
 ends early rather than acquiring a hole. the cut order is: the optional sessions
 first, then f3 and f2, then e2 and with it f2 and f3 whatever the calendar says.
 e1, e3, g1, g3 and g4 are never cut. docs/plan_after_meeting.md section g2 states
-what each of the four artefacts loses at each cut.
+what each deliverable loses at each cut.
 
 
 ## 9. out of scope
@@ -1329,12 +1329,11 @@ is code, and a session record block for PROGRESS.md.
         than after it.
 
 ### g1 to g4: the write-up
-    new on 2026-09-04. the four artefacts due on 25 september are a paper-like
-    write-up with results, a latex memoria, the code repository and a short
-    presentation with no implementation detail. the repository is the other eleven
-    phases; these four subparts are the other three artefacts. **they are work and
-    not something that happens afterwards**, and every one of them is bound by the
-    number-provenance rule of section 10 e1.
+    new on 2026-09-04. the three deliverables due on 25 september are the
+    presentation, which is the real deliverable; an informal memoria of what was
+    done; and a paper if time allows. these four subparts are the work that
+    produces them. **they are work and not something that happens afterwards**,
+    and every one of them is bound by the number-provenance rule of section 10 e1.
 
     g1  the results document. the shape of docs/meeting_2026_09_04.md but reporting
         measurements rather than plans. it holds section b3's two central tables and

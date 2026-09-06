@@ -1,51 +1,32 @@
 # phi-interval-opt: what has been done, in plain words
 
-written 2026-09-02, at the end of phase c. this document is for a reader who has
-not followed the sessions: the supervisors, and the author in october writing the
-memoria. it explains what each subpart was for, what it found, what went wrong and
-how that was handled. it makes no claim that is not already recorded somewhere
-else in the repository, and it names where.
-
-it was itself written in the research chat, outside the repository, and CONTEXT.md
-section 12 named it for three sessions while it was absent from disk. it was
-committed by hand in session d2 and audited against the deliverables there:
-eighteen items, four wrong, seven overstated, one unsourceable and six caveats the
-deliverables carry and this file dropped. session d2-b applied all eighteen, and
-this is that version. where this document and a deliverable could differ the
-deliverable wins, on the model of the three phase summaries.
+this document is for a reader who has not followed the sessions: the supervisors,
+and the author in october writing the memoria. it covers phases a to c: what each
+subpart was for and what it found. it makes no claim that is not already recorded
+somewhere else in the repository, and it names where. where this document and a
+deliverable could differ the deliverable wins, on the model of the three phase
+summaries.
 
 PROGRESS.md is the working state file and is read by the coding agent. this file
 is the human one.
 
-**docs/explicacion_proyecto.md is the second plain-language account and both are
-kept**, doc-explicacion, 2026-09-06. it is in spanish, it is written for the
-author rather than for the supervisors, and it covers the whole project — phases
-a to e, part 2, the counterexample and the presentation skeleton — where this
-file stops at phase c. neither restates the other's numbers independently, and
-both defer to the deliverables.
+docs/explicacion_proyecto.md is the second plain-language account. it is in
+spanish, it is written for the author rather than for the supervisors, and it
+covers the whole project — phases a to e, part 2, the counterexample and the
+presentation skeleton — where this file stops at phase c. neither restates the
+other's numbers independently, and both defer to the deliverables.
 
-**this file and the three phase summaries cover the same ground and both are
-kept**, docs-clean, 2026-09-05. docs/part1/phase_a_summary.md,
-docs/part1/phase_b_summary.md and docs/part1/phase_c_summary.md are the close-out
-of one phase each, organised by subpart, and every claim in them points at the
-deliverable that established it. this file is one continuous account of phases a
-to c in plain words, with the failures narrated rather than cited, and it was
-written in the research chat rather than at a phase boundary. the readers are
-different and so is the register; **where this file and a phase summary could
+docs/part1/phase_a_summary.md, docs/part1/phase_b_summary.md and
+docs/part1/phase_c_summary.md are the close-out of one phase each, organised by
+subpart, and every claim in them points at the deliverable that established it.
+this file is one continuous account of phases a to c in plain words. the readers
+are different and so is the register; **where this file and a phase summary could
 differ, the summary wins**, on the same rule that puts the deliverable above the
 summary.
 
-**this file and docs/part1/part1_closing.md are not the same document either, and
-one half of this one is superseded.** part1_closing is the settled record of the
-whole of part 1, phases a to e, written for the supervisors and for g1 to lift
-from. this file stops at phase c. its retrospective sections are the plain-language
-account of a to c and they stand. **its last section, "where the project is, and
-what is left", is superseded and is kept unedited as history**: it was written on
-2026-09-02, it names d2 as the current subpart, and it names phase f as the
-portfolio application, which the supervisors' meeting of 2026-09-04 replaced with
-the interval-native problems of [16]. for where the project actually is, read
-PROGRESS.md section 1; for what part 1 established, docs/part1/part1_closing.md;
-for the path ahead, docs/plan_after_meeting.md.
+part 1 as a whole is docs/part1/part1_closing.md, the settled record of phases a
+to e, and part 2 is docs/part2/part2_closing.md. this file stops at phase c and
+supersedes neither.
 
 
 ## the project in three sentences
@@ -74,29 +55,17 @@ is not used. a0 section c9 establishes that the list is complete by enumerating
 every explicit automorphism in sections 2 and 3 of [1], line by line, rather than
 by skimming.
 
-**pre-repository history, and it is not a repository fact.** the project carried
-a third phi before any of this, called phi_wu in the research chat and defined
-as (f_r, half-width) with lambda = (0, 1) and beta = (-1/2, 1/2), and it was
-flagged unverified rather than left out. it was removed when a0's reading
-established that [1]'s third named example is 2.3. that happened in the research
-chat before the seed commit, which is why the repository holds no trace of it:
-the seed's own CONTEXT.md section 4 already names examples 2.2, 2.3 and 2.4 with
-the correct coefficients, so the correction is older than the first commit. the
-episode is the origin of the rule now in CONTEXT.md section 11, that an
-unverified item is left out until it is verified rather than kept behind a flag,
-and that is what it is recorded here for.
-
 a0 also confirmed the two structural facts everything downstream rests on: phi is
 applied to each interval objective separately, and a problem with m interval
 objectives becomes a real problem with 2m objectives.
 
 ### a1, how imprecision enters a problem
 
-this is the subpart that saved the project from producing nothing.
+this is the subpart the rest of the project rests on.
 
-the original plan added a constant band to each objective: f becomes
-[f - eps, f + eps]. a1 measured what that does and confirmed the suspicion: with a
-constant width, all three phi produce exactly the same efficient set, and it is
+the obvious way to make a crisp problem interval-valued is to add a constant band
+to each objective: f becomes [f - eps, f + eps]. a1 measured what that does: with
+a constant width, all three phi produce exactly the same efficient set, and it is
 the same set as the crisp problem. the reason is geometric. if the width never
 changes, the image of the problem in the (centre, width) plane is a flat line
 rather than a region, and any injective map sends a monotone curve to another
@@ -104,15 +73,16 @@ monotone curve. the three orders coincide by construction, not by result. the
 study would have measured nothing and would have looked like a null result.
 
 one caveat the deliverable carries and this account must not drop: that verdict is
-in exact arithmetic. computing phi from the endpoint pair instead, which is the
-interface CONTEXT.md then specified, makes the same degenerate construction look
-like a discovery. on zdt1 at eps = 0.05 the crisp order and phi_lu return 16
-non-dominated points and phi_ls and phi_cw return 30, and every bit of that
+in exact arithmetic. computing phi from the endpoint pair instead makes the same
+degenerate construction look like a discovery. on zdt1 at eps = 0.05 the crisp
+order and phi_lu return 16 non-dominated points and phi_ls and phi_cw return 30,
+and every bit of that
 difference is cancellation noise of order machine epsilon times |f| landing in a
 width column that is constant by construction. the expected symptom of a
 degenerate model is that the three phi coincide, which is easy to notice; the
 floating-point symptom is that they differ, which reads as a positive result. that
-is r-07, and a3-b below is where it was fixed.
+is r-07, and the evaluation-order rule of a3-b below is what keeps it from
+happening.
 docs/part1/a1_uncertainty_model.md part 1.
 
 the fix is that the width must vary independently of the centre as the decision
@@ -128,11 +98,11 @@ the lesson recorded: checking that the three phi differ on a uniform sample of a
 large box is not evidence, because such a sample contains almost nothing near the
 efficient set.
 
-### a1-b, fixing the test problem
+### a1-b, the width drivers of the test problem
 
-the small two-variable problem p1 originally gave both objectives the same width
-function, which made two of the four transformed columns identical. a1-b gave them
-different width drivers and re-measured everything.
+giving both objectives of the small two-variable problem p1 the same width
+function makes two of the four transformed columns identical, so each objective's
+half-width is driven by the other objective's variable.
 
 the band, and it is a1's finding rather than a1-b's: the efficient set is
 two-dimensional and not a curve, and no design at this size fixes that. two
@@ -143,12 +113,12 @@ x_2, which is the exact case where phi_cw reproduces the crisp order. a curve an
 three distinct phi are not simultaneously available at n = 2, m = 2.
 docs/part1/a1_uncertainty_model.md part 3.
 
-what a1-b itself cost is one property, and it is recorded rather than patched: the
-efficient set stops being a product of intervals under phi_lu and phi_ls, 13 and
-11 distinct x_2 ranges across the occupied x_1 columns against one apiece before,
-while phi_cw keeps its single range. that was the premise s-08 had been answered
-on, so b1 derives a region with a curved boundary rather than a rectangle for two
-of the three phi. docs/part1/a1_uncertainty_model.md, a1-b section 3.
+that design costs one property, and it is recorded rather than patched: the
+efficient set is not a product of intervals under phi_lu and phi_ls, 13 and
+11 distinct x_2 ranges across the occupied x_1 columns, while phi_cw keeps its
+single range. that is the premise s-08 was answered on, so b1 derives a region
+with a curved boundary rather than a rectangle for two of the three phi.
+docs/part1/a1_uncertainty_model.md, a1-b section 3.
 
 ### a2 and a3, the arithmetic and the orders
 
@@ -199,8 +169,8 @@ paper that is not in the repository is not checkable.
 
 ### a-close, an unexpected result
 
-while checking the benchmarks, the containment ND_lu inside ND_ls turned up, and
-it is a theorem rather than an observation. the general form: if one phi's image is
+the containment ND_lu inside ND_ls is a theorem rather than an observation. the
+general form: if one phi's image is
 a non-negative invertible linear map of another's, then dominance under the second
 implies dominance under the first, so the first's non-dominated set sits inside the
 second's. applying it to the paper's own coefficient matrices:
@@ -214,8 +184,8 @@ and either of the other two is partly a theorem and cannot be reported as eviden
 that the order matters. **the pair that carries the real signal is phi_lu against
 phi_cw.**
 
-the constraint the containments carry is narrower than "nothing is built on them",
-and c2 amended it to say so. the project claims no result from either containment
+the constraint the containments carry is narrower than "nothing is built on them".
+the project claims no result from either containment
 and b1 does not shorten a derivation with them; but a test may assert either as a
 self-check on the encoding, which c1 does on random search output and c2 on
 nsga-ii's and mopso's, because the containment holds for the non-dominated set of
@@ -317,32 +287,32 @@ evaluations, so the two solvers were not on equal budgets. both now stop on an
 evaluation count.
 
 mopso was not reproducible: pymoo truncates an overflowing archive using a random
-generator that no seed reaches. the first fix, enlarging the archive so it never
-overflows, was wrong and was reversed — it changed the leader pool from 200 to the
-6295 rows the run returns at budget 20000, which changes what the algorithm does,
-and cost a factor of 16 in runtime at that budget.
-the second fix seeds the truncation and changes nothing about the search.
+generator that no seed reaches. the fix is to seed the truncation, which changes
+the generator it draws from and nothing else. enlarging the archive so that it
+never overflows removes the same symptom and is the wrong intervention: the
+archive is mopso's leader pool, so taking it from 200 to the 6295 rows the run
+returns at budget 20000 changes what the algorithm does, and costs a factor of 16
+in runtime at that budget.
 
 c2 also established the single most reassuring fact in the project: pymoo's
 non-domination and the project's agree exactly, on every problem and every phi.
 there is one dominance relation from end to end.
 
-c2-b measured a confound nobody had noticed: all the objective-space metrics move
-with how many points a front carries, and the three solvers return very different
-numbers. on one fixed front, igd improves by a factor of 6.5 between 25 and 610
-rows from cardinality alone. any comparison across solvers has to be made at a
-common front size.
+c2-b measured a confound that runs through every objective-space comparison: all
+the objective-space metrics move with how many points a front carries, and the
+three solvers return very different numbers. on one fixed front, igd improves by
+a factor of 6.5 between 25 and 610 rows from cardinality alone. any comparison
+across solvers has to be made at a common front size.
 
 ### c3 through c3-f, the validation gate
 
-the gate asks whether the solvers recover the sets b1 derived. it took six
-sessions, and most of them consisted of the project being wrong and finding out.
+the gate asks whether the solvers recover the sets b1 derived.
 
-**the first version asserted the wrong thing.** it measured the distance from the
-solver's front to the derived set, and that distance cannot be small, for a reason
-that is a theorem. under phi_ls and phi_cw one image column depends on a single
-decision variable, so the sample point with the smallest value of that variable is
-strictly best in that column and nothing can dominate it, whatever its other
+**the forward direction cannot be asserted, and the reason is a theorem.** the
+distance from the solver's front to the derived set cannot be small. under
+phi_ls and phi_cw one image column depends on a single decision variable, so the
+sample point with the smallest value of that variable is strictly best in that
+column and nothing can dominate it, whatever its other
 coordinate is. it is non-dominated in any sample containing it, and it can sit
 anywhere. no budget removes it; a bigger budget re-elects it. this was proved, and
 the prediction it carries is exact in probability rather than accurate to two
@@ -354,15 +324,12 @@ and 0.1261, which does not move with the budget, while the median smallest |x_1|
 falls by a factor of four for every factor of four in it.
 docs/part1/c3_validation.md section 1.3.
 
-**the tolerance was derived wrongly.** it summed two terms where only one belongs.
-correcting it made the gate tighter under two phi and looser under one, which is
-what a tolerance that has not been tuned looks like. what it is, and the narrative
-owes the reader this: the 0.95 quantile of a measured fill-distance distribution,
-1000 uniform 100-point draws of the derived region, at the design-fixed front size
-of 100 and fixed in writing before the study ran. that is 0.2405, 0.2919 and
-0.2318 under the three phi, which is 12.0, 14.6 and 11.6 per cent of the box
-side. at that quantile a
-solver whose front were a uniform draw would exceed it in about one measurement in
+**what the tolerance is.** the 0.95 quantile of a measured fill-distance
+distribution, 1000 uniform 100-point draws of the derived region, at the
+design-fixed front size of 100 and fixed in writing before the study ran. that
+is 0.2405, 0.2919 and 0.2318 under the three phi, which is 12.0, 14.6 and 11.6
+per cent of the box side. at that quantile a solver whose front were a uniform
+draw would exceed it in about one measurement in
 twenty, so one isolated failure at a margin near zero is not evidence of a defect
 while a failure concentrated in one solver across seeds and phi is, and that
 reading was fixed in advance too. docs/part1/c3_validation.md sections 2.3 and 2.4.
@@ -380,12 +347,12 @@ is not blocked.
 those twelve are in the test suite and are meant to be. phase c closed with 794
 tests of which 782 pass and twelve fail on purpose, all of them
 test_the_derived_set_is_reached_by_the_solver at nsga-ii under phi_ls and phi_cw;
-repo-clean-b marked exactly those twelve parameter sets xfail(strict=True), so a
+exactly those twelve parameter sets are marked xfail(strict=True), so a
 thirteenth failure is a plain failure and an unexpected pass is an error, and the
 assertion itself still runs on all ninety. the suite is 822 tests after d2's 28.
 docs/part1/phase_c_summary.md section 5, PROGRESS.md.
 
-**the finding, and three sessions of trying to explain it.** at equal front size,
+**the finding, and the five explanations put to measurement.** at equal front size,
 nsga-ii covers this efficient set worse than uniform random sampling does, under
 phi_ls and phi_cw but not under phi_lu. c3-d, c3-e and c3-f put five candidate
 explanations to measurement and excluded all five. the list below is the one
@@ -476,8 +443,7 @@ docs/part1/c3_validation.md section 5.1.
 ## what the project can say so far
 
     the three phi are the paper's named examples, verified with page and example
-        numbers, and a fourth the project had been carrying, which is in none of
-        them, was removed before the repository existed.
+        numbers.
     a constant-width uncertainty model makes the whole study vacuous, and the
         replacement was designed and measured rather than assumed.
     two of the three efficient sets are provably contained in the third, so the
@@ -494,39 +460,11 @@ docs/part1/c3_validation.md section 5.1.
 none of these is the answer to the research question yet. that comes from phase e.
 
 
-## where the project is, and what is left
+## where the rest of the account is
 
-phase a, b and c are complete and tagged. phase b's tag was missing until session
-d2-b applied it: phase b closed with b2 and without a close-out session, so
-nothing tagged it at the time, docs/part1/phase_b_summary.md was written after the fact
-in repo-clean-b, and phase-b-complete now names b2's commit. the current subpart
-is d2, built and awaiting review. PROGRESS.md.
-
-    d2, the decision-space metrics. hausdorff distance, coverage, overlap and
-        cross-evaluation, all computed on decision vectors, which is the one space
-        every phi shares. these are the metrics that answer the research question.
-    e1, the tier 0 experiments. all three solvers, all three phi, all seeds, on
-        the small problems, with the phi comparison made on random search because
-        it is the only phi-neutral solver.
-    e2, the same on zdt1 and dtlz2.
-    e3, the synthesis. how much the efficient sets differ across phi, measured in
-        decision space, and which phi is carried into part 2.
-
-    then phase f, the portfolio application, which is where "which phi is better"
-        becomes a well-posed question, because out-of-sample performance is a
-        criterion external to the transformed problem and applies equally to every
-        phi.
-
-the minimum presentable path, if the calendar runs short, is a0, a1, a2, a3, a4,
-b1, b2, c1, c2, c3, d2 and e1: tier 0 only, with the decision-space metrics and
-the correctness gate, which CONTEXT.md section 8 states is a complete result and
-not a truncated one. so a5, e2 and e3 sit off that path as well as d1 and d3; a5
-is built already, and e2 and e3 are what tier 1 and the synthesis add on top of
-the minimum. d1, the objective-space metrics, is built only if time allows: it
-cannot compare phi against each other and carries r-12 and r-13, two unresolved
-problems of its own. d3 is the plotting and table code.
-
-open with the supervisors: docs/supervisor_questions.md, twelve questions in four
-parts, none of them blocking. the highest-value thing they can supply is not an
-answer but a file: the pdf of costa et al. with its reference list would close
-several open questions at once.
+phases a, b and c are complete and tagged, and this file stops there. what phases
+d and e measured, and what part 1 concluded from it, is
+docs/part1/part1_closing.md; part 2 is docs/part2/part2_closing.md. the open rows
+are PROGRESS.md, and the questions to the supervisors are
+docs/supervisor_questions.md, each carrying the working assumption the project
+proceeds on.

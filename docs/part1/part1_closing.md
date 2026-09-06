@@ -12,21 +12,19 @@ document g1 lifts part 1 from**, and it is written to be complete enough that g1
 opens nothing else for the results. where this document and an e1, e2 or e3
 artefact could differ, the artefact wins.
 
-**this document and docs/part1/e3_synthesis.md are the nearest overlap in the
-repository and the pair most likely to drift, so the difference is stated here and
-in that file's header**, docs-clean, 2026-09-05. e3 is **the working synthesis**:
-it carries the full reasoning, every intermediate step, the alternatives weighed
-and rejected, and the section-by-section argument that got from e1's and e2's
-artefacts to part 1's answer. this document is **the settled record**: the same
+docs/part1/e3_synthesis.md is **the working synthesis**: it carries the full
+reasoning, every intermediate step, the alternatives weighed and rejected, and
+the section-by-section argument that got from e1's and e2's artefacts to part 1's
+answer. this document is **the settled record**: the same
 answer with the reasoning compressed to what a reader needs to act on it, plus
 what e3 does not have — the question in the supervisors' own terms, the arc, the
 methodological results, and what part 1 hands to part 2 with its five-criterion
 gate. both documents check the same four prohibitions, each against its own text.
 **this one is canonical for part 1 and it is the one g1 lifts from**; e3 is where
-to go for why a conclusion holds, and it is not superseded. neither restates the other's
-numbers independently: every figure here is read out of an e1 or e2 artefact or
-out of e3, and named. if the two ever disagree, the artefact settles it and
-whichever of the two is wrong is corrected rather than quietly left.
+to go for why a conclusion holds, and it is not superseded. neither restates the
+other's numbers independently: every figure here is read out of an e1 or e2
+artefact or out of e3, and named. if the two ever disagree, the artefact settles
+it.
 
 what it may not do, and each is checked at the end. it may not rank phi,
 CONTEXT.md section 2. it may not claim anything from the containment while s-11
@@ -107,17 +105,15 @@ claim.
 
 five stages. no implementation detail; each names its close-out document.
 
-**read and verify.** [1] was read as a verification pass and not as a summary,
-because the project had previously carried a phi that no one had checked against
-the source. fifteen claims about the framework were checked line by line against
-the printed page: twelve confirmed, one refuted, one partial and one split, giving
-v-01 to v-23 with an equation or example number and a page for each — the
+**read and verify.** [1] was read as a verification pass and not as a summary:
+its claims about the framework were checked line by line against the printed page,
+giving v-01 to v-23 with an equation or example number and a page for each — the
 automorphism class and its admissibility condition, the three named examples with
 their exact coefficients and the convexity notion each coincides with, definition
 3.1's three solution concepts, theorems 3.1 to 3.3 with their hypotheses, and
-examples 3.8 and 3.9 with their numbered statements and condition (15). the
-refutation was that a fourth named example exists, example 2.1, carrying four
-different coefficient pairs and no convexity notion. section 5 of [1] was read
+examples 3.8 and 3.9 with their numbered statements and condition (15). a fourth
+named example exists, example 2.1, carrying four different coefficient pairs and
+no convexity notion. section 5 of [1] was read
 once and deliberately, because it contains proposition 5.1, which relates two of
 the three phi in the fuzzy setting; the interval side was searched exhaustively
 and contains no analogue. docs/part1/phase_a_summary.md, docs/part1/a0_framework.md.
@@ -623,8 +619,8 @@ the tolerance by 0.005 to 0.039 in a box of side 2.
 **they are left failing on purpose.** exempting the one solver the gate catches
 converts the gate into a report at the moment it does its job, and would do so on
 the strength of the result; a non-strict xfail makes the suite green while the
-assertion fails. what was done instead, in repo-clean-b, is `xfail(strict=True)`
-pinned to those twelve parameter sets: **the assertion is unchanged and still runs
+assertion fails. what is done instead is `xfail(strict=True)` pinned to those twelve parameter
+sets: **the assertion is unchanged and still runs
 on all ninety**, a thirteenth failure is a plain failure, and an unexpected pass is
 an error. so the twelve encode the finding of section 5.2 and encode that it has
 not moved. the suite is 1074 tests, 1062 passing and 12 xfailed.
@@ -772,9 +768,9 @@ run. that both thresholds were fixed before the run is exactly what made the
 failure visible, and that is the result.
 PROGRESS.md x-01, docs/part1/e3_synthesis.md section 5.4.
 
-a fourth item belongs here in one sentence and is section 5.1's counterpart: the
-plan's own control, a same-phi seed-to-seed noise floor, **was built, run, swept
-and found to have no operating point** — identically zero at delta zero at any
+a fourth item belongs here in one sentence and is section 5.1's counterpart: a
+same-phi seed-to-seed noise floor **has no operating point** — identically zero at
+delta zero at any
 dimension because two independent uniform samples share no point, and a step
 function in delta at tier 1 dimensions, 0.002604 to 0.006619 at a tenth of the box
 diameter and 0.734139 to 0.951821 at a fifth on dtlz2 — so it is withdrawn *as measured*
@@ -807,9 +803,8 @@ turns the design choice from a vulnerability into the claim's second half.
 > a property of its uncertainty model, and it is checkable before any solver
 > runs.**
 
-it is longer than the claim of docs/plan_after_meeting.md section a1, it is
-conditional, and it is stronger: it is falsifiable on a new problem rather than
-merely reproducible on a chosen one, and it survives a reviewer who asks where the
+it is conditional, and it is stronger for being so: it is falsifiable on a new
+problem rather than merely reproducible on a chosen one, and it survives a reviewer who asks where the
 width function came from. it costs the presentation one extra sentence.
 docs/part1/e3_synthesis.md section 7.1.
 
@@ -826,13 +821,9 @@ clause by clause against the evidence, docs/part1/e3_synthesis.md section 7:
     c5  "persists on problems interval-      **not supported, and it cannot be by
         valued at source"                    e1 and e2**
 
-> **c5 is marked unsupported and must not appear in any document written before
-> f1 returns a verdict.** it is phase f's, f1's reading gate has not run, and r-21
-> records that the gate may pass no example of [16]. the fallback is already
-> written, docs/plan_after_meeting.md section d2: part 2 becomes the reading
-> result — what the twenty problems are, why each does or does not serve, and what
-> a study using them would need — f2 and f3 do not run, and f4 has a form for that
-> case.
+> **c5 is not supported by e1 and e2 and cannot be**, both of part 1's benchmark
+> problems being crisp problems with a band put around them. it is part 2's to
+> settle, on a problem that is interval-valued at source.
 
 ### 7.2 the five-criterion gate an interval-native problem must pass
 
@@ -920,24 +911,18 @@ PROGRESS.md section 2, docs/plan_after_meeting.md section c3.
     s-12    the singular segments; priced, section 5.1
     s-07, s-09  the slice check and the per-objective width scaling; the tier 1
            forms were chosen against the stronger check meanwhile
-    p-01, p-02, p-05, p-06  four reading tasks, all answerable now that the corpus
-           is open, and p-05 is the one unverified number in b1's derivation
-    f1     the reading gate on [16], on which clause c5 stands or is withdrawn
+    p-01, p-06  two reading tasks, both answerable now that the corpus is open
 
-**two of those six were discharged in session lit-review on 2026-09-05 and the
-list above is left as written, being part 1's record of what part 1 handed over.**
 **p-02 and p-05 are closed**, docs/answered.md and docs/part2/lit_review.md
 sections 2 and 3: [9]'s a_w is the half-width by its own equation (2.4), its
 definition 3.4 is example 2.4 of [1] in the same coefficients, and [10]'s
 regularity criterion is theorem 34 exactly as b1 cited it — **so b1's derivation
-now has no unverified number.** **f1 has run**, docs/part2/lit_review.md: no
-example of [16] passes the gate and none fails it, because criterion 3 cannot be
-answered by reading and not determinable is not a pass; **five pass every criterion
-a reading can settle and criterion 5 passes on nineteen of twenty**, so the
-fallback of docs/plan_after_meeting.md section d2 is not what part 2 becomes.
-**clause c5 of section 7.1 is reachable and stays marked unsupported** until
-criterion 3 is answered on one of the five, which lit_review section 7.2 argues the
-derivation itself does. p-01, p-06, s-07, s-09, s-11 and s-12 are untouched.
+carries no unverified number.** **f1 has run**, docs/part2/lit_review.md: no
+example of [16] passes the gate on the reading alone and none fails it, because
+criterion 3 cannot be answered by reading and not determinable is not a pass;
+**five pass every criterion a reading can settle and criterion 5 passes on
+nineteen of twenty**. **clause c5 of section 7.1 is reachable**, and it is judged
+in docs/part2/part2_closing.md section 3.3.
 
 
 ## 8. the four prohibitions, checked

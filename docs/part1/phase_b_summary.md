@@ -1,9 +1,7 @@
 # phase b: what was established, and what it changed
 
-session repo-clean-b, 2026-09-02, written after the fact. phase b of CONTEXT.md
-section 8, ground truth, is complete: subparts b1 and b2, with no addendum
-session. it is the only phase that closed without a summary, and this document
-is that summary and nothing more.
+phase b of CONTEXT.md section 8, ground truth, is complete: subparts b1 and b2,
+with no addendum session.
 
 who this is for. a reader who has not followed the sessions: the supervisors, and
 the author in october writing the memoria. it repeats no derivation, runs no
@@ -11,14 +9,11 @@ measurement and states no new result. every claim below points at the session
 deliverable that established it, and where this document and a deliverable could
 differ the deliverable wins.
 
-**this document and docs/project_narrative.md cover the same ground and both are
-kept**, docs-clean, 2026-09-05. that file is one continuous account of phases a to
-c in plain words, written in the research chat rather than at a phase boundary,
-with the failures narrated rather than cited; this one is the close-out of a
-single phase, organised by subpart, and every claim in it points at the
-deliverable that established it. **where the two could differ, this one wins.**
-part 1 as a whole is docs/part1/part1_closing.md, which is the settled record and
-supersedes neither.
+docs/project_narrative.md is one continuous account of phases a to c in plain
+words; this document is the close-out of a single phase, organised by subpart,
+and every claim in it points at the deliverable that established it. **where the
+two could differ, this one wins.** part 1 as a whole is
+docs/part1/part1_closing.md, which is the settled record and supersedes neither.
 
 where the detail is, so this document does not become a second copy of it:
 

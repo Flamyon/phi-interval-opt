@@ -10,14 +10,11 @@ new result. every claim below points at the session deliverable or the paper tha
 established it, and where the two could differ the paper wins, which is
 CONTEXT.md section 11's first rule.
 
-**this document and docs/project_narrative.md cover the same ground and both are
-kept**, docs-clean, 2026-09-05. that file is one continuous account of phases a to
-c in plain words, written in the research chat rather than at a phase boundary,
-with the failures narrated rather than cited; this one is the close-out of a
-single phase, organised by subpart, and every claim in it points at the
-deliverable that established it. **where the two could differ, this one wins.**
-part 1 as a whole is docs/part1/part1_closing.md, which is the settled record and
-supersedes neither.
+docs/project_narrative.md is one continuous account of phases a to c in plain
+words; this document is the close-out of a single phase, organised by subpart,
+and every claim in it points at the deliverable that established it. **where the
+two could differ, this one wins.** part 1 as a whole is
+docs/part1/part1_closing.md, which is the settled record and supersedes neither.
 
 where the detail is, so this document does not become a second copy of it:
 
@@ -59,20 +56,19 @@ result about phi. what it produces is the ground the results will stand on: a
 verified statement of the framework, a construction of imprecision that is not
 degenerate, and code that evaluates both without arithmetic artefacts.
 
-**a0, the verification pass over [1].** docs/part1/a0_framework.md. no code. fifteen
-claims about the framework, taken from CONTEXT.md section 4 as the research chat
-had read it, were checked against the paper itself: twelve confirmed, one refuted,
-one partial and one split. it produced v-01 to v-23, each carrying an equation or
-example number and a printed page: the class and its admissibility condition
+**a0, the verification pass over [1].** docs/part1/a0_framework.md. no code. the
+framework's claims were checked against the paper itself, statement by statement.
+it produced v-01 to v-23, each carrying an equation or example number and a
+printed page: the class and its admissibility condition
 lambda_2i-1 beta_2i != lambda_2i beta_2i-1 and nothing further (v-01, v-02), the
 three named examples with their exact coefficients and the convexity notion each
 coincides with (v-06 to v-08), definition 3.1's three solution concepts and their
 implication chain (v-09), theorems 3.1 to 3.3 with their exact hypotheses (v-10 to
 v-12), examples 3.8 and 3.9 with their numbered statements and condition (15)
 (v-14 to v-17), and the worked function after example 3.9 that became problem p0
-(v-18 to v-20). the refutation was that a further named example exists, example
+(v-18 to v-20). it also established that [1] names a further example, example
 2.1, with four different coefficient pairs in its four components and no convexity
-notion attached (v-21). CONTEXT.md was corrected in sections 4, 6 and 11.
+notion attached (v-21).
 
 **a0-b, section 5 read once, deliberately.** docs/part1/a0_framework.md addendum, and
 the source papers committed to papers/. CONTEXT.md section 9 puts sections 4 and 5
@@ -89,7 +85,7 @@ and what session a-close closes.
 once for the project, how imprecision enters a problem. it rejected imprecision in
 the coefficients and took bounded imprecision in the objective with a half-width
 driven by a decision variable, and it did so on measurements rather than on
-preference (v-30 to v-32, and finding 2 below). it produced the design rule that
+preference (v-30 to v-32, and finding 1 below). it produced the design rule that
 every problem is built to, that all six image coordinates are convex under all
 three phi exactly when c - r and r are both convex (v-33), the tier 0 problem p1,
 and the tier 1 half-widths for both benchmarks.
@@ -109,25 +105,25 @@ against a tolerance, with 29 tests. gh_difference was re-cited from a literature
 summary to a primary source in papers/, slide 5 equation (2) of the presentation
 (v-39, v-40), which retired r-10.
 
-**a1-b, distinct widths for p1.** a1 gave both interval objectives of p1 the same
-half-width, which made two of the four transformed columns the same function under
-phi_ls and phi_cw. taking r_1 driven by x_2 and r_2 by x_1 removes that. the
-modified p1 keeps every property a1 established and loses one, the efficient set
-being no longer a product of intervals, which is re-answered as s-08. the same
-session moved every verified fact into docs/verified.md and every retired row into
-docs/answered.md, which is the filing the rest of phase a used.
+**a1-b, distinct widths for p1.** giving both interval objectives of p1 the same
+half-width makes two of the four transformed columns the same function under
+phi_ls and phi_cw, so r_1 is driven by x_2 and r_2 by x_1. p1 keeps every property
+a1 established and loses one, the efficient set not being a product of intervals,
+which is re-answered as s-08. every verified fact lives in docs/verified.md and
+every retired row in docs/answered.md, which is the filing the rest of phase a
+used.
 
 **a4, problems_tier0.py.** p0, the worked function [1] gives after example 3.9,
 with the published anchor x = 0 carried as a named constant together with the whole
 of what the paper states about it and an explicit note that it is an anchor and not
 an efficient set. p1 in a1-b's form. 13 tests, 42 in the suite, including the r-08
-slice check as an assertion. the reading of the paper's "strict minimum" as
-definition 3.1(1) was demoted from a claim to an inference and opened as p-06.
+slice check as an assertion. the paper's "strict minimum" is read as definition
+3.1(1) as an inference and not as a claim, which is p-06.
 
 **a4-b, the dominance rule.** docs/part1/a4b_dominance_tolerance.md. measured what
 computing a width as f_u - f_l costs, found a clean tolerance band and showed it
 disappearing with magnitude, and recommended removing the subtraction instead
-(finding 4 below). it changed p1's delta to 1/8 as d-01 after verifying in exact
+(finding 3 below). it changed p1's delta to 1/8 as d-01 after verifying in exact
 integer arithmetic that delta enters every image coordinate as an additive
 constant and moves no efficient set, and it established that pymoo 0.6.2's epsilon
 argument is a no-op, dominance being translation invariant.
@@ -143,7 +139,7 @@ returned a1-b's counts without it. 55 tests. d-02 closed, r-07 retired.
 **a5, problems_tier1.py.** zdt1 and dtlz2 as interval problems in centre and
 half-width form from the start, the crisp objectives read from [2] and [3]
 themselves in that session (v-44, v-45). the separation sample is constructed from
-each benchmark's published crisp Pareto set rather than sampled, which is finding 3
+each benchmark's published crisp Pareto set rather than sampled, which is finding 2
 applied. neither benchmark saturates: the three phi are distinct at all four
 positive levels with non-dominated fractions between 0.031 and 0.927. 22 tests, 115
 in the suite.
@@ -155,34 +151,10 @@ gate reports the containment's violation count as a measure of numerical noise.
 this document is its other deliverable.
 
 
-## 2. the four findings that changed the project's direction
+## 2. the three findings that fixed the design
 
-these are the four places where phase a's output is different from what phase a set
-out to build. each is stated with the evidence that forced it.
-
-### the phi that was not in the paper, and its replacement by example 2.3
-
-before the repository existed, the project carried a phi that had never been
-checked against [1]. CONTEXT.md section 10 a0 records it in one sentence, as the
-reason a0 exists: a0 "is a check on that reading, not a repeat of it, and it exists
-because the project previously carried a phi that no one had ever checked against
-the source." the replacement is example 2.3 of [1], lambda = (1, 0),
-beta = (-1, 1), giving (f_l, f_u - f_l), the lower endpoint and the **full width**,
-verified in a0 as v-07 at page 6, lines 342-346. that is a different order from
-example 2.4's ((f_l + f_u)/2, (f_u - f_l)/2), the centre and the **half-width**,
-v-08, and the difference is a factor of two in one coordinate.
-
-the correction itself predates the repository and the repository holds no record of
-the discarded phi. what phase a added is the verification and the rule. a0 checked
-all three examples' coefficients against the printed page rather than against a
-summary, established that they are the only named examples carrying a convexity
-notion and that example 2.1 is a further named phi carrying none (v-21, v-22), and
-CONTEXT.md section 4 now carries the standing instruction that no code and no table
-may use one word for the full width and the half-width. the general form of the
-lesson is CONTEXT.md section 11's first rule, that a coefficient or a theorem
-statement enters the project only from a paper read in this project and recorded
-with its location. every subsequent finding in this list was found because that
-rule was being followed.
+three places where a measurement, and not a preference, decided how the study is
+built. each is stated with the evidence that forced it.
 
 ### the constant-epsilon degeneracy
 

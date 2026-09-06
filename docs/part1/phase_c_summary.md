@@ -10,14 +10,11 @@ measurement and states no new result. every claim below points at the session
 deliverable that established it, and where this document and a deliverable could
 differ the deliverable wins.
 
-**this document and docs/project_narrative.md cover the same ground and both are
-kept**, docs-clean, 2026-09-05. that file is one continuous account of phases a to
-c in plain words, written in the research chat rather than at a phase boundary,
-with the failures narrated rather than cited; this one is the close-out of a
-single phase, organised by subpart, and every claim in it points at the
-deliverable that established it. **where the two could differ, this one wins.**
-part 1 as a whole is docs/part1/part1_closing.md, which is the settled record and
-supersedes neither.
+docs/project_narrative.md is one continuous account of phases a to c in plain
+words; this document is the close-out of a single phase, organised by subpart,
+and every claim in it points at the deliverable that established it. **where the
+two could differ, this one wins.** part 1 as a whole is
+docs/part1/part1_closing.md, which is the settled record and supersedes neither.
 
 where the detail is, so this document does not become a second copy of it:
 
@@ -31,9 +28,8 @@ where the detail is, so this document does not become a second copy of it:
                                    record
     docs/supervisor_questions.md   the open questions, written to be answered
     docs/part1/phase_a_summary.md  phase a's close-out, on the same model
-    docs/part1/phase_b_summary.md  phase b's, written after the fact in
-                                   repo-clean-b. phase b's own detail is b1,
-                                   which is itself a document,
+    docs/part1/phase_b_summary.md  phase b's. phase b's own detail is b1, which
+                                   is itself a document,
                                    docs/part1/b1_phi_efficient_sets.md
 
 
@@ -71,29 +67,28 @@ generator that neither minimize(seed=s) nor numpy.random.seed reaches, so a mops
 run is not reproducible once the archive overflows, measured at five different
 fronts from one seed. that is r-14.
 
-**c2-b** reversed c2's fix for it. c2 had set the archive to the whole evaluation
-budget so the truncation was never reached; that works and is the larger
-intervention, since the archive is mopso's leader pool and resizing it changes
-what the search does and costs a factor of 16 in time at budget 20000. c2-b seeds
-the truncation instead, which changes the generator it draws from and nothing
-else, and mopso runs at pymoo's own archive size of 200. this is the general
-lesson CONTEXT.md section 11 now carries as an evidence rule: c2's reproducibility
-test had run at a budget where the archive never overflowed, so it asserted a
-property it could not observe and would have passed with the defect present.
-c2-b's test counts the truncation calls and fails if the count is zero.
+**c2-b** fixes it by seeding the truncation, which changes the generator it draws
+from and nothing else, so mopso runs at pymoo's own archive size of 200. setting
+the archive to the whole evaluation budget removes the same symptom and is the
+larger intervention, since the archive is mopso's leader pool and resizing it
+changes what the search does and costs a factor of 16 in time at budget 20000.
+the general rule CONTEXT.md section 11 carries with it is about the test and not
+the fix: a test that guards a branch must demonstrate the branch was entered. a
+reproducibility grid run at a budget where the archive never overflows asserts a
+property it cannot observe and passes with the defect present, so c2-b's test
+counts the truncation calls and fails if the count is zero.
 
 **c3, tests/test_validation.py and docs/part1/c3_validation.md.** the gate. it runs all
 three solvers on p1 under all three phi at the budget r-15 fixed, over five seeds
 and both settings of include_singular_segments, ninety measurements, and compares
-the recovered decision vectors against the sets b1 derived and b2 encodes. it was
-rewritten three times and each rewrite corrected the gate and never the solvers.
-c3-b removed a forward assertion c3 should not have made. c3-c corrected three
-things: the forward floor became a proposition with a proof rather than an
-observation; "dominated by b2's reference front" was replaced as the quality
-measure by exact membership in b1 section 2.4's closed-form region, because the
+the recovered decision vectors against the sets b1 derived and b2 encodes. three
+things fix what it may assert and how. the forward floor is a proposition with a
+proof and not an observation, so the forward direction is reported and never
+asserted. the quality measure is exact membership in b1 section 2.4's closed-form
+region and not the count of points dominated by b2's reference front, because the
 sampled measure moves with reference density, running from 9 per cent at 250
-reference rows to 31 per cent at 16000 where the exact answer is 46; and the
-tolerance stopped being a sum of two resolution floors, the reverse direction
+reference rows to 31 per cent at 16000 where the exact answer is 46. and the
+tolerance is one resolution floor and not the sum of two, the reverse direction
 being bounded by one of them alone.
 
 
