@@ -9,6 +9,12 @@
 #   bounds()             the decision box, as (lower, upper) arrays.
 #   n_vars               the number of decision variables.
 #   n_obj                the number of interval objectives, m.
+# and one invariant, which f6 added and which every problem must satisfy at every
+# point of its box: the interval each pair denotes is well ordered, f_l <= f_u,
+# which reads r >= 0 in centre and half-width coordinates. it is not a convention
+# and it is not left to the problem: Problem below wraps every evaluate in the
+# check, so a problem that returns an interchanged pair raises where it returns
+# it rather than at whatever reads the negative width later.
 #
 # the no-round-trip rule, which is why representation exists. a problem returns
 # the representation in which its intervals are actually computed, and phi is
@@ -38,10 +44,102 @@ from collections import namedtuple
 
 import numpy as np
 
-Problem = namedtuple(
-    "Problem",
-    ("name", "n_vars", "n_obj", "representation", "evaluate", "bounds"),
-)
+# the well-ordering invariant, f6, and where it is enforced.
+# an interval is a pair with f_l <= f_u, and until f6 nothing in src/ tested it:
+# docs/part2/f5_boundary_interchange.md section 1 pushed an ill-ordered pair
+# through phi_registry and got negative widths out of examples 2.3 and 2.4, which
+# are defined on any pair of reals and therefore raise nothing. so the check is
+# put at the one interface every problem shares, the Problem record itself, and
+# it is put there rather than in each evaluate so that tier 0, tier 1, the native
+# problems and any problem a later session adds are covered by construction.
+# how, and what it costs to bypass. Problem wraps the evaluate it is given, so a
+# record cannot be built without the check. the one way past it is _replace on an
+# already built record, which does not re-enter __new__; the two test helpers
+# that use it wrap the guarded callable and so still run the check.
+# it raises and does not assert. an assert is removed by python -O and this is
+# the check that separates an interval from a pair of numbers, so it is not
+# something a flag may switch off; ValueError is what the rest of this module and
+# src/random_search.py already raise for a violated precondition.
+# it runs always and not under a flag, and that is measured and not assumed.
+# f6 timed it on f3's own configuration, I-BK1 under nsga-ii at the gate budget
+# of 100 by 50, best of five: the 51 evaluate calls of 100 rows cost 1.315 ms
+# unguarded and 1.675 ms guarded, so the guard is 0.361 ms per run, and one such
+# run takes 0.711 s end to end, which puts the guard at 0.05 per cent of it. on
+# the 20000-row random search call of the same run it is 0.003 ms on 0.818 ms.
+# the relative figure on the small call is 27 per cent of the evaluation alone,
+# and that is the honest way to state it: the check is a comparison and a
+# reduction over the same arrays the evaluation just built, so it is a fixed
+# fraction of a cost that is itself a twentieth of one per cent of the run.
+problem_fields = ("name", "n_vars", "n_obj", "representation", "evaluate", "bounds")
+
+
+# whether each interval of one objective's pair is well ordered, in its own representation
+def well_ordered(representation, first, second):
+    # "endpoints" is (f_l, f_u) and the invariant is read directly. "centre_radius"
+    # is (c, r) and the same invariant is r >= 0, since f_l <= f_u iff c - r <=
+    # c + r iff 0 <= 2r. no endpoint is built from a centre and a half-width here:
+    # the invariant is tested in the coordinates the problem returned, which is
+    # the no-round-trip rule of a3 applied to a check rather than to a value.
+    # a nan entry fails both tests and is reported by the same message, which is
+    # deliberate: a nan pair is not an interval either.
+    if representation == "endpoints":
+        return np.less_equal(first, second)
+    if representation == "centre_radius":
+        return np.greater_equal(second, 0.0)
+    raise ValueError(
+        "unknown representation {!r}; a problem declares \"endpoints\" for "
+        "(f_l, f_u) or \"centre_radius\" for (c, r) and nothing else"
+        .format(representation))
+
+
+# the message the guard raises with, naming the objective and the point
+def ill_ordered_message(name, representation, objective, n_pairs, x, pair, ok):
+    # the first failing entry is reported and not a count: what a later session
+    # needs is one point it can evaluate by hand, and the objective it failed on.
+    first, second = pair
+    entry = tuple(int(k) for k in np.argwhere(np.logical_not(ok))[0])
+    point = np.asarray(x, dtype=float)[entry]
+    return (
+        "problem {!r} returned an ill-ordered interval: objective {} of {}, "
+        "population entry {}, x = {}, where the {} pair is ({!r}, {!r}). every "
+        "problem must satisfy f_l <= f_u at every point of its box, which reads "
+        "r >= 0 in centre and half-width coordinates. an interchanged pair is "
+        "carried by every phi without complaint and emerges as a negative width, "
+        "docs/part2/f5_boundary_interchange.md section 1.3"
+        .format(name, objective, n_pairs, entry, point.tolist(), representation,
+                float(np.asarray(first)[entry]), float(np.asarray(second)[entry])))
+
+
+# one problem's evaluate with the invariant checked on every call
+def checked_evaluate(name, representation, evaluate):
+    # the wrapper returns the pairs unchanged and copies nothing, so no result
+    # moves through it: it reads the arrays and hands back the same objects.
+    # the objective is reported as it is indexed in the returned tuple, from
+    # zero, so that a reader can go straight to the pair the message names.
+
+    # evaluate, with f_l <= f_u tested on every objective before the pairs return
+    def evaluate_and_check(x, params=None):
+        pairs = evaluate(x, params)
+        for objective, pair in enumerate(pairs):
+            ok = well_ordered(representation, pair[0], pair[1])
+            if not np.all(ok):
+                raise ValueError(ill_ordered_message(name, representation,
+                                                     objective, len(pairs), x,
+                                                     pair, ok))
+        return pairs
+
+    return evaluate_and_check
+
+
+# the problem record, whose evaluate is the given one with the invariant checked
+class Problem(namedtuple("Problem", problem_fields)):
+    __slots__ = ()
+
+    # builds the record, wrapping evaluate in the well-ordering check
+    def __new__(cls, name, n_vars, n_obj, representation, evaluate, bounds):
+        return super().__new__(
+            cls, name, n_vars, n_obj, representation,
+            checked_evaluate(name, representation, evaluate), bounds)
 
 
 # splits a population array into one array per decision variable

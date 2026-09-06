@@ -28,11 +28,17 @@
 #
 # the representation is "endpoints", and that is the paper's own form. [16] writes
 # each objective as (+)_j [a_ij, b_ij] (.) h_ij(x) with (.) Moore's product,
-# definition 2.1(iii) printed page 3; every h_ij of I-BK1 is a square and hence
-# non-negative on the whole box, so (.) does not interchange the boundary
-# functions anywhere, [16]'s own condition of printed page 27 and
-# docs/part2/lit_review.md section 1.7, and
+# item (iii) of the operations display of [16] section 2.1, printed page 4, the
+# locator corrected in f6 against the paper from the "definition 2.1(iii),
+# printed page 3" this comment carried since f2, the content unchanged; every
+# h_ij of I-BK1 is a square and hence non-negative on the whole box, so (.) does
+# not interchange the boundary functions anywhere, [16]'s own condition of
+# printed page 27 and docs/part2/lit_review.md section 1.7, and
 #     G_i(x) = [ sum_j a_ij h_ij(x),  sum_j b_ij h_ij(x) ].
+# f6 computes that identity through the product rather than assuming it: the two
+# terms go through src/interval_math.py's multiply_by_real and are summed with
+# add, which returns the same two endpoint functions here and the interchanged
+# ones on any problem whose h_ij changes sign.
 # the two endpoint functions are therefore what the published coefficients
 # compute and the centre and half-width are what would be derived from them. per
 # d-02 this module returns the endpoints and builds no centre and no radius, and
@@ -66,6 +72,7 @@
 
 import numpy as np
 
+from interval_math import add, multiply_by_real
 from phi_transforms import phi_registry
 from problems_tier0 import Problem, decision_columns
 from random_search import phi_image
@@ -111,11 +118,21 @@ def basis_functions(objective, x_1, x_2):
     return np.square(x_1 - ibk1_shift), np.square(x_2 - ibk1_shift)
 
 
-# one objective's interval as its two endpoint functions, over the population
+# one objective's interval, as [16]'s (+)_j [a_ij, b_ij] (.) h_ij(x) term by term
 def objective_endpoints(objective, x_1, x_2):
+    # the product is moore's, src/interval_math.py's multiply_by_real, and not
+    # the fixed-order pair (sum_j a_ij h_ij, sum_j b_ij h_ij) this function
+    # computed before f6. the two readings agree wherever every h_ij is
+    # non-negative, which is where I-BK1 lives and is why no number of f2 or f3
+    # moves, tests/test_interval_invariant.py asserting the agreement bitwise on
+    # a dense grid of the box rather than leaving it stated; they disagree the
+    # moment a basis function changes sign, docs/part2/f5_boundary_interchange.md
+    # section 1.2. the sum is [16]'s (i), src/interval_math.py's add.
     first, second = basis_functions(objective, x_1, x_2)
     (lower_1, upper_1), (lower_2, upper_2) = ibk1_coefficients[objective]
-    return (lower_1 * first + lower_2 * second, upper_1 * first + upper_2 * second)
+    term_lower_1, term_upper_1 = multiply_by_real(lower_1, upper_1, first)
+    term_lower_2, term_upper_2 = multiply_by_real(lower_2, upper_2, second)
+    return add(term_lower_1, term_upper_1, term_lower_2, term_upper_2)
 
 
 # I-BK1, problem 1 of [16] appendix A, as two interval objectives

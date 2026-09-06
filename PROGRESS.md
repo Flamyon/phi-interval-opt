@@ -24,7 +24,7 @@ elsewhere:
                         removed in docs-clean
     git log             session-by-session detail, one commit per subpart
 
-    highest numbers in use: v-59, p-06, s-13, r-22, d-06, and x-02 for the
+    highest numbers in use: v-59, p-06, s-13, r-23, d-06, and x-02 for the
     registered predictions of section 9, which is new.
     numbering continues across those files and numbers are never reused.
 
@@ -1066,8 +1066,16 @@ r-22 | a slice fraction from a1 part 4's separation sweep is grid-resolution
     docs/part1/a1_uncertainty_model.md, a5-b section 4.
 
 r-17 | retired in c3-c, r-10 in a3, r-01 in a4, r-07 in a3-b, r-04 in b1, r-03 in
-    plan-after-meeting and **r-20 in e2**, its mitigation taken in a5-b and the
-    effective column count measured at e2's run. all seven are in
+    plan-after-meeting, **r-20 in e2**, its mitigation taken in a5-b and the
+    effective column count measured at e2's run, and **r-23 registered and
+    discharged in f6**, the fixed-order product and the absent f_l <= f_u guard
+    that docs/part2/f5_boundary_interchange.md section 1 found: both halves are
+    built, the product from [16] section 2.1 item (iii) printed page 4 and the
+    guard at the Problem interface every problem shares, and no result of the
+    project moved, which tests/test_interval_invariant.py asserts bitwise rather
+    than stating. **nothing of f5 is discharged with it**: s-14 and the proposed
+    sixth gate criterion are separate and remain where f5 left them, unregistered
+    and open to the research chat. all eight are in
     docs/answered.md with the reasoning that retired them.
 
 ## 9. registered predictions

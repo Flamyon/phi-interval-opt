@@ -208,6 +208,22 @@ proposed for registration by the research chat, not registered here, since this
 session commits only this document: **r-23**, the fixed-order product and the
 missing well-ordering guard, with this section as its evidence.
 
+**added by f6, 2026-09-06, and nothing above is rewritten.** the defect is fixed:
+the product is `multiply` and `multiply_by_real` in `src/interval_math.py` and
+`objective_endpoints` in `src/problems_native.py` calls it, and the guard is the
+`f_l ≤ f_u` check `Problem` now wraps every `evaluate` in, `src/problems_tier0.py`.
+**no result moved**, and that is asserted rather than stated:
+`tests/test_interval_invariant.py` compares the product against the fixed-order
+reading of section 1.1 bitwise at all 40401 points of a 201 × 201 grid of I-BK1's
+whole box and finds them equal, asserts the non-negativity of every `h_ij` that
+makes them equal on the same grid, and holds the invariant on a dense sample of
+every box of every problem in the project; every existing test passes unchanged.
+one locator is corrected against the paper and only the locator: ⊙ is item (iii)
+of the unnumbered operations display of [16] **section 2.1, printed page 4**, not
+"definition 2.1(iii), printed page 3" as this document and the project's comments
+have it -- definition 2.1 on that page is the gH-difference. the content of the
+operation, and therefore every finding above, is unchanged.
+
 
 ## 2. which problems already run could trigger it
 

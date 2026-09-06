@@ -4,7 +4,8 @@ import numpy as np
 import pytest
 
 from phi_transforms import phi_registry
-from problems_tier0 import p0, p0_anchor, p1, problem_registry
+from problems_tier0 import (Problem, decision_columns, evaluate_p0, evaluate_p1,
+                            p0, p0_anchor, p1, problem_registry)
 
 # a1-b's grid for p1, docs/a1_uncertainty_model.md a1-b: 61 x 61 on the box,
 # 3721 points, and the 0.1 margin it widens the efficient region by.
@@ -362,3 +363,98 @@ def test_the_exact_route_is_stable_under_centre_magnitude(offset):
     reference = magnitude_sweep_cache["reference"]
     for name, exact_set in exact_sets_at_offset(grid, offset).items():
         assert exact_set == reference[name], name
+
+
+# a problem of two objectives whose second one is ill ordered on half of its box
+def ill_ordered_problem(representation):
+    # the second objective is well ordered where x_1 <= 1/2 and interchanged
+    # where x_1 > 1/2, which is the shape the defect has in the wild: a problem
+    # correct on part of its box and not on the rest, f5 section 1.2. the first
+    # objective is well ordered everywhere, so the message has to name which of
+    # the two failed and at which point, rather than rejecting the array. for
+    # "endpoints" the broken half has f_l > f_u and for "centre_radius" it has
+    # r < 0, which is the same interval read in the two representations.
+
+    # the two pairs, the first well ordered everywhere and the second not
+    def evaluate(x, params=None):
+        (x_1,) = decision_columns(x, 1)
+        second = np.where(x_1 > 0.5, -1.0, 1.0)
+        return ((np.zeros_like(x_1), np.ones_like(x_1)), (np.zeros_like(x_1), second))
+
+    return Problem(name="ill_ordered", n_vars=1, n_obj=2,
+                   representation=representation, evaluate=evaluate,
+                   bounds=lambda: (np.array([0.0]), np.array([1.0])))
+
+
+# the guard fires on an interchanged endpoint pair and names the objective and the point
+@pytest.mark.parametrize("representation", ["endpoints", "centre_radius"])
+def test_the_guard_fires_on_an_ill_ordered_problem(representation):
+    # r-23's cheaper half. the record is built the way every problem in the
+    # project is built and returns an interval whose endpoints are interchanged
+    # on half of its box; before f6 that pair reached phi_registry and came back
+    # as a negative width, docs/part2/f5_boundary_interchange.md section 1.3.
+    # the population straddles the break, so the guard has to report the first
+    # entry that fails and the objective it failed on, and not merely refuse.
+    problem = ill_ordered_problem(representation)
+    points = np.array([[0.0], [0.25], [0.75], [1.0]])
+    with pytest.raises(ValueError) as raised:
+        problem.evaluate(points, None)
+    message = str(raised.value)
+    assert "objective 1 of 2" in message
+    assert "x = [0.75]" in message
+    assert representation in message
+
+
+# the same problem evaluates without raising on the half of its box that is sound
+def test_the_guard_passes_where_the_problem_is_well_ordered():
+    # the guard is a statement about the points evaluated and not about the
+    # problem in the abstract, so the same record is fine on a population that
+    # stays on the well ordered half. this is what makes it cheap: it decides
+    # nothing about the problem, only about the arrays just returned.
+    problem = ill_ordered_problem("endpoints")
+    pairs = problem.evaluate(np.array([[0.0], [0.25]]), None)
+    assert len(pairs) == 2
+
+
+# every problem record carries the check, whoever built it and whatever it evaluates
+def test_the_guard_is_on_the_record_and_not_on_the_problem():
+    # the wrapping happens in Problem.__new__, so a record cannot be built
+    # without it. that is the whole reason the check sits here and not in each
+    # evaluate: a problem added by a later session is covered by construction.
+    assert p0.evaluate is not evaluate_p0
+    assert p1.evaluate is not evaluate_p1
+    rebuilt = Problem(name="p0_again", n_vars=1, n_obj=2, representation="endpoints",
+                      evaluate=evaluate_p0, bounds=p0.bounds)
+    assert rebuilt.evaluate is not evaluate_p0
+
+
+# the guard returns the arrays the problem computed, unchanged and not copied
+def test_the_guard_returns_the_problem_s_own_arrays():
+    # no result can move through a wrapper that hands back the same objects, and
+    # this is asserted rather than argued because it is the whole claim that f6
+    # changed no number on p0 and p1.
+    computed = []
+
+    # p0's evaluation, with the arrays it returned kept for comparison
+    def evaluate(x, params=None):
+        pairs = evaluate_p0(x, params)
+        computed.append(pairs)
+        return pairs
+
+    problem = Problem(name="p0_recorded", n_vars=1, n_obj=2,
+                      representation="endpoints", evaluate=evaluate,
+                      bounds=p0.bounds)
+    returned = problem.evaluate(np.array([[-0.5], [0.0], [0.5]]), None)
+    for returned_pair, computed_pair in zip(returned, computed[0]):
+        for returned_array, computed_array in zip(returned_pair, computed_pair):
+            assert returned_array is computed_array
+
+
+# an unknown representation is refused rather than silently left unchecked
+def test_an_unknown_representation_is_refused():
+    problem = Problem(name="unknown", n_vars=1, n_obj=1, representation="widths",
+                      evaluate=lambda x, params=None: ((np.zeros(len(x)),
+                                                        np.ones(len(x))),),
+                      bounds=lambda: (np.array([0.0]), np.array([1.0])))
+    with pytest.raises(ValueError, match="unknown representation"):
+        problem.evaluate(np.array([[0.5]]), None)

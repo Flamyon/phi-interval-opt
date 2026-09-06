@@ -323,3 +323,47 @@ format:
     currently has nothing that would have caught | the research chat's choice of
     the last problem, with this comparison in front of it; and, separately, the
     session that fixes evaluation semantics and adds the well-ordering guard
+
+2026-09-06 | f6, the interval product and the interval invariant | src/interval_math.py;
+    src/problems_native.py; src/problems_tier0.py; tests/test_interval_math.py;
+    tests/test_problems_tier0.py; tests/test_interval_invariant.py, new;
+    CONTEXT.md sections 10 a2, 10 a4 and 12; PROGRESS.md sections 1 and 7;
+    docs/answered.md; docs/part2/f5_boundary_interchange.md;
+    docs/part2/session_log.md | **code and tests, no new problem, no derivation
+    and no measured number changed**, which is asserted and not stated. the two
+    halves of r-23 are built. **the product**: src/interval_math.py gains
+    multiply and multiply_by_real, the minimum and the maximum over the four
+    endpoint products, elementwise over numpy arrays so a sign change inside one
+    array is resolved entry by entry, and objective_endpoints in
+    src/problems_native.py calls it instead of computing (sum a_j h_j, sum b_j
+    h_j) in fixed order. **one locator corrected against the paper and only the
+    locator**: ⊙ is item (iii) of the unnumbered operations display of [16]
+    **section 2.1, printed page 4**, not "definition 2.1(iii), printed page 3",
+    definition 2.1 on that page being the gH-difference; the content is
+    unchanged. cross-checked, per the evidence rule: **[9] defines the operation
+    as the set of products of the members**, its definition 2.1 equation (2.5)
+    printed page 220, and prints no closed form, and **[1] states no product at
+    all**, so [16] is the corpus's only printed source and neither of the other
+    two contradicts it. **the guard**: f_l <= f_u, which is r >= 0 in centre and
+    half-width coordinates, checked at the one interface every problem shares --
+    Problem wraps every evaluate it is given -- so tier 0, tier 1, the native
+    problems and any problem a later session adds are covered by construction. it
+    **raises** and does not assert, an assert being removed by python -O, and it
+    **runs always**: measured on f3's own configuration, 0.361 ms of a 0.711 s
+    nsga-ii run at the gate budget, 0.05 per cent, and 0.003 ms of the 0.818 ms
+    20000-row random search call. **nothing moved, asserted rather than read**:
+    the product and the fixed-order reading agree bitwise at all 40401 points of a
+    201 x 201 grid of I-BK1's whole box, the non-negativity of every h_ij that
+    makes them agree is asserted on the same grid, the invariant holds on a dense
+    sample of every box of every problem of every registry, and [16]'s printed
+    G(x*) still reproduces at the printed precision through the new path.
+    **f5's own diagnostic is a test now**, I-VU2's G_1 across its sign change well
+    ordered at all seven of f5's points where the fixed-order reading returned
+    three reversed, and the guard fires on a constructed ill-ordered problem in
+    both representations with a message naming the objective and the point. **613
+    pass fast against 592 before f6, and the full run is 1123 passed and 12
+    xfailed**, the twenty-one new tests being six on the product, six on the
+    guard and nine in tests/test_interval_invariant.py; no existing test is
+    changed, newly skipped or newly xfailed | g1, the results document, and the
+    research chat's choice of the last problem; **s-14 and the proposed sixth
+    gate criterion are untouched by this session** and stay where f5 left them

@@ -2,7 +2,8 @@
 
 import numpy as np
 
-from interval_math import add, centre, gh_difference, half_width, scalar_multiply, width
+from interval_math import (add, centre, gh_difference, half_width, multiply,
+                           multiply_by_real, scalar_multiply, width)
 
 
 # a fixed pair of interval populations, entry 1 degenerate on purpose
@@ -19,6 +20,8 @@ def call_every_function(a_l, a_u, b_l, b_u):
     return [
         add(a_l, a_u, b_l, b_u),
         scalar_multiply(-1.5, a_l, a_u),
+        multiply(a_l, a_u, b_l, b_u),
+        multiply_by_real(a_l, a_u, b_l),
         (centre(a_l, a_u),),
         (half_width(a_l, a_u),),
         (width(a_l, a_u),),
@@ -73,6 +76,108 @@ def test_scalar_multiply_mixed_sign_array_is_elementwise():
     lower, upper = scalar_multiply(lam, a_l, a_u)
     assert np.array_equal(lower, np.array([2.0, -8.0, 0.0]))
     assert np.array_equal(upper, np.array([8.0, -2.0, 0.0]))
+
+
+# the four sign cases of one factor against a fixed interval, hand-checked
+def test_multiply_covers_every_sign_combination():
+    # one column per case, hand-computed from the four corner products of [16]
+    # section 2.1 item (iii), printed page 4:
+    #   [1, 2] (.) [3, 4]     both positive          [3, 8]
+    #   [1, 2] (.) [-4, -3]   second negative        [-8, -3]
+    #   [-2, -1] (.) [3, 4]   first negative         [-8, -3]
+    #   [-2, -1] (.) [-4, -3] both negative          [3, 8]
+    #   [-2, 3] (.) [-4, 5]   both span zero         [-12, 15]
+    #   [-2, 3] (.) [0, 0]    a degenerate zero      [0, 0]
+    a_l = np.array([1.0, 1.0, -2.0, -2.0, -2.0, -2.0])
+    a_u = np.array([2.0, 2.0, -1.0, -1.0, 3.0, 3.0])
+    b_l = np.array([3.0, -4.0, 3.0, -4.0, -4.0, 0.0])
+    b_u = np.array([4.0, -3.0, 4.0, -3.0, 5.0, 0.0])
+    lower, upper = multiply(a_l, a_u, b_l, b_u)
+    assert np.array_equal(lower, np.array([3.0, -8.0, -8.0, 3.0, -12.0, 0.0]))
+    assert np.array_equal(upper, np.array([8.0, -3.0, -3.0, 8.0, 15.0, 0.0]))
+    assert np.all(lower <= upper)
+
+
+# the product of two intervals is the set of products of their members
+def test_multiply_is_the_set_of_products_of_the_members():
+    # [9] definition 2.1, equation (2.5), printed page 220, defines the operation
+    # as that set, and the closed form is checked against it here rather than
+    # against itself: every product of a point of the first interval and a point
+    # of the second lies inside the returned interval, and both endpoints are
+    # attained by some such pair.
+    generator = np.random.default_rng(20260906)
+    a_l = generator.uniform(-5.0, 5.0, size=200)
+    a_u = a_l + generator.uniform(0.0, 4.0, size=200)
+    b_l = generator.uniform(-5.0, 5.0, size=200)
+    b_u = b_l + generator.uniform(0.0, 4.0, size=200)
+    lower, upper = multiply(a_l, a_u, b_l, b_u)
+    steps = np.linspace(0.0, 1.0, 51)
+    inside_a = a_l[:, None] + steps[None, :] * (a_u - a_l)[:, None]
+    inside_b = b_l[:, None] + steps[None, :] * (b_u - b_l)[:, None]
+    products = inside_a[:, :, None] * inside_b[:, None, :]
+    assert np.all(products >= lower[:, None, None])
+    assert np.all(products <= upper[:, None, None])
+    assert np.array_equal(np.min(products, axis=(1, 2)), lower)
+    assert np.array_equal(np.max(products, axis=(1, 2)), upper)
+
+
+# one array whose entries fall in different sign cases is resolved entry by entry
+def test_multiply_by_real_is_elementwise_across_a_sign_change():
+    # the coefficient interval is one interval and h is an array with entries of
+    # both signs and an exact zero, so a scalar branch on the sign of h would be
+    # wrong at four of the seven entries and right at three.
+    h = np.array([-2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0])
+    lower, upper = multiply_by_real(2.0, 3.0, h)
+    assert np.array_equal(lower, np.array([-6.0, -3.0, -1.5, 0.0, 1.0, 2.0, 4.0]))
+    assert np.array_equal(upper, np.array([-4.0, -2.0, -1.0, 0.0, 1.5, 3.0, 6.0]))
+    assert np.all(lower <= upper)
+
+
+# an interval spanning zero times a value of exactly zero is the degenerate zero interval
+def test_multiply_by_real_at_exactly_zero_is_the_zero_interval():
+    a_l, a_u = np.array([-2.0, 0.0, 1.0]), np.array([3.0, 0.0, 4.0])
+    lower, upper = multiply_by_real(a_l, a_u, np.zeros(3))
+    assert np.array_equal(lower, np.zeros(3))
+    assert np.array_equal(upper, np.zeros(3))
+    assert np.array_equal(width(lower, upper), np.zeros(3))
+
+
+# multiply_by_real and scalar_multiply are the same map by two sources' routes
+def test_multiply_by_real_agrees_with_scalar_multiply():
+    # [16]'s (iii) at a degenerate second factor against [1]'s printed sign
+    # branch, on an array carrying both signs and a zero. they agree entry by
+    # entry, which is what the comment on multiply_by_real claims; the sign of a
+    # zero is not asserted, np.minimum(-0.0, 0.0) being +0.0 and -0.0 == 0.0.
+    generator = np.random.default_rng(20260906)
+    a_l = generator.uniform(-6.0, 6.0, size=500)
+    a_u = a_l + generator.uniform(0.0, 3.0, size=500)
+    h = np.concatenate([generator.uniform(-4.0, 4.0, size=498), [0.0, 0.0]])
+    by_moore = multiply_by_real(a_l, a_u, h)
+    by_branch = scalar_multiply(h, a_l, a_u)
+    assert np.array_equal(by_moore[0], by_branch[0])
+    assert np.array_equal(by_moore[1], by_branch[1])
+    assert (h < 0.0).any() and (h > 0.0).any() and (h == 0.0).any()
+
+
+# f5's own diagnostic, as a test: the product does not interchange the boundary functions
+def test_the_product_is_well_ordered_across_i_vu2_s_sign_change():
+    # docs/part2/f5_boundary_interchange.md section 1.2, block C, reproduced as an
+    # assertion. the form is I-VU2's G_1, problem 2 of [16] appendix A printed
+    # page 28, [1, 1.5] (.) x_1 (+) [1, 1.5] (.) x_2 at x_2 = 0, evaluated at
+    # f5's seven points of [-4, 4]^2. the fixed-order reading returns lower >
+    # upper at the three points with x_1 < 0 and the product returns f5's printed
+    # moore rows, which are well ordered at all seven.
+    x_1 = np.array([-2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0])
+    x_2 = np.zeros_like(x_1)
+    first = multiply_by_real(1.0, 1.5, x_1)
+    second = multiply_by_real(1.0, 1.5, x_2)
+    lower, upper = add(first[0], first[1], second[0], second[1])
+    assert np.array_equal(lower, np.array([-3.0, -1.5, -0.75, 0.0, 0.5, 1.0, 2.0]))
+    assert np.array_equal(upper, np.array([-2.0, -1.0, -0.5, 0.0, 0.75, 1.5, 3.0]))
+    assert np.all(lower <= upper)
+    fixed_order_lower = 1.0 * x_1 + 1.0 * x_2
+    fixed_order_upper = 1.5 * x_1 + 1.5 * x_2
+    assert np.count_nonzero(fixed_order_lower > fixed_order_upper) == 3
 
 
 # centre, half_width and width on intervals whose values are known by hand

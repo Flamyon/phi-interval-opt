@@ -4,6 +4,12 @@
 # returns new arrays and never writes into its arguments.
 # [1] is papers/new_preference_order_relationships_paper.txt, costa,
 # osuna-gomez and chalco-cano, fuzzy sets and systems 477 (2024) 108812.
+# [16] is papers/Newton Method for Multiobjective Optimization Problems of
+# Interval-Valued Maps.pdf, mondal, ghosh and kim, and it is the only source in
+# the corpus that prints the interval product; f6 added multiply and
+# multiply_by_real from it. [9] is papers/9-Multiobjective programming in
+# optimization of the interval objective function .pdf, ishibuchi and tanaka,
+# european journal of operational research 48 (1990) 219-225.
 
 import numpy as np
 
@@ -26,6 +32,68 @@ def scalar_multiply(lam, a_l, a_u):
     lower = np.where(non_negative, np.multiply(lam, a_l), np.multiply(lam, a_u))
     upper = np.where(non_negative, np.multiply(lam, a_u), np.multiply(lam, a_l))
     return lower, upper
+
+
+# the interval product, its source and its cross-check, kept above the two
+# functions that implement it because it is one citation for both.
+# the operation is item (iii) of the display of moore's four operations in [16]
+# section 2.1, printed page 4, which stands between "which are defined as
+# follows" and definition 2.1 and which [16] attributes to moore, its reference
+# [28]. the locator is corrected here against the paper, re-read this session,
+# and only the locator: the project has cited this operation as "definition
+# 2.1(iii) of [16] printed page 3" since f2, and the display is unnumbered,
+# precedes definition 2.1, which is the gh-difference, and is on printed page 4.
+# the content is what it always was.
+# cross-check, per the evidence rule. [9] definition 2.1, equation (2.5), printed
+# page 220, defines the operation on two closed intervals, for * in {+, -, ., /},
+# as the set of all s * t with s in the first and t in the second, and prints no
+# closed form for the product, that paper using only the sum and the real
+# multiple, its equations (2.6) to (2.9); the four corner products below are that
+# set for the product, its endpoints being attained at corners because s t is
+# monotone in each factor separately. [1] states no product at all: [1] section 2,
+# page 2, lines 100-134 equips the interval space with addition and multiplication
+# by a real scalar and with nothing else. so [16] is the only source in the corpus
+# that prints the operation, and neither of the other two contradicts it.
+
+
+# product of two intervals, the minimum and the maximum over the four endpoint products
+def multiply(a_l, a_u, b_l, b_u):
+    # [16] section 2.1 item (iii), printed page 4, with s := [s_l, s_u] and
+    # t := [t_l, t_u]:
+    #   s (.) t := [min{s_l t_l, s_l t_u, s_u t_l, s_u t_u},
+    #               max{s_l t_l, s_l t_u, s_u t_l, s_u t_u}]
+    # np.minimum and np.maximum choose entrywise, so one array may hold entries
+    # of every sign case at once and a sign change inside b is resolved entry by
+    # entry and never by a scalar branch. that is gh_difference's discipline.
+    first = np.multiply(a_l, b_l)
+    second = np.multiply(a_l, b_u)
+    third = np.multiply(a_u, b_l)
+    fourth = np.multiply(a_u, b_u)
+    lower = np.minimum(np.minimum(first, second), np.minimum(third, fourth))
+    upper = np.maximum(np.maximum(first, second), np.maximum(third, fourth))
+    return lower, upper
+
+
+# product of an interval and an array of real values, the degenerate case of multiply
+def multiply_by_real(a_l, a_u, h):
+    # [16]'s (iii) at t = [h, h]: the four corner products collapse to two, h a_l
+    # and h a_u, and the product is the minimum and the maximum of those. this is
+    # the operation an objective (+)_j [a_j, b_j] (.) h_j(x) of [16] appendix A
+    # needs, and it is a separate name because writing multiply(a_l, a_u, h, h)
+    # at every call site would read as two independent factors where there is one.
+    # how this relates to scalar_multiply, and why both exist. scalar_multiply is
+    # the same map by the route [1] prints, the sign branch of [1] section 2,
+    # page 2, lines 103-106, and [9] equation (2.8) printed page 220 prints that
+    # same branch; this one is the route [16] prints. they agree entry by entry
+    # wherever both apply, and not approximately: where h >= 0, h a_l <= h a_u, so
+    # the minimum is h a_l, which is the endpoint the branch selects, and where
+    # h < 0 the inequality reverses and both give h a_u. the one thing that can
+    # differ is the sign of a zero, np.minimum(-0.0, 0.0) being +0.0 where the
+    # branch keeps -0.0, and -0.0 == 0.0, so no comparison, no order and no
+    # arithmetic in the project can see it. both exist because each is the
+    # operation its own source prints, and this module encodes what a source
+    # prints rather than one form chosen from several.
+    return multiply(a_l, a_u, h, h)
 
 
 # centre of an interval, the first image coordinate of example 2.4 of [1]

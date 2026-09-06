@@ -643,13 +643,43 @@ is code, and a session record block for PROGRESS.md.
         add(a, b)
         scalar_multiply(lam, a), following the sign rule of [1] section 2: a
             negative scalar swaps the endpoints.
+        multiply(a, b) and multiply_by_real(a, h), **added in f6**, the interval
+            product as [16] prints it: item (iii) of the operations display of
+            [16] section 2.1, **printed page 4**, the minimum and the maximum over
+            the four endpoint products. multiply_by_real is that operation at a
+            degenerate second factor, which is what an objective
+            (+)_j [a_j, b_j] (.) h_j(x) needs, and it is the only route
+            src/problems_native.py takes to an endpoint.
+            **the locator is corrected here against the paper, read in f6, and
+            only the locator**: the project cited this operation as "definition
+            2.1(iii) of [16] printed page 3" from f2 on, and the display is
+            unnumbered, precedes definition 2.1, which is the gH-difference, and
+            is on printed page 4. the content is what it always was.
+            cross-check, and it is why one source and not three: [9] definition
+            2.1 equation (2.5), printed page 220, defines the operation as the set
+            of products of the members and prints no closed form, that paper using
+            only the sum and the real multiple; [1] states no product at all, its
+            section 2 equipping the interval space with addition and
+            multiplication by a real scalar and nothing else. so [16] is the only
+            source in the corpus that prints it and neither of the other two
+            contradicts it.
+            multiply_by_real and scalar_multiply are the same map by two sources'
+            routes and agree entry by entry wherever both apply; both are kept
+            because each is the operation its own source prints.
         centre(a), half_width(a), width(a).
         gh_difference(a, b).
     three separate names for centre, half-width and width, because example 2.3 uses
     the full width and example 2.4 uses the half-width, and one word for both is how
     a factor of two reaches the memoria.
     tests: the negative-scalar endpoint swap; centre, width and half_width on a
-    known interval; gh_difference in both branches of its definition.
+    known interval; gh_difference in both branches of its definition. **for the
+    product, f6**: every sign combination hand-checked, including an interval
+    spanning zero and a multiplied value of exactly zero; the closed form against
+    [9]'s set definition; one array whose entries fall in different sign cases,
+    resolved entry by entry; agreement with scalar_multiply where both apply; and
+    f5's own diagnostic as an assertion, I-VU2's G_1 form across its sign change
+    returning well ordered intervals at all seven of f5's points where the
+    fixed-order reading returned three reversed.
 
 ### a3: phi_transforms.py
     implements exactly the three named examples, through a constructor.
@@ -695,6 +725,24 @@ is code, and a session record block for PROGRESS.md.
     each problem exposes evaluate(x, params) returning every objective's interval,
     representation naming the form those pairs are in, bounds() returning the
     decision box, and n_vars and n_obj.
+    **and every problem satisfies one invariant at every point of its box: the
+    interval it returns is well ordered, f_l <= f_u, which reads r >= 0 in centre
+    and half-width coordinates.** it is a requirement on the problem and not a
+    convention of the caller, and since f6 it is enforced where every problem
+    passes through: Problem wraps the evaluate it is given in the check, so tier
+    0, tier 1, the native problems and any problem a later session adds are
+    covered by construction and no evaluate has to remember. it **raises** a
+    ValueError naming the objective and the point, and does not assert, an assert
+    being removed by python -O; it **runs always** and not under a flag. that is
+    measured: on f3's own configuration, I-BK1 under nsga-ii at the gate budget of
+    100 by 50, the guard costs 0.361 ms of a 0.711 s run, 0.05 per cent, and
+    0.003 ms of the 0.818 ms 20000-row random search call of the same run.
+    the invariant is tested in the coordinates the problem returned and never by
+    building an endpoint from a centre and a half-width, which is the
+    no-round-trip rule applied to a check. it is r-23's cheaper half and
+    docs/part2/f5_boundary_interchange.md section 1.4 is why it exists: nothing in
+    src/ tested it before f6, and an interchanged pair is carried by every phi
+    without complaint and emerges as a negative width.
     representation is "endpoints" for (f_l, f_u) or "centre_radius" for (c, r),
     and it is the no-round-trip rule of a3 applied here: a problem declares and
     returns the form in which its intervals are actually computed, and the caller
@@ -722,7 +770,13 @@ is code, and a session record block for PROGRESS.md.
     docs/part1/a1_uncertainty_model.md part 3; accepting the band is s-08.
     bounds are explicit and are not the unit box. p0's anchor point sits at the
     origin and needs a box containing negative values.
-    tests: the bounds contain p0's anchor point; the width of p1 varies
+    tests: the bounds contain p0's anchor point; **f6's guard tests, a constructed
+    problem ill ordered on half of its box firing the check in both
+    representations, with the message naming the objective and the point, and the
+    wrapper handing back the problem's own arrays so that no result can move
+    through it**; the cross-problem regression of tests/test_interval_invariant.py,
+    every problem of every registry well ordered at every point of a dense sample
+    of its own box; the width of p1 varies
     independently of the centre over a sample, which is step 1's condition checked
     as an assertion rather than assumed; phi_cw's centre-radius route leaves the
     half-width's distinct values exactly as many as the half-width itself has, so
@@ -1683,6 +1737,12 @@ phi-interval-opt/
         conftest.py             import path setup
         one test file per src module, named test_<module>.py
         test_validation.py      c3
+        test_interval_invariant.py
+                                f6. the one test file that is not about a single
+                                module: the f_l <= f_u invariant on every problem
+                                of every registry, and the bitwise agreement of
+                                the interval product with the fixed-order reading
+                                it replaced on I-BK1
     results/
         tier0/  tier1/  part2/
         figures/                g2's output. every figure in the memoria and the

@@ -40,6 +40,9 @@ the deliverable behind each row, so that neither side has to be searched for:
                             results/tier1/free_sets.csv
     p-02  lit-review        docs/part2/lit_review.md sections 2.1, 2.2 and 2.5
     p-05  lit-review        docs/part2/lit_review.md sections 3.1, 3.2, 3.3 and 3.4
+    r-23  f6                docs/part2/f5_boundary_interchange.md sections 1 and 2,
+                            which raised it, and tests/test_interval_invariant.py,
+                            which is the discharge
 
 
 ## answered questions from section 5, questions the papers answer
@@ -342,3 +345,37 @@ r-21 | retired in f2, and retired by the derivation rather than by the reading. 
     f3 do run. the row retires with the gate passed. **it does not carry clause c5
     with it**: c5 is about measured behaviour under the project's own instrument
     and that measurement is f3's, docs/part2/f2_ibk1_derivation.md section 7
+
+
+r-23 | registered and retired in f6, the session that fixed what raised it, so the
+    row is written and closed in one place. as f5 proposed it, it said that the
+    project implements no interval product: the one site where an interval
+    coefficient multiplies a function of x, objective_endpoints in
+    src/problems_native.py, computed the endpoints in fixed order rather than as
+    the minimum and the maximum over the four products, and nothing in src/
+    asserted f_l <= f_u, so an interchanged pair would reach phi_registry and
+    emerge as a negative width. two separable pieces, the missing primitive and
+    the missing assertion, docs/part2/f5_boundary_interchange.md section 1.4 |
+    cost: correct on everything the project has run and silently wrong on any
+    problem with a sign-changing basis function, which is five of [16]'s twenty
+    appendix-A problems and includes I-VU2, one of f5's four candidates for the
+    project's last problem | trigger: a problem whose h_ij changes sign entering
+    the same code path, which is the choice f5 was preparing | mitigation taken in
+    f6, both halves: src/interval_math.py gained multiply and multiply_by_real,
+    the product of [16] section 2.1 item (iii), printed page 4, elementwise over
+    numpy arrays, and objective_endpoints calls it; and Problem wraps every
+    evaluate in the f_l <= f_u check, so the invariant is enforced at the one
+    interface tier 0, tier 1, the native problems and every future problem share.
+    **the retirement is not a reading**: tests/test_interval_invariant.py asserts
+    the product and the fixed-order reading agree bitwise at all 40401 points of a
+    201 x 201 grid of I-BK1's box, asserts the non-negativity that makes them
+    agree, and holds the invariant on a dense sample of every box of every problem
+    of every registry; the guard fires on a constructed ill-ordered problem in both
+    representations with a message naming the objective and the point; and no
+    measured number of the project moved, every existing test passing unchanged.
+    f5's own diagnostic is a test now: I-VU2's G_1 form across its sign change
+    returns well ordered intervals at all seven of f5's points, where the
+    fixed-order reading returned three reversed. **what the row does not carry
+    away with it**: f5's two other proposals are separate items and neither is
+    touched here, s-14 on the reading of example 3.9's phi-convexity and the
+    proposed sixth criterion for the gate of docs/part1/part1_closing.md section 7.2
