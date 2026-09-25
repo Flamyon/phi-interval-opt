@@ -2,22 +2,21 @@
 
 ## Cómo leer este documento
 
-**1. Cada sección dice dónde mirar.** Al final de casi todas hay un bloque así:
+**1. Cada sección dice dónde mirar.** Al final de casi todas hay un párrafo así:
 
-    Dónde mirar. docs/part1/b1_phi_efficient_sets.md, sección 2.4. Busca las
-    tres regiones en forma cerrada.
+*Dónde mirar.* docs/part1/b1_phi_efficient_sets.md, sección 2.4. Busca las tres
+regiones en forma cerrada.
 
-Sirve para una rastrear cualquier afirmación hasta el
-fichero que la produjo.
+Sirve para rastrear cualquier afirmación hasta el fichero que la produjo.
 
 **2. Cada sección lleva una etiqueta.** Una de estas tres:
 
-    SLIDE   va a la presentación. Hay una diapositiva para esto.
-    DECIR   merece decirse en voz alta, pero no ocupa diapositiva. Suele ser una
-            frase de transición, una salvedad o una respuesta a una pregunta
-            previsible.
-    FONDO   es contexto escrito. Va en la memoria y en el registro. **Ponerlo en
-            la presentación sería un error**: alarga, distrae y no aporta.
+- **SLIDE** — va a la presentación. Hay una diapositiva para esto.
+- **DECIR** — merece decirse en voz alta, pero no ocupa diapositiva. Suele ser
+  una frase de transición, una salvedad o una respuesta a una pregunta
+  previsible.
+- **FONDO** — es contexto escrito. Va en la memoria y en el registro. **Ponerlo
+  en la presentación sería un error**: alarga, distrae y no aporta.
 
 El objetivo es que la presentación se **recolecte** en lugar de escribirse desde
 cero. La parte 13 lista las secciones SLIDE en el orden en que se cuentan, y esa
@@ -58,8 +57,8 @@ conjunto se le llama **conjunto eficiente** (o frente de Pareto).
 
 La regla que define ese conjunto se llama dominancia:
 
-    La solución A domina a la solución B si A es igual o mejor que B en TODOS
-    los objetivos, y estrictamente mejor en AL MENOS UNO.
+> La solución A domina a la solución B si A es igual o mejor que B en TODOS
+> los objetivos, y estrictamente mejor en AL MENOS UNO.
 
 Una solución es eficiente si nadie la domina. El conjunto eficiente es el
 conjunto de todas las soluciones que nadie domina.
@@ -81,16 +80,16 @@ número.
 Dos palabras que se usan todo el rato y que conviene fijar ya, porque en la
 memoria hay que distinguirlas y en español es fácil confundirlas:
 
-    centro          el punto medio del intervalo, (38 + 45) / 2 = 41.5
-    semianchura     la mitad de lo que mide, (45 - 38) / 2 = 3.5
-    anchura         lo que mide entero, 45 - 38 = 7
+- **centro**: el punto medio del intervalo, (38 + 45) / 2 = 41.5
+- **semianchura**: la mitad de lo que mide, (45 − 38) / 2 = 3.5
+- **anchura**: lo que mide entero, 45 − 38 = 7
 
 **Semianchura y anchura no son la misma palabra y no se pueden intercambiar.**
 El proyecto lo prohíbe expresamente porque dos de los tres órdenes se construyen
 sobre una de las dos y confundirlas cambia el resultado.
 
-    Dónde mirar. CONTEXT.md sección 4, la regla de vocabulario. Y
-    src/interval_math.py, que es donde vive la aritmética de intervalos.
+*Dónde mirar.* CONTEXT.md sección 4, la regla de vocabulario. Y
+src/interval_math.py, que es donde vive la aritmética de intervalos.
 
 
 ## PARTE 2. El problema central del proyecto — SLIDE
@@ -116,14 +115,17 @@ en Python). Y si cambias la función clave, cambia el resultado del `sort`.
 
 ### 2.2 Lo que hicieron tus tutores
 
-Tus tutores (Beato Moreno y Osuna Gómez), en su artículo de 2024, hicieron algo
-elegante: en vez de proponer *un* orden, describieron **toda la familia** de
+El artículo de 2024 de Costa, Osuna-Gómez y Chalco-Cano — **[1]** en el
+repositorio, en `papers/` con su lista de referencias completa — hizo algo
+elegante: en vez de proponer *un* orden, describió **toda la familia** de
 órdenes posibles, con un parámetro que dice cuál estás usando.
 
 Ese parámetro se llama **φ** (fi). Un φ es, en esencia, una función clave.
 
-En el repositorio ese artículo es **[1]**, y está en `papers/` con su lista de
-referencias completa.
+Una precisión que hay que tener clara antes del día 25: de tus dos tutores,
+Osuna Gómez firma [1] y Beato Moreno no. Este documento dice «el artículo de tus
+tutores» y «el marco de tus tutores» por abreviar; **en la memoria y en la
+presentación se cita con sus tres autores.**
 
 ### 2.3 Qué hace un φ, concretamente
 
@@ -133,20 +135,15 @@ ordenan.
 
 Los tres φ que el artículo nombra son:
 
-    φ de Ejemplo 2.2 (le llamamos "lu"):
-        [inf, sup]  →  (inf, sup)
-        No cambia nada. Compara el mejor caso con el mejor caso y el peor con el
-        peor. Es el más conservador.
-
-    φ de Ejemplo 2.3 (le llamamos "ls"):
-        [inf, sup]  →  (inf, sup - inf)
-        Devuelve el mejor caso y la anchura del intervalo, es decir, cuánta
-        incertidumbre tiene.
-
-    φ de Ejemplo 2.4 (le llamamos "cw"):
-        [inf, sup]  →  ((inf+sup)/2, (sup-inf)/2)
-        Devuelve el centro y la media anchura. Es decir: "el valor típico" y
-        "cuánto puede variar".
+- **φ del Ejemplo 2.2 (le llamamos "lu")**: `[inf, sup] → (inf, sup)`. No cambia
+  nada. Compara el mejor caso con el mejor caso y el peor con el peor. Es el más
+  conservador.
+- **φ del Ejemplo 2.3 (le llamamos "ls")**: `[inf, sup] → (inf, sup − inf)`.
+  Devuelve el mejor caso y la anchura del intervalo, es decir, cuánta
+  incertidumbre tiene.
+- **φ del Ejemplo 2.4 (le llamamos "cw")**:
+  `[inf, sup] → ((inf + sup)/2, (sup − inf)/2)`. Devuelve el centro y la media
+  anchura. Es decir: "el valor típico" y "cuánto puede variar".
 
 Los tres son válidos. Los tres son distintos. Y cada uno da un conjunto eficiente
 distinto.
@@ -155,11 +152,11 @@ Hay un cuarto ejemplo en el artículo, el Ejemplo 2.1, con otros coeficientes.
 El proyecto no lo usa: no lleva asociada una noción de convexidad, que es lo que
 hace falta para poder derivar nada a mano. Se anotó y se dejó.
 
-    Dónde mirar. src/phi_transforms.py. Los tres φ salen de **una sola** función
-    a la que le pasas cuatro coeficientes, y la condición de admisibilidad del
-    artículo se comprueba dentro. Por eso añadir un cuarto φ es un bucle y no una
-    reescritura. Y docs/part1/a0_framework.md, que es la lectura del artículo
-    afirmación por afirmación, con página y número de ejemplo en cada una.
+*Dónde mirar.* src/phi_transforms.py. Los tres φ salen de **una sola** función a
+la que le pasas cuatro coeficientes, y la condición de admisibilidad del
+artículo se comprueba dentro. Por eso añadir un cuarto φ es un bucle y no una
+reescritura. Y docs/part1/a0_framework.md, que es la lectura del artículo
+afirmación por afirmación, con página y número de ejemplo en cada una.
 
 ### 2.4 Por qué el problema se vuelve del doble de tamaño
 
@@ -182,8 +179,8 @@ objetivos casi todo el mundo es no dominado por casi todo el mundo.
 
 Ahora ya se puede formular lo que pidieron tus tutores:
 
-    Si cambio φ y resuelvo el mismo problema, ¿cambian las soluciones que
-    encuentro? ¿Cuánto? ¿Bajo qué condiciones?
+> Si cambio φ y resuelvo el mismo problema, ¿cambian las soluciones que
+> encuentro? ¿Cuánto? ¿Bajo qué condiciones?
 
 **Hay una segunda pregunta que el proyecto no responde en ningún sitio: "¿qué φ
 da mejores resultados?".** Cada φ manda el problema a un espacio distinto con una
@@ -195,14 +192,15 @@ trabajo futuro, que es donde la diapositiva 21 de los propios tutores lo pone.
 
 Así que la pregunta del proyecto es una sola, y hay que decirla así:
 
-    **cuánto cambia la respuesta cuando lo único que cambia es el orden.**
+> **cuánto cambia la respuesta cuando lo único que cambia es el orden.**
 
 **Ningún documento del proyecto ordena los tres φ, y ninguna tabla los clasifica.**
 Es una prohibición explícita y se comprueba al cerrar cada parte.
 
-    Dónde mirar. CONTEXT.md sección 2, la prohibición. Y la sección 8 de
-    docs/part1/part1_closing.md y la 9 de docs/part2/part2_closing.md, que son
-    las dos comprobaciones de que no se ha incumplido.
+*Dónde mirar.* CONTEXT.md sección 2, la prohibición. Y la sección 8 de
+docs/part1/part1_closing.md y las 9 y 13 de docs/part2/part2_closing.md, que son
+las tres comprobaciones de que no se ha incumplido; la 13 repasa lo que f8
+añadió sobre I-VU2 (sección 8.6).
 
 
 ## PARTE 3. Qué se ha hecho, en orden
@@ -212,7 +210,8 @@ construir el problema, luego calcular la respuesta correcta a mano, luego
 programar los algoritmos, luego comprobar que los algoritmos encuentran la
 respuesta correcta, luego decidir con qué se mide, y por último medir.
 
-**Las seis fases están hechas.**
+**Las seis fases están hechas, y la parte 2 se cerró dos veces**: en f4, con
+I-BK1, y en f8, con I-VU2 plegado dentro. Las dos están en la parte 8.
 
 ### 3.1 Fase A — Entender el marco y construir los problemas
 
@@ -226,9 +225,9 @@ que es por lo que no se usa.
 Regla del proyecto, y gobierna todo lo demás: **si algo no está verificado, no se
 marca con un comentario y se deja; se quita.**
 
-    Dónde mirar. docs/part1/a0_framework.md. Busca las filas v-01 a v-23: cada
-    una es un hecho verificado con su ecuación o su número de ejemplo y su
-    página. Todas las filas v-nn del proyecto viven en docs/verified.md.
+*Dónde mirar.* docs/part1/a0_framework.md. Busca las filas v-01 a v-23: cada una
+es un hecho verificado con su ecuación o su número de ejemplo y su página. Todas
+las filas v-nn del proyecto viven en docs/verified.md.
 
 **A1: cómo se mete la incertidumbre en un problema. Este es el hallazgo más
 importante del proyecto.** — SLIDE
@@ -241,9 +240,9 @@ Parece razonable. Es fatal.
 Piénsalo con la función clave. Si ε es constante, la anchura del intervalo es
 siempre `2ε`, siempre la misma. Entonces:
 
-    φ_lu  te da  (f - ε, f + ε)      → los dos números se mueven juntos con f
-    φ_ls  te da  (f - ε, 2ε)         → el segundo número es CONSTANTE
-    φ_cw  te da  (f, ε)              → el segundo número es CONSTANTE
+- φ_lu te da `(f − ε, f + ε)`: los dos números se mueven juntos con f.
+- φ_ls te da `(f − ε, 2ε)`: el segundo número es **constante**.
+- φ_cw te da `(f, ε)`: el segundo número es **constante**.
 
 Un campo constante no influye en una ordenación. Es como ordenar por
 `(nombre, 7)`: el 7 no hace nada.
@@ -280,11 +279,11 @@ eficiente**, no en la caja.
 
 Las dos cosas están contadas con sus números en la parte 10.
 
-    Dónde mirar. docs/part1/a1_uncertainty_model.md, partes 1 y 2. La parte 4
-    lleva el barrido de niveles de imprecisión y la predicción, hecha antes de
-    correr nada, de qué conjunto crecería y cuál no. El control negativo (la
-    anchura proporcional que colapsa los tres órdenes) está asertado como test en
-    tests/test_problems_tier1.py, o sea que si alguien lo rompe, salta.
+*Dónde mirar.* docs/part1/a1_uncertainty_model.md, partes 1 y 2. La parte 4
+lleva el barrido de niveles de imprecisión y la predicción, hecha antes de
+correr nada, de qué conjunto crecería y cuál no. El control negativo (la anchura
+proporcional que colapsa los tres órdenes) está asertado como test en
+tests/test_problems_tier1.py, o sea que si alguien lo rompe, salta.
 
 **A2, A3: la aritmética y los órdenes.** — FONDO
 
@@ -292,6 +291,25 @@ Se programaron las operaciones con intervalos y los tres φ. Los tres φ se
 construyen con una única función a la que le pasas los coeficientes, y se valida
 contra la condición del artículo. Así, si mañana los tutores dicen que se puede
 interpolar entre dos φ, es un bucle y no una reescritura.
+
+**Y una cosa que faltaba y que no se vio hasta f5, ya con la parte 2 cerrada:**
+el módulo no tenía **producto de intervalos**. Tenía suma, producto por un
+escalar, centro, semianchura, anchura y diferencia gH, y la única función que
+multiplicaba un coeficiente intervalar `[a, b]` por una función `h(x)` lo hacía
+en **orden fijo**, `(Σ a_j h_j, Σ b_j h_j)`, en lugar de tomar el mínimo y el
+máximo de los cuatro productos, que es la definición de Moore y la que [16]
+imprime. Es lo mismo mientras `h ≥ 0`, y en todo lo que el proyecto había
+corrido lo era: p0 no tiene producto, p1 y los dos benchmarks tienen la
+semianchura no negativa por construcción, y los cuatro `h` de I-BK1 son
+cuadrados. Donde `h` cambia de signo, el intervalo sale **al revés** — inferior
+mayor que superior — y como nada en `src/` comprobaba `f_l ≤ f_u`, φ_ls y φ_cw
+lo habrían arrastrado como una anchura **negativa** sin que saltara nada.
+
+f6 lo arregló entero: el producto (`multiply`, `multiply_by_real`), la guarda
+`f_l ≤ f_u` en la única interfaz por la que pasa toda evaluación, y una prueba
+de que **ningún número se movió**: las dos lecturas coinciden bit a bit en los
+40401 puntos de una rejilla 201 × 201 de la caja entera de I-BK1. Está contado
+como trampa en la sección 10.5, porque lo es.
 
 **A3-b: un problema de precisión que habría corrompido todos los resultados.** — FONDO
 
@@ -326,10 +344,10 @@ Una palabra que hace falta más adelante: p1, ZDT1 y DTLZ2 son problemas
 **adaptados**. Eran problemas normales y el proyecto les puso una banda de
 incertidumbre encima. Eso es exactamente lo que la parte 2 existe para responder.
 
-    Dónde mirar. src/problems_tier0.py (p0 y p1) y src/problems_tier1.py (ZDT1 y
-    DTLZ2 intervalares). En problems_tier0.py, busca `p1_default_params`: el
-    comentario de encima explica por qué ρ = 1/4 y no otro valor, y no es cuestión
-    de gusto sino de que el conjunto eficiente quede dentro de la caja.
+*Dónde mirar.* src/problems_tier0.py (p0 y p1) y src/problems_tier1.py (ZDT1 y
+DTLZ2 intervalares). En problems_tier0.py, busca `p1_default_params`: el
+comentario de encima explica por qué ρ = 1/4 y no otro valor, y no es cuestión
+de gusto sino de que el conjunto eficiente quede dentro de la caja.
 
 ### 3.2 Fase B — Calcular la respuesta correcta a mano — SLIDE
 
@@ -374,9 +392,9 @@ interruptor de los segmentos singulares: quien la llama tiene que decir cuál de
 las dos versiones quiere, y ese valor va en cada tabla. Es la forma de que una
 decisión no resuelta no se cuele como si estuviera resuelta.
 
-    Dónde mirar. docs/part1/b1_phi_efficient_sets.md, sección 2.4 para las tres
-    fórmulas y sección 2.6 para lo que no cerró. El código es
-    src/reference_fronts.py; busca `include_singular_segments`.
+*Dónde mirar.* docs/part1/b1_phi_efficient_sets.md, sección 2.4 para las tres
+fórmulas y sección 2.6 para lo que no cerró. El código es
+src/reference_fronts.py; busca `include_singular_segments`.
 
 ### 3.3 Fase C — Los algoritmos y la comprobación — DECIR
 
@@ -394,10 +412,10 @@ diseño del experimento y no un detalle de implementación.
 Noventa medidas: tres algoritmos × tres φ × cinco semillas × dos ajustes del
 interruptor de los segmentos singulares. Se asertan **dos direcciones**:
 
-    ¿encuentran lo que existe?       la distancia desde el conjunto deducido
-                                     hasta lo que devuelve el solver
-    ¿encuentran algo mejor?          cuántos puntos del conjunto deducido son
-                                     dominados por un punto del solver
+- **¿Encuentran lo que existe?** La distancia desde el conjunto deducido hasta
+  lo que devuelve el solver.
+- **¿Encuentran algo mejor?** Cuántos puntos del conjunto deducido son dominados
+  por un punto del solver.
 
 La segunda es la que habría acusado a la derivación: si un solver encontrase algo
 mejor que la fórmula, la fórmula está mal. **Cero en las noventa.** La derivación,
@@ -418,7 +436,7 @@ tercero, que es donde cae un sorteo uniforme.
 Están marcados en el código como fallo esperado **estricto**, de forma que si
 apareciera un decimotercero, o si uno de los doce dejara de fallar, salta el
 aviso. **La aserción sigue corriendo sobre las noventa**; lo que está fijado es
-qué doce fallan. La suite tiene 1074 tests: 1062 pasan y 12 fallan a propósito.
+qué doce fallan. La suite tiene 1135 tests: 1123 pasan y 12 fallan a propósito.
 
 **La mitad del efecto tiene explicación y la otra mitad no, y hay que decirlo
 así.** La mitad se explica porque la búsqueda aleatoria — que no depende de φ
@@ -431,10 +449,10 @@ escrito en el entregable.
 Una consecuencia que sí es importante y va en la sección 3.5: **por eso el
 resultado principal se mide sobre búsqueda aleatoria y no sobre NSGA-II.**
 
-    Dónde mirar. docs/part1/c3_validation.md, sección 5 para el hallazgo y
-    sección 4.1 para la decisión de no eximir a NSGA-II de la aserción. El código
-    de la puerta es tests/test_validation.py; los doce xfail estrictos están
-    ahí, con los nombres de las semillas.
+*Dónde mirar.* docs/part1/c3_validation.md, sección 5 para el hallazgo y sección
+4.1 para la decisión de no eximir a NSGA-II de la aserción. El código de la
+puerta es tests/test_validation.py; los doce xfail estrictos están ahí, con los
+nombres de las semillas.
 
 ### 3.4 Fase D — Las métricas, y por qué hay dos familias — SLIDE
 
@@ -482,22 +500,16 @@ Y una decisión es un `x`, no un valor de objetivo.
 Las tres se calculan entre **dos conjuntos de puntos** — el conjunto que sale con
 un φ y el que sale con otro.
 
-    cobertura(A → B)   qué fracción de A ya está en B.
-                       Es ASIMÉTRICA: cobertura(A→B) y cobertura(B→A) son dos
-                       números distintos y hay que dar los dos.
-                       "Si yo trabajo con el orden A y tú con el B, ¿qué parte de
-                       mis soluciones ya tenías tú?"
-
-    Jaccard            qué fracción de la UNIÓN comparten.
-                       |A ∩ B| / |A ∪ B|. Un número solo, simétrico.
-                       1 = idénticos, 0 = sin nada en común.
-
-    Hausdorff          la mayor distancia que hay que recorrer.
-                       Para cada punto de A, la distancia al punto más cercano de
-                       B; te quedas con la peor. Y al revés. Y con la peor de las
-                       dos.
-                       Es un MÁXIMO, así que lo decide un solo punto: el peor
-                       colocado.
+- **Cobertura(A → B)**: qué fracción de A ya está en B. Es **asimétrica**:
+  cobertura(A→B) y cobertura(B→A) son dos números distintos y hay que dar los
+  dos. "Si yo trabajo con el orden A y tú con el B, ¿qué parte de mis soluciones
+  ya tenías tú?"
+- **Jaccard**: qué fracción de la **unión** comparten, |A ∩ B| / |A ∪ B|. Un
+  número solo, simétrico. 1 = idénticos, 0 = sin nada en común.
+- **Hausdorff**: la mayor distancia que hay que recorrer. Para cada punto de A,
+  la distancia al punto más cercano de B; te quedas con la peor. Y al revés. Y
+  con la peor de las dos. Es un **máximo**, así que lo decide un solo punto: el
+  peor colocado.
 
 Hay una cuarta que aparece en los ficheros y conviene reconocerla: el
 **coeficiente de Dice**, `2|A∩B| / (|A|+|B|)`. Es otra convención del mismo
@@ -511,20 +523,17 @@ Jaccard**, y esto ha sido fuente de confusión suficiente como para decirlo aqu�
 Esto **no es un dato del proyecto**; es para ver las definiciones funcionando.
 Dos conjuntos de tres puntos en el plano:
 
-    A = { (0,0), (1,0), (2,0) }
-    B = { (0,0), (1,0), (5,5) }
+`A = {(0,0), (1,0), (2,0)}` y `B = {(0,0), (1,0), (5,5)}`.
 
 Comparten dos puntos. Entonces:
 
-    cobertura(A → B) = 2/3 = 0.667     dos de los tres puntos de A están en B
-    cobertura(B → A) = 2/3 = 0.667     dos de los tres puntos de B están en A
-    Jaccard          = 2/4 = 0.500     comparten 2 de los 4 puntos distintos
-    Dice             = 4/6 = 0.667     y 0.667 / (2 - 0.667) = 0.500, cuadra
-
-    Hausdorff:
-        de A a B: el punto (2,0) tiene su más cercano en (1,0), a distancia 1
-        de B a A: el punto (5,5) tiene su más cercano en (2,0), a distancia 5.83
-        simétrica: 5.83
+- cobertura(A → B) = 2/3 = 0.667: dos de los tres puntos de A están en B.
+- cobertura(B → A) = 2/3 = 0.667: dos de los tres puntos de B están en A.
+- Jaccard = 2/4 = 0.500: comparten 2 de los 4 puntos distintos.
+- Dice = 4/6 = 0.667, y 0.667 / (2 − 0.667) = 0.500: cuadra.
+- Hausdorff: de A a B, el punto (2,0) tiene su más cercano en (1,0), a distancia
+  1; de B a A, el punto (5,5) tiene su más cercano en (2,0), a distancia 5.83;
+  simétrica, 5.83.
 
 **Y aquí se ve para qué sirve cada una.** Cobertura y Jaccard dicen lo mismo:
 "comparten dos tercios / la mitad". **Ninguna de las dos ve que el punto que
@@ -558,11 +567,10 @@ es un instrumento distinto en cada dimensión, porque las distancias crecen con 
 raíz del número de variables; y en I-BK1 el problema es de escala, con una caja
 de `[-10,10]²` y los conjuntos viviendo en `[0,5]²`.
 
-    Dónde mirar. src/metrics_decision.py, cuya cabecera es la explicación de por
-    qué esta familia y no la otra; y src/metrics_objective.py, cuya cabecera dice
-    qué hace pymoo distinto de la definición del libro y no lo esconde. El
-    barrido de delta está en results/tier0/delta_sweep.csv y
-    results/part2/delta_sweep.csv.
+*Dónde mirar.* src/metrics_decision.py, cuya cabecera es la explicación de por
+qué esta familia y no la otra; y src/metrics_objective.py, cuya cabecera dice
+qué hace pymoo distinto de la definición del libro y no lo esconde. El barrido
+de delta está en results/tier0/delta_sweep.csv y results/part2/delta_sweep.csv.
 
 ### 3.5 Fase E — El diseño del experimento: una muestra, tres filtros — SLIDE
 
@@ -573,9 +581,10 @@ diapositiva sobre método, es ésta.
 el orden. Pero si corres NSGA-II tres veces, una con cada φ, has cambiado **dos
 cosas a la vez**:
 
-    1. el criterio con el que se decide quién es no dominado   ← lo que quieres medir
-    2. la búsqueda misma, porque NSGA-II usa φ para elegir a quién cruza y a
-       quién mata, así que con otro φ visita otras zonas del espacio   ← ruido
+1. el criterio con el que se decide quién es no dominado — **lo que quieres
+   medir**;
+2. la búsqueda misma, porque NSGA-II usa φ para elegir a quién cruza y a quién
+   mata, así que con otro φ visita otras zonas del espacio — **ruido**.
 
 Los dos efectos salen mezclados y no se pueden separar. Una diferencia medida
 sobre salidas de NSGA-II está **confundida** con el comportamiento de NSGA-II
@@ -587,9 +596,9 @@ caja, del presupuesto y de la semilla. **No depende de φ.**
 
 Así que:
 
-    1. sorteas UNA muestra de 5000 puntos
-    2. evalúas el problema UNA vez sobre esos puntos
-    3. filtras esa misma evaluación TRES veces, una con cada φ
+1. sorteas **una** muestra de 5000 puntos;
+2. evalúas el problema **una** vez sobre esos puntos;
+3. filtras esa misma evaluación **tres** veces, una con cada φ.
 
 Y entonces los tres conjuntos que salen **difieren sólo por el orden**. No hay
 otra explicación posible: la muestra es la misma, la evaluación es la misma, los
@@ -601,31 +610,33 @@ tres diagnósticos con tres criterios. Lo que cambia es el criterio.
 **Y de aquí sale la frase que hay que decir en voz alta**, porque es
 contraintuitiva y porque contesta a la pregunta que va a hacer alguien:
 
-    La búsqueda aleatoria no es el rival flojo del experimento. Es el
-    instrumento que lleva el resultado principal. NSGA-II y MOPSO están para
-    otra cosa: para comprobar que la derivación es correcta y para medir lo que
-    le cuesta a un algoritmo de verdad.
+> La búsqueda aleatoria no es el rival flojo del experimento. Es el
+> instrumento que lleva el resultado principal. NSGA-II y MOPSO están para
+> otra cosa: para comprobar que la derivación es correcta y para medir lo que
+> le cuesta a un algoritmo de verdad.
 
 Esto no es una racionalización posterior. La propia diapositiva 17 de la
 propuesta de los tutores pide la búsqueda aleatoria como *referencia base*, y lo
 que el proyecto descubrió es que esa referencia base es la única con la propiedad
 de aislamiento que hace falta.
 
-    Dónde mirar. src/random_search.py, la función
-    `filter_one_sample_under_every_phi`. Son cinco líneas y el comentario de
-    encima dice exactamente esto. Y src/metrics_decision.py, función
-    `compare_phi_on_one_sample`, cuyo comentario explica por qué esta y no las
-    tiradas de los solvers.
+*Dónde mirar.* src/random_search.py, la función
+`filter_one_sample_under_every_phi`. Son cinco líneas y el comentario de encima
+dice exactamente esto. Y src/metrics_decision.py, función
+`compare_phi_on_one_sample`, cuyo comentario explica por qué esta y no las
+tiradas de los solvers.
 
 **Qué se corrió, exactamente.** — DECIR
 
-    e1, tier 0     p0 y p1. Tres solvers × tres φ × cinco semillas (11 a 15) ×
-                   dos presupuestos. 36 configuraciones, 180 tiradas.
-    e2, tier 1     ZDT1 con 30 variables y DTLZ2 con 12. Lo mismo, más un barrido
-                   de cinco niveles de imprecisión (ε = 0, 0.05, 0.10, 0.25,
-                   0.50). 108 configuraciones, 540 tiradas.
-    f3, parte 2    I-BK1, el problema publicado. Lo mismo. 18 configuraciones,
-                   90 tiradas, 741.93 segundos.
+- **e1, tier 0**: p0 y p1. Tres solvers × tres φ × cinco semillas (11 a 15) ×
+  dos presupuestos. 36 configuraciones, 180 tiradas.
+- **e2, tier 1**: ZDT1 con 30 variables y DTLZ2 con 12. Lo mismo, más un barrido
+  de cinco niveles de imprecisión (ε = 0, 0.05, 0.10, 0.25, 0.50). 108
+  configuraciones, 540 tiradas.
+- **f3, parte 2**: I-BK1, el problema publicado. Lo mismo. 18 configuraciones,
+  90 tiradas, 741.93 segundos.
+- **f7, parte 2**: I-VU2, el segundo problema publicado. **No se corrió**, a
+  propósito y con la razón escrita: sección 8.6.
 
 El presupuesto es **5000 evaluaciones** (población 100 × 50 generaciones), con
 una comprobación de convergencia a **20000**, que es la rejilla entera repetida.
@@ -653,10 +664,11 @@ que casi ningún trabajo empírico tiene: **cuánto se equivoca el instrumento.*
 
 Sobre el par de cabecera, φ_lu contra φ_cw, a presupuesto 5000:
 
-    cantidad                     exacto      medido      error relativo
-    cobertura(lu → cw)           0.394710    0.555932    +40.8 %
-    cobertura(cw → lu)           0.122571    0.221859    +81.0 %
-    Jaccard                      0.103177    0.187190    factor 1.81
+| cantidad | exacto | medido | error relativo |
+|---|---|---|---|
+| cobertura(lu → cw) | 0.394710 | 0.555932 | +40.8 % |
+| cobertura(cw → lu) | 0.122571 | 0.221859 | +81.0 % |
+| Jaccard | 0.103177 | 0.187190 | factor 1.81 |
 
 A presupuesto 20000 los tres errores bajan: +27.7 %, +48.6 %, y el factor del
 Jaccard pasa de 1.81 a 1.49.
@@ -671,11 +683,11 @@ encuentras un puñado de puntos de cada conjunto, y los puntos que encuentras
 tienden a ser los fáciles, que son los que están en la parte compartida. Lo que
 sólo pertenece a un conjunto está en los bordes y se muestrea peor.
 
-    Dónde mirar. results/tier0/instrument_error_p1.csv. **Es el único fichero del
-    proyecto que pone una cantidad deducida al lado de la misma cantidad medida**,
-    hasta que la parte 2 produjo el segundo. Los valores exactos vienen de
-    results/tier0/exact_regions_p1.csv y los medidos de
-    results/tier0/table_2_measured.csv, bloque de decisión, delta 0.0.
+*Dónde mirar.* results/tier0/instrument_error_p1.csv. **Es el único fichero del
+proyecto que pone una cantidad deducida al lado de la misma cantidad medida**,
+hasta que la parte 2 produjo el segundo. Los valores exactos vienen de
+results/tier0/exact_regions_p1.csv y los medidos de
+results/tier0/table_2_measured.csv, bloque de decisión, delta 0.0.
 
 #### 3.6.2 Los números de los benchmarks, y por qué son cotas y no estimaciones
 
@@ -683,17 +695,18 @@ En ZDT1 (30 variables) y DTLZ2 (12) no hay fórmula cerrada: no se puede saber l
 respuesta exacta. Sólo se puede medir. Los números, sobre la misma muestra
 filtrada tres veces, a delta cero y presupuesto 5000:
 
-    problema  n    ε      cob(lu→cw)  cob(cw→lu)  Jaccard   |X_lu|  |X_cw|
-    zdt1      30   0.00   1.000000    1.000000    1.000000     18      18
-    zdt1      30   0.05   0.846154    0.088000    0.086614     26     257
-    zdt1      30   0.10   0.722222    0.101167    0.094891     36     257
-    zdt1      30   0.25   0.660000    0.120623    0.108772     53     257
-    zdt1      30   0.50   0.545455    0.159533    0.133117     68     257
-    dtlz2     12   0.00   1.000000    1.000000    1.000000    150     150
-    dtlz2     12   0.05   0.897541    0.138267    0.136486    278    1813
-    dtlz2     12   0.10   0.851964    0.167527    0.162312    351    1813
-    dtlz2     12   0.25   0.779967    0.245375    0.229867    575    1813
-    dtlz2     12   0.50   0.684211    0.371760    0.321871    980    1813
+| problema | n | ε | cob(lu→cw) | cob(cw→lu) | Jaccard | tamaño X_lu | tamaño X_cw |
+|---|---|---|---|---|---|---|---|
+| zdt1 | 30 | 0.00 | 1.000000 | 1.000000 | 1.000000 | 18 | 18 |
+| zdt1 | 30 | 0.05 | 0.846154 | 0.088000 | 0.086614 | 26 | 257 |
+| zdt1 | 30 | 0.10 | 0.722222 | 0.101167 | 0.094891 | 36 | 257 |
+| zdt1 | 30 | 0.25 | 0.660000 | 0.120623 | 0.108772 | 53 | 257 |
+| zdt1 | 30 | 0.50 | 0.545455 | 0.159533 | 0.133117 | 68 | 257 |
+| dtlz2 | 12 | 0.00 | 1.000000 | 1.000000 | 1.000000 | 150 | 150 |
+| dtlz2 | 12 | 0.05 | 0.897541 | 0.138267 | 0.136486 | 278 | 1813 |
+| dtlz2 | 12 | 0.10 | 0.851964 | 0.167527 | 0.162312 | 351 | 1813 |
+| dtlz2 | 12 | 0.25 | 0.779967 | 0.245375 | 0.229867 | 575 | 1813 |
+| dtlz2 | 12 | 0.50 | 0.684211 | 0.371760 | 0.321871 | 980 | 1813 |
 
 Fíjate en la primera fila de cada bloque: con ε = 0 no hay incertidumbre, todo
 vale 1, los tres órdenes coinciden. **Es la comprobación de cordura**: cuando no
@@ -724,19 +737,19 @@ al subir el presupuesto", cierta en p1, **no es una propiedad general del
 instrumento**. Lo que sobrevive es el signo medido directamente contra una
 respuesta conocida, en los dos problemas donde se conoce.
 
-    Dónde mirar. results/tier1/table_2_measured_eps_*.csv, bloque de decisión,
-    delta 0.0. Los Jaccard salen de results/tier1/overlap_conventions.csv por la
-    identidad con Dice. Y results/tier1/inherited_instrument_error.csv, que es la
-    columna de error de p1 que e2 lee de vuelta para llevarla al lado de sus
-    propias medidas.
+*Dónde mirar.* results/tier1/table_2_measured_eps_*.csv, bloque de decisión,
+delta 0.0. Los Jaccard salen de results/tier1/overlap_conventions.csv por la
+identidad con Dice. Y results/tier1/inherited_instrument_error.csv, que es la
+columna de error de p1 que e2 lee de vuelta para llevarla al lado de sus propias
+medidas.
 
 #### 3.6.3 La dependencia de ε: cuál conjunto se mueve y cuál no
 
 Mira otra vez las dos últimas columnas de la tabla. Ahí está la explicación
 entera de la dependencia con ε, y es más limpia de lo que parece.
 
-    |X_cw|   257 en ZDT1 y 1813 en DTLZ2, en TODOS los niveles positivos
-    |X_lu|   26 → 36 → 53 → 68 en ZDT1, y 278 → 351 → 575 → 980 en DTLZ2
+- |X_cw|: 257 en ZDT1 y 1813 en DTLZ2, en **todos** los niveles positivos.
+- |X_lu|: 26 → 36 → 53 → 68 en ZDT1, y 278 → 351 → 575 → 980 en DTLZ2.
 
 **El conjunto de φ_cw no se mueve. El de φ_lu crece. Toda la dependencia con ε es
 de φ_lu.**
@@ -744,10 +757,11 @@ de φ_lu.**
 **Y que φ_cw no se mueva no es casualidad ni un artefacto: es demostrable.** El
 argumento cabe en tres líneas y se puede decir en voz alta:
 
-    bajo φ_cw la imagen es (centro_1, semianchura_1, ..., centro_m, semianchura_m)
-    ε entra sólo multiplicando las semianchuras por una constante positiva
-    multiplicar una columna por una constante positiva no cambia quién domina a
-        quién, porque es una reetiquetación estrictamente creciente de esa columna
+1. bajo φ_cw la imagen es (centro_1, semianchura_1, ..., centro_m,
+   semianchura_m);
+2. ε entra sólo multiplicando las semianchuras por una constante positiva;
+3. multiplicar una columna por una constante positiva no cambia quién domina a
+   quién, porque es una reetiquetación estrictamente creciente de esa columna.
 
 Así que el conjunto no dominado bajo φ_cw de una muestra dada **es el mismo
 conjunto de índices para cualquier ε > 0**. La columna de cardinalidades lo
@@ -764,21 +778,21 @@ invariancia de arriba, y salió al escribir la síntesis.
 
 La frase honesta, que es la que hay que llevar:
 
-    Al crecer la imprecisión, el conjunto eficiente de φ_lu crece hacia dentro y
-    hacia fuera del de φ_cw, que está fijo. La fracción de la respuesta de φ_lu
-    que φ_cw rechazaría sube del 15 % al 45 % en ZDT1 y del 10 % al 32 % en DTLZ2.
+> Al crecer la imprecisión, el conjunto eficiente de φ_lu crece hacia dentro y
+> hacia fuera del de φ_cw, que está fijo. La fracción de la respuesta de φ_lu
+> que φ_cw rechazaría sube del 15 % al 45 % en ZDT1 y del 10 % al 32 % en
+> DTLZ2.
 
-    Dónde mirar. docs/part1/e3_synthesis.md, sección 3.1, para el argumento de la
-    invariancia. La predicción registrada está en
-    docs/part1/a1_uncertainty_model.md parte 4, y su cierre en la fila r-22 de
-    PROGRESS.md sección 7.
+*Dónde mirar.* docs/part1/e3_synthesis.md, sección 3.1, para el argumento de la
+invariancia. La predicción registrada está en docs/part1/a1_uncertainty_model.md
+parte 4, y su cierre en la fila r-22 de PROGRESS.md sección 7.
 
 #### 3.6.4 El número de la presentación: del 63 al 91 %
 
 De todos los números del proyecto, éste es el que va en la diapositiva:
 
-    **Entre el 63 y el 91 % del conjunto eficiente de un orden queda fuera del
-    del otro, en todos los niveles de imprecisión, en los dos benchmarks.**
+> **Entre el 63 y el 91 % del conjunto eficiente de un orden queda fuera del
+> del otro, en todos los niveles de imprecisión, en los dos benchmarks.**
 
 Concretamente entre 0.628240 y 0.912000 en las ocho celdas, con un recorrido
 entre semillas del 1 al 4 % de esa cifra.
@@ -813,9 +827,9 @@ otro no llega. En los benchmarks X_lu está casi entero dentro de un X_cw mucho
 más grande. La columna del Jaccard sola diría que las dos situaciones son
 parecidas. No lo son, y la lectura para quien decide es distinta.
 
-    Dónde mirar. docs/part1/part1_closing.md, sección 3.1, que es de donde salen
-    las ocho celdas y el criterio de estabilidad. Los datos crudos están en
-    results/tier1/table_2_measured_eps_*.csv, columnas median e iqr.
+*Dónde mirar.* docs/part1/part1_closing.md, sección 3.1, que es de donde salen
+las ocho celdas y el criterio de estabilidad. Los datos crudos están en
+results/tier1/table_2_measured_eps_*.csv, columnas median e iqr.
 
 
 ## PARTE 4. La imagen, explicada — SLIDE
@@ -859,14 +873,14 @@ proyecto es Ejemplo 2.2 contra Ejemplo 2.4 y no un promedio sobre los tres pares
 
 Y aquí van las tres cifras exactas, con sus direcciones:
 
-    Los conjuntos de Ejemplo 2.2 y Ejemplo 2.4 comparten el 10.3 % de su unión.
-    El 39.5 % del de 2.2 está dentro del de 2.4, y el 12.3 % del de 2.4 está
-    dentro del de 2.2.
+> Los conjuntos de Ejemplo 2.2 y Ejemplo 2.4 comparten el 10.3 % de su unión.
+> El 39.5 % del de 2.2 está dentro del de 2.4, y el 12.3 % del de 2.4 está
+> dentro del de 2.2.
 
 Leído al revés, que es como se presenta:
 
-    **El 60.5 % del conjunto de 2.2 queda fuera del de 2.4, y el 87.7 % del de
-    2.4 queda fuera del de 2.2.**
+> **El 60.5 % del conjunto de 2.2 queda fuera del de 2.4, y el 87.7 % del de
+> 2.4 queda fuera del de 2.2.**
 
 La cifra que va a la presentación es el 87.7 %, por la razón que explica la
 sección 3.6.4: es la dirección estable.
@@ -874,11 +888,11 @@ sección 3.6.4: es la dirección estable.
 En medida de Lebesgue exacta, sin muestreo y sin ningún solver dentro. **La
 elección de φ no es un detalle, es la mitad del problema.**
 
-    Dónde mirar. La figura es results/meeting/derived_regions_p1.png. Los números
-    salen de results/tier0/exact_regions_p1.csv: claves coverage_a_in_b,
-    coverage_b_in_a, overlap_union_share y area, sobre el par (lu, cw). Y las
-    fórmulas de las tres regiones están en docs/part1/b1_phi_efficient_sets.md
-    sección 2.4.
+*Dónde mirar.* La figura es results/meeting/derived_regions_p1.png. Los números
+salen de results/tier0/exact_regions_p1.csv: claves coverage_a_in_b,
+coverage_b_in_a, overlap_union_share y area, sobre el par (lu, cw). Y las
+fórmulas de las tres regiones están en docs/part1/b1_phi_efficient_sets.md
+sección 2.4.
 
 
 ## PARTE 5. Los tres hallazgos que son sobre el marco de tus tutores
@@ -895,9 +909,9 @@ objetivos con una matriz de entradas no negativas e invertible, la relación de
 dominancia se conserva. Aplicándolo a las matrices de coeficientes de sus propios
 Ejemplos 2.2, 2.3 y 2.4 sale que:
 
-    conjunto eficiente de 2.2  ⊂  conjunto eficiente de 2.3
-    conjunto eficiente de 2.4  ⊂  conjunto eficiente de 2.3
-    2.2 y 2.4 no se contienen mutuamente
+- conjunto eficiente de 2.2 ⊂ conjunto eficiente de 2.3;
+- conjunto eficiente de 2.4 ⊂ conjunto eficiente de 2.3;
+- 2.2 y 2.4 no se contienen mutuamente.
 
 De los seis mapas posibles entre los tres φ, **exactamente dos** cumplen la
 condición, y los dos salen de 2.3. Ninguno de los dos mapas entre 2.2 y 2.4 es no
@@ -927,12 +941,12 @@ criterio?, ¿son correctas las dos contenciones?, y ¿está publicado en algún
 sitio? La tercera es la que decide si la memoria cita un resultado conocido o
 anota una observación propia.
 
-    Dónde mirar. docs/part1/a_close_containment.md, secciones 1 y 2 para el
-    criterio y 6 para lo que se le pregunta a los tutores. La comprobación de
-    Ishibuchi y Tanaka está en docs/part2/lit_review.md sección 2.4. En el código,
-    src/metrics_decision.py, el diccionario `containments` y la función
-    `pair_note`: cada par que involucra a φ_ls sale de las tablas etiquetado como
-    "comprobación" y no como "hallazgo", y la etiqueta viaja con el número.
+*Dónde mirar.* docs/part1/a_close_containment.md, secciones 1 y 2 para el
+criterio y 6 para lo que se le pregunta a los tutores. La comprobación de
+Ishibuchi y Tanaka está en docs/part2/lit_review.md sección 2.4. En el código,
+src/metrics_decision.py, el diccionario `containments` y la función `pair_note`:
+cada par que involucra a φ_ls sale de las tablas etiquetado como "comprobación"
+y no como "hallazgo", y la etiqueta viaja con el número.
 
 ### 5.2 Las relaciones exactas entre los tres φ — FONDO
 
@@ -954,8 +968,8 @@ conserva por un mapa lineal invertible cualquiera, sólo por uno de entradas no
 negativas, que es el criterio distinto de la sección 5.1. Las dos matrices de
 aquí tienen entradas negativas.
 
-    Dónde mirar. docs/part1/c3_validation.md, sección 5.5. Ahí están las dos
-    matrices escritas y los tres números de condición.
+*Dónde mirar.* docs/part1/c3_validation.md, sección 5.5. Ahí están las dos
+matrices escritas y los tres números de condición.
 
 ### 5.3 El coste de transformar — DECIR
 
@@ -966,13 +980,13 @@ criterio para elegir.
 
 **Medido en los benchmarks, y el resultado está ordenado:**
 
-    las 24 configuraciones de NSGA-II con imprecisión positiva — los dos
-    benchmarks, los tres φ, los cuatro niveles — saturan el rango 1 en todas las
-    semillas. Las tres únicas que no lo hacen son el caso sin incertidumbre.
-
-    y la generación en que ocurre, de 50: en DTLZ2, la 2 en todos los niveles
-    bajo 2.3 y 2.4, y 6, 4, 3, 2 bajo 2.2. En ZDT1, la 5 bajo 2.4, la 4-3 bajo
-    2.3, y **23, 17, 15, 13 bajo 2.2**.
+- Las 24 configuraciones de NSGA-II con imprecisión positiva — los dos
+  benchmarks, los tres φ, los cuatro niveles — saturan el rango 1 en todas las
+  semillas. Las tres únicas que no lo hacen son el caso sin incertidumbre de
+  ZDT1; en DTLZ2 hasta el caso sin incertidumbre satura, en la generación 11.
+- La generación en que ocurre, de 50: en DTLZ2, la 2 en todos los niveles bajo
+  2.3 y 2.4, y 6, 4, 3, 2 bajo 2.2. En ZDT1, la 5 bajo 2.4, la 4-3 bajo 2.3, y
+  **23, 17, 15, 13 bajo 2.2**.
 
 **φ_lu (Ejemplo 2.2) es el que aguanta más tiempo con presión de dominancia, en
 los dos solvers y en los dos problemas, y lo que aguanta baja monótonamente al
@@ -990,9 +1004,9 @@ los métodos basados en transformación, y aquí sale con números propios en lu
 de como cita. **No dice que ningún solver esté mal configurado**: dice lo que le
 hacen 2m objetivos a cualquier selección basada en dominancia.
 
-    Dónde mirar. results/tier1/rank_one_summary.csv, que sale de un callback de
-    pymoo que deja el frente idéntico bit a bit. Y docs/part1/part1_closing.md
-    sección 4.3.
+*Dónde mirar.* results/tier1/rank_one_summary.csv, que sale de un callback de
+pymoo que deja el frente idéntico bit a bit. Y docs/part1/part1_closing.md
+sección 4.3.
 
 
 ## PARTE 6. Qué se predijo, y qué salió
@@ -1092,10 +1106,10 @@ semillas del propio estadístico, calculado sobre una muestra filtrada tres vece
 — que es su variabilidad de muestreo completa. **El sustituto es más débil que un
 suelo de ruido y la memoria lo dice.**
 
-    Dónde mirar. PROGRESS.md sección 9, que es donde viven las predicciones
-    registradas con su redacción original. results/tier1/noise_floor_sweep.csv
-    para el suelo de ruido. results/tier1/overhang_summary.csv para x-01 y
-    results/tier0/registered_measurements_summary.csv para x-02.
+*Dónde mirar.* PROGRESS.md sección 9, que es donde viven las predicciones
+registradas con su redacción original. results/tier1/noise_floor_sweep.csv para
+el suelo de ruido. results/tier1/overhang_summary.csv para x-01 y
+results/tier0/registered_measurements_summary.csv para x-02.
 
 
 ## PARTE 7. Lo que está fijado, y lo que sigue abierto
@@ -1122,39 +1136,54 @@ exclusiones a nivel de artículo. Eso hace contestables varias preguntas de
 lectura y cerró la única cifra sin verificar que quedaba en la derivación de la
 fase B.
 
-**5. Los entregables son tres**, para el 25 de septiembre: la presentación, que
-es el entregable de verdad; una memoria informal de lo que se ha hecho; y un
-artículo si da tiempo.
+**5. Los entregables son tres, más el propio repositorio**, para el 25 de
+septiembre: la presentación, que es el entregable de verdad; la memoria, que la
+decisión d-07 fija **corta, aplicada y en inglés**; y un artículo si da tiempo.
+f8 dejó fijado el orden de las sesiones que quedan: las figuras, la
+presentación, la memoria y, si da tiempo, el artículo.
 
 ### 7.2 Lo que sigue abierto — FONDO
 
-**Nueve preguntas siguen abiertas y todas merecen hacerse.** No hay ninguna que
+**Diez preguntas siguen abiertas y todas merecen hacerse.** No hay ninguna que
 bloquee trabajo: cada una lleva escrita la hipótesis sobre la que el proyecto
-avanza mientras tanto.
+avanza mientras tanto. (PROGRESS.md sección 6 dice «nueve» y enumera diez; el
+recuento bueno es el de la lista.)
 
 Las dos que cambiarían algo:
 
-    s-11   la contención. Tres partes: ¿es correcto el criterio?, ¿son correctas
-           las dos contenciones?, ¿está publicado? La tercera decide si la memoria
-           cita o si observa. **El número de cabecera no depende de ninguna.**
-    s-12   los dos segmentos singulares donde las condiciones publicadas no dan
-           veredicto. **Es la única pregunta que cambia un número** de los
-           resultados finales, y el coste de no saberlo está medido: de −0.63 % a
-           +5.36 % en una métrica de calidad.
+- **s-11**, la contención. Tres partes: ¿es correcto el criterio?, ¿son
+  correctas las dos contenciones?, ¿está publicado? La tercera decide si la
+  memoria cita o si observa. **El número de cabecera no depende de ninguna.**
+- **s-12**, los dos segmentos singulares donde las condiciones publicadas no dan
+  veredicto. **Es la única pregunta que cambia un número** de los resultados
+  finales, y el coste de no saberlo está medido: de −0.63 % a +5.36 % en una
+  métrica de calidad. La fila es de p1, pero el hueco **reapareció en I-VU2**
+  (sección 8.6), en dos dimensiones en vez de una y en un problema publicado:
+  allí es lo que impide cerrar la derivación bajo dos de los tres φ.
 
-Las siete de lectura, que cambian lo que se puede afirmar pero no lo que se ha
+Las ocho de lectura, que cambian lo que se puede afirmar pero no lo que se ha
 medido: s-01 (los subíndices de una ecuación), s-02 (si un "peso ≥ 0 no todos
-nulos" hay que leerlo como estrictamente positivo — el proyecto tiene **dos
-testigos** en contra de la lectura estricta, uno de p1 y otro de I-BK1), s-03,
-s-04, s-06, s-07 y s-09 (dos decisiones de diseño que quieren visto bueno) y s-10.
+nulos" hay que leerlo como estrictamente positivo — el proyecto tiene **tres
+testigos** en contra de la lectura estricta, uno de p1, otro de I-BK1 y otro de
+I-VU2), s-03, s-04, s-06, s-07 y s-09 (dos decisiones de diseño que quieren
+visto bueno) y s-10.
 
 Y tres tareas de lectura del propio proyecto que el corpus abierto hizo
 contestables y que nadie ha hecho: p-01, p-04 y p-06.
 
-    Dónde mirar. docs/plan_after_meeting.md es el plan de trabajo. El texto
-    entero de cada pregunta abierta está en docs/supervisor_questions.md, escrito
-    para poder contestarse de una sentada. Las cerradas están en docs/answered.md
-    con el razonamiento que las retiró.
+Y tres cosas que f5 y f7 dejaron encima de la mesa y que no son preguntas a los
+tutores sino decisiones del propio proyecto: si la puerta de la parte 2 gana un
+**sexto criterio** (la criba de degeneración de la sección 8.2, que se decide
+desde los coeficientes impresos); si la fila s-12 registra I-VU2 como segunda
+instancia; y qué hacer con el residuo de s-14, una pregunta de lectura de [1]
+que f7 contestó desde el propio texto (sección 8.6) y de la que sólo queda si la
+omisión de «en x̄» en el Ejemplo 3.9 es deliberada, cosa que sólo los autores
+saben y que el proyecto no necesita.
+
+*Dónde mirar.* docs/plan_after_meeting.md es el plan de trabajo. El texto entero
+de cada pregunta abierta está en docs/supervisor_questions.md, escrito para
+poder contestarse de una sentada. Las cerradas están en docs/answered.md con el
+razonamiento que las retiró.
 
 
 ## PARTE 8. La parte 2: los problemas intervalares de origen
@@ -1171,9 +1200,9 @@ porque la fase A había descubierto que la banda obvia los hace coincidir.
 
 Un crítico puede decir, con toda la razón del mundo:
 
-    "Habéis construido un problema para que dé la respuesta que queréis que dé.
-    Si hubieseis puesto una banda constante, os habría salido cero, y lo sabéis
-    porque lo medisteis."
+> "Habéis construido un problema para que dé la respuesta que queréis que dé.
+> Si hubieseis puesto una banda constante, os habría salido cero, y lo sabéis
+> porque lo medisteis."
 
 **Y es verdad.** El proyecto lo mide y lo escribe: bajo la anchura lineal
 rechazada, dos de los tres órdenes dan conjuntos idénticos y el tercero da el
@@ -1201,22 +1230,21 @@ Así que los cinco criterios se escribieron **antes de ver ningún ejemplo**, en
 el plan de trabajo. Un problema sirve sólo si cumple **los cinco**; el que cumple
 cuatro se reporta con el que falló y no se usa.
 
-    1. dimensión      lo bastante pequeño para poder comparar los conjuntos en el
-                      espacio de decisión con nuestro presupuesto.
-    2. forma cerrada  ¿se puede deducir el conjunto eficiente a mano, y con qué
-                      resultado publicado, nombrado por teorema o ejemplo?
-    3. separación     los tres φ tienen que dar conjuntos distintos, ninguno igual
-                      al problema sin incertidumbre y ninguno la caja entera —
-                      **comprobado donde vive el conjunto eficiente y nunca sobre
-                      una muestra uniforme de la caja**. Este criterio es la
-                      lección de la fase A convertida en regla de admisión.
-    4. la anchura     ¿alguna columna de la imagen depende sólo de algunas
-                      variables? No descalifica: es la condición x-01 y un problema
-                      que la tenga sirve de tercer test del mecanismo.
-    5. de origen      **los intervalos son del propio artículo.** Un ejemplo cuyo
-                      objetivo sea f(x) ± una constante, o ± una función que el
-                      artículo se inventó para que fuera intervalar, **falla**,
-                      porque eso es lo que ya hizo la parte 1.
+1. **Dimensión**: lo bastante pequeño para poder comparar los conjuntos en el
+   espacio de decisión con nuestro presupuesto.
+2. **Forma cerrada**: ¿se puede deducir el conjunto eficiente a mano, y con qué
+   resultado publicado, nombrado por teorema o ejemplo?
+3. **Separación**: los tres φ tienen que dar conjuntos distintos, ninguno igual
+   al problema sin incertidumbre y ninguno la caja entera — **comprobado donde
+   vive el conjunto eficiente y nunca sobre una muestra uniforme de la caja**.
+   Este criterio es la lección de la fase A convertida en regla de admisión.
+4. **La anchura**: ¿alguna columna de la imagen depende sólo de algunas
+   variables? No descalifica: es la condición x-01 y un problema que la tenga
+   sirve de tercer test del mecanismo.
+5. **De origen**: **los intervalos son del propio artículo.** Un ejemplo cuyo
+   objetivo sea f(x) ± una constante, o ± una función que el artículo se inventó
+   para que fuera intervalar, **falla**, porque eso es lo que ya hizo la parte
+   1.
 
 **Qué pasó al aplicarlos.** Se leyó el artículo [16] — Mondal, Ghosh y Kim,
 *Newton Method for Multiobjective Optimization Problems of Interval-Valued Maps*,
@@ -1224,41 +1252,77 @@ arXiv, marzo de 2026 — y se transcribieron **los veinte problemas** de su
 apéndice A, uno por bloque, con sus dimensiones, su caja y sus objetivos en la
 notación del propio artículo.
 
-    criterio 5:  pasan 19 de 20. Los problemas son coeficientes intervalares del
-                 propio artículo. **El único que falla es I-CH**, que es
-                 f(x) ± 1 — es decir, **la degeneración de anchura constante de
-                 la parte 1, apareciendo en un problema publicado**.
-    criterio 3:  **no se puede contestar leyendo**, porque hace falta una muestra
-                 cerca del conjunto eficiente y el artículo no la da. Y "no
-                 determinable" no es un aprobado.
-    resultado:   **ningún ejemplo pasa la puerta sólo con la lectura, y ninguno la
-                 suspende.** Cinco pasan todos los criterios que una lectura puede
-                 decidir: I-BK1, I-SD, I-IKK1, I-VFM1 y I-MHHM2.
+- **Criterio 5**: pasan 19 de 20. Los problemas son coeficientes intervalares
+  del propio artículo. **El único que falla es I-CH**, que es f(x) ± 1 — es
+  decir, **la degeneración de anchura constante de la parte 1, apareciendo en un
+  problema publicado**.
+- **Criterio 3**: **no se puede contestar leyendo**, porque hace falta una
+  muestra cerca del conjunto eficiente y el artículo no la da. Y "no
+  determinable" no es un aprobado.
+- **Resultado**: **ningún ejemplo pasa la puerta sólo con la lectura, y ninguno
+  la suspende.** Cinco pasan todos los criterios que una lectura puede decidir:
+  I-BK1, I-SD, I-IKK1, I-VFM1 y I-MHHM2.
 
 El criterio 3 no se contesta con un diagnóstico muestreado, sino **derivando**.
 Si eres capaz de deducir los tres conjuntos en forma cerrada, sabes si son
 distintos **en medida de Lebesgue**, que es mucho mejor evidencia que cualquier
 muestra.
 
-    Dónde mirar. docs/part2/lit_review.md. Sección 1.8 lleva la tabla de los
-    veinte problemas y la sección 1.9 el veredicto criterio por criterio. Los
-    cinco criterios originales están en docs/part1/part1_closing.md sección 7.2,
-    escritos antes de que se abriera el artículo, que es lo que hay que poder
-    enseñar si alguien pregunta.
+**Una segunda criba, con la parte 2 ya cerrada, y lo que encontró.** f5 volvió
+sobre los veinte problemas con dos comprobaciones que la lectura no había hecho.
+La primera es la trampa 10.1 convertida en aritmética: para un objetivo
+`⊕_j [a_j, b_j] ⊙ h_j(x)` con todos los `h_j` de signo constante, la semianchura
+es una función afín exacta del centro **si y sólo si** el cociente
+`(b_j − a_j) / (a_j + b_j)` es el mismo en todos los términos no constantes. Se
+decide en racionales exactos desde los coeficientes impresos, sin muestrear
+nada, y cuesta minutos:
+
+- **Ocho de los veinte** tienen al menos un objetivo degenerado, y cinco lo
+  tienen en todos. Cualquier objetivo que sea un solo coeficiente sobre una sola
+  función lo es automáticamente, y eso resuelve I-AP1 e I-AP4, las dos filas que
+  la lectura había dejado como «no determinable»: dos de sus tres objetivos son
+  ciegos al orden.
+- **Cinco de los veinte** tienen fronteras que se intercambian — I-VU2, I-CH,
+  I-Hil1, I-Comet e I-Viennet —, comprobado sobre 200000 puntos por caja. Y dos
+  que la lectura había apuntado como «factores que cambian de signo», I-KW2 e
+  I-PNR, **no** intercambian nada, porque sus coeficientes son degenerados
+  (`[10, 10]`, `[1/4, 1/4]`): un escalar no tiene dos extremos que cruzar.
+  Siguen fuera, por convexidad.
+
+De ahí salió una **propuesta de sexto criterio** para la puerta — o de
+endurecimiento del quinto: I-CH lo falla por los dos lados, lo que sugiere que
+son la misma condición vista desde dos sitios — que sigue abierta. Y f7 le añadió
+el refinamiento que hace falta: el veredicto hay que leerlo **sobre la región
+donde vive el conjunto eficiente**, no sobre la caja. En I-VU2 la caja dice «no
+degenerado» y el cuadrante que contiene toda la respuesta dice «degenerado con
+pendiente −1/5»; la que manda es la segunda. Es la lección de 10.2 otra vez, por
+otra ruta y en un problema publicado.
+
+f5 dejó cuatro candidatos para el último problema, sin elegir, por instrucción:
+I-SD por novedad, I-IKK1 por lo que decide, I-VU2 por el cruce e I-MHHM2 como
+suelo. El elegido fue I-VU2, y la sección 8.6 es lo que salió.
+
+*Dónde mirar.* docs/part2/lit_review.md. Sección 1.8 lleva la tabla de los
+veinte problemas y la sección 1.9 el veredicto criterio por criterio. Los cinco
+criterios originales están en docs/part1/part1_closing.md sección 7.2, escritos
+antes de que se abriera el artículo, que es lo que hay que poder enseñar si
+alguien pregunta. La segunda criba es docs/part2/f5_boundary_interchange.md:
+sección 3.2 la aritmética de la degeneración, 3.3 los cruces, 3.5 los veinte uno
+por uno, 5 los cuatro candidatos y 6 la propuesta del sexto criterio.
 
 ### 8.3 I-BK1: qué es el problema — SLIDE
 
 Es el problema 1 del apéndice A de [16], en su página 27:
 
-    G_1 = [0.1, 0.2] ⊙ x_1²  ⊕  [0.1, 0.3] ⊙ x_2²
-    G_2 = [0.1, 0.3] ⊙ (x_1 − 5)²  ⊕  [0.1, 0.5] ⊙ (x_2 − 5)²
-    con x en la caja [−10, 10]²
+- `G_1 = [0.1, 0.2] ⊙ x_1² ⊕ [0.1, 0.3] ⊙ x_2²`
+- `G_2 = [0.1, 0.3] ⊙ (x_1 − 5)² ⊕ [0.1, 0.5] ⊙ (x_2 − 5)²`
+- con x en la caja [−10, 10]²
 
 Léelo en voz alta y verás lo que importa: **los corchetes están en los
-coeficientes.** No hay ninguna función de anchura escrita por nosotros. `[0.1,
-0.2]` significa "este coeficiente vale algo entre 0.1 y 0.2 y no sabemos qué". Es
-un problema de dos variables, dos objetivos, y por lo tanto cuatro columnas
-reales al transformarlo.
+coeficientes.** No hay ninguna función de anchura escrita por nosotros.
+`[0.1, 0.2]` significa "este coeficiente vale algo entre 0.1 y 0.2 y no sabemos
+qué". Es un problema de dos variables, dos objetivos, y por lo tanto cuatro
+columnas reales al transformarlo.
 
 **Y hay una comprobación que hace falta para poder decir que el efecto no es
 nuestro.** La degeneración de la fase A ocurre cuando centro y semianchura son
@@ -1275,6 +1339,12 @@ que las cuatro funciones frontera son las obvias. Es la condición que el propio
 condición en lugar de defender la construcción por nuestra cuenta**, y viene de
 un artículo que no está defendiéndola tampoco.
 
+Y una confesión que va pegada: cuando se corrió I-BK1, **el código no tenía
+producto de Moore**. Calculaba los extremos en orden fijo, que coincide con Moore
+exactamente cuando los `h` no cambian de signo, que es el caso de I-BK1 y de todo
+lo anterior. Se descubrió en f5 y se arregló en f6 sin que se moviera un número:
+secciones 3.1 y 10.5.
+
 ### 8.4 La derivación: tres cuñas — SLIDE
 
 El resultado de derivar I-BK1 a mano es más bonito de lo esperado, y se puede
@@ -1282,14 +1352,14 @@ contar entero.
 
 **Toda la respuesta es un solo número.** Definiendo
 
-    ν  =  x_2 (5 − x_1)  /  ( x_1 (5 − x_2) )
+`ν = x_2 (5 − x_1) / (x_1 (5 − x_2))`
 
 resulta que cada conjunto eficiente es exactamente **el conjunto de puntos cuyo ν
 cae en un intervalo cerrado**. Y el intervalo depende del φ:
 
-    φ_cw  (Ejemplo 2.4)    ν en [3/4, 3/2]      área 2.875612
-    φ_lu  (Ejemplo 2.2)    ν en [2/3, 5/3]      área 3.790332
-    φ_ls  (Ejemplo 2.3)    ν en [1/2, 2]        área 5.685282
+- φ_cw (Ejemplo 2.4): ν en [3/4, 3/2], área 2.875612
+- φ_lu (Ejemplo 2.2): ν en [2/3, 5/3], área 3.790332
+- φ_ls (Ejemplo 2.3): ν en [1/2, 2], área 5.685282
 
 Geométricamente, cada uno es una **cuña** entre dos hipérbolas que van de (0,0) a
 (5,5); las tres están clavadas en esas dos esquinas. Por eso la comparación de
@@ -1300,7 +1370,7 @@ recta.
 
 Los seis extremos se ordenan estrictamente:
 
-    1/2  <  2/3  <  3/4  <  3/2  <  5/3  <  2
+`1/2 < 2/3 < 3/4 < 3/2 < 5/3 < 2`
 
 Es decir: **los tres conjuntos están anidados**. `X_cw` dentro de `X_lu` dentro
 de `X_ls`, las tres inclusiones estrictas.
@@ -1313,8 +1383,8 @@ par vale exactamente 1.
 
 Lo que sí se puede decir, y es exacto, sin muestreo y sin ningún solver dentro:
 
-    **el 49.4 % del conjunto mayor queda fuera del menor**, y los tres tamaños
-    son 2.88, 3.79 y 5.69 sobre la misma caja.
+> **el 49.4 % del conjunto mayor queda fuera del menor**, y los tres tamaños
+> son 2.88, 3.79 y 5.69 sobre la misma caja.
 
 **Por qué se anidan: hay mecanismo, y no es una demostración.** Sabemos por qué
 el desacuerdo es unidimensional — todo se reduce a ν, porque las doce
@@ -1326,14 +1396,21 @@ dos intervalos pueden solaparse parcialmente, y dos conjuntos así se cruzarían
 igual que los de p1. **El anidamiento es una propiedad numérica de los
 coeficientes impresos en [16]**, que resulta que ordenan estrictamente.
 
+Y desde f7 hay una tercera respuesta al mismo par. En I-VU2 (sección 8.6) los
+conjuntos de 2.2 y 2.4 **son iguales**. Cruce en p1, anidamiento en I-BK1,
+igualdad en I-VU2: tres problemas, tres relaciones distintas sobre el único par
+que el criterio de contención no predice. Lo que sigue en pie es lo de arriba —
+que la geometría está en los coeficientes — y lo que se cae es cualquier frase
+general sobre «cómo se relacionan los órdenes en los problemas intervalares».
+
 Así que la frase honesta es:
 
-    **es una observación con un mecanismo localizado, no un resultado.** La frase
-    "los órdenes se anidan en los problemas intervalares de origen" **no se puede
-    escribir**: un problema de cada tipo no establece eso. Lo que sí se puede
-    decir es que las dos geometrías son distintas, que la diferencia está
-    localizada en la estructura de los coeficientes, y que se puede comprobar en
-    cualquier problema nuevo antes de correrlo.
+> **es una observación con un mecanismo localizado, no un resultado.** La
+> frase "los órdenes se anidan en los problemas intervalares de origen" **no
+> se puede escribir**: un problema de cada tipo no establece eso. Lo que sí se
+> puede decir es que las dos geometrías son distintas, que la diferencia está
+> localizada en la estructura de los coeficientes, y que se puede comprobar en
+> cualquier problema nuevo antes de correrlo.
 
 **Y hay un problema concreto que lo decidiría.** I-IKK1, el problema 11 del mismo
 apéndice, es intervalar de origen **y tiene la estructura de p1** en lugar de la
@@ -1377,14 +1454,193 @@ que el artículo tabula la reproducen a seis decimales y otros dos son sus
 esquinas. **Hasta aquí, todas las derivaciones del proyecto descansaban en su
 propia álgebra. Ésta la confirma un tercero.**
 
-    Dónde mirar. docs/part2/f2_ibk1_derivation.md para la derivación (sección 2.4
-    las tres cuñas, sección 3.1 el anidamiento, sección 4.1 la comprobación
-    externa que pasa). docs/part2/f3_native_run.md para la tirada.
-    results/part2/exact_regions_ibk1.csv lleva los valores exactos y
-    results/part2/instrument_error_ibk1.csv la segunda medida del error. Las 24
-    figuras están en results/part2/figures/: los paneles de espacio de decisión a
-    presupuesto 5000 son donde se ve el anidamiento, y son el compañero natural
-    de las figuras de p1, donde se ve el cruce.
+*Dónde mirar.* docs/part2/f2_ibk1_derivation.md para la derivación (sección 2.4
+las tres cuñas, sección 3.1 el anidamiento, sección 4.1 la comprobación externa
+que pasa). docs/part2/f3_native_run.md para la tirada.
+results/part2/exact_regions_ibk1.csv lleva los valores exactos y
+results/part2/instrument_error_ibk1.csv la segunda medida del error. Las 24
+figuras están en results/part2/figures/: los paneles de espacio de decisión a
+presupuesto 5000 son donde se ve el anidamiento, y son el compañero natural de
+las figuras de p1, donde se ve el cruce.
+
+### 8.6 I-VU2: el segundo problema derivado, y dónde se acaba el enfoque de transformación — SLIDE
+
+Esto es lo que la parte 2 hizo después de cerrarse la primera vez, y hay que
+enmarcarlo bien: **no es una cuarta comparación, es la frontera del método**,
+enseñada en un problema publicado. Y responde a algo que **los propios tutores
+plantearon el 4 de septiembre**: que llevar un intervalo como dos funciones
+frontera fijas puede salir mal, porque cuál de las dos expresiones da el extremo
+inferior no tiene por qué ser siempre la misma.
+
+**Qué es.** El problema 2 del apéndice A de [16], página 28:
+
+- `G_1 = [1, 1.5] ⊙ x_1 ⊕ [1, 1.5] ⊙ x_2 ⊕ [1, 1]`
+- `G_2 = [1, 1.5] ⊙ x_1² ⊕ [2, 3] ⊙ x_2² ⊖ [1, 1]`
+- con x en la caja [−4, 4]²
+
+Mira la diferencia con I-BK1: en `G_1` los coeficientes intervalares multiplican
+`x_1` y `x_2` a secas, que **cambian de signo** dentro de la caja. Por el
+producto de Moore, la semianchura de `G_1` es `¼ (|x_1| + |x_2|)`: un valor
+absoluto. Las dos funciones frontera se **intercambian** en los dos ejes, y ésa
+es exactamente la condición bajo la que [16] dice, en su página 27, que la
+lectura en 2m columnas deja de estar garantizada. p1, ZDT1, DTLZ2 e I-BK1 no
+podían probar esto: en los cuatro, todo coeficiente intervalar multiplica algo
+de signo constante. De los veinte problemas del apéndice, cinco se intercambian,
+y **I-VU2 es el único que se intercambia y no está descalificado por otra
+cosa**, así que no fue una elección cómoda: es lo que el apéndice contiene.
+
+**Se derivó a mano, con verificación en racionales exactos, y no se corrió.** Lo
+segundo es una decisión con su razón y se explica abajo.
+
+**Lo que cierra y lo que no, por φ.** Por el Teorema 3.3 de [1], en la caja
+entera `F` es φ_cw-convexa y **no** es φ_lu-convexa ni φ_ls-convexa (la frontera
+inferior de `G_1` es una suma de mínimos de funciones afines, o sea cóncava). Y
+la diferenciabilidad que pide el Ejemplo 3.9 **falla en los dos ejes bajo los
+tres φ**: cada φ lleva `|x_1|` y `|x_2|` a alguna de sus dos columnas del
+objetivo 1, y como los φ son invertibles ningún orden admisible lo quita. En cada
+cuadrante cerrado todo vuelve a ser afín o cuadrático, y un argumento de
+proyección desde la propia definición 3.1 mete la respuesta entera en el
+cuadrante `Q = [−4, 0]²`. Allí la condición (15) da la recta `x_2 = x_1 / 2`
+bajo los tres φ, y el Ejemplo 3.8 certifica como óptima, en la caja entera y sin
+usar convexidad ni diferenciabilidad, la **curva en L**
+
+`E = { (t, t/2) : −4 ≤ t ≤ 0 } ∪ { (−4, s) : −4 ≤ s ≤ −2 }`
+
+Y entonces la derivación **se para bajo dos de los tres órdenes, y no por el
+cruce**. Bajo φ_ls y φ_cw hay un **rayo singular de pesos** — `w` proporcional a
+`(1, 3, 0, 0)` y a `(1, 5, 0, 0)` — sobre el que el objetivo escalarizado es
+**constante en todo `Q`**. Así que la condición necesaria se cumple en todos los
+puntos del cuadrante que contiene la respuesta, y la suma ponderada no puede
+bajar el conjunto óptimo por debajo de él: la ruta publicada deja
+`E ⊆ Opt ⊆ Q`, un hueco de medida 16 frente a una respuesta de medida cero. Bajo
+φ_lu no hay ningún rayo así y la derivación cierra exacta: `Opt_lu = E`.
+
+- φ_lu pierde la convexidad del Teorema 3.3 y **cierra**: Opt = E.
+- φ_ls pierde la convexidad y no cierra: E ⊆ Opt ⊆ Q.
+- φ_cw **conserva** la convexidad y no cierra: E ⊆ Opt ⊆ Q.
+
+Dos cosas para leer de esa lista. La primera: **es la sección 3.2 otra vez** —
+el fenómeno de s-12, los rayos singulares de p1 — una dimensión más arriba y en
+un problema que no construimos nosotros. En p1 cada rayo producía una línea;
+aquí produce una región de dos dimensiones. La segunda, que es la que
+descoloca: **el orden que conserva la hipótesis de convexidad es el que no
+cierra, y el que la pierde es el que cierra.** No es paradoja — la convexidad es
+hipótesis de los resultados *suficientes*, y lo que para a φ_ls y φ_cw es el
+*necesario* — pero es lo contrario de lo que f5 esperaba, y así está corregido.
+
+**Lo que el cruce cuesta por su cuenta, exhibido y no afirmado.** El conjunto de
+candidatos que (15) produce en los cuadrantes abiertos es el segmento **abierto**
+`{ (t, t/2) : −4 < t < 0 }`. El origen es su punto límite y **no está en él**.
+Y en el origen (15) **no se puede ni escribir**: su primera expresión exige el
+gradiente de cada coordenada de la imagen por separado, y en un punto del cruce
+ninguno existe, bajo ningún φ. No es que la ecuación falle; es que no se puede
+plantear. Hay un segundo hueco, menor y de otra causa: la lectura de (15) como
+estacionariedad sin multiplicadores no dice nada sobre una cara de la caja, y el
+trozo `{ (−4, s) }` de la respuesta es un arco de longitud positiva sobre
+`x_1 = −4`. En p1 y en I-BK1 esa lectura no costó nada porque los conjuntos eran
+interiores; aquí cuesta un arco. Los dos huecos los tapa el Ejemplo 3.8, que no
+tiene hipótesis de diferenciabilidad; el tercero, el del rayo singular, **no lo
+tapa nada publicado**.
+
+**Y la frase para la que existe este problema**, que es la que va en la
+diapositiva:
+
+> **El origen de I-VU2 es óptimo fuerte bajo los tres órdenes — demostrable en
+> nueve líneas desde la propia definición 3.1(1) de [1], sin
+> diferenciabilidad, sin convexidad, sin pesos — y a la vez la maquinaria
+> publicada que genera candidatos no se puede ni escribir en él.**
+
+La demostración cabe en una línea: cualquier `x ≠ 0` con las cuatro coordenadas
+no peores que las del origen necesitaría `x_1² + 2 x_2² ≤ 0`, que una forma
+cuadrática definida positiva prohíbe. Una columna del objetivo 2 por φ basta. Y
+el Ejemplo 3.8 lo certifica por segunda vez, con `w = (0, 0, w_3, w_4)`. El
+Ejemplo 3.8 no tiene hipótesis de suavidad y el 3.9 sí, **y el cruce los
+separa**: ésa es la frontera en una frase, y es la reserva que [16] pone en su
+página 27, instanciada, localizada y acotada sobre su propio problema de prueba.
+
+**El criterio 3 falla, y falla exacto.** Los tres conjuntos φ-eficientes son
+**iguales entre sí e iguales al del problema nítido de los centros**: los tres
+son `E`. El mecanismo es el cruce mismo: en `Q`, `|x_1| + |x_2| = −(x_1 + x_2)`,
+así que la semianchura de `G_1` pasa a ser `(1 − c_1) / 5`, **una función afín
+exacta del centro con pendiente negativa** — la trampa 10.1 en su forma
+saturada, creada por el cruce y no por nadie. Y `G_2` ya era ciego al orden
+antes de mirar el cruce: sus seis columnas, a lo largo de los tres φ, son
+funciones afines crecientes del mismo escalar `x_1² + 2 x_2²`, así que ordena
+cualquier par de puntos igual bajo los tres. Los dos objetivos degenerados donde
+vive la respuesta, y a los tres órdenes no les queda nada sobre lo que discrepar.
+
+**Por eso no se corrió, y no es una omisión.** Una tirada bajo los tres órdenes
+habría medido el problema nítido tres veces: tres conjuntos de índices
+idénticos, una tabla de unos, y el riesgo de que alguien la lea después como una
+medida de acuerdo entre órdenes en vez de como la definición del problema. No hay
+par, ni cobertura, ni solapamiento, ni nada que calibrar, porque los conjuntos
+están **deducidos**, no estimados. La sección 10.1 es el precedente exacto: la
+degeneración de anchura constante se midió *primero* para no correr nunca dentro
+de ella sin saberlo, y I-VU2 es ese caso apareciendo en un problema publicado,
+por un mecanismo — el cruce — que la parte 1 no había previsto. I-VU2 no aporta
+ningún número medido, ningún tercer punto de calibración y ninguna fila a
+ninguna tabla.
+
+**Qué le hace a la afirmación final.** A la magnitud, nada: c5 queda exactamente
+donde la dejó I-BK1, ni reforzada ni debilitada. Lo que añade es **el primer
+problema intervalar de origen publicado en el que los tres órdenes coinciden**,
+así que la forma amplia de la afirmación — «el efecto persiste en los problemas
+intervalares de origen, en plural» — no es que no esté apoyada: **se sabe que no
+vale como universal.** Y el límite viene con su criterio de decisión, que es el
+que la afirmación de la sección 11.1 ya llevaba: en qué régimen está un problema
+se lee en sus coeficientes impresos, sobre la región donde vive la respuesta,
+antes de correr nada. En I-VU2 el régimen no lo eligió nadie; lo creó el cruce.
+
+**Lo que I-VU2 no establece, y es lo que más peligro tiene de ensancharse al
+comprimir.** Nada sobre *cuántas veces* ocurre un cruce: cinco de veinte, en un
+apéndice, y en ningún otro sitio. Nada sobre *cuánto* de un conjunto eficiente
+típico esconde. Nada sobre el método de Newton de [16], que no está implementado
+en ninguna parte. Y **no es un segundo contraejemplo** a la Proposición 2.1 ni al
+Lema 2.4(ii): I-VU2 incumple sus hipótesis por su cuenta (`G_1` es afín y su
+frontera inferior cóncava), así que la corrección de la parte 9 ni se extiende
+ni se debilita. `Opt_ls` y `Opt_cw` **no están derivados**: la ruta publicada los
+deja entre `E` y `Q`, y lo que se sabe de ellos por dominación directa se dice y
+no se ofrece como derivación. Y **no hay comprobación externa y no se reclama
+ninguna**: [16] no imprime para I-VU2 ningún punto solución, sólo la Tabla 3
+(iteraciones, p. 23) y la Figura 3(a) (p. 24), de las que no se puede leer una
+coordenada. Lo que sí se comprobó es interno a las definiciones de [16] y es
+condición necesaria, no checkpoint: `E` cae dentro de su conjunto Pareto crítico
+(definición 2.18), que en I-VU2 es el cono `2/9 ≤ x_2 / x_1 ≤ 9/8`, calculado en
+forma cerrada y coincidente con un barrido de 8000 direcciones en 70 puntos.
+
+**La frase general honesta es la condicional**: donde un coeficiente intervalar
+multiplica una función que cambia de signo en la región factible, la hipótesis
+de diferenciabilidad de la transformación en 2m columnas falla sobre el lugar del
+cambio de signo bajo **todos** los órdenes de la clase de [1]; y que eso cueste
+algo depende de si el conjunto eficiente toca ese lugar — que en el único
+problema donde se ha decidido exactamente, lo toca.
+
+**Dos cosas de paso.** Una lectura de [1] que f5 había puesto en duda — si la
+«φ-convexidad» que piden los enunciados 2 y 3 del Ejemplo 3.9 es la global del
+Teorema 3.3 o puede rebajarse a la puntual «en x̄» — la resolvió f7 desde el
+propio texto de [1]: la definición 2.2 (p. 5) define las dos, una debajo de la
+otra y con nombres distintos; los Ejemplos 3.4 a 3.7 usan la puntual cuatro
+veces, siempre con «continuamente diferenciable en x̄» al lado; y el Ejemplo 3.9
+usa la global. Es la lectura que b1 y f2 ya usaban, así que **ninguna
+derivación se mueve**, y en I-VU2 la respuesta no cuesta nada en ningún sentido,
+porque el punto donde la lectura puntual habría ayudado es el origen, donde ya
+falla la diferenciabilidad. Y la segunda: I-VU2 es **el primer problema que el
+proyecto toca que habría disparado el defecto de la sección 3.1** — 2071 de 4000
+puntos muestreados salen con el intervalo al revés bajo la lectura de orden fijo,
+y 0 bajo el producto de Moore; y los 2071 son exactamente la mitad de la caja
+que contiene toda la respuesta. Sin f6, la derivación habría sido de otro objeto
+justo donde importaba, y el error habría sido silencioso. f6 fue una
+**precondición** de f7, no una mejora.
+
+*Dónde mirar.* docs/part2/f7_ivu2_derivation.md es la derivación y manda sobre
+todo lo demás: sección 1 para la lectura de la φ-convexidad, 2.4 para los 2071
+puntos, 3.5 y 3.8 para los rayos singulares y la tabla de lo que cierra, 4.1
+para el cruce, 5 para el origen, 6.4 para el criterio 3 y 7 para lo que [16] da
+y no da. La versión asentada es docs/part2/part2_closing.md sección 10 (10.7 la
+decisión de no correrlo, 10.9 lo que no establece), sección 11 lo que la parte 2
+es ahora, sección 12 la afirmación c5 rejuzgada y sección 13 la segunda
+comprobación de las prohibiciones. Los cuatro candidatos y el porqué de I-VU2
+están en docs/part2/f5_boundary_interchange.md sección 5.
 
 
 ## PARTE 9. El contraejemplo — SLIDE
@@ -1406,7 +1662,7 @@ artículo.
 doce iteraciones en su primer problema de prueba (que es I-BK1, el de la parte
 8):
 
-    x⋆ = (3.914930, 1.428474)
+`x⋆ = (3.914930, 1.428474)`
 
 y en la página 21 lo llama **punto Pareto óptimo** de ese problema.
 
@@ -1422,24 +1678,25 @@ problema, todo lo demás sobra. Se comprobó de dos maneras, las dos contra el
 propio artículo. La segunda es la buena: **recalculando G en el x⋆ que ellos
 imprimen** sale
 
-    calculado por nosotros:   ([1.736721, 3.677497],  [1.393317, 6.731112])
-    impreso en el artículo:   ([1.736722, 3.677497],  [1.393317, 6.731112])
+- calculado por nosotros: ([1.736721, 3.677497], [1.393317, 6.731112])
+- impreso en el artículo: ([1.736722, 3.677497], [1.393317, 6.731112])
 
 Coinciden hasta el último dígito impreso en los cuatro valores. **Leemos su
 problema como ellos lo leen.**
 
 **Ahora el punto.** Tomamos
 
-    y = (2.897500, 2.397500)
+`y = (2.897500, 2.397500)`
 
 que está dentro de su caja. Y comparamos, en aritmética racional exacta, contra
 los valores que **el propio artículo imprime** para x⋆:
 
-    coordenada     G(y)        G(x⋆) impreso     margen        ¿menor?
-    G_1 inferior   1.414351    1.736721          +0.322370     sí
-    G_1 superior   3.403503    3.677497          +0.273994     sí
-    G_2 inferior   1.119351    1.393317          +0.273966     sí
-    G_2 superior   4.712655    6.731112          +2.018457     sí
+| coordenada | G(y) | G(x⋆) impreso | margen | ¿menor? |
+|---|---|---|---|---|
+| G_1 inferior | 1.414351 | 1.736721 | +0.322370 | sí |
+| G_1 superior | 3.403503 | 3.677497 | +0.273994 | sí |
+| G_2 inferior | 1.119351 | 1.393317 | +0.273966 | sí |
+| G_2 superior | 4.712655 | 6.731112 | +2.018457 | sí |
 
 **Los cuatro estrictamente menores.** Por tanto `G_i(y) ≺ G_i(x⋆)` en los dos
 objetivos, y **x⋆ no es un punto Pareto óptimo de I-BK1 bajo su propia definición
@@ -1468,11 +1725,11 @@ búsqueda.
 
 **Los devuelven en todas las configuraciones.**
 
-    configuraciones con un dominador       18 de 18
-    semillas con un dominador, cada una     5 de 5
-    puntos dominadores, mediana, a 5000     de 5 a 15
-    puntos dominadores, mediana, a 20000    de 4 a 40
-    mejor margen conseguido                 0.269627
+- configuraciones con un dominador: 18 de 18
+- semillas con un dominador, cada una: 5 de 5
+- puntos dominadores, mediana, a 5000: de 5 a 15
+- puntos dominadores, mediana, a 20000: de 4 a 40
+- mejor margen conseguido: 0.269627
 
 Y ese mejor margen conseguido por un solver, 0.269627, contra el **0.273966** que
 la derivación encontró algebraicamente por búsqueda exhaustiva. Dos rutas, dos
@@ -1499,8 +1756,8 @@ Y en I-BK1 eso se puede calcular en forma cerrada. El conjunto crítico del
 artículo es `ν ∈ (1/9, 10)`, de medida **16.07** sobre la misma caja donde los
 tres conjuntos eficientes miden 2.88, 3.79 y 5.69:
 
-    **el conjunto crítico es 4.24 veces el conjunto eficiente de φ_lu, y
-    contiene estrictamente a los tres.**
+> **el conjunto crítico es 4.24 veces el conjunto eficiente de φ_lu, y
+> contiene estrictamente a los tres.**
 
 La forma cerrada se comprobó contra un barrido bruto de direcciones, calculado a
 partir de los gradientes que el propio artículo imprime: doce puntos de prueba
@@ -1533,26 +1790,30 @@ encontrar ninguna. Y ese punto está dominado en las cuatro coordenadas por
 **No se afirma dónde falla la demostración. Y ésta es la frase que hay que decir
 literalmente si preguntan:**
 
-    La demostración de la Proposición 2.1 dice, en el artículo, que es "similar a
-    la del apartado (ii) del Lema 2.4". Y el Lema 2.4 está atribuido a otro
-    artículo de los mismos autores, de 2025, que **no tenemos**. Así que los dos
-    fallos son en realidad uno solo, es heredado y no original de este artículo,
-    y **no hemos leído la demostración que tendríamos que señalar**. Decimos que
-    la conclusión es falsa; no decimos por qué.
+> La demostración de la Proposición 2.1 dice, en el artículo, que es "similar
+> a la del apartado (ii) del Lema 2.4". Y el Lema 2.4 está atribuido a otro
+> artículo de los mismos autores, de 2025, que **no tenemos**. Así que los dos
+> fallos son en realidad uno solo, es heredado y no original de este artículo,
+> y **no hemos leído la demostración que tendríamos que señalar**. Decimos que
+> la conclusión es falsa; no decimos por qué.
 
 **Y tampoco se afirma nada más.** Nada sobre su método de Newton, que puede
 converger exactamente como dicen sus teoremas a exactamente lo que define su
-definición 2.18. Nada sobre los otros diecinueve problemas de su apéndice. Nada
-sobre su trabajo numérico más allá de los dos resultados impresos que se nombran.
+definición 2.18. Nada sobre los otros diecinueve problemas de su apéndice — y el
+segundo que el proyecto derivó, I-VU2, **no** es un segundo contraejemplo:
+incumple las hipótesis de esos dos enunciados por su cuenta (sección 8.6), y lo
+único que reaparece allí es el mecanismo, un conjunto crítico de medida positiva
+que contiene estrictamente al eficiente. Nada sobre su trabajo numérico más allá
+de los dos resultados impresos que se nombran.
 
 **Dos obligaciones que esto le impone a la memoria**, y son vinculantes:
 
-    la memoria **no puede citar** la Proposición 2.1 ni el Lema 2.4(ii), en
-        ninguna forma, ni como justificación del estatus de un punto publicado.
-    el x⋆ de la Tabla 1 **no puede usarse** como fixture, como checkpoint ni como
-        punto de referencia en ninguna parte del proyecto.
-    **el checkpoint publicado que sí vale, se usa**: es la curva de la ecuación
-        (25), que cae dentro de las tres cuñas a lo largo de toda su longitud.
+- la memoria **no puede citar** la Proposición 2.1 ni el Lema 2.4(ii), en
+  ninguna forma, ni como justificación del estatus de un punto publicado;
+- el x⋆ de la Tabla 1 **no puede usarse** como fixture, como checkpoint ni como
+  punto de referencia en ninguna parte del proyecto;
+- **el checkpoint publicado que sí vale, se usa**: es la curva de la ecuación
+  (25), que cae dentro de las tres cuñas a lo largo de toda su longitud.
 
 De paso salió un erratum menor: en su Tabla 2, la fila α = 0.8 lleva la segunda
 coordenada de la fila α = 0.9, y los valores de esa fila se calcularon a partir
@@ -1578,20 +1839,21 @@ visibles. **Aquí produjo uno**: un checkpoint que no cuadró, que en un proyect
 menos estricto se habría atribuido a un error propio y se habría ajustado hasta
 que cuadrase.
 
-    Dónde mirar. docs/part2/f2_ibk1_derivation.md, sección 4.2 para las cuatro
-    desigualdades y la robustez al redondeo, y sección 4.3 para el mecanismo y el
-    conjunto crítico. docs/part2/f3_native_run.md sección 6 para la reproducción
-    a ciegas, con los datos en results/part2/dominators_summary.csv y
-    results/part2/dominators_by_seed.csv. Y docs/part2/part2_closing.md sección
-    5, que es la versión asentada y la que va a la memoria.
+*Dónde mirar.* docs/part2/f2_ibk1_derivation.md, sección 4.2 para las cuatro
+desigualdades y la robustez al redondeo, y sección 4.3 para el mecanismo y el
+conjunto crítico. docs/part2/f3_native_run.md sección 6 para la reproducción a
+ciegas, con los datos en results/part2/dominators_summary.csv y
+results/part2/dominators_by_seed.csv. Y docs/part2/part2_closing.md sección 5,
+que es la versión asentada y la que va a la memoria.
 
 
-## PARTE 10. Cuatro trampas de diseño, y cómo se detectan — DECIR
+## PARTE 10. Cinco trampas, y cómo se detectan — DECIR
 
 Ésta es la mejor respuesta a "¿y cómo sé que algo de esto está bien?". Son
-cuatro, en tres frases cada una: qué pasa, cómo se detecta y qué está en juego.
+cinco — cuatro de diseño y una de código —, en tres frases cada una: qué pasa,
+cómo se detecta y qué está en juego.
 
-**A ninguna de las cuatro llega una revisión; a las cuatro llega una medida.**
+**A ninguna de las cinco llega una revisión; a las cinco llega una medida.**
 Ésa es la parte que importa, porque una revisión sólo encuentra lo que ya
 sospechas.
 
@@ -1611,7 +1873,7 @@ centro y anchura sale +1.0000 y los cuatro conjuntos vuelven a ser idénticos.
 **Qué está en juego.** **Todas las tablas de la parte 1 habrían sido tablas de
 unos**, y la conclusión habría sido "el orden no importa" — que es exactamente lo
 contrario de lo que es verdad. Un estudio diseñado así no mide nada. Es la peor
-de las cuatro con diferencia.
+de las cinco con diferencia.
 
 ### 10.2 La anchura de ZDT1, cuyo óptimo cae donde están las soluciones
 
@@ -1673,33 +1935,91 @@ cuatro, **y el desbordamiento del punto protegido no se mueve**: 0.1226, 0.1404,
 **Qué está en juego.** Una aserción que no puede pasar nunca, en la puerta que
 decide si empieza la fase de experimentos: o se relaja la tolerancia hasta que
 pase — que es ajustar el criterio a la fuerza del resultado — o bloquea el
-proyecto por un motivo inexistente. Es la más sutil de las cuatro y la que mejor
-enseña la disciplina: **la proposición y la aserción que la contradice caben en
-el mismo documento.**
+proyecto por un motivo inexistente. Es la más sutil de las cuatro de diseño y la
+que mejor enseña la disciplina: **la proposición y la aserción que la contradice
+caben en el mismo documento.**
 
-    Dónde mirar. 10.1 y 10.2 en docs/part1/a1_uncertainty_model.md, partes 1 y 2,
-    y resumidos en docs/part1/part1_closing.md secciones 6.1 y 6.2. 10.3 en
-    docs/part1/a4b_dominance_tolerance.md y en part1_closing sección 6.3. 10.4 en
-    docs/part1/c3_validation.md, sección 1: la proposición está en 1.1, el
-    corolario en 1.2 y la medida en 1.3.
+### 10.5 El producto de intervalos que no estaba, y la anchura negativa que nadie habría visto
+
+**Qué pasa.** Multiplicar un coeficiente intervalar `[a, b]` por una función
+`h(x)` es tomar el mínimo y el máximo de `a·h` y `b·h`. El código lo hacía en
+orden fijo, `(a·h, b·h)`, que es lo mismo mientras `h ≥ 0` y sale **al revés**
+— inferior mayor que superior — donde `h < 0`. Y nada en `src/` comprobaba
+`f_l ≤ f_u`, así que el intervalo invertido habría entrado en φ_ls y φ_cw como
+una **anchura negativa**, y de ahí a la dominancia, al frente de referencia y a
+todas las métricas como un número cualquiera. Los φ son automorfismos de ℝ² y
+están definidos sobre cualquier par: no había nada que pudiera saltar.
+
+**Cómo se detecta.** Midiéndolo, no leyéndolo: f5 pasó la `G_1` de I-VU2 por la
+aritmética del propio módulo en siete puntos, y en los tres con `x_1 < 0` salió
+`inferior > superior`, exactamente en el factor `b/a`, y las anchuras de φ_ls y
+φ_cw salieron negativas. Y se comprobó problema por problema que nada de lo
+corrido podía haberlo disparado: p0 no tiene producto, p1 y los dos benchmarks
+tienen la semianchura no negativa por construcción, y los cuatro `h` de I-BK1
+son cuadrados — 200000 puntos por caja, bien ordenados todos. La única guarda
+era un comentario en la cabecera del módulo que nombraba la condición correcta
+para el problema correcto; un comentario no sobrevive a que alguien añada el
+problema veintiuno.
+
+**Qué está en juego.** Un código **correcto en todo lo que ha corrido y
+silenciosamente incorrecto en general**, y la siguiente decisión del proyecto era
+justo la que iba a meter una función con cambio de signo por ese camino. f6 lo
+arregló en las dos mitades — el producto de Moore en `src/interval_math.py` y la
+guarda `f_l ≤ f_u` envolviendo cada `evaluate` en la única interfaz que comparten
+todos los problemas, que lanza un error con el nombre del objetivo y el punto, no
+un `assert` que `python -O` quita, y siempre, no bajo una bandera; cuesta el
+0.05 % de una tirada de NSGA-II — y **asertó que nada se movió**: las dos
+lecturas coinciden bit a bit en los 40401 puntos de una rejilla de la caja entera
+de I-BK1, la invariante se cumple sobre una muestra densa de cada caja de cada
+problema de cada registro, y el `G(x⋆)` impreso de [16] se reproduce por la ruta
+nueva. El primer problema que el proyecto tocó después, I-VU2, lo habría
+disparado en la mitad de su caja, y en la mitad que contenía toda la respuesta
+(sección 8.6). De paso salió un locator mal: el producto es el ítem (iii) de la
+lista de operaciones de la sección 2.1 de [16], página 4, y no «definición
+2.1(iii), página 3», que es la diferencia gH; y [16] es la única fuente del
+corpus que imprime su forma cerrada, porque [9] lo define como conjunto de
+productos sin forma cerrada y [1] no equipa el espacio con ningún producto —
+que es la razón de que el proyecto pudiera llegar tan lejos sin él.
+
+*Dónde mirar.* 10.1 y 10.2 en docs/part1/a1_uncertainty_model.md, partes 1 y 2,
+y resumidos en docs/part1/part1_closing.md secciones 6.1 y 6.2. 10.3 en
+docs/part1/a4b_dominance_tolerance.md y en part1_closing sección 6.3. 10.4 en
+docs/part1/c3_validation.md, sección 1: la proposición está en 1.1, el corolario
+en 1.2 y la medida en 1.3. 10.5 en docs/part2/f5_boundary_interchange.md,
+sección 1 (1.2 es la salida literal del test, 1.4 el veredicto y la nota de f6)
+y sección 2 para los problemas ya corridos; la fila r-23 con su retirada está en
+docs/answered.md; el código es `multiply` en src/interval_math.py y la guarda
+`well_ordered` en src/problems_tier0.py; la prueba de que nada se movió es
+tests/test_interval_invariant.py; y los dos locators son v-60 y v-61 en
+docs/verified.md.
 
 
 ## PARTE 11. Dónde está el proyecto y qué queda — DECIR
 
-Hoy es 6 de septiembre. La presentación es el 25. Quedan diecinueve días.
+Hoy es 13 de septiembre. La presentación es el 25. Quedan doce días. Desde el 6
+— f8, el segundo cierre de la parte 2 — no ha habido ninguna sesión ni ningún
+commit: **la investigación está cerrada y la fase de escritura no ha empezado.**
 
 ### 11.1 Qué está hecho
 
 **Las dos partes están cerradas.** La parte 1 (el marco, la calibración, los
 benchmarks) está cerrada en `docs/part1/part1_closing.md`. La parte 2 (los
-problemas intervalares de origen, I-BK1, el contraejemplo) está cerrada en
-`docs/part2/part2_closing.md`. Los dos son documentos **canónicos**: son de donde
-se levantan la memoria y el artículo, y están escritos para que no haya que abrir
-nada más para los resultados.
+problemas intervalares de origen, I-BK1, el contraejemplo y, desde f8, I-VU2)
+está cerrada en `docs/part2/part2_closing.md`, y **cerrada dos veces**: f4 la
+cerró con I-BK1, y f8 la volvió a cerrar con I-VU2 plegado dentro como sección
+10, sin reescribir nada de lo anterior — 701 líneas añadidas y 0 quitadas, para
+que todos los locators que otros documentos citan sigan apuntando donde
+apuntaban. Los dos son documentos **canónicos**: son de donde se levantan la
+memoria y el artículo, y están escritos para que no haya que abrir nada más para
+los resultados.
 
-Las seis fases están hechas. Hay 1074 tests, de los que 1062 pasan y 12 fallan a
+Las seis fases están hechas. Hay 1135 tests, de los que 1123 pasan y 12 fallan a
 propósito y de forma estricta. Todos los números de los tres registros de tirada
-están generados, no tecleados.
+están generados, no tecleados. **Lo que la parte 2 es, contado**: veinte
+problemas leídos y cribados dos veces; dos derivados y uno corrido — I-BK1
+derivado, corrido y segundo punto de calibración; I-VU2 derivado y no corrido a
+propósito —; más el trabajo de código de f6, que no cambió ningún número; más la
+corrección a [16], que queda intacta.
 
 **La afirmación final, que es lo que se defiende**, tiene dos párrafos y está
 escrita palabra por palabra en `docs/part2/part2_closing.md` sección 8.3. En
@@ -1711,18 +2031,35 @@ que no se puede quitar al comprimir**: en el problema publicado los tres
 conjuntos se anidan en lugar de cruzarse, así que la magnitud de la parte 1 no
 tiene equivalente allí y no se reclama ninguna.
 
+**Y desde f8 lleva una segunda concesión, escrita al lado de la primera**
+(`part2_closing` sección 12): la afirmación **no** es sobre los problemas
+intervalares de origen como clase, y el segundo problema derivado es la razón —
+en I-VU2 los tres órdenes devuelven **un** conjunto, el del problema nítido.
+**Ser intervalar de origen no basta por sí solo para que la elección del orden
+importe**; en qué régimen está un problema se decide desde sus coeficientes
+impresos, sobre la región donde vive la respuesta, antes de correr ningún solver.
+El texto de c5 no cambia; cambia lo que se declara que no establece.
+
 ### 11.2 Qué queda, y cuál es el entregable de verdad
 
-Los entregables son tres, y con diecinueve días por delante conviene decir en voz
-alta dónde va el esfuerzo:
+Los entregables son tres, y con doce días por delante conviene decir en voz
+alta dónde va el esfuerzo. **El orden lo fijó f8** y no es el de la numeración
+de las subpartes: primero las figuras (g2), luego la presentación (g4), luego la
+memoria (g3) y, si da tiempo, el artículo (g1). **Ninguna de las cuatro ha
+empezado.**
 
-    **la presentación es el entregable de verdad.** Es lo que ocurre el día 25 y
-        es lo único con fecha y hora. La parte 13 de este documento es su guion.
-    **este documento es la memoria informal.** Cubre el proyecto entero en
-        lenguaje llano, con la procedencia de cada afirmación, y se monta desde
-        aquí y desde los dos documentos de cierre.
-    **el artículo es la salida formal, si da tiempo.** El material está: los dos
-        documentos de cierre están escritos para que se levante de ellos.
+- **La presentación es el entregable de verdad.** Es lo que ocurre el día 25 y
+  es lo único con fecha y hora. La parte 13 de este documento es su guion.
+- **La memoria** la fija la decisión d-07: **corta, aplicada y en inglés**, sin
+  rederivar el marco y citando las derivaciones en vez de reproducirlas. Este
+  documento es la fuente en lenguaje llano desde la que se monta, junto con los
+  dos documentos de cierre; no es la memoria.
+- **El artículo es la salida formal, si da tiempo.** El material está: los dos
+  documentos de cierre están escritos para que se levante de ellos.
+- **Las figuras** van antes que todo lo demás porque la presentación y la
+  memoria las necesitan: docs/part1/e3_synthesis.md sección 9 nombra las tres
+  que la parte 1 debe producir, de las que una ya existe, y la parte 2 aporta
+  las suyas.
 
 El estudio de carteras es trabajo futuro, que es donde la diapositiva 21 de los
 propios tutores lo pone.
@@ -1738,11 +2075,13 @@ Además daría un tercer punto de calibración, que es lo que convertiría dos
 factores de error en una afirmación sobre el instrumento. Lo que no tiene es
 checkpoint publicado: I-BK1 es el único del apéndice que lo tiene.
 
-**2. La pregunta de la geometría.** Por qué en p1 dos conjuntos se cruzan y en
-I-BK1 los tres se anidan. Lo que queda por descartar es la alineación de la
-anchura, y **la medida que lo decidiría es concreta**: trasplantar el diseño de
-anchura de p1 a ZDT1. Es una variante, no una familia nueva de problemas. Va a
-trabajo futuro de la memoria.
+**2. La pregunta de la geometría.** Por qué en p1 dos conjuntos se cruzan, en
+I-BK1 los tres se anidan y en I-VU2 los tres coinciden. El tercer caso ya tiene
+mecanismo exacto — la degeneración que crea el cruce, sección 8.6 —; los otros
+dos no. Lo que queda por descartar es la alineación de la anchura, y **la medida
+que lo decidiría es concreta**: trasplantar el diseño de anchura de p1 a ZDT1. Es
+una variante, no una familia nueva de problemas. Va a trabajo futuro de la
+memoria.
 
 **3. x-02.** Veinte semillas de búsqueda aleatoria sobre p1 bajo el Ejemplo 2.4.
 **Es la medida más barata del proyecto** — el mismo código que e1 ya corrió — y
@@ -1757,13 +2096,23 @@ admisible, y aquí está la curva" es un resultado que nadie ha producido sobre 
 marco. **Fue lo primero que se recortó por calendario**, y sigue siendo la mejora
 más grande disponible.
 
-Y siguen abiertas las nueve preguntas a los tutores de la sección 7.2, de las que
-sólo una (s-12) cambiaría un número.
+**Y una que no se hizo a propósito, registrada con su razón para que no haya que
+inferirla de un recuento**: el problema de carteras de dos activos de la sección
+6 de [16], página 26, con su ecuación (28) y sus cinco soluciones de la Tabla 4.
+Es intervalar de origen, de una variable y con tabla de soluciones publicada, y
+**no forma parte de la evidencia de la parte 2**: la reunión del 4 de septiembre
+sacó la aplicación a carteras del alcance, y ninguna sesión lo abrió. Es el
+segundo punto del párrafo de trabajo futuro de la memoria, detrás de I-IKK1.
 
-    Dónde mirar. PROGRESS.md sección 1 para el estado actual, sección 2 para el
-    estado de cada subparte y sección 7 para los riesgos abiertos.
-    docs/part2/part2_closing.md sección 8.4 para lo que sigue abierto entre las
-    dos partes, y sección 7.2 para la valoración de I-IKK1.
+Y siguen abiertas las diez preguntas a los tutores de la sección 7.2, de las que
+sólo una (s-12) cambiaría un número, y las tres decisiones internas que f5 y f7
+dejaron allí apuntadas.
+
+*Dónde mirar.* PROGRESS.md sección 1 para el estado actual, sección 2 para el
+estado de cada subparte y sección 7 para los riesgos abiertos.
+docs/part2/part2_closing.md sección 8.4 para lo que sigue abierto entre las dos
+partes, sección 7.2 para la valoración de I-IKK1, sección 11 para lo que la
+parte 2 es ahora que está cerrada y sección 12 para c5 rejuzgada con I-VU2.
 
 
 ## PARTE 12. El mapa de ficheros — FONDO
@@ -1797,6 +2146,20 @@ proyecto que ponen una cantidad deducida al lado de la misma cantidad medida.
 (el mecanismo). La versión asentada, que es la que va a la memoria, es
 `docs/part2/part2_closing.md` sección 5. La reproducción por los solvers está en
 `results/part2/dominators_summary.csv`.
+
+**"¿Dónde está la frontera del método, lo de I-VU2?"**
+`docs/part2/f7_ivu2_derivation.md` es la derivación y manda; la versión asentada
+es `docs/part2/part2_closing.md` sección 10, con la decisión de no correrlo en
+10.7 y lo que no establece en 10.9. La elección del problema y la segunda criba
+de los veinte están en `docs/part2/f5_boundary_interchange.md`, secciones 3 y 5.
+No hay `run` para I-VU2 ni ficheros suyos en `results/`: no se corrió.
+
+**"¿Y el producto de intervalos que faltaba?"**
+`docs/part2/f5_boundary_interchange.md` sección 1 (la auditoría, con la salida
+literal del test) y la nota de f6 al final de 1.4. El código es `multiply` en
+`src/interval_math.py` y la guarda `well_ordered` en `src/problems_tier0.py`. La
+prueba de que ningún número se movió es `tests/test_interval_invariant.py`. La
+fila r-23, con su retirada, en `docs/answered.md`.
 
 **"¿Cómo vuelvo a correr los experimentos?"**
 `python experiments/run_tier0.py`, `run_tier1.py` y `run_native.py`. Los tres
@@ -1834,10 +2197,13 @@ verificados, v-01 en adelante.
 qué no se eximió a NSGA-II de la aserción. Los doce están fijados en
 `tests/test_validation.py` como `xfail(strict=True)`.
 
-**"¿Qué problemas publicados mirasteis, y por qué usasteis sólo uno?"**
+**"¿Qué problemas publicados mirasteis, y por qué derivasteis dos y corristeis uno?"**
 `docs/part2/lit_review.md`, sección 1.8 (la tabla de los veinte problemas) y 1.9
-(el veredicto criterio por criterio). Esa tabla va a la memoria pase lo que pase:
-es lo que acredita que el corpus se leyó.
+(el veredicto criterio por criterio); `docs/part2/f5_boundary_interchange.md`
+sección 3 para la segunda criba (degeneración e intercambio, los veinte uno por
+uno) y `docs/part2/part2_closing.md` sección 11 para el recuento final con sus
+razones. La tabla de los veinte va a la memoria pase lo que pase: es lo que
+acredita que el corpus se leyó.
 
 **"¿Qué figuras hay?"**
 `results/meeting/derived_regions_p1.png` es la imagen de la parte 4 y es la que
@@ -1848,24 +2214,27 @@ anidamiento.
 
 **"¿Qué NO se puede decir?"**
 `docs/part1/part1_closing.md` sección 8 y `docs/part2/part2_closing.md` secciones
-8.5 y 9. Son las listas explícitas de conclusiones prohibidas, y están escritas
-porque son fáciles de sacar por error de las tablas que sí están.
+8.5, 9, 10.9 y 13. Son las listas explícitas de conclusiones prohibidas, y están
+escritas porque son fáciles de sacar por error de las tablas que sí están; la 13
+repasa las mismas cinco prohibiciones sobre lo que f8 añadió.
 
 **"¿Cuál es la afirmación final, palabra por palabra?"**
 `docs/part2/part2_closing.md` sección 8.3. Dos párrafos. El primero es de la
 parte 1 y el segundo de la parte 2, y la última frase del segundo es una
-concesión que no se puede quitar.
+concesión que no se puede quitar. La sección 12 la rejuzga con I-VU2: el texto no
+cambia y se le añade lo que no establece.
 
 
 ## PARTE 13. Esqueleto de la presentación — FONDO
 
 **Esto no es la presentación.** Es el guion desde el que se construye, y su
-utilidad es que la presentación se **monte** en lugar de inventarse. Cada línea
+utilidad es que la presentación se **monte** en lugar de inventarse. Cada entrada
 es una sección SLIDE de este documento, en el orden en que se cuenta, con qué
 enseña la diapositiva y qué se dice encima.
 
-Objetivo: **quince minutos**, unas quince diapositivas, un minuto cada una. Si
-hay que recortar, se recorta desde la 12 hacia atrás, nunca del medio.
+Objetivo: **quince minutos**, diecisiete diapositivas, menos de un minuto cada
+una. Si hay que recortar, se recorta desde la 12 hacia atrás, nunca del medio;
+la 15 es la otra que puede pasar a frase.
 
 **Lo que la presentación NO lleva**, y esto está decidido y conviene respetarlo:
 pymoo, semillas, tolerancias, la suite de tests, las reglas de cardinalidad, el
@@ -1873,129 +2242,100 @@ modo de muestreo del frente de referencia, y todos los identificadores de
 subparte (a1, c3, e2, f2...). Si sale en preguntas, se contesta; en la
 diapositiva, no.
 
-    #   sección     qué enseña la diapositiva          qué se dice encima
-    --------------------------------------------------------------------------
-
-    1   Parte 1     Dos objetivos que se contradicen   "No hay un ganador. Hay un
-                    y un frente de Pareto dibujado.    conjunto de compromisos, y
-                                                       se llama conjunto eficiente."
-
-    2   Parte 1.4   Un intervalo [38, 45] y la         "En la realidad los números
-        + 2.1       pregunta: ¿[1,10] o [4,5]?         no son exactos. Y en cuanto
-                                                       son intervalos, dejan de
-                                                       poder ordenarse."
-
-    3   Parte 2.2   Los tres φ, sus fórmulas, y la     "Tus tutores no propusieron
-        + 2.3       analogía de la función clave.      un orden: describieron toda
-                                                       la familia. Un φ es una
-                                                       función clave, y cambiarla
-                                                       cambia el resultado."
-
-    4   Parte 2.5   La pregunta, en una línea.         "Cuánto cambia la respuesta
-                                                       cuando lo único que cambia
-                                                       es el orden. Y decir en voz
-                                                       alta que no preguntamos
-                                                       cuál es mejor, ni lo
-                                                       contestamos."
-
-    5   Parte 3.1   La tabla de los tres φ con ε       "Primer hallazgo, y es
-        (A1)        constante, con los dos campos      metodológico. La forma obvia
-                    constantes marcados.               de meter incertidumbre hace
-                                                       que los tres órdenes
-                                                       coincidan. Lo medimos antes
-                                                       de construir nada encima."
-
-    6   Parte 3.2   p1 y las tres fórmulas cerradas.   "Sobre un problema de dos
-        (fase B)                                       variables se puede deducir
-                                                       la respuesta exacta con sus
-                                                       propios teoremas. Eso es lo
-                                                       que hace posible todo lo
-                                                       demás."
-
-    7   Parte 4     LA IMAGEN.                         "Esto no es un resultado de
-                    results/meeting/                   un algoritmo: son las tres
-                    derived_regions_p1.png             fórmulas dibujadas. Fíjate en
-                                                       que dos de ellas no se
-                                                       contienen. Comparten el 10.3 %
-                                                       de su unión."
-
-    8   Parte 3.4   Las dos familias de métricas, en   "Esta es la idea que hay que
-        (fase D)    dos columnas.                      entender. El hipervolumen no
-                                                       puede comparar órdenes,
-                                                       porque cada orden vive en
-                                                       otro espacio. El espacio de
-                                                       decisión es el mismo para
-                                                       todos, y ahí sí."
-
-    9   Parte 3.5   Una muestra, tres filtros, tres    "El control del experimento.
-        (diseño)    conjuntos. Un diagrama.            La búsqueda aleatoria no
-                                                       mira los objetivos, así que
-                                                       los tres conjuntos difieren
-                                                       SÓLO por el orden. Por eso el
-                                                       resultado principal se mide
-                                                       sobre ella y no sobre
-                                                       NSGA-II."
-
-    10  Parte 3.6.1 La tabla exacto contra medido,     "Y esto es lo que casi nadie
-                    con el factor 1.81.                tiene: sabemos cuánto se
-                                                       equivoca nuestro
-                                                       instrumento. Exagera el
-                                                       acuerdo en un factor 1.81."
-
-    11  Parte 3.6.2 Los benchmarks, con la frase       "Como el instrumento exagera
-        + 3.6.4     'del 63 al 91 %'.                  el acuerdo, estos números son
-                                                       COTAS: los órdenes comparten
-                                                       menos de lo que dice la
-                                                       tabla."
-
-    12  Parte 3.6.3 Las dos columnas de cardinalidad.  "Toda la dependencia con la
-                                                       imprecisión es de un solo
-                                                       conjunto. El otro está fijo,
-                                                       y es demostrable en tres
-                                                       líneas."
-
-    13  Parte 8.1   La objeción, escrita como la       "Alguien va a decir que
-        + 8.3       diría un crítico, y debajo         construimos el problema para
-                    I-BK1 con sus corchetes.           que saliera. Tiene razón. Por
-                                                       eso la parte 2 son problemas
-                                                       publicados por otros, con los
-                                                       intervalos en sus propios
-                                                       coeficientes."
-
-    14  Parte 8.4   Las tres cuñas y los seis          "Los tres órdenes vuelven a
-                    extremos ordenados.                dar tres conjuntos distintos,
-                                                       en forma cerrada. Pero aquí
-                                                       se anidan en vez de cruzarse,
-                                                       así que el número de antes no
-                                                       tiene equivalente aquí, y no
-                                                       lo reclamamos."
-
-    15  Parte 9     LAS CUATRO DESIGUALDADES.          "Y esto salió de aplicar el
-                    G(y) contra el G(x⋆) impreso.      método, no de buscar errores.
-                                                       El punto que ese artículo
-                                                       publica como Pareto óptimo
-                                                       está dominado por éste, en
-                                                       sus propios números. Los
-                                                       solvers lo encontraron solos,
-                                                       sin que se les dijera."
-
-    16  Parte 11    La afirmación final y las tres     "Lo que queda, y por qué cada
-        (cierre)    cosas que quedan.                  cosa está donde está."
+- **1. Parte 1** — *enseña*: Dos objetivos que se contradicen y un frente de
+  Pareto dibujado. — *se dice*: "No hay un ganador. Hay un conjunto de
+  compromisos, y se llama conjunto eficiente."
+- **2. Parte 1.4 + 2.1** — *enseña*: Un intervalo [38, 45] y la pregunta:
+  ¿[1,10] o [4,5]? — *se dice*: "En la realidad los números no son exactos. Y en
+  cuanto son intervalos, dejan de poder ordenarse."
+- **3. Parte 2.2 + 2.3** — *enseña*: Los tres φ, sus fórmulas, y la analogía de
+  la función clave. — *se dice*: "Tus tutores no propusieron un orden:
+  describieron toda la familia. Un φ es una función clave, y cambiarla cambia el
+  resultado."
+- **4. Parte 2.5** — *enseña*: La pregunta, en una línea. — *se dice*: "Cuánto
+  cambia la respuesta cuando lo único que cambia es el orden. Y decir en voz
+  alta que no preguntamos cuál es mejor, ni lo contestamos."
+- **5. Parte 3.1 (A1)** — *enseña*: La tabla de los tres φ con ε constante, con
+  los dos campos constantes marcados. — *se dice*: "Primer hallazgo, y es
+  metodológico. La forma obvia de meter incertidumbre hace que los tres órdenes
+  coincidan. Lo medimos antes de construir nada encima."
+- **6. Parte 3.2 (fase B)** — *enseña*: p1 y las tres fórmulas cerradas. — *se
+  dice*: "Sobre un problema de dos variables se puede deducir la respuesta
+  exacta con sus propios teoremas. Eso es lo que hace posible todo lo demás."
+- **7. Parte 4** — *enseña*: LA IMAGEN, results/meeting/derived_regions_p1.png
+  — *se dice*: "Esto no es un resultado de un algoritmo: son las tres fórmulas
+  dibujadas. Fíjate en que dos de ellas no se contienen. Comparten el 10.3 % de
+  su unión."
+- **8. Parte 3.4 (fase D)** — *enseña*: Las dos familias de métricas, en dos
+  columnas. — *se dice*: "Esta es la idea que hay que entender. El hipervolumen
+  no puede comparar órdenes, porque cada orden vive en otro espacio. El espacio
+  de decisión es el mismo para todos, y ahí sí."
+- **9. Parte 3.5 (diseño)** — *enseña*: Una muestra, tres filtros, tres
+  conjuntos. Un diagrama. — *se dice*: "El control del experimento. La búsqueda
+  aleatoria no mira los objetivos, así que los tres conjuntos difieren SÓLO por
+  el orden. Por eso el resultado principal se mide sobre ella y no sobre
+  NSGA-II."
+- **10. Parte 3.6.1** — *enseña*: La tabla exacto contra medido, con el factor
+  1.81. — *se dice*: "Y esto es lo que casi nadie tiene: sabemos cuánto se
+  equivoca nuestro instrumento. Exagera el acuerdo en un factor 1.81."
+- **11. Parte 3.6.2 + 3.6.4** — *enseña*: Los benchmarks, con la frase 'del 63
+  al 91 %'. — *se dice*: "Como el instrumento exagera el acuerdo, estos números
+  son COTAS: los órdenes comparten menos de lo que dice la tabla."
+- **12. Parte 3.6.3** — *enseña*: Las dos columnas de cardinalidad. — *se dice*:
+  "Toda la dependencia con la imprecisión es de un solo conjunto. El otro está
+  fijo, y es demostrable en tres líneas."
+- **13. Parte 8.1 + 8.3** — *enseña*: La objeción, escrita como la diría un
+  crítico, y debajo I-BK1 con sus corchetes. — *se dice*: "Alguien va a decir
+  que construimos el problema para que saliera. Tiene razón. Por eso la parte 2
+  son problemas publicados por otros, con los intervalos en sus propios
+  coeficientes."
+- **14. Parte 8.4** — *enseña*: Las tres cuñas y los seis extremos ordenados. —
+  *se dice*: "Los tres órdenes vuelven a dar tres conjuntos distintos, en forma
+  cerrada. Pero aquí se anidan en vez de cruzarse, así que el número de antes no
+  tiene equivalente aquí, y no lo reclamamos."
+- **15. Parte 8.6** — *enseña*: I-VU2 con sus corchetes sobre x_1 y x_2, la L de
+  la respuesta y la tabla cierra / no cierra. — *se dice*: "Y el segundo
+  problema publicado que derivamos es donde el método se acaba: los coeficientes
+  multiplican algo que cambia de signo, las fronteras se intercambian, y los
+  tres órdenes devuelven UN conjunto, el del problema sin incertidumbre. Se sabe
+  leyendo los coeficientes, antes de correr nada. Ser intervalar de origen no
+  basta."
+- **16. Parte 9** — *enseña*: LAS CUATRO DESIGUALDADES. G(y) contra el G(x⋆)
+  impreso. — *se dice*: "Y esto salió de aplicar el método, no de buscar
+  errores. El punto que ese artículo publica como Pareto óptimo está dominado
+  por éste, en sus propios números. Los solvers lo encontraron solos, sin que se
+  les dijera."
+- **17. Parte 11 (cierre)** — *enseña*: La afirmación final, sus dos concesiones
+  y las cuatro cosas que quedan. — *se dice*: "Lo que queda, y por qué cada cosa
+  está donde está."
 
 **Notas de montaje.**
 
-**La 7 y la 15 son las dos diapositivas que hay que clavar.** La 7 es el proyecto
-entero en una imagen y la 15 es lo más memorable que salió. Si el tiempo se
-tuerce, se sacrifica la 12 y luego la 6, nunca esas dos.
+**La 7 y la 16 son las dos diapositivas que hay que clavar.** La 7 es el proyecto
+entero en una imagen y la 16 es lo más memorable que salió. Si el tiempo se
+tuerce, se sacrifica la 12, luego la 15 — que pasa a ser una frase dicha sobre la
+14 — y luego la 6, nunca esas dos.
 
-**La 15 admite dos versiones.** La corta es la tabla de cuatro filas y la frase
+**La 15 está porque los tutores hicieron la pregunta.** El intercambio de las
+funciones frontera lo plantearon ellos el 4 de septiembre; I-VU2 es la respuesta
+en su propio marco y sobre un problema publicado, y por eso va donde va: primero
+lo que el método da (la 14), luego dónde se acaba (la 15), luego lo que encontró
+de paso (la 16). Lo que enseña es la frase de la sección 8.6 sobre el origen —
+óptimo demostrable, candidato imposible — y la concesión que le añade a la
+afirmación final. Lo que **no** enseña es la derivación: los rayos singulares y
+la convexidad son para las preguntas.
+
+**La 16 admite dos versiones.** La corta es la tabla de cuatro filas y la frase
 "los solvers lo reproducen a ciegas". La larga añade el conjunto crítico que es
 4.24 veces demasiado grande. **Empieza por la corta**; el mecanismo es para las
 preguntas, y hay que llevar preparada la frase de la sección 9.5 sobre lo que
-**no** se afirma, porque es la primera pregunta que va a hacer un matemático.
+**no** se afirma, porque es la primera pregunta que va a hacer un matemático. Y
+si alguien pregunta si I-VU2 es un segundo contraejemplo, la respuesta es no, y
+está en la misma sección.
 
 **Ten a mano tres diapositivas de reserva**, sin numerar y fuera del recorrido:
-las cuatro trampas de la parte 10, para "¿cómo sé que esto está bien?";
+las cinco trampas de la parte 10, para "¿cómo sé que esto está bien?" — la
+quinta, el producto que faltaba, es la mejor respuesta a "¿y el código?";
 la contención de la sección 5.1, para la pregunta "¿y los tres pares?"; y la
 pérdida de presión selectiva de la 5.3, para "¿y esto escala?".
 
@@ -2004,10 +2344,10 @@ DECIR), entre la 11 y la 13: *la parte 1 midió sobre problemas que nosotros
 adaptamos, y eso es una debilidad real; la parte 2 existe justamente para
 responderla.* Decirlo tú antes de que lo digan ellos cambia el tono del resto.
 
-    Dónde mirar. La lista de lo que la presentación excluye está en
-    docs/plan_after_meeting.md sección g4, junto con los requisitos que deben
-    existir antes de construirla. La afirmación, palabra por palabra, en
-    docs/part2/part2_closing.md sección 8.3.
+*Dónde mirar.* La lista de lo que la presentación excluye está en
+docs/plan_after_meeting.md sección g4, junto con los requisitos que deben
+existir antes de construirla. La afirmación, palabra por palabra, en
+docs/part2/part2_closing.md sección 8.3.
 
 
 ## Cierre
@@ -2023,14 +2363,18 @@ publicado por otros.
 
 **Lo que el proyecto no dice, y hay que ser el primero en decirlo.** No dice qué
 φ es mejor: esa pregunta necesita un criterio externo que este proyecto no tiene.
-No dice que los órdenes se aniden en los problemas intervalares de origen: eso es
-un problema, con mecanismo localizado y explícitamente no general. Y no transporta
-ningún factor de corrección a ningún sitio.
+No dice nada sobre cómo se relacionan los órdenes en los problemas intervalares
+de origen como clase: en el único par que la teoría no fija, un problema cruza,
+otro anida y otro iguala. **No dice que ser intervalar de origen baste para que
+el orden importe: I-VU2 es la prueba de que no**, y de que el régimen se lee en
+los coeficientes antes de correr nada. Y no transporta ningún factor de
+corrección a ningún sitio.
 
 **Y lo que no se sabe.** La mitad del déficit de cobertura de NSGA-II no tiene
 mecanismo después de descartar cinco por medición: **no sabemos por qué**. Por
 qué en p1 dos conjuntos se cruzan y en I-BK1 los tres se anidan tiene un
-mecanismo localizado pero no una demostración: **sabemos dónde mirar y no
+mecanismo localizado pero no una demostración — el tercer caso, la igualdad de
+I-VU2, es el único de los tres que sí la tiene —: **sabemos dónde mirar y no
 sabemos la respuesta**. Y por qué el error del instrumento vale 1.81 en un
 problema y entre 1.01 y 1.48 en otro es una propiedad de la geometría de cada
 problema que nadie ha modelado.

@@ -1,0 +1,427 @@
+% presentacion.tex — presentación final del proyecto PI3 (25 de septiembre de 2026).
+%
+% Ningún número del proyecto está tecleado aquí: todos entran por los fragmentos
+% que genera experiments/make_presentation.py bajo
+% results/figures/presentation/fragments/, y las figuras de datos salen del mismo
+% script. Para regenerar todo, ver presentation/README.md.
+%
+% Compilación (dos pasadas cada una, desde presentation/):
+%   lualatex presentacion.tex                                   -> presentacion.pdf
+%   lualatex -jobname=presentacion_notas "\def\shownotes{1}\input{presentacion.tex}"
+%                                                               -> presentacion_notas.pdf
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usetheme[numbering=fraction,progressbar=none,block=fill,background=light]{metropolis}
+\usepackage[spanish,es-noshorthands,es-nodecimaldot]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,patterns,decorations.pathreplacing,shapes.geometric}
+\usepackage{pgfpages}
+\usepackage{appendixnumberbeamer}
+
+% notas del orador: activadas con \def\shownotes{1} antes de \input
+\ifdefined\shownotes
+  \setbeameroption{show notes on second screen=right}
+  \setbeamertemplate{note page}[plain]
+  \setbeamerfont{note page}{size=\scriptsize}
+\fi
+
+% ---------------------------------------------------------------- colores
+% Los tres órdenes llevan el mismo color en toda la presentación, y son los mismos
+% tres valores hexadecimales que experiments/make_presentation.py usa en las
+% figuras. Ninguno se lee como bueno o malo. La intersección se raya, nunca lleva
+% un cuarto color.
+\definecolor{philu}{HTML}{2A6FB0}
+\definecolor{phils}{HTML}{C98A2B}
+\definecolor{phicw}{HTML}{7A4FA3}
+\definecolor{coefcol}{HTML}{B03A2E}
+\definecolor{gris}{HTML}{6A6A6A}
+\definecolor{grisclaro}{HTML}{DDDDDD}
+\setbeamercolor{alerted text}{fg=coefcol}
+\setbeamerfont{title}{size=\Large}
+
+\newcommand{\plu}{\textcolor{philu}{$\phi_{lu}$}}
+\newcommand{\pls}{\textcolor{phils}{$\phi_{ls}$}}
+\newcommand{\pcw}{\textcolor{phicw}{$\phi_{cw}$}}
+\newcommand{\Xlu}{\textcolor{philu}{$X_{lu}$}}
+\newcommand{\Xls}{\textcolor{phils}{$X_{ls}$}}
+\newcommand{\Xcw}{\textcolor{phicw}{$X_{cw}$}}
+\newcommand{\coef}[1]{\textcolor{coefcol}{\boldsymbol{#1}}}
+\newcommand{\marca}[1]{\textcolor{coefcol}{\boldsymbol{#1}}}
+\newcommand{\cita}[1]{\textcolor{gris}{\small #1}}
+\newcommand{\refuno}{[1] Costa, Osuna-Gómez y Chalco-Cano (2024)}
+\newcommand{\refdieciseis}{[16] Mondal, Ghosh y Kim (2026)}
+
+% ---------------------------------------------------------------- números generados
+\graphicspath{{../results/figures/presentation/}}
+\input{../results/figures/presentation/fragments/numbers.tex}
+\input{../results/figures/presentation/fragments/notas.tex}
+
+\title{Técnicas de Optimización Intervalar basadas en Inteligencia Computacional}
+\subtitle{¿Cuánto cambia la respuesta cuando lo único que cambia es el orden?}
+\author{Francisco Rodríguez-Carretero Roldán}
+\institute{Tutores: Antonio Beato Moreno y Rafaela Osuna Gómez · Universidad de Sevilla}
+\date{25 de septiembre de 2026 · Proyecto PI3, julio--septiembre 2026}
+
+\begin{document}
+
+% ================================================================ portada
+\begin{frame}[plain]
+  \vspace{-6mm}\titlepage
+\end{frame}
+
+% ================================================================ BLOQUE A
+% ---------------------------------------------------------------- 1
+\begin{frame}{Optimizar con varios objetivos: no hay un ganador, hay un conjunto}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.55]
+        \draw[-{Stealth}] (0,0) -- (10.5,0) node[below left] {coste};
+        \draw[-{Stealth}] (0,0) -- (0,9.5) node[below right,rotate=0] {riesgo};
+        % dominados
+        \foreach \x/\y in {3/7, 5/6, 6/4.5, 8/4, 4/6.5, 7/3.5, 9/5, 2.5/8.5, 5.5/8, 8.5/6.5, 3.5/5.5, 6.5/6}
+          \fill[gris!60] (\x,\y) circle (0.14);
+        % no dominados
+        \draw[dashed,gris] plot[smooth] coordinates {(1,8) (2,5.5) (3.5,4) (5,3) (7,2.2) (9,1.8)};
+        \foreach \x/\y in {1/8, 2/5.5, 3.5/4, 5/3, 7/2.2, 9/1.8}
+          \fill[philu] (\x,\y) circle (0.2);
+        \node[philu,align=left,font=\small] at (7.6,7.8) {conjunto eficiente\\(frente de Pareto)};
+        \node[gris,font=\small] at (6.2,1.2) {dominados};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      Bajar el coste sube el riesgo: no hay una solución única, existe un conjunto
+      de soluciones eficientes.
+      \begin{block}{Dominancia}
+        $A$ domina a $B$ si $A$ es igual o mejor que $B$ en \textbf{todos} los
+        objetivos y estrictamente mejor en \textbf{al menos uno}.
+      \end{block}
+      \vspace{2mm}
+      Una solución es \textbf{eficiente} si nadie la domina.\\[2mm]
+    \end{column}
+  \end{columns}
+  \NotaI
+\end{frame}
+
+% ---------------------------------------------------------------- 2
+\begin{frame}{Bajo incertidumbre, los intervalos no siempre se ordenan intuitivamente}
+  \centering
+  \begin{tikzpicture}[scale=0.66]
+    % el intervalo [38, 45]
+    \begin{scope}
+      \draw[thick] (0,0) -- (7,0);
+      \draw[very thick,philu] (1,0) -- (6,0);
+      \draw[very thick,philu] (1,-0.15) -- (1,0.15) node[above] {$38$};
+      \draw[very thick,philu] (6,-0.15) -- (6,0.15) node[above] {$45$};
+      \fill[philu] (3.5,0) circle (0.07) node[above,text=black] {centro $41.5$};
+      \draw[decorate,decoration={brace,mirror,amplitude=4pt}] (1,-0.3) -- (3.5,-0.3)
+        node[midway,below=4pt,font=\small,text=black] {semianchura $3.5$};
+      \draw[decorate,decoration={brace,mirror,amplitude=4pt}] (1,-1.1) -- (6,-1.1)
+        node[midway,below=4pt,font=\small,text=black] {anchura $7$};
+      \node[right,font=\small,gris,align=left,text width=4.8cm] at (7.6,0.2) {``el coste no es $40$, es $[38, 45]$''};
+    \end{scope}
+    % A = [1.5, 5], B = [3, 7.5]
+    \begin{scope}[yshift=-4.6cm]
+      \draw[-{Stealth}] (0,0) -- (10,0) node[right] {$\mathbb{R}$};
+      \foreach \x in {0,1,...,9} \draw (\x,-0.08) -- (\x,0.08) node[below=2pt,font=\scriptsize] {\x};
+      \draw[very thick,philu] (1.5,0.5) -- (5,0.5) node[midway,above,font=\small] {$A = [1.5, 5]$};
+      \draw[very thick,phicw] (3,1.5) -- (7.5,1.5) node[midway,above,font=\small] {$B = [3, 7.5]$};
+      \node[right,font=\small,align=left,text width=4.8cm] at (10.6,0.9) {$A$ empieza y acaba antes:\\ aquí $A$ parece menor.};
+    \end{scope}
+    \begin{scope}[yshift=-8.2cm]
+      \draw[-{Stealth}] (0,0) -- (10,0) node[right] {$\mathbb{R}$};
+      \foreach \x in {0,1,...,9} \draw (\x,-0.08) -- (\x,0.08);
+      \draw[very thick,philu] (1,0.5) -- (10,0.5) node[midway,above,font=\small] {$A = [1, 10]$};
+      \draw[very thick,phicw] (4,1.5) -- (5,1.5) node[midway,above,font=\small] {$B = [4, 5]$};
+      \node[right,font=\small,align=left,text width=4.8cm] at (10.6,0.9) {\textbf{¿Cuál es menor?}\\ No hay respuesta.};
+    \end{scope}
+  \end{tikzpicture}
+  \NotaII
+\end{frame}
+
+% ---------------------------------------------------------------- 3
+\begin{frame}{Una familia entera de órdenes, con un parámetro que dice cuál usas: $\phi$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.27\textwidth}
+      \centering
+      \begin{tikzpicture}[node distance=3.5mm,every node/.style={font=\small}]
+        \node[draw,rounded corners,minimum height=7mm] (in) {$[\,l,\,u\,]$};
+        \node[draw,rounded corners,fill=grisclaro,minimum height=7mm,right=of in] (phi) {$\phi$};
+        \node[draw,rounded corners,minimum height=7mm,right=of phi] (out) {$(a,\,b)$};
+        \draw[-{Stealth}] (in) -- (phi);
+        \draw[-{Stealth}] (phi) -- (out);
+      \end{tikzpicture}\\[1mm]
+      {\small\color{gris} dos reales sí se comparan}
+    \end{column}
+    \begin{column}{0.71\textwidth}
+      \footnotesize\setlength{\tabcolsep}{4pt}
+      \begin{tabular}{@{}lll@{}}
+        \toprule
+        orden & fórmula & qué mira \\
+        \midrule
+        \plu\ (Ejemplo 2.2) & $[l,u]\mapsto(l,\;u)$ & inferior y superior \\
+        \pls\ (Ejemplo 2.3) & $[l,u]\mapsto(l,\;u-l)$ & inferior y \textbf{anchura} \\
+        \pcw\ (Ejemplo 2.4) & $[l,u]\mapsto\bigl(\tfrac{l+u}{2},\;\tfrac{u-l}{2}\bigr)$ & centro y \textbf{semianchura} \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+  \end{columns}
+  \vspace{4mm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{La analogía}
+        $\phi$ es la función \texttt{key} de un \texttt{sort}: cambias la
+        \texttt{key}, cambia el orden.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{La regla}
+        $m$ objetivos intervalares $\to$ $2m$ objetivos reales, y un problema
+        real ya se sabe resolver.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \cita{Ejemplos 2.2, 2.3 y 2.4 de \refuno. Los tres son válidos}
+  \NotaIII
+\end{frame}
+
+% ---------------------------------------------------------------- 4
+\begin{frame}{}
+  \vspace{8mm}
+  \begin{center}
+    {\LARGE\bfseries Si cambio el orden y no cambio nada más,\\[3mm]
+     ¿cambia la respuesta? ¿Y cuánto?}
+  \end{center}
+\end{frame}
+
+% ---------------------------------------------------------------- 5
+\begin{frame}{Lo primero que probé fue lo obvio, y no medía nada}
+  \centering
+  \begin{tikzpicture}[scale=0.82,font=\scriptsize]
+    \begin{scope}
+      \draw[-{Stealth},gris] (0,-0.4) -- (4.4,-0.4);
+      \fill[gris!25] plot[smooth,domain=0.3:4.1] ({\x},{1.5-0.35*\x+0.09*\x*\x+0.45})
+        -- plot[smooth,domain=4.1:0.3] ({\x},{1.5-0.35*\x+0.09*\x*\x-0.45}) -- cycle;
+      \draw[very thick,philu] plot[smooth,domain=0.3:4.1] ({\x},{1.5-0.35*\x+0.09*\x*\x});
+      \draw[<->,coefcol,thick] (3.1,{1.5-0.35*3.1+0.09*3.1*3.1-0.45}) -- (3.1,{1.5-0.35*3.1+0.09*3.1*3.1+0.45})
+        node[midway,right=1.2mm,coefcol] {$2\varepsilon$};
+      \node[gris,font=\scriptsize,align=center] at (2.2,-1.25) {un margen de error \textbf{siempre igual}};
+    \end{scope}
+    \begin{scope}[xshift=5.6cm,yshift=1.3cm,font=\small]
+      \node[philu] at (0,0.8) {\plu};
+      \node[phils] at (0,0) {\pls};
+      \node[phicw] at (0,-0.8) {\pcw};
+      \node[anchor=west] at (0.4,0.8) {$(f-\varepsilon,\; f+\varepsilon)$};
+      \node[anchor=west] at (0.4,0) {$(f-\varepsilon,\; \coef{2\varepsilon})$};
+      \node[anchor=west] at (0.4,-0.8) {$(f,\; \coef{\varepsilon})$};
+      \node[coefcol,font=\scriptsize,align=center] at (1.6,-1.6) {nunca cambian};
+    \end{scope}
+    \begin{scope}[xshift=11.2cm,yshift=1.3cm,font=\scriptsize]
+      \draw[very thick,phils,fill=phils!12] (0,0) circle (1.25);
+      \draw[very thick,philu,dashed] (0,0) circle (1.25);
+      \draw[very thick,phicw,dotted] (0,0) circle (1.25);
+      \node[align=center] at (0,0) {los tres dan\\la misma\\respuesta};
+    \end{scope}
+    \draw[-{Stealth},gris,thick] (9.3,1.3) -- (9.8,1.3);
+  \end{tikzpicture}
+
+  \vspace{1mm}
+  \begin{minipage}{0.84\textwidth}
+    \begin{block}{La regla que saqué de aquí}
+      La incertidumbre tiene que depender de algo que el valor central no
+      controle. Si el ancho se puede calcular a partir del centro, los tres
+      órdenes se vuelven el mismo.
+    \end{block}
+  \end{minipage}
+  \NotaV
+\end{frame}
+
+% ---------------------------------------------------------------- 6
+\begin{frame}{El problema p1, sin incertidumbre todavía: acercarse a dos sitios a la vez}
+  \centering
+  \includegraphics[width=0.99\textwidth,height=0.70\textheight,keepaspectratio]{p1_crisp.pdf}
+
+  \vspace{-2mm}
+  {\footnotesize Dos variables, un problema que se puede resolver a mano.}
+  \NotaVI
+\end{frame}
+
+% ---------------------------------------------------------------- 7
+\begin{frame}{p1, tres órdenes, tres respuestas distintas}
+  \centering
+  \includegraphics[width=0.98\textwidth,height=0.70\textheight,keepaspectratio]{p1_regiones.pdf}
+
+  \vspace{-2mm}
+  {\footnotesize De todo lo que podrían tener en común, sólo comparten el
+  \textbf{\pUnionShare\,\%}. \cita{Y esto no lo ha calculado un ordenador: son las tres fórmulas dibujadas.}}
+  \NotaVII
+\end{frame}
+
+% ---------------------------------------------------------------- 8
+\begin{frame}{Y sé cuánto se equivoca lo que uso para medir}
+  \centering
+  \includegraphics[width=0.97\textwidth,height=0.68\textheight,keepaspectratio]{instrumento.pdf}
+
+  \vspace{-1mm}
+  {\small Siempre en la misma dirección: al medir con puntos al azar, los dos
+  órdenes salen \textbf{más parecidos de lo que son}.}
+  \NotaVIII
+\end{frame}
+
+% ---------------------------------------------------------------- 9
+\begin{frame}{Y ahora, p2, problemas de referencia del campo}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.49\textwidth}
+      \centering
+      {\large\textbf{\ZdtName}} \quad \cita{\ZdtSize}\\[1mm]
+      \includegraphics[height=0.33\textheight]{zdt1_frente.pdf}\\[-2mm]
+      {\scriptsize $\ZdtF$\\[1mm] $\ZdtG$\\[0.5mm] \phantom{$\ZdtG$}}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \centering
+      {\large\textbf{\DtlzName}} \quad \cita{\DtlzSize}\\[1mm]
+      \includegraphics[height=0.33\textheight]{dtlz2_frente.pdf}\\[-2mm]
+      {\scriptsize $\DtlzFone$\\[0.5mm] $\DtlzFtwo$\\[0.5mm] $\DtlzFthree$\\[1mm] $\DtlzG$}
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \begin{center}
+    {\scriptsize Y a cada objetivo, su banda: \quad
+    $\ZdtR$ \quad y \quad $\DtlzR$,\\[1mm]
+    con $\marca{x_d}$ una variable que no está en el centro
+    \cita{($\ZdtDrivers$ y $\DtlzDrivers$)} --- la regla de antes.}
+  \end{center}
+  \NotaIX
+\end{frame}
+
+% ---------------------------------------------------------------- 10
+\begin{frame}{En p2: lo que te daba un orden, desaparece con el otro}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.30\textwidth}
+      \centering
+      \begin{tikzpicture}[font=\tiny,scale=0.85,
+          caja/.style={draw,rounded corners,minimum height=5mm,minimum width=18mm,align=center},
+          filtro/.style={draw,rounded corners,minimum height=5mm,minimum width=13mm,align=center,thick},
+          node distance=2.5mm and 4mm]
+        \node[caja] (sample) {5000 puntos\\al azar};
+        \node[caja,below=of sample] (eval) {una sola\\evaluación};
+        \node[filtro,draw=phils,below=9mm of eval,xshift=4mm] (fls) {\pls};
+        \node[filtro,draw=philu,below=of fls] (flu) {\plu};
+        \node[filtro,draw=phicw,below=of flu] (fcw) {\pcw};
+        \draw[-{Stealth}] (sample) -- (eval);
+        % un carril a la izquierda, para que ninguna flecha cruce un cuadro
+        \coordinate (lane) at ([xshift=-5mm]fls.west);
+        \draw (eval.south) -- ++(0,-3mm) -| (lane);
+        \draw (lane) -- (lane|-fcw.west);
+        \draw[-{Stealth}] (lane|-fls.west) -- (fls.west);
+        \draw[-{Stealth}] (lane|-flu.west) -- (flu.west);
+        \draw[-{Stealth}] (lane|-fcw.west) -- (fcw.west);
+        \node[below=3mm of fcw,align=center,gris,xshift=-2mm] {la misma lista, filtrada tres veces:\\lo único que cambia es el orden};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.68\textwidth}
+      \centering
+      \includegraphics[width=0.98\textwidth,height=0.62\textheight,keepaspectratio]{benchmarks.pdf}
+    \end{column}
+  \end{columns}
+  {\footnotesize Y como sé que mi medida dice que se parecen más de lo que se parecen, esto es un \textbf{mínimo}:
+  \\ La diferencia real es mayor.}
+  \NotaX
+\end{frame}
+
+% ---------------------------------------------------------------- 11
+\begin{frame}{Y el tercero no lo he construido yo: está publicado}
+  \centering
+  \vspace{-2mm}
+  {\footnotesize $\IBKone$,\quad $\IBKtwo$,\quad $x\in\IBKbox$}
+
+  \vspace{-1mm}
+  \includegraphics[height=0.69\textheight,keepaspectratio]{ibk1_crisp.pdf}
+
+  \vspace{-1mm}
+  {\footnotesize Cada objetivo vale un intervalo.}
+  \NotaXI
+\end{frame}
+
+% ---------------------------------------------------------------- 12
+\begin{frame}{Tres órdenes, tres respuestas: otra vez, y sin tocar el problema}
+  \centering
+  \includegraphics[width=0.98\textwidth,height=0.63\textheight,keepaspectratio]{ibk1_cunas.pdf}
+
+  \vspace{-2mm}
+  {\footnotesize Aquí las tres se meten una dentro de otra en vez de cruzarse: el
+  \bMinInt--\bMaxInt\,\% de antes no vale aquí.\\ Lo que sí es
+  exacto: el \textbf{\iLsOutsideCw\,\%} de la mayor queda fuera de la menor.}
+  \NotaXII
+\end{frame}
+
+% ---------------------------------------------------------------- 13
+\begin{frame}{Y de paso: el punto que publican como óptimo no lo es}
+  \centering
+  \includegraphics[width=0.88\textwidth,height=0.70\textheight,keepaspectratio]{contraejemplo.pdf}
+
+  \vspace{-1mm}
+  {\small Los de arriba son sus números; los de abajo salen con una calculadora
+  en dos minutos.\\ \cita{Y los tres algoritmos lo encuentran.}}
+  \NotaXIII
+\end{frame}
+
+% ---------------------------------------------------------------- cierre
+\begin{frame}{Conclusiones}
+  \vspace{4mm}
+  \begin{center}
+    \begin{minipage}{0.88\textwidth}
+      {\large Elegir el orden no es un detalle de cómo montas el problema:\\
+      \textbf{si no que condiciona la respuesta}.}
+    \end{minipage}
+  \end{center}
+  \vspace{8mm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.32\textwidth}
+      \centering
+      {\LARGE\textbf{\pUnionShare\,\%}}\\[3mm]
+      {\small es todo lo que dos órdenes\\ tienen en común}\\[2mm]
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \centering
+      {\LARGE\textbf{\bMinInt--\bMaxInt\,\%}}\\[3mm]
+      {\small de tu respuesta desaparece\\ si te pasas al otro orden}\\[2mm]
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \centering
+      {\LARGE\textbf{\iLsOutsideCw\,\%}}\\[3mm]
+      {\small de la respuesta mayor\\ se queda fuera de la menor}\\[2mm]
+    \end{column}
+  \end{columns}
+  \vspace{7mm}
+  \begin{center}
+    \cita{Y siempre depende del problema: cada cifra viene de un problema concreto.}
+  \end{center}
+  \NotaXIV
+\end{frame}
+
+% ---------------------------------------------------------------- líneas futuras
+\begin{frame}{Líneas futuras}
+  \vspace{10mm}
+  \begin{center}
+    \begin{minipage}{0.82\textwidth}
+      {\large
+      \textbf{La curva de sensibilidad}: ir pasando poco a poco de un orden a
+      otro, y ver cómo se mueve la respuesta.\\[8mm]
+      \textbf{La aplicación a optimización de carteras}}
+    \end{minipage}
+  \end{center}
+  \NotaXV
+\end{frame}
+
+\begin{frame}[plain]
+  \vspace{10mm}
+  \begin{center}
+    {\Huge Gracias}\\[10mm]
+  \end{center}
+\end{frame}
+\end{document}
